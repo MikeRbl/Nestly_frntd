@@ -36,45 +36,49 @@
 
 
   <br>
-<div class="row">
-    <div class="dentro">
-        <div class="col">
-        <form [formGroup]="LoginFormulario" (ngSubmit)="onLoggedin()">
-
-            <div >
-                <label for="email" class="col-form-label">
-                    <ng-container *ngIf="isValid('email')">
-                        <span class="text-danger">*</span>
-                    </ng-container>
-                    
-                </label>
-                <div>
-                    <input id="email" type="email" formControlName="email" class="form-control" [ngClass]="{'is-invalid': isValid('email')}">
-                    <div *ngIf="f['email'].errors && f['email'].touched" class="form-text text-danger">
-                        <div *ngIf="f['email']?.errors?.['required'] || f['email']?.errors?.['email']">El email debe electrónico ser válido</div>
-                    </div>
-                </div>
-            </div>
-
-            <div >
-                <label for="password" class="col-form-label">
-                    <ng-container *ngIf="isValid('password')">
-                        <span class="text-danger">*</span>
-                    </ng-container>
-                    
-                </label>
-                <div>
-                    <input id="password" type="password" formControlName="password" class="form-control" [ngClass]="{'is-invalid': isValid('password')}">
-                    <div *ngIf="f['password'].errors && f['password'].touched" class="form-text text-danger">
-                        <div *ngIf="f['password']?.errors?.['required']">La contraseña es obligatoria</div>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <button type="submit" >Iniciar sesión</button>
-            </div>
-        </form>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" formControlName="email" class="form-control">
+      <div *ngIf="email?.invalid && (email?.touched || email?.dirty)" class="text-danger">
+        <small *ngIf="email?.errors?.['required']">Email es requerido</small>
+        <small *ngIf="email?.errors?.['email']">Email no válido</small>
+      </div>
     </div>
-</div>
-</div>
+  
+    <div class="form-group">
+      <label>Contraseña</label>
+      <input type="password" formControlName="password" class="form-control">
+      <div *ngIf="password?.invalid && (password?.touched || password?.dirty)" class="text-danger">
+        <small *ngIf="password?.errors?.['required']">Contraseña es requerida</small>
+      </div>
+    </div>
+  
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+  
+    <button type="submit" class="btn btn-primary" [disabled]="loading">
+      <span *ngIf="!loading">Iniciar sesión</span>
+      <span *ngIf="loading">Cargando...</span>
+    </button>
+
+      
+      <!-- Mensaje de error -->
+      <div *ngIf="errorMessage" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+    
+      <!-- Nuevo mensaje de éxito -->
+      <div *ngIf="successMessage" class="alert alert-success">
+        {{ successMessage }}
+        <div class="spinner-border spinner-border-sm" role="status" *ngIf="loading">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    
+      <button type="submit" class="btn btn-primary" [disabled]="loading">
+        <span *ngIf="!loading">Iniciar sesión</span>
+        <span *ngIf="loading">Cargando...</span>
+      </button>
+    </form>

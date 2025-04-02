@@ -1,90 +1,87 @@
 import { Component } from '@angular/core';
-import { HttpLavavelService } from '../../http.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { HttpLavavelService } from '../../http.service';
 import { LocalstorageService } from '../../localstorage.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-LoginFormulario: FormGroup;
+  loginForm: FormGroup;
+  errorMessage: string = '';
+  successMessage: string = '';
+  loading: boolean = false;
+  loggedInUser: string | null = null;
 
-constructor(
-  private fb: FormBuilder,
-  private service: HttpLavavelService,
-  private router: Router,
-  private localStorage: LocalstorageService
-){
-  this.LoginFormulario = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['',[Validators.required]],
-  });
-}
-
-
-
-onLoggedin(){
-  if(this.LoginFormulario.invalid){
-    return;
+  constructor(
+    private fb: FormBuilder,
+    private httpService: HttpLavavelService,
+    private localStorage: LocalstorageService
+  ) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required]
+    });
   }
-  console.log(this.LoginFormulario.value);
 
-  this.service
-  .Service_Post('user', 'login', this.LoginFormulario.value)
-  .subscribe(
-    (data: any) => {
-      console.log(data);
-
-      if(data.estatus){
-        this.localStorage.setItem('accessToken', data.access_token);
-        this.router.navigate(['/']);
-      }
-    },
-    (error) => {
-      console.log(error);
+  onSubmit(): void {
+    if (this.loginForm.invalid) {
+      this.markFormAsTouched();
+      return;
     }
-  )
-}
 
+    this.errorMessage = '';
+    this.successMessage = '';
+    this.loading = true;
 
-isValid(field:string): boolean{
-return !!(
-this.LoginFormulario.controls[field].errors &&
-this.LoginFormulario.controls[field].touched
-);
-}
-
-get f(){
-  return this.LoginFormulario.controls;
-}
-
-
-
-
-
-
-
-
-
-Guardar(){
-  if(this.LoginFormulario.invalid){
-    this.LoginFormulario.markAllAsTouched();
-    return;
+    this.httpService.Service_Post('login', this.loginForm.value)
+    .subscribe({
+      next: (response: { 
+        estatus: boolean, 
+        access_token?: string, 
+        user?: { email: string, name?: string } // Añade el tipo para user si lo recibes
+      }) => {
+        this.loading = false;
+        if (response.estatus && response.access_token) {
+          this.localStorage.setItem('accessToken', response.access_token);
+          this.loggedInUser = this.loginForm.value.email;
+          this.successMessage = `¡Bienvenido ${this.loggedInUser}!`;
+          
+          // Mostrar información en consola de varias formas:
+          console.log('Usuario logueado:', this.loggedInUser); // Forma básica
+          console.log('Datos completos de respuesta:', response); // Todos los datos de la respuesta
+          
+          // Si el backend devuelve más información del usuario
+          if (response.user) {
+            console.log('Información del usuario desde backend:', response.user);
+            console.log('Email:', response.user.email);
+            if (response.user.name) {
+              console.log('Nombre:', response.user.name);
+            }
+          }
+          
+          this.loginForm.reset();
+        }
+      },
+      error: (error: HttpErrorResponse) => {
+        this.loading = false;
+        this.errorMessage = error.error?.error?.message || 
+                           error.error?.message || 
+                           'Error al iniciar sesión';
+        console.error('Detalles del error:', error);
+      }
+    });
   }
-  console.log(this.LoginFormulario.value);
-  this.LoginFormulario.reset({email:'',password:''});
-}
 
+  private markFormAsTouched(): void {
+    Object.values(this.loginForm.controls).forEach(control => {
+      control.markAsTouched();
+    });
+  }
 
-
-
-
-
-
-
-
-
+  get email() { return this.loginForm.get('email'); }
+  get password() { return this.loginForm.get('password'); }
 }

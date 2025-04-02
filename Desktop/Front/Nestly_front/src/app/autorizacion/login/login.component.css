@@ -1,17 +1,30 @@
 /* Fondo matemático principal */
 :host {
-    display: block;
-    min-height: 100vh;
-    background-color: #8963f0;
-    background-size: 50px 50px;
-    background-position: -1px -1px, -1px -1px, -25px -25px, -25px -25px;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  }
-  
+  display: block;
+  min-height: 100vh;
+  margin: -20px;
+  background: linear-gradient(45deg, #7FA6FF, #D98EDF);
+  background-size: cover; /* Se ajusta a toda la pantalla */
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* Fija el fondo para evitar desplazamientos */
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Fondo del body */
+body {
+  height: 100vh;
+  margin: 0;
+  background: linear-gradient(to bottom, white, #3567FE, #D673DF);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+
   /* Contenedor del formulario con efecto pizarra */
   .login-container {
     width: 100%;
