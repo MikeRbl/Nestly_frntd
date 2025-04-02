@@ -17,7 +17,13 @@ export class HttpLavavelService {
       'Authorization': `Bearer ${token}`
     });
   }
-
+  publicPost(endpoint: string, data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${endpoint}`, data, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      })
+    });
+  }
   Service_Get(endpoint: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/${endpoint}`, { headers: this.getHeaders() });
   }
