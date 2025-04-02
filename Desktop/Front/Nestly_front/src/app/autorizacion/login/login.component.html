@@ -1,4 +1,4 @@
-<div class="login-container">
+<!-- <div class="login-container">
     <h1 class="logo">Nestly</h1>
     
     <h2 class="login-title">LOGIN</h2>
@@ -32,4 +32,49 @@
         </div>
       </div>
     </form>
-  </div>
+  </div> -->
+
+
+  <br>
+<div class="row">
+    <div class="dentro">
+        <div class="col">
+        <form [formGroup]="LoginFormulario" (ngSubmit)="onLoggedin()">
+
+            <div >
+                <label for="email" class="col-form-label">
+                    <ng-container *ngIf="isValid('email')">
+                        <span class="text-danger">*</span>
+                    </ng-container>
+                    
+                </label>
+                <div>
+                    <input id="email" type="email" formControlName="email" class="form-control" [ngClass]="{'is-invalid': isValid('email')}">
+                    <div *ngIf="f['email'].errors && f['email'].touched" class="form-text text-danger">
+                        <div *ngIf="f['email']?.errors?.['required'] || f['email']?.errors?.['email']">El email debe electrónico ser válido</div>
+                    </div>
+                </div>
+            </div>
+
+            <div >
+                <label for="password" class="col-form-label">
+                    <ng-container *ngIf="isValid('password')">
+                        <span class="text-danger">*</span>
+                    </ng-container>
+                    
+                </label>
+                <div>
+                    <input id="password" type="password" formControlName="password" class="form-control" [ngClass]="{'is-invalid': isValid('password')}">
+                    <div *ngIf="f['password'].errors && f['password'].touched" class="form-text text-danger">
+                        <div *ngIf="f['password']?.errors?.['required']">La contraseña es obligatoria</div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <button type="submit" >Iniciar sesión</button>
+            </div>
+        </form>
+    </div>
+</div>
+</div>

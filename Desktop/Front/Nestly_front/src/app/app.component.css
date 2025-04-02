@@ -1,0 +1,95 @@
+
+html, body {
+    height: 100%; /* Asegura que el html y el body ocupen todo el alto de la ventana */
+    margin: 0; /* Elimina el margen por defecto */
+}
+
+.row {
+    display: flex;
+    flex-direction: column; /* Organiza los elementos en una columna */
+    justify-content: center; /* Centra el contenido verticalmente */
+    align-items: center; /* Centra el contenido horizontalmente */
+    height: 320px; /* Ocupa el 100% de la altura de la ventana */
+    width: 400px;
+    padding: 20px; /* Aumenta el padding para más separación */
+    border: 2px solid #838383; /* Añade un borde */
+    border-top: #8d8d8d;
+    border-radius: 8px; /* Bordes redondeados */
+    background-color: #ffffff; /* Fondo claro para contraste */
+    width: 300px; /* Ancho fijo de 300px */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Añade una sombra suave */
+}
+
+
+/* Estilo de la imagen */
+img {
+    height: 140px;
+    width: 140px;
+    display: block;
+    margin: 0 auto 20px auto; /* Centra la imagen y agrega un margen inferior */
+}
+
+/* Estilo de la columna */
+.col {
+    width: 100%; /* Ancho completo de la columna */
+    padding: 20px; /* Aumenta el padding para más separación */
+}
+
+/* Form group styling */
+.form-group {
+    margin-bottom: 20px; /* Aumenta el margen inferior para más separación */
+    padding: 15px; /* Aumenta el padding para más separación */
+}
+
+/* Label styling */
+.col-form-label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 10px; /* Aumenta el margen inferior para más separación */
+}
+
+/* Input field styling */
+.form-control {
+    width: 100%;
+    padding: 10px; /* Aumenta el padding para más comodidad */
+    font-size: 14px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-control.is-invalid {
+    border-color: #dc3545;
+}
+
+/* Error messages */
+.form-text.text-danger {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+/* Required field indicator */
+.text-danger {
+    color: #dc3545;
+}
+
+/* Button styling */
+button {
+    background-color: #56baed;
+    border-color: #56baed;
+    color: #fff;
+    padding: 10px; /* Aumenta el padding para más comodidad */
+    font-size: 14px; /* Tamaño de fuente ajustado */
+    border-radius: 4px;
+    cursor: pointer;
+    height: 50px;
+    width: 100%; /* El botón ocupa todo el ancho disponible */
+    display: block;
+    margin: 20px 0 0 0; /* Ajusta el margen superior */
+}
+
+button:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
