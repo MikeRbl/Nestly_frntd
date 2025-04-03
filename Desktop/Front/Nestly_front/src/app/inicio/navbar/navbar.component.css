@@ -1,0 +1,91 @@
+/* Estilos generales de la barra de navegación */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+  }
+  
+  /* Estilos para la marca/logo */
+  .navbar-brand {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+  }
+  
+  .brand-name {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+    transition: 0.5s;
+  }
+
+  .brand-name:hover{
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff;
+    cursor:pointer;
+  }
+  
+  .brand-subname {
+    font-size: 1rem;
+    margin-left: 0.5rem;
+    color: #666;
+    transition: 0.5s;
+  }
+  .brand-subname:hover{
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff;
+    cursor:pointer;
+  }
+  
+  /* Estilos para el centro */
+  .navbar-center img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+  }
+  
+  /* Estilos para las acciones (botón e icono) - MODIFICADO */
+  .navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 9px; /* Reducido de 15px a 8px */
+  }
+  
+  .login-button {
+    padding: 0.5rem 1.5rem;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.5s;
+  }
+  
+  .login-button:hover {
+    background-color: #007bff;
+    color: rgb(255, 255, 255);
+  }
+  
+  /* Estilos para el icono de usuario - MODIFICADO */
+  .icono-usuario {
+    height: 40px;
+    width: 40px;
+    object-fit: contain;
+    /* Se eliminó el margin-left: 10px */
+    transition: 0.5s;
+  }
+
+  .icono-usuario:hover{
+    height: 43px;
+    width: 43px;
+    cursor: pointer;
+  }

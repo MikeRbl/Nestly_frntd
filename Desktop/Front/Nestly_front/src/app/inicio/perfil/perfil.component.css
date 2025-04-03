@@ -1,0 +1,120 @@
+/* perfil.component.css */
+.profile-container {
+  font-family: 'Arial', sans-serif;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  color: #333;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-header h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+.photo-upload-section h2 {
+  font-size: 18px;
+  margin-bottom: 5px;
+  color: #3498db;
+}
+
+.username {
+  font-size: 16px;
+  color: #7f8c8d;
+  margin-bottom: 20px;
+}
+
+.social-connections {
+  margin-bottom: 20px;
+}
+
+.social-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.social-item input {
+  margin-right: 10px;
+}
+
+.social-item label {
+  font-size: 16px;
+}
+
+.divider {
+  height: 1px;
+  background-color: #ecf0f1;
+  margin: 20px 0;
+}
+
+.property-section h2 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #2c3e50;
+}
+
+.property-details {
+  list-style-type: none;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.property-details li {
+  margin-bottom: 8px;
+  padding-left: 20px;
+  position: relative;
+}
+
+.property-details li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #3498db;
+}
+
+.price-section h3 {
+  font-size: 22px;
+  color: #27ae60;
+  margin-bottom: 10px;
+}
+
+.price-details {
+  list-style-type: none;
+  padding: 0;
+  color: #7f8c8d;
+}
+
+.price-details li {
+  margin-bottom: 5px;
+}
+
+.profile-actions h3 {
+  font-size: 20px;
+  margin: 25px 0 15px;
+  color: #2c3e50;
+}
+
+.action-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.action-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid #ecf0f1;
+  cursor: pointer;
+}
+
+.action-list li:last-child {
+  border-bottom: none;
+  color: #e74c3c;
+}
+
+.action-list li:hover {
+  color: #3498db;
+}

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpLavavelService } from '../../http.service';
 import { LocalstorageService } from '../../localstorage.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private httpService: HttpLavavelService,
-    private localStorage: LocalstorageService
+    private localStorage: LocalstorageService,
+    private router: Router,
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -49,6 +51,8 @@ export class LoginComponent {
           this.localStorage.setItem('accessToken', response.access_token);
           this.loggedInUser = this.loginForm.value.email;
           this.successMessage = `¡Bienvenido ${this.loggedInUser}!`;
+          console.log('Intentando navegar a /dashboard');
+          this.router.navigate(['/navbar']);
           
           // Mostrar información en consola de varias formas:
           console.log('Usuario logueado:', this.loggedInUser); // Forma básica

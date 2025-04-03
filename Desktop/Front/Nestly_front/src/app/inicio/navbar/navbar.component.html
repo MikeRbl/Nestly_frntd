@@ -1,2 +1,16 @@
-<p>navbar works!</p>
+<nav class="navbar">
+    <div class="navbar-brand">
+      <span class="brand-name">Rentor</span>
+      <span class="brand-subname">Alquilar</span>
+    </div>
+    
+    <div class="navbar-center" (click)="redirectToDashboard()">
+        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=40&h=40">
+    </div>
+    
+    <div class="navbar-actions">
+        <button class="login-button" (click)="redirectToLogin()">Iniciar Sesión</button>
+      <img class="icono-usuario" (click)="redirectToPerfil()" src="https://static.vecteezy.com/system/resources/previews/020/911/730/large_2x/profile-icon-avatar-icon-user-icon-person-icon-free-png.png">
+    </div>
+  </nav>
 <router-outlet/>

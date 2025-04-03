@@ -8,13 +8,15 @@ import { DashboardComponent } from './inicio/dashboard/dashboard.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpLavavelService } from './http.service';
 import { HttpClientModule } from '@angular/common/http';
+import { PerfilComponent } from './inicio/perfil/perfil.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegistroComponent,
-    DashboardComponent
+    DashboardComponent,
+    PerfilComponent,
   ],
   imports: [
     BrowserModule,
