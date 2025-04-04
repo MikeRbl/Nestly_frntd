@@ -1,27 +1,32 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './autorizacion/login/login.component';
-import { RegistroComponent } from './autorizacion/registro/registro.component';
-import { DashboardComponent } from './inicio/dashboard/dashboard.component';
-import { NavbarComponent } from './inicio/navbar/navbar.component';
-import { PerfilComponent } from './inicio/perfil/perfil.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'login', component: LoginComponent },
-  { path: 'registro', component: RegistroComponent, },
-  { path: 'dashboard', component: DashboardComponent, },
-  { path: 'navbar', component: NavbarComponent, },
-  { path: 'perfil', component: PerfilComponent, },
+  { 
+    path: '', 
+    redirectTo: 'principal/dashboard', 
+    pathMatch: 'full' 
+  },
+  { 
+    path: 'login', 
+    loadChildren: () => import('./autorizacion/login/login.component').then(m => m.LoginComponent)
+  },
+  { 
+    path: 'registro', 
+    loadChildren: () => import('./autorizacion/registro/registro.component').then(m => m.RegistroComponent)
+  },
   {
     path: 'principal',
-    loadChildren: () =>
-      import('./inicio/inicio.module').then((m) => m.InicioModule),
+    loadChildren: () => import('./inicio/inicio.module').then(m => m.InicioModule),
   },
+  { 
+    path: '**', 
+    redirectTo: 'principal/dashboard' 
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
 export class AppRoutingModule {}

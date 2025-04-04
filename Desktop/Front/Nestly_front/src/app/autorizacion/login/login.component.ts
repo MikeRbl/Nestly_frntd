@@ -44,7 +44,7 @@ export class LoginComponent {
       next: (response: { 
         estatus: boolean, 
         access_token?: string, 
-        user?: { email: string, name?: string } // Añade el tipo para user si lo recibes
+        user?: { email: string, name?: string } 
       }) => {
         this.loading = false;
         if (response.estatus && response.access_token) {

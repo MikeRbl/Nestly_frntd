@@ -9,14 +9,25 @@ const routes: Routes = [
     path: '',
     component: NavbarComponent,
     children: [
-      { path: '', component: DashboardComponent },
-      { path: '**', redirectTo: '' }
-    ],
-  },
+      { 
+        path: 'dashboard', 
+        component: DashboardComponent 
+      },
+      { 
+        path: 'perfil', 
+        component: PerfilComponent 
+      },
+      { 
+        path: '', 
+        redirectTo: 'dashboard', 
+        pathMatch: 'full' 
+      }
+    ]
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
 export class InicioRoutingModule {}
