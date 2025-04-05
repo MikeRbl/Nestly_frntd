@@ -1,86 +1,128 @@
-<div class="register-container">
-  <h1 class="logo">Nestly</h1>
-  
-  <h2 class="register-title">REGISTRARSE</h2>
-  
-  <form [formGroup]="registroForm" (ngSubmit)="onSubmit()" class="register-form">
-    <!-- Nombre -->
-    <div class="form-group">
-      <label for="firstName">Nombre(s)</label>
-      <input type="text" id="firstName" formControlName="nombre" placeholder="Ingresa tu(s) nombre(s)">
-      <div *ngIf="submitted && f['nombre'].errors" class="error-message">
-        <div *ngIf="f['nombre'].errors['required']">Este campo es requerido</div>
+<div class="containerPrincipal">
+  <div class="containerForm">
+    <form [formGroup]="registroForm" (ngSubmit)="onSubmit()" class="register-form">
+      <div class="containerUserSvg">
+        <svg class="usersvg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+        </svg>
       </div>
-    </div>
     
-    <!-- Apellido Paterno -->
-    <div class="form-group">
-      <label for="lastName1">Apellido Paterno</label>
-      <input type="text" id="lastName1" formControlName="apellidoPaterno" placeholder="Ingresa tu apellido paterno">
-      <div *ngIf="submitted && f['apellidoPaterno'].errors" class="error-message">
-        <div *ngIf="f['apellidoPaterno'].errors['required']">Este campo es requerido</div>
+      <a>Registrarse</a>
+
+      <!-- Nombre -->
+      <div class="containerNombre">
+        <div class="containerSvg">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+          </svg>
+        </div>
+        <div class="containerInputNombre">
+          <input type="text" formControlName="nombre" placeholder="Nombre(s)" class="form-control">
+          <div *ngIf="submitted && f['nombre'].errors" class="text-danger">
+            <small *ngIf="f['nombre'].errors['required']">Este campo es requerido</small>
+          </div>
+        </div>
       </div>
-    </div>
-    
-    <!-- Apellido Materno -->
-    <div class="form-group">
-      <label for="lastName2">Apellido Materno</label>
-      <input type="text" id="lastName2" formControlName="apellidoMaterno" placeholder="Ingresa tu apellido materno">
-    </div>
-    
-    <!-- Email -->
-    <div class="form-group">
-      <label for="email">E-mail</label>
-      <input type="email" id="email" formControlName="email" placeholder="Ingresa tu correo electrónico">
-      <div *ngIf="submitted && f['email'].errors" class="error-message">
-        <div *ngIf="f['email'].errors['required']">Este campo es requerido</div>
-        <div *ngIf="f['email'].errors['email']">Ingresa un email válido</div>
+
+      <!-- Apellidos -->
+      <div class="containerApellidos">
+        <div class="containerApellido">
+          <div class="containerSvg">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+            </svg>
+          </div>
+          <div class="containerInputApellido">
+            <input type="text" formControlName="apellidoPaterno" placeholder="Apellido Paterno" class="form-control">
+          </div>
+        </div>
+        <div class="containerApellido">
+          <div class="containerSvg">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+            </svg>
+          </div>
+          <div class="containerInput">
+            <input type="text" formControlName="apellidoMaterno" placeholder="Apellido Materno" class="form-control">
+          </div>
+        </div>
       </div>
-    </div>
-    
-    <!-- Teléfono -->
-    <div class="form-group">
-      <label for="phone">Teléfono</label>
-      <input type="tel" id="phone" formControlName="telefono" placeholder="Ingresa tu número telefónico">
-      <div *ngIf="submitted && f['telefono'].errors" class="error-message">
-        <div *ngIf="f['telefono'].errors['required']">Este campo es requerido</div>
-        <div *ngIf="f['telefono'].errors['pattern']">Debe contener 10 dígitos</div>
+
+      <!-- Email -->
+      <div class="containerEmail">
+        <div class="containerSvg">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+          </svg>
+        </div>
+        <div class="containerInput">
+          <input type="email" placeholder="Email" formControlName="email" class="form-control" required>
+        </div>
       </div>
-    </div>
-    
-    <!-- Contraseña -->
-    <div class="form-group">
-      <label for="password">Contraseña</label>
-      <input type="password" id="password" formControlName="password" placeholder="Ingresa tu contraseña">
-      <div *ngIf="submitted && f['password'].errors" class="error-message">
-        <div *ngIf="f['password'].errors['required']">Este campo es requerido</div>
-        <div *ngIf="f['password'].errors['minlength']">Mínimo 8 caracteres</div>
+
+      <!-- Contraseña -->
+      <div class="containerEmail">
+        <div class="containerSvg">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"/>
+          </svg>
+        </div>
+        <div class="containerInput">
+          <input type="password" placeholder="Contraseña" formControlName="password" class="form-control" required>
+        </div>
       </div>
-    </div>
-    
-    <!-- Confirmar Contraseña -->
-    <div class="form-group">
-      <label for="password_confirmation">Confirmar Contraseña</label>
-      <input type="password" id="password_confirmation" formControlName="confirmPassword" placeholder="Confirma tu contraseña">
-      <div *ngIf="submitted && registroForm.hasError('mismatch')" class="error-message">
-        Las contraseñas no coinciden
+
+      <!-- Confirmar Contraseña -->
+      <div class="containerEmail">
+        <div class="containerSvg">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"/>
+          </svg>
+        </div>
+        <div class="containerInput">
+          <input type="password" placeholder="Confirmar Contraseña" formControlName="confirmPassword" class="form-control" required>
+        </div>
       </div>
-    </div>
-    
-  
-    <div class="form-group" style="display: none;">
-      <input type="hidden" formControlName="role" value="inquilino">
-    </div>
-    
-    <button type="submit" class="register-button">Registrarse</button>
-    
-    <!-- Mensaje de error general -->
-    <div *ngIf="errorMessage" class="error-message">
+
+      <!-- Teléfono -->
+      <div class="containerTelefono">
+        <div class="containerSvg">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 0 1-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
+          </svg>
+        </div>
+        <div class="containerInput">
+          <input type="tel" formControlName="telefono" placeholder="Teléfono" class="form-control">
+        </div>
+      </div>
+
+      <!-- Rol -->
+      <div class="containerRol">
+        <div class="containerSvg">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+          </svg>
+        </div>
+        <div class="containerInput">
+          <select formControlName="role" class="form-control">
+            <option value="inquilino">Inquilino</option>
+            <option value="propietario">Propietario</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="containerButton">
+        <button type="submit" class="btn btn-primary btn-lg">Registrarse</button>
+      </div>
+
+      <div class="containerRecuperar">
+        <a class="YA">¿Ya tienes una cuenta?</a>
+        <a class="recuperarA" routerLink="/login">Iniciar Sesión</a>
+      </div>
+    </form>
+
+    <div *ngIf="errorMessage" class="alert alert-danger">
       {{ errorMessage }}
     </div>
-  </form>
-  
-  <div class="login-link">
-    ¿Ya tienes cuenta? <a routerLink="/login">Iniciar Sesión</a>
   </div>
 </div>

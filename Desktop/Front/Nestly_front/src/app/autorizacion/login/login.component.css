@@ -1,10 +1,8 @@
-
 :host {
   display: block;
   min-height: 100vh;
-  margin: -20px;
   background: linear-gradient(45deg, #7FA6FF, #D98EDF);
-  background-size: cover; 
+  background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
   padding: 20px;
@@ -16,193 +14,192 @@
 }
 
 .containerPrincipal {
-  position: relative; 
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  justify-content: flex-start;
-  width: 450px;
-  height: 550px;
-  
-  border-radius: 24px;
-  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
-  padding-top: 12rem; 
-  max-width: 500px;
-  margin: 2rem auto;
-  padding: 1.5rem;
-  background-color: #ffffff;
+  height: 600px;
 }
-form a {
+
+/* Estilos comunes para ambos formularios */
+.register-form, .login-form {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 450px;
+  margin: 2rem auto;
+  animation: formEntrance 0.6s cubic-bezier(0.23, 1, 0.32, 1) both;
+}
+
+@keyframes formEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.containerUserSvg {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.usersvg {
+  width: 80px;
+  height: 80px;
+  color: #1877f2;
+}
+
+.register-form > a, .login-form > a {
   display: block;
   text-align: center;
   font-size: 1.5rem;
   font-weight: bold;
-  color: #1f2937;
-  margin: 4rem 0 2rem 0;
-  text-decoration: none;
+  color: #1c1e21;
+  margin-bottom: 2rem;
 }
 
 .containerEmail {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-  border-radius: 12px;
-
- 
-  box-shadow: 0px 2px 18px rgba(0, 0, 0, 0.1);
-}
-
-.containerSvg {
-
-  width: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 12px ;
-
-}
-
-.containerSvg svg {
-  width: 24px;
-  height: 24px;
-  color: #6b7280;
-}
-
-.containerInput {
-  flex-grow: 1;
+  margin-bottom: 1.5rem;
   position: relative;
+ 
+    position: relative;
+    min-height: 75px; /* Altura mínima para contener el error */
+    margin-bottom: 0.5rem;
 }
-
-/* Inputs sin borde y sin border-radius */
-.form-control {
-  width: 100%;
-  padding: 0.75rem;
-  border: none;
-  border-radius: 0px 0px 12px 0px;
-  background-color: transparent;
-  border-bottom: 2.5px solid #e5e7eb; /* Línea inferior sutil */
-  transition: border-color 0.2s;
-}
-
-.form-control:focus {
-  outline: none;
-  border-bottom-color: #ca3bf6; 
-  box-shadow: none;
-}
-
-.text-danger small {
-  display: block;
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
-  color: #ef4444;
-}
-
-
-form {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  padding-bottom: 2rem; /* Espacio en la parte inferior */
-}
-.containerUserSvg {
+.containerSvg {
   position: absolute;
-  top: -50px; 
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #ffffff;
-  border-radius: 50%;
-  width: 100px;
-  height: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  z-index: 5;
-  margin-bottom: 12px;
-}
-.usersvg {
-  width: 100px;
-  height: 100px;
-  color: #205bff;
-}
-.custom-btn {
-  width: 200px;
-  height: 55px;
-  font-size: 1.2rem;
-  border-radius: 12px;
-}
-
-
-.containerRecordar {
-    display: flex;
-    justify-content: left;
-    color: rgb(0, 0, 0);
-    margin: 1rem 0;
-    margin-bottom: 40px;
-    cursor: pointer;
-}
-
-.containerRecordar label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.9rem;
-}
-/* Contenedor del ojo */
-.password-toggle {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
+  left: 10px;
+  top: 12px; /* Posición fija basada en altura del input */
+  transform: none; /* Eliminar transform anterior */
   z-index: 2;
 }
 
-.eye-icon {
+.containerSvg svg {
   width: 20px;
   height: 20px;
-  color: #6b7280;
-  transition: color 0.3s ease;
+  color: #606770;
 }
 
-.eye-icon:hover {
-  color: #ca3bf6;
+/* Campos de entrada */
+.containerInput input,
+.containerInput select {
+  width: 100%;
+  padding: 0.8rem 0.8rem 0.8rem 40px;
+  border: 1px solid #dddfe2;
+  border-radius: 10px;
+  font-size: 1rem;
+  color: #1c1e21;
+  box-sizing: border-box;
 }
 
-/* Asegurar que el input no quede detrás del ícono */
-.containerInput {
-  position: relative;
-}
-.containerRecuperar {
-  margin: 12px;
-  display: flex;
-  flex-direction: row;
-  gap: 1.5rem; /* Añade esta línea para separación */
-}
-form a.recuperarA {
-  font-size: 0.85rem !important; 
-  font-weight: normal;
-  color: #6c757d;
-  margin: 0 0.5rem;
-  text-decoration: none;
+.containerInput input:focus {
+  outline: none;
+  border-color: #da33e9;
+  box-shadow: 0 0 0 2px rgba(218, 51, 233, 0.2);
 }
 
-form a.recuperarA:hover {
+/* Botón */
+.containerButton {
+  margin-top: 1.5rem;
+}
+
+.containerButton button {
+  width: 100%;
+  padding: 0.8rem;
+  background-color: #1877f2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  font-weight: bold;
   cursor: pointer;
-  color: #495057;
+  transition: background-color 0.3s ease;
+}
+
+.containerButton button:hover {
+  background-color: #166fe5;
+}
+
+.containerButton button[disabled] {
+  background-color: #9ac3ff;
+  cursor: not-allowed;
+}
+
+/* Links */
+.containerRecuperar {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.YA {
+  color: #606770;
+  margin-right: 0.5rem;
+}
+
+.recuperarA {
+  color: #1877f2;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.recuperarA:hover {
   text-decoration: underline;
 }
 
+/* Mensajes de error/éxito */
+.text-danger {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
 
-
-
-
-.containerButton{
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.alert-danger, .alert-success {
+  padding: 1rem;
+  border-radius: 5px;
   margin-top: 1rem;
-  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.alert-danger {
+  background-color: #dc3545;
+  color: white;
+}
+
+.alert-success {
+  background-color: #28a745;
+  color: white;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 25px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  z-index: 3;
+  transition: all 0.3s ease;
+}
+
+.password-toggle svg {
+  width: 20px;
+  height: 20px;
+  color: #606770;
+  transition: color 0.3s ease;
+}
+
+.password-toggle:hover svg {
+  color: #1877f2;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .register-form, .login-form {
+    width: 90%;
+    padding: 1.5rem;
+  }
 }

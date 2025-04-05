@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { HttpLavavelService } from '../../http.service';
 import { Router } from '@angular/router';
+import { HttpLavavelService } from '../../http.service';
 
 @Component({
   selector: 'app-registro',
@@ -12,6 +12,9 @@ export class RegistroComponent {
   registroForm: FormGroup;
   submitted = false;
   errorMessage = '';
+  loading = false;
+  showPassword = false;
+  showConfirmPassword = false;
 
   constructor(
     private fb: FormBuilder,
@@ -28,7 +31,7 @@ export class RegistroComponent {
       confirmPassword: ['', Validators.required],
       role: ['inquilino']
     }, {
-      validator: this.passwordMatchValidator
+      validators: this.passwordMatchValidator
     });
   }
 
@@ -39,7 +42,6 @@ export class RegistroComponent {
     return password === confirmPassword ? null : { mismatch: true };
   }
 
-
   get f() {
     return this.registroForm.controls;
   }
@@ -47,10 +49,12 @@ export class RegistroComponent {
   onSubmit() {
     this.submitted = true;
     this.errorMessage = '';
-
+    
     if (this.registroForm.invalid) {
       return;
     }
+
+    this.loading = true;
 
     const formData = {
       first_name: this.registroForm.value.nombre,
@@ -65,9 +69,11 @@ export class RegistroComponent {
 
     this.httpService.Service_Post('register', formData).subscribe({
       next: (response) => {
+        this.loading = false;
         this.router.navigate(['/login']);
       },
       error: (error) => {
+        this.loading = false;
         console.error('Error en registro:', error);
         this.errorMessage = error.error?.message || 
                           error.error?.errors?.email?.[0] || 
