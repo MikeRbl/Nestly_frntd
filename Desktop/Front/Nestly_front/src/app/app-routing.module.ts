@@ -1,23 +1,21 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { LoginComponent } from './autorizacion/login/login.component';
 
 const routes: Routes = [
+  { 
+    path: 'login', 
+    component: LoginComponent 
+  },
   { 
     path: '', 
     redirectTo: 'principal/dashboard', 
     pathMatch: 'full' 
   },
-  { 
-    path: 'login', 
-    loadChildren: () => import('./autorizacion/login/login.component').then(m => m.LoginComponent)
-  },
-  { 
-    path: 'registro', 
-    loadChildren: () => import('./autorizacion/registro/registro.component').then(m => m.RegistroComponent)
-  },
   {
     path: 'principal',
-    loadChildren: () => import('./inicio/inicio.module').then(m => m.InicioModule),
+    loadChildren: () => import('./inicio/inicio.module')
+      .then(m => m.InicioModule),
   },
   { 
     path: '**', 
@@ -27,6 +25,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

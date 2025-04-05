@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpLavavelService } from '../../http.service';
 import { LocalstorageService } from '../../localstorage.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -14,19 +14,26 @@ export class LoginComponent {
   loginForm: FormGroup;
   errorMessage: string = '';
   successMessage: string = '';
+  showPassword: boolean = false;
+  passwordFieldType: string = 'password';
   loading: boolean = false;
-  loggedInUser: string | null = null;
 
   constructor(
     private fb: FormBuilder,
     private httpService: HttpLavavelService,
-    private localStorage: LocalstorageService,
     private router: Router,
+    
+    
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+    this.passwordFieldType = this.showPassword ? 'text' : 'password';
   }
 
   onSubmit(): void {
@@ -35,49 +42,23 @@ export class LoginComponent {
       return;
     }
 
-    this.errorMessage = '';
-    this.successMessage = '';
     this.loading = true;
+    this.errorMessage = '';
 
-    this.httpService.Service_Post('login', this.loginForm.value)
-    .subscribe({
-      next: (response: { 
-        estatus: boolean, 
-        access_token?: string, 
-        user?: { email: string, name?: string } 
-      }) => {
-        this.loading = false;
-        if (response.estatus && response.access_token) {
-          this.localStorage.setItem('accessToken', response.access_token);
-          this.loggedInUser = this.loginForm.value.email;
-          this.successMessage = `¡Bienvenido ${this.loggedInUser}!`;
-          console.log('Intentando navegar a /dashboard');
-          this.router.navigate(['/navbar']);
-          
-          // Mostrar información en consola de varias formas:
-          console.log('Usuario logueado:', this.loggedInUser); // Forma básica
-          console.log('Datos completos de respuesta:', response); // Todos los datos de la respuesta
-          
-          // Si el backend devuelve más información del usuario
-          if (response.user) {
-            console.log('Información del usuario desde backend:', response.user);
-            console.log('Email:', response.user.email);
-            if (response.user.name) {
-              console.log('Nombre:', response.user.name);
-            }
+    this.httpService.publicPost('login', this.loginForm.value)
+      .subscribe({
+        next: (response: any) => {
+          if (response.access_token) {
+            localStorage.setItem('accessToken', response.access_token);
+            this.router.navigate(['/principal/dashboard']);
           }
-          
-          this.loginForm.reset();
+          this.loading = false;
+        },
+        error: (error: any) => {
+          this.errorMessage = error.error?.message || 'Error en el inicio de sesión';
+          this.loading = false;
         }
-      },
-      error: (error: HttpErrorResponse) => {
-        this.loading = false;
-        this.errorMessage = error.error?.error?.message || 
-                           error.error?.message || 
-                           'Error al iniciar sesión';
-        console.error('Detalles del error:', error);
-      }
-    });
+      });
   }
 
   private markFormAsTouched(): void {
@@ -86,6 +67,10 @@ export class LoginComponent {
     });
   }
 
+  goToRegister() {
+    this.router.navigate(['/register']);
+  }
+  
   get email() { return this.loginForm.get('email'); }
   get password() { return this.loginForm.get('password'); }
 }

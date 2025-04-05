@@ -1,3 +1,4 @@
+
 :host {
   display: block;
   min-height: 100vh;
@@ -12,116 +13,196 @@
   align-items: center;
   font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   overflow: hidden;
-  width: 100%;
-  position: fixed; 
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
 }
 
-
-.register-container {
+.containerPrincipal {
+  position: relative; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   width: 450px;
-  height: 600px;
+  height: 550px;
+  
+  border-radius: 24px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+  padding-top: 12rem; 
+  max-width: 500px;
   margin: 2rem auto;
-  padding: 2rem;
+  padding: 1.5rem;
   background-color: #ffffff;
-  border-radius: 28px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+form a {
+  display: block;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1f2937;
+  margin: 4rem 0 2rem 0;
+  text-decoration: none;
 }
 
-.logo {
-  text-align: center;
-  font-size: 2.5rem;
-  color: #2c3e50;
-  margin-bottom: 1rem;
-}
-
-.register-title {
-  text-align: center;
-  color: #34495e;
+.containerEmail {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
   margin-bottom: 2rem;
-  font-size: 1.8rem;
+  border-radius: 12px;
+
+ 
+  box-shadow: 0px 2px 18px rgba(0, 0, 0, 0.1);
 }
 
-.register-form {
+.containerSvg {
+
+  width: 40px;
   display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px ;
+
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+.containerSvg svg {
+  width: 24px;
+  height: 24px;
+  color: #6b7280;
 }
 
-.form-group label {
-  font-weight: 600;
-  color: #2c3e50;
-  font-size: 0.95rem;
+.containerInput {
+  flex-grow: 1;
+  position: relative;
 }
 
-.form-group input {
-  padding: 0.8rem 1rem;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-}
-
-.form-group input:focus {
-  outline: none;
-  border-color: #3498db;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-}
-
-.error-message {
-  color: #e74c3c;
-  font-size: 0.85rem;
-  margin-top: 0.25rem;
-}
-
-.register-button {
-  background-color: #2980b9;
-  color: white;
-  padding: 0.8rem;
+/* Inputs sin borde y sin border-radius */
+.form-control {
+  width: 100%;
+  padding: 0.75rem;
   border: none;
-  border-radius: 6px;
-  font-size: 1.1rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 1rem;
+  border-radius: 0px 0px 12px 0px;
+  background-color: transparent;
+  border-bottom: 2.5px solid #e5e7eb; /* Línea inferior sutil */
+  transition: border-color 0.2s;
 }
 
-.register-button:hover {
-  background-color: #3498db;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.register-button:disabled {
-  background-color: #95a5a6;
-  cursor: not-allowed;
-  transform: none;
+.form-control:focus {
+  outline: none;
+  border-bottom-color: #ca3bf6; 
   box-shadow: none;
 }
 
-.login-link {
-  text-align: center;
-  margin-top: 1.5rem;
-  color: #7f8c8d;
+.text-danger small {
+  display: block;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  color: #ef4444;
 }
 
-.login-link a {
-  color: #2980b9;
+
+form {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 2rem; /* Espacio en la parte inferior */
+}
+.containerUserSvg {
+  position: absolute;
+  top: -50px; 
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #ffffff;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 5;
+  margin-bottom: 12px;
+}
+.usersvg {
+  width: 100px;
+  height: 100px;
+  color: #205bff;
+}
+.custom-btn {
+  width: 200px;
+  height: 55px;
+  font-size: 1.2rem;
+  border-radius: 12px;
+}
+
+
+.containerRecordar {
+    display: flex;
+    justify-content: left;
+    color: rgb(0, 0, 0);
+    margin: 1rem 0;
+    margin-bottom: 40px;
+    cursor: pointer;
+}
+
+.containerRecordar label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+}
+/* Contenedor del ojo */
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  z-index: 2;
+}
+
+.eye-icon {
+  width: 20px;
+  height: 20px;
+  color: #6b7280;
+  transition: color 0.3s ease;
+}
+
+.eye-icon:hover {
+  color: #ca3bf6;
+}
+
+/* Asegurar que el input no quede detrás del ícono */
+.containerInput {
+  position: relative;
+}
+.containerRecuperar {
+  margin: 12px;
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem; /* Añade esta línea para separación */
+}
+form a.recuperarA {
+  font-size: 0.85rem !important; 
+  font-weight: normal;
+  color: #6c757d;
+  margin: 0 0.5rem;
   text-decoration: none;
-  font-weight: 500;
 }
 
-.login-link a:hover {
+form a.recuperarA:hover {
+  cursor: pointer;
+  color: #495057;
   text-decoration: underline;
+}
+
+
+
+
+
+.containerButton{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
