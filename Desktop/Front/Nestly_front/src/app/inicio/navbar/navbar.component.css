@@ -1,5 +1,6 @@
 /* Estilos generales de la barra de navegación */
 .navbar {
+    font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -43,7 +44,7 @@
     cursor:pointer;
   }
   
-  /* Estilos para el centro */
+
   .navbar-center img {
     height: 40px;
     width: 40px;
@@ -51,41 +52,37 @@
     object-fit: cover;
     cursor: pointer;
   }
-  
-  /* Estilos para las acciones (botón e icono) - MODIFICADO */
+
   .navbar-actions {
     display: flex;
     align-items: center;
-    gap: 9px; /* Reducido de 15px a 8px */
+    gap: 9px; 
   }
   
   .login-button {
+    font-weight: bold;
     padding: 0.5rem 1.5rem;
     background-color: #ffffff;
-    color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.5s;
+    text-decoration: none;
+    background-color: #527aff;
   }
   
   .login-button:hover {
-    background-color: #007bff;
+    background-color: #2546b4;
     color: rgb(255, 255, 255);
   }
   
-  /* Estilos para el icono de usuario - MODIFICADO */
   .icono-usuario {
-    height: 40px;
-    width: 40px;
+    height: 60px;
+    width: 60px;
     object-fit: contain;
-    /* Se eliminó el margin-left: 10px */
     transition: 0.5s;
   }
 
-  .icono-usuario:hover{
-    height: 43px;
-    width: 43px;
-    cursor: pointer;
-  }
+  

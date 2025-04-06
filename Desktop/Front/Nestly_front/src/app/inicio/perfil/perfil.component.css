@@ -1,120 +1,305 @@
-/* perfil.component.css */
-.profile-container {
-  font-family: 'Arial', sans-serif;
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  color: #333;
-  background-color: #fff;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+.containerPrincipal {
+  width: 100%;
+  height: 100%;
+  display: flex; /* Coloca a los hijos en fila */
+  flex-direction: row;
 }
-
-.profile-header h1 {
-  font-size: 24px;
-  margin-bottom: 20px;
-  color: #2c3e50;
+.back{
+  margin-left: 20px;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+  color: #f21d1d;
+  
 }
+.containerIzquierda{
+  width: 20%; 
+  height: 100vh;
 
-.photo-upload-section h2 {
-  font-size: 18px;
-  margin-bottom: 5px;
-  color: #3498db;
+  padding: 10px;
+
+  text-align: center;
 }
-
-.username {
-  font-size: 16px;
-  color: #7f8c8d;
-  margin-bottom: 20px;
-}
-
-.social-connections {
-  margin-bottom: 20px;
-}
-
-.social-item {
+.perfilFoto{
   display: flex;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 10px;
+  flex-direction: column;
+}
+.userSvg{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 160px;
+  width: 160px;
+}
+.containerCentro{
+  width: 65%;;
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: center;
+  height: 100vh;
+
 }
 
-.social-item input {
-  margin-right: 10px;
+.infoUsuario{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;  
+}
+.ContainerUNO{
+  display: flex;
+  flex-direction: row;
+  
+}
+.Info{
+  justify-content: flex-start;
+  background-color: #eeeeee;
+  padding: 12px;
+  border-radius: 12px;
+  width: 300px;
+}
+.LabelNombre{
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.infoItemNombre{
+  margin: 12px;
 }
 
-.social-item label {
-  font-size: 16px;
+.InfoEmail{
+  justify-content: flex-start;
+  background-color: #eeeeee;
+  padding: 12px;
+  border-radius: 12px;
+  width: 300px;
 }
 
-.divider {
-  height: 1px;
-  background-color: #ecf0f1;
-  margin: 20px 0;
+.InfoEmailU{
+  width: 626px;
+  background-color: #eeeeee;
+  border-radius: 12px;
+  padding: 12px;
+
 }
 
-.property-section h2 {
-  font-size: 20px;
-  margin-bottom: 15px;
-  color: #2c3e50;
+
+.containerPerfil {
+  padding: 20px;
+  text-align: center;
 }
 
-.property-details {
-  list-style-type: none;
-  padding: 0;
-  margin-bottom: 20px;
-}
-
-.property-details li {
-  margin-bottom: 8px;
-  padding-left: 20px;
-  position: relative;
-}
-
-.property-details li:before {
-  content: "•";
-  position: absolute;
-  left: 0;
-  color: #3498db;
-}
-
-.price-section h3 {
-  font-size: 22px;
-  color: #27ae60;
-  margin-bottom: 10px;
-}
-
-.price-details {
-  list-style-type: none;
-  padding: 0;
-  color: #7f8c8d;
-}
-
-.price-details li {
+.perfilHeader h1 {
+  font-size: 24px;
   margin-bottom: 5px;
 }
 
-.profile-actions h3 {
-  font-size: 20px;
-  margin: 25px 0 15px;
-  color: #2c3e50;
+.perfilHeader h2 {
+  font-size: 18px;
+  color: #666;
+  margin-top: 0;
 }
 
-.action-list {
-  list-style-type: none;
-  padding: 0;
-}
-
-.action-list li {
-  padding: 12px 0;
-  border-bottom: 1px solid #ecf0f1;
+.btnSubirFoto {
+  background-color: #f0f0f0;
+  border: 1px dashed #999;
+  padding: 10px 20px;
+  margin: 15px 0;
   cursor: pointer;
 }
 
-.action-list li:last-child {
-  border-bottom: none;
-  color: #e74c3c;
+.inputNombre {
+  padding: 8px;
+  width: 80%;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
 }
 
-.action-list li:hover {
-  color: #3498db;
+.btnRedSocial {
+  display: block;
+  width: 80%;
+  padding: 8px;
+  margin: 5px auto;
+  background-color: #3460f0; /* Azul de Facebook por defecto */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Puedes añadir colores específicos para cada red social */
+.btnRedSocial:nth-child(2) {
+  background-color: #E1306C; /* Instagram */
+}
+
+.btnRedSocial:nth-child(3) {
+  background-color: #1DA1F2; /* Twitter */
+}
+
+.containerDerecha {
+  height: 100%;
+  width: 15%;
+}
+
+.menuLateral {
+  display: flex;
+  flex-direction: column;
+}
+
+.menuItem {
+  padding: 12px 20px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  transition: all 0.3s ease;
+}
+
+.menuItem:hover {
+  background-color: #e9ecef;
+}
+
+.menuItem.activo {
+  background-color: #007bff;
+  color: white;
+}
+
+.menuItem.cerrarSesion {
+  color: #dc3545;
+  background-color: rgb(255, 196, 201);
+  margin-top: 20px;
+  border-top: 1px solid #dee2e6;
+  padding-top: 15px;
+  width: 100%;
+}
+
+.menuItem.cerrarSesion:hover {
+  background-color: #f8d7da;
+}
+.propiedadesSection{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.propiedadesSubSection{
+  display: flex;
+  flex-direction: row;
+  margin: 12px;
+}
+.propiedadCard.rentada {
+  background-color: #fff;
+  width: 220px;
+  height: 220px;
+  border-radius: 8px;
+  padding: 15px;
+  margin: 20px;
+
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: relative;
+}
+
+.propiedadCard h4 {
+  color: #8A2BE2;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+.containerImage{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+img{
+  height: 100px;
+  width: 100%;
+}
+.custom-card {
+  width: 250px; 
+  height: 260px;
+  border-radius: 26px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  margin: 10px;
+}
+.card-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.containerTitle {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; /* ← esto separa los <h3> */
+  width: 100%;
+  margin-left: 0px;
+  color: rgb(22, 123, 255);
+  padding: 0 10px;
+}
+
+.card-title {
+  color: rgb(22, 123, 255);
+  margin-top: 6px;
+  font-weight: bold;
+  font-size: 20px;
+}
+.card-title-2 {
+  color: rgb(122, 214, 129);
+  margin-top: 6px;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.card-text {
+    
+  color: #666;
+  font-size: 20px;
+  flex-direction: row;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.containerSvg{
+  width: 50px;
+  height: 50px;
+}
+.containerD{
+  justify-content: center;
+  background-color: red;
+  width: 300px;
+}
+
+.card-button {
+  height: 40px;
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.botonVer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.btnVerMas{
+  height: 220px;
+  width: 50px;
+  background-color: #7fbdff;
+  border-radius: 0px 20px 20px 0px;
+  border: none;
+  color: white;
+  font-weight: bold;
 }

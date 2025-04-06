@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrl: './perfil.component.css'
 })
 export class PerfilComponent {
+  logout() {
 
+    localStorage.removeItem('token'); 
+
+    window.location.href = '/login'; 
+  }
 }
