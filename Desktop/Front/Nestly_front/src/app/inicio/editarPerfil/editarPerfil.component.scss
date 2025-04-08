@@ -1,0 +1,297 @@
+.containerPrincipal {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+  
+    .back {
+      margin-left: 20px;
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+      color: #f21d1d;
+    }
+  
+    .containerIzquierda {
+      width: 20%;
+      height: 100vh;
+      padding: 10px;
+      text-align: center;
+  
+      .containerPerfil {
+        padding: 20px;
+        text-align: center;
+  
+        .perfilHeader {
+          h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+          }
+  
+          h2 {
+            font-size: 18px;
+            color: #666;
+            margin-top: 0;
+          }
+        }
+  
+        .perfilFoto {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+  
+          .userSvg {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 160px;
+            width: 160px;
+          }
+  
+          .btnSubirFoto {
+            background-color: #f0f0f0;
+            border: 1px dashed #999;
+            padding: 10px 20px;
+            margin: 15px 0;
+            cursor: pointer;
+          }
+        }
+  
+        .perfilNombre {
+          .inputNombre {
+            padding: 8px;
+            width: 80%;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+          }
+        }
+  
+        .perfilRedes {
+          .btnRedSocial {
+            display: block;
+            width: 80%;
+            padding: 8px;
+            margin: 5px auto;
+            background-color: #3460f0;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+  
+            &:nth-child(2) {
+              background-color: #e1306c;
+            }
+  
+            &:nth-child(3) {
+              background-color: #1da1f2;
+            }
+          }
+        }
+      }
+    }
+  
+    .containerCentro {
+      width: 65%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: center;
+      height: 100vh;
+  
+      .infoUsuario {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+  
+        .ContainerUNO {
+          display: flex;
+          flex-direction: row;
+        }
+  
+        .infoItemNombre {
+          margin: 12px;
+  
+          .LabelNombre {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+          }
+  
+          .Info {
+            justify-content: flex-start;
+            background-color: #eeeeee;
+            padding: 12px;
+            border-radius: 12px;
+            width: 300px;
+          }
+  
+          .InfoEmail {
+            justify-content: flex-start;
+            background-color: #eeeeee;
+            padding: 12px;
+            border-radius: 12px;
+            width: 300px;
+          }
+  
+          .InfoEmailU {
+            width: 626px;
+            background-color: #eeeeee;
+            border-radius: 12px;
+            padding: 12px;
+          }
+        }
+      }
+  
+      .propiedadesSection {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+  
+        .propiedadesSubSection {
+          display: flex;
+          flex-direction: row;
+          margin: 12px;
+  
+          .custom-card {
+            width: 250px;
+            height: 260px;
+            border-radius: 26px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-color: white;
+            margin: 10px;
+  
+            img {
+              height: 100px;
+              width: 100%;
+            }
+  
+            .card-content {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              flex-direction: column;
+  
+              .containerTitle {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                width: 100%;
+                margin-left: 0px;
+                color: rgb(22, 123, 255);
+                padding: 0 10px;
+  
+                .card-title {
+                  color: rgb(22, 123, 255);
+                  margin-top: 6px;
+                  font-weight: bold;
+                  font-size: 20px;
+                }
+  
+                .card-title-2 {
+                  color: rgb(122, 214, 129);
+                  margin-top: 6px;
+                  font-weight: bold;
+                  font-size: 20px;
+                }
+              }
+  
+              .card-text {
+                color: #666;
+                font-size: 20px;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+  
+                .containerSvg {
+                  width: 50px;
+                  height: 50px;
+                }
+  
+                .containerD {
+                  justify-content: center;
+                  background-color: red;
+                  width: 300px;
+                }
+              }
+  
+              .card-button {
+                height: 40px;
+                display: inline-block;
+                padding: 8px 16px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 10px;
+                text-decoration: none;
+                font-size: 16px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+              }
+            }
+          }
+        }
+  
+        .botonVer {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+  
+          .btnVerMas {
+            height: 220px;
+            width: 50px;
+            background-color: #7fbdff;
+            border-radius: 0px 20px 20px 0px;
+            border: none;
+            color: white;
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  
+    .containerDerecha {
+      height: 100%;
+      width: 15%;
+  
+      .menuLateral {
+        display: flex;
+        flex-direction: column;
+  
+        .menuItem {
+          padding: 12px 20px;
+          cursor: pointer;
+          margin-bottom: 5px;
+          transition: all 0.3s ease;
+  
+          &:hover {
+            background-color: #e9ecef;
+          }
+  
+          &.activo {
+            background-color: #007bff;
+            color: white;
+          }
+  
+          &.cerrarSesion {
+            color: #dc3545;
+            background-color: rgb(255, 196, 201);
+            margin-top: 20px;
+            border-top: 1px solid #dee2e6;
+            padding-top: 15px;
+            width: 100%;
+  
+            &:hover {
+              background-color: #f8d7da;
+            }
+          }
+        }
+      }
+    }
+  }
+  
