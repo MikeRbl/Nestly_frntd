@@ -16,7 +16,7 @@
 .navbar-brand {
   display: flex;
   align-items: baseline;
-  gap: 9px;
+  gap: 15px;
   flex: 1; /* Añadido para ocupar espacio */
 }
 
@@ -24,7 +24,7 @@
   font-size: 1rem;
   font-weight: bold;
   color: #070707;
-  transition: all 0.3s ease;
+  transition: all 0.7s ease;
   display: inline-block; /* Para que el transform no afecte el flujo */
 }
 
@@ -37,7 +37,7 @@
 .brand-subname {
   font-size: 1rem;
   color: #666;
-  transition: all 0.3s ease;
+  transition: all 0.7s ease;
   display: inline-block; /* Para que el transform no afecte el flujo */
 }
 
@@ -55,12 +55,16 @@
 }
 
 .navbar-center img {
-  height: 40px;
-  width: 40px;
+  height: 100px;
+  width: 100px;
   border-radius: 50%;
-  object-fit: cover;
+  object-fit: contain; /* Muestra toda la imagen sin recortar */
   cursor: pointer;
-  display: block; /* Elimina espacio extra debajo de la imagen */
+  display: block;
+  transition: transform 0.7s ease;
+}
+.navbar-center img:hover{
+  transform: scale(1.08);
 }
 
 /* Solución alternativa si prefieres flex (menos robusta)
@@ -88,7 +92,7 @@
   border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.7s ease;
   text-decoration: none;
   display: inline-block; /* Para que el transform no afecte el flujo */
 }
@@ -117,10 +121,10 @@
 }
 
 .icono-usuario {
-  height: 60px; /* Reducido para coincidir con la otra imagen */
-  width: 60px;
+  height: 40px; /* Reducido para coincidir con la otra imagen */
+  width: 40px;
   object-fit: contain;
-  transition: transform 0.3s ease;
+  transition: transform 0.7s ease;
   display: block; /* Elimina espacio extra debajo de la imagen */
 }
 
