@@ -9,6 +9,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpLavavelService } from './http.service';
 import { HttpClientModule } from '@angular/common/http';
 import { PerfilComponent } from './inicio/perfil/perfil.component';
+import { QnSomosComponent } from './inicio/qn-somos/qn-somos.component';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { PerfilComponent } from './inicio/perfil/perfil.component';
     RegistroComponent,
     DashboardComponent,
     PerfilComponent,
+    QnSomosComponent,
   ],
   imports: [
     BrowserModule,

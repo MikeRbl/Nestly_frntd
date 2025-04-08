@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 export class NavbarComponent {
   constructor(private router: Router) {}
 
-  // Opcional: Si necesitas lógica adicional en los clicks
+  
   handleNavigation(route: string): void {
     this.router.navigate([route]);
   }

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './autorizacion/login/login.component';
 import { RegistroComponent } from './autorizacion/registro/registro.component';
+import { QnSomosComponent } from './inicio/qn-somos/qn-somos.component';
 
 const routes: Routes = [
   { 
