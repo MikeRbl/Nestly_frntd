@@ -160,14 +160,15 @@
   
   <div class="containerDerecha">
     <div class="menuLateral">
-      <div class="menuItem activo">
-        <span>Perfil</span>
+      <div class="menuItem activo" routerLink="/principal/perfil">
+        <span routerLink="/principal/perfil">Perfil</span>
       </div>
-      <div class="menuItem">
-        <span>Editor perfil</span>
+      <div class="menuItem" routerLink="/principal/editarPerfil">
+        <span>Editar perfil</span>
       </div>
-      <div class="menuItem">
-        <span>Configuration</span>
+      
+      <div class="menuItem" routerLink="/principal/configuracion">
+        <span routerLink="principal/configuracion">Configuration</span>
       </div>
       <div class="menuItem cerrarSesion" (click)="logout()">
         <span>Cerrar sesión</span>

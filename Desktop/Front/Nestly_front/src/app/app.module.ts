@@ -10,6 +10,8 @@ import { HttpLavavelService } from './http.service';
 import { HttpClientModule } from '@angular/common/http';
 import { PerfilComponent } from './inicio/perfil/perfil.component';
 import { QnSomosComponent } from './inicio/qn-somos/qn-somos.component';
+import { EditarPerfilComponent } from './inicio/editarPerfil/editarPerfil.component';
+import { ConfiguracionComponent } from './inicio/configuracion/configuracion.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,8 @@ import { QnSomosComponent } from './inicio/qn-somos/qn-somos.component';
     RegistroComponent,
     DashboardComponent,
     PerfilComponent,
+    EditarPerfilComponent,
+    ConfiguracionComponent,
     QnSomosComponent,
   ],
   imports: [
