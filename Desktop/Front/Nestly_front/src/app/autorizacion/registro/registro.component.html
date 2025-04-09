@@ -1,107 +1,186 @@
 <div class="containerPrincipal">
-<form [formGroup]="registroForm" (ngSubmit)="onSubmit()" class="register-form">
-  <!-- Icono usuario -->
-  <div class="containerUserSvg">
-    <svg class="usersvg" xmlns="http://www.w3.org/2000/svg" fill="none" 
-         viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" 
-            d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 
-               7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75
-               c-2.676 0-5.216-.584-7.499-1.632Z"/>
-    </svg>
-  </div>
-
-  <a>Registrarse</a>
-
-  <!-- Nombre -->
-  <div class="containerNombre containerInputNombre">
-    <div class="containerInput">
-      <input type="text" formControlName="nombre" placeholder="Nombre(s)">
+  <form class="register-form" [formGroup]="registroForm" (ngSubmit)="onSubmit()">
+    <!-- Icono usuario -->
+    <div class="containerUserSvg">
+      <svg class="usersvg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"/>
+      </svg>
     </div>
-    <div *ngIf="submitted && f['nombre'].errors" class="text-danger">
-      <small *ngIf="f['nombre'].errors['required']">Este campo es requerido</small>
-    </div>
-  </div>
 
-  <!-- Apellidos -->
-  <div class="containerApellidos">
-    <div class="containerApellido containerInputApellido">
+    <a>Registrarse</a>
+
+    <!-- Nombre -->
+    <div class="containerNombre">
       <div class="containerInput">
-        <input type="text" formControlName="apellidoPaterno" placeholder="Apellido Paterno">
+        <div class="containerSvg">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd"/>
+          </svg>
+        </div>
+        <input type="text" formControlName="name" placeholder="Nombre" class="form-control">
       </div>
-      <div *ngIf="submitted && f['apellidoPaterno'].errors" class="text-danger">
-        <small *ngIf="f['apellidoPaterno'].errors['required']">Este campo es requerido</small>
+      <div *ngIf="registroForm.get('name')?.invalid && registroForm.get('name')?.touched" class="error-message">
+        El nombre es requerido
       </div>
     </div>
 
-    <div class="containerApellido containerInputApellido">
+    <!-- Apellidos -->
+    <div class="containerApellidos">
+      <div class="containerApellido">
+        <div class="containerInput">
+          <div class="containerSvg">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+          <input type="text" formControlName="apellido_paterno" placeholder="Apellido Paterno" class="form-control">
+        </div>
+        <div *ngIf="registroForm.get('apellido_paterno')?.invalid && registroForm.get('apellido_paterno')?.touched" class="error-message">
+          El apellido paterno es requerido
+        </div>
+      </div>
+
+      <div class="containerApellido">
+        <div class="containerInput">
+          <div class="containerSvg">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+          <input type="text" formControlName="apellido_materno" placeholder="Apellido Materno" class="form-control">
+        </div>
+      </div>
+    </div>
+    
+    <!-- Correo electrónico -->
+    <div class="containerEmail">
       <div class="containerInput">
-        <input type="text" formControlName="apellidoMaterno" placeholder="Apellido Materno">
+        <div class="containerSvg">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z"/>
+            <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z"/>
+          </svg>
+        </div>
+        <input type="email" formControlName="email" placeholder="Correo electrónico" class="form-control">
       </div>
-    </div>
-  </div>
-
-  <!-- Correo electrónico -->
-  <div class="containerEmail">
-    <div class="containerInput">
-      <input type="email" formControlName="email" placeholder="Correo electrónico">
-    </div>
-    <div *ngIf="submitted && f['email'].errors" class="text-danger">
-      <small *ngIf="f['email'].errors['required']">Este campo es requerido</small>
-      <small *ngIf="f['email'].errors['email']">Correo inválido</small>
-    </div>
-  </div>
-
-  <!-- Teléfono y Rol -->
-  <div class="containerTelRol">
-    <div class="containerTelefono containerInput">
-      <input type="tel" formControlName="telefono" placeholder="Teléfono">
-      <div *ngIf="submitted && f['telefono'].errors" class="text-danger">
-        <small *ngIf="f['telefono'].errors['required']">Este campo es requerido</small>
-        <small *ngIf="f['telefono'].errors['pattern']">Debe contener 10 dígitos</small>
+      <div *ngIf="registroForm.get('email')?.invalid && registroForm.get('email')?.touched" class="error-message">
+        <span *ngIf="registroForm.get('email')?.errors?.['required']">El email es requerido</span>
+        <span *ngIf="registroForm.get('email')?.errors?.['email']">Ingresa un email válido</span>
       </div>
     </div>
 
-    <div class="containerRol containerInput">
-      <select formControlName="role" class="form-control">
-        <option value="inquilino">Inquilino</option>
-        <option value="propietario">Propietario</option>
-      </select>
+    <!-- Contraseña -->
+    <div class="containerPassword">
+      <div class="containerInput">
+        <div class="containerSvg">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" 
+          viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+       <path stroke-linecap="round" stroke-linejoin="round" 
+             d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 
+                11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 
+                2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 
+                2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"/>
+     </svg>
+        </div>
+        <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="Contraseña" class="form-control">
+        <span class="password-toggle" (click)="togglePasswordVisibility()">
+          <svg *ngIf="showPassword" class="eye-open" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
+          <svg *ngIf="!showPassword" class="eye-closed" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88"/>
+          </svg>
+        </span>
+      </div>
+      <div *ngIf="registroForm.get('password')?.invalid && registroForm.get('password')?.touched" class="error-message">
+        <span *ngIf="registroForm.get('password')?.errors?.['required']">La contraseña es requerida</span>
+        <span *ngIf="registroForm.get('password')?.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres</span>
+      </div>
     </div>
-  </div>
 
-  <!-- Contraseña -->
-  <div class="containerInput">
-    <input type="password" formControlName="password" placeholder="Contraseña">
-    <div *ngIf="submitted && f['password'].errors" class="text-danger">
-      <small *ngIf="f['password'].errors['required']">Este campo es requerido</small>
-      <small *ngIf="f['password'].errors['minlength']">Mínimo 8 caracteres</small>
+    <!-- Confirmar contraseña -->
+    <div class="containerConfirmPassword">
+      <div class="containerInput">
+        <div class="containerSvg">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" 
+          viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+       <path stroke-linecap="round" stroke-linejoin="round" 
+             d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 
+                11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 
+                2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 
+                2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"/>
+     </svg>
+        </div>
+        <input [type]="showConfirmPassword ? 'text' : 'password'" formControlName="password_confirmation" placeholder="Confirmar Contraseña" class="form-control">
+        <span class="password-toggle" (click)="toggleConfirmPasswordVisibility()">
+          <svg *ngIf="showConfirmPassword" class="eye-open" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
+          <svg *ngIf="!showConfirmPassword" class="eye-closed" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88"/>
+          </svg>
+        </span>
+      </div>
+      <div *ngIf="registroForm.get('password_confirmation')?.invalid && registroForm.get('password_confirmation')?.touched" class="error-message">
+        <span *ngIf="registroForm.get('password_confirmation')?.errors?.['required']">Confirma tu contraseña</span>
+        <span *ngIf="registroForm.errors?.['mismatch']">Las contraseñas no coinciden</span>
+      </div>
     </div>
-  </div>
 
-  <!-- Confirmar contraseña -->
-  <div class="containerInput">
-    <input type="password" formControlName="confirmPassword" placeholder="Confirmar Contraseña">
-    <div *ngIf="submitted && registroForm.hasError('mismatch')" class="text-danger">
-      <small>Las contraseñas no coinciden</small>
+    <!-- Teléfono y Rol -->
+    <div class="containerTelRol">
+      <div class="containerTelefono">
+        <div class="containerInput">
+          <div class="containerSvg">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path fill-rule="evenodd" d="M1.5 4.5a3 3 0 013-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 01-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 006.697 6.697c.103.038.25.009.352-.126l.97-1.293a1.875 1.875 0 011.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 01-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+          <input type="tel" formControlName="telefono" placeholder="Teléfono" class="form-control">
+        </div>
+        <div *ngIf="registroForm.get('telefono')?.invalid && registroForm.get('telefono')?.touched" class="error-message">
+          El teléfono es requerido
+        </div>
+      </div>
+
+      <div class="containerRol">
+        <div class="containerInput">
+          <div class="containerSvg">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+          <select class="form-control" formControlName="rol">
+            <option value="" disabled selected>Selecciona tu rol</option>
+            <option value="inquilino">Inquilino</option>
+            <option value="propietario">Propietario</option>
+          </select>
+        </div>
+        <div *ngIf="registroForm.get('rol')?.invalid && registroForm.get('rol')?.touched" class="error-message">
+          Selecciona un rol
+        </div>
+      </div>
     </div>
-  </div>
 
-  <!-- Botón de registro -->
-  <div class="containerButton">
-    <button type="submit">Registrarse</button>
-  </div>
+    <!-- Botón de Registro -->
+    <div class="containerButton">
+      <button type="submit" [disabled]="loading">
+        <span *ngIf="!loading">Registrarse</span>
+        <span *ngIf="loading">Registrando...</span>
+      </button>
+    </div>
 
-  <!-- Error general -->
-  <div *ngIf="errorMessage" class="alert alert-danger">
-    {{ errorMessage }}
-  </div>
+    <!-- Enlace a Login -->
+    <div class="containerRecuperar">
+      <span class="YA">¿Ya tienes cuenta?</span> 
+      <a class="recuperarA" routerLink="/login">Iniciar Sesión</a>
+    </div>
 
-  <!-- Link a login -->
-  <div class="containerRecuperar">
-    <span class="YA">¿Ya tienes cuenta?</span> 
-    <a routerLink="/login" class="recuperarA">Iniciar Sesión</a>
-  </div>
-
-</form>
+    <!-- Mensaje de error general -->
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+  </form>
 </div>

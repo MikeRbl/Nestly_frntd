@@ -5,7 +5,7 @@
     width: 100vw;
     margin: -10px;
     font-family: Arial, Helvetica, sans-serif;
-    overflow-x: hidden;
+
 }
 /*************************************************************************--*/
 .first_container {
@@ -15,6 +15,7 @@
     height: 60vh; /* 60% del viewport */
     width: 100%;
     position: relative;
+
 }
 
 .left_input_container {
@@ -26,8 +27,8 @@
 }
 
 .search-input {
-    width: 500px;
-    height: 40px;
+    width: 520px;
+    height: 60px;
     padding: 15px 50px 15px 25px;
     border: none;
     border-radius: 18px;
@@ -80,7 +81,10 @@
     align-items: center;
     flex-direction: column;
 }
-
+.logoN{
+    height: auto;
+    width: 100px;
+}
 .card-title {
     margin-top: 6px;
     margin-bottom: 26px;

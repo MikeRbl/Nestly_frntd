@@ -1,0 +1,265 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(45deg, #7FA6FF, #D98EDF);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  padding: 20px;
+  font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  overflow: hidden;
+
+  .containerPrincipal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .register-form {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 450px;
+    margin: 2rem auto;
+    animation: formEntrance 0.6s cubic-bezier(0.23, 1, 0.32, 1) both;
+    transform-origin: center;
+    will-change: transform, opacity;
+
+    @keyframes formEntrance {
+      0% {
+        opacity: 0;
+        transform: translateY(40px) scale(0.98);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    > a {
+      display: block;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #1c1e21;
+      margin-bottom: 2rem;
+    }
+
+    .containerUserSvg {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+
+      .usersvg {
+        width: 80px;
+        height: 80px;
+        color: #1877f2;
+      }
+    }
+
+    // Common container styles for all input fields
+    .containerNombre,
+    .containerEmail,
+    .containerPassword,
+    .containerConfirmPassword,
+    .containerApellido,
+    .containerTelefono,
+    .containerRol {
+      margin-bottom: 1.5rem;
+      position: relative;
+      width: 100%;
+
+      .containerInput {
+        position: relative;
+
+        .containerSvg {
+          position: absolute;
+          left: 10px;
+          top: 50%;
+          transform: translateY(-50%);
+          z-index: 2;
+
+          svg {
+            width: 20px;
+            height: 20px;
+            color: #606770;
+          }
+        }
+
+        input, select {
+          width: 100%;
+          padding: 0.8rem 0.8rem 0.8rem 40px;
+          border: 1px solid #dddfe2;
+          border-radius: 10px;
+          font-size: 1rem;
+          color: #1c1e21;
+          box-sizing: border-box;
+          background-color: white;
+          transition: all 0.3s ease;
+
+          &:focus {
+            outline: none;
+            border-color: #da33e9;
+            box-shadow: 0 0 0 2px rgba(218, 51, 233, 0.2);
+          }
+        }
+
+        select {
+          appearance: none;
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          cursor: pointer;
+        }
+
+        .password-toggle {
+          position: absolute;
+          right: 15px;
+          top: 50%;
+          transform: translateY(-50%);
+          cursor: pointer;
+          z-index: 3;
+          
+          svg {
+            width: 20px;
+            height: 20px;
+            color: #606770;
+            transition: all 0.2s ease;
+
+            &:hover {
+              color: #1877f2;
+              transform: scale(1.1);
+            }
+          }
+        }
+      }
+    }
+
+    .containerApellidos {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+
+      .containerApellido {
+        flex: 1;
+        margin-bottom: 0;
+      }
+    }
+
+    .containerTelRol {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+
+      .containerTelefono,
+      .containerRol {
+        flex: 1;
+        margin-bottom: 0;
+      }
+    }
+
+    .containerButton {
+      margin-top: 1.5rem;
+
+      button {
+        width: 100%;
+        padding: 0.8rem;
+        background-color: #1877f2;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+
+        &:hover {
+          background-color: #166fe5;
+        }
+
+        &:active {
+          transform: translateY(1px);
+        }
+      }
+    }
+
+    .containerRecuperar {
+      text-align: center;
+      margin-top: 1.5rem;
+
+      .YA {
+        color: #606770;
+        margin-right: 0.5rem;
+      }
+
+      .recuperarA {
+        color: #1877f2;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s ease;
+
+        &:hover {
+          text-decoration: underline;
+          color: #166fe5;
+        }
+      }
+    }
+
+    .text-danger {
+      color: #dc3545;
+      font-size: 0.875rem;
+      margin-top: 0.25rem;
+      display: block;
+    }
+
+    .alert-danger {
+      background-color: #dc3545;
+      color: white;
+      padding: 1rem;
+      border-radius: 5px;
+      margin-top: 1rem;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+  }
+
+  /* 📱 Responsive */
+  @media (max-width: 768px) {
+    .register-form {
+      width: 90%;
+      padding: 1.5rem;
+
+      .containerApellidos,
+      .containerTelRol {
+        flex-direction: column;
+        gap: 1rem;
+        
+        .containerApellido,
+        .containerTelefono,
+        .containerRol {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 10px;
+
+    .register-form {
+      padding: 1.2rem;
+
+      > a {
+        font-size: 1.3rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .containerUserSvg .usersvg {
+        width: 70px;
+        height: 70px;
+      }
+    }
+  }
+}
