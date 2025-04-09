@@ -1,20 +1,18 @@
 :host {
-  display: block;
-  min-height: 100vh;
-  background: linear-gradient(45deg, #7FA6FF, #D98EDF);
-  background-size: cover; 
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  padding: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(45deg, #7FA6FF, #D98EDF);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  padding: 20px;
   font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   overflow: hidden;
 }
 
 .containerPrincipal {
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -27,11 +25,11 @@
   box-shadow: 0 4px 6px rgba(224, 13, 13, 0.1);
   width: 450px;
   margin: 2rem auto;
-  /* Animación */
   animation: formEntrance 0.6s cubic-bezier(0.23, 1, 0.32, 1) both;
   transform-origin: center;
   will-change: transform, opacity;
 }
+
 @keyframes formEntrance {
   0% {
     opacity: 0;
@@ -42,6 +40,31 @@
     transform: translateY(0) scale(1);
   }
 }
+
+.register-container {
+  max-width: 450px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.logo {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.register-title {
+  text-align: center;
+  color: #34495e;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+}
+
 .containerUserSvg {
   display: flex;
   justify-content: center;
@@ -63,12 +86,12 @@
   margin-bottom: 2rem;
 }
 
-
 .containerNombre,
 .containerEmail,
 .containerTelRol {
   margin-bottom: 1.5rem;
   position: relative;
+  width: 100%;
 }
 
 .containerApellidos {
@@ -77,8 +100,9 @@
   margin-bottom: 1.5rem;
 }
 
-.containerApellido {
-  
+.containerApellido,
+.containerTelefono,
+.containerRol {
   flex: 1;
   position: relative;
 }
@@ -97,7 +121,7 @@
   color: #606770;
 }
 
-/* Campos de entrada unificados */
+/* Inputs */
 .containerInputNombre input,
 .containerInputApellido input,
 .containerInput input,
@@ -112,29 +136,7 @@
   box-sizing: border-box;
 }
 
-/* Ajuste ancho campos */
-.containerNombre,
-.containerApellidos,
-.containerEmail {
-  width: 100%;
-}
-
-.containerTelRol {
-  display: flex;
-  gap: 1rem;
-  width: 100%;
-}
-
-.containerTelefono{
-  margin-bottom: 24px;
-}
-.containerTelefono,
-.containerRol {
-  flex: 1;
-  position: relative;
-}
-
-/* Efectos focus corregidos */
+/* Focus effect */
 .containerInputNombre input:focus,
 .containerInputApellido input:focus,
 .containerInput input:focus,
@@ -208,22 +210,54 @@ select.form-control {
   text-align: center;
 }
 
-/* Responsive Design */
+/* 📱 Responsive */
 @media (max-width: 768px) {
   .register-form {
     width: 90%;
     padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
   }
-  
+
   .containerApellidos,
   .containerTelRol {
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.5rem;
   }
-  
-  .containerApellido,
-  .containerTelefono,
-  .containerRol {
-    width: 100%;
+
+  .register-button {
+    background-color: #2980b9;
+    color: white;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+  }
+
+  .register-button:hover {
+    background-color: #3498db;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .login-link {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: #7f8c8d;
+  }
+
+  .login-link a {
+    color: #2980b9;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .login-link a:hover {
+    text-decoration: underline;
   }
 }

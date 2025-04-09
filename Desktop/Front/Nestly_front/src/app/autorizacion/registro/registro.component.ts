@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { Router } from '@angular/router';
 import { HttpLavavelService } from '../../http.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-registro',
@@ -13,8 +13,6 @@ export class RegistroComponent {
   submitted = false;
   errorMessage = '';
   loading = false;
-  showPassword = false;
-  showConfirmPassword = false;
 
   constructor(
     private fb: FormBuilder,
@@ -26,7 +24,7 @@ export class RegistroComponent {
       apellidoPaterno: ['', Validators.required],
       apellidoMaterno: [''],
       email: ['', [Validators.required, Validators.email]],
-      telefono: ['', [Validators.required, Validators.pattern('[0-9]{10}')]],
+      telefono: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       password: ['', [Validators.required, Validators.minLength(8)]],
       confirmPassword: ['', Validators.required],
       role: ['inquilino']
@@ -35,21 +33,23 @@ export class RegistroComponent {
     });
   }
 
-  // Validador personalizado para contraseñas
-  passwordMatchValidator(control: AbstractControl) {
-    const password = control.get('password')?.value;
-    const confirmPassword = control.get('confirmPassword')?.value;
+  // 🔐 Validador personalizado para confirmar contraseñas
+  passwordMatchValidator(formGroup: AbstractControl): { [key: string]: boolean } | null {
+    const password = formGroup.get('password')?.value;
+    const confirmPassword = formGroup.get('confirmPassword')?.value;
     return password === confirmPassword ? null : { mismatch: true };
   }
 
+  // 🧪 Getter para usar los formControls más fácil en el HTML
   get f() {
     return this.registroForm.controls;
   }
 
+  // 📤 Lógica del submit
   onSubmit() {
     this.submitted = true;
     this.errorMessage = '';
-    
+
     if (this.registroForm.invalid) {
       return;
     }
@@ -60,24 +60,23 @@ export class RegistroComponent {
       first_name: this.registroForm.value.nombre,
       last_name_paternal: this.registroForm.value.apellidoPaterno,
       last_name_maternal: this.registroForm.value.apellidoMaterno,
-      phone: this.registroForm.value.telefono,
       email: this.registroForm.value.email,
+      phone: this.registroForm.value.telefono,
       password: this.registroForm.value.password,
-      password_confirmation: this.registroForm.value.confirmPassword,
       role: this.registroForm.value.role
     };
 
     this.httpService.Service_Post('register', formData).subscribe({
-      next: (response) => {
+      next: () => {
         this.loading = false;
         this.router.navigate(['/login']);
       },
       error: (error) => {
         this.loading = false;
         console.error('Error en registro:', error);
-        this.errorMessage = error.error?.message || 
-                          error.error?.errors?.email?.[0] || 
-                          'Error al registrar el usuario';
+        this.errorMessage = error.error?.message ||
+                            error.error?.errors?.email?.[0] ||
+                            'Error al registrar el usuario';
       }
     });
   }

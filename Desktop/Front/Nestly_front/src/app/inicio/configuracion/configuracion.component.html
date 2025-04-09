@@ -1,176 +1,219 @@
 <div class="containerPrincipal">
-    <div class="containerIzquierda">
-      <div class="back" routerLink="/principal/dashboard">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="size-6"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M6 18 18 6M6 6l12 12"
-          />
-        </svg>
+  <div class="containerIzquierda">
+    <div class="back" routerLink="/principal/dashboard">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="size-6"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M6 18 18 6M6 6l12 12"
+        />
+      </svg>
+    </div>
+    <div class="containerLogo">
+      <img src="assets/navbar/LogoN.png" alt="Logo" class="logo" />
+    </div>
+    <div class="containerPerfil">
+      <div class="perfilHeader">
+        <h2 class="perfilh2">Perfil</h2>
       </div>
-      <div class="containerLogo">
-        <img src="assets/imagenes/logo.png" alt="Logo" />
+
+      <div class="perfilFoto">
+        <div class="userSvg">
+          <img src="assets/navbar/usuario.png" alt="Usuario" class="userLogo" />
+        </div>
+
+        <button class="btnSubirFoto">Subir foto</button>
       </div>
-      <div class="containerPerfil">
-        <div class="perfilHeader">
-          <h1>Nestly</h1>
-          <h2>Perfil</h2>
+
+      <div class="perfilNombre">
+        <input
+          type="text"
+          placeholder="Nombre de Usuario"
+          class="inputNombre"
+        />
+      </div>
+
+      <div class="perfilRedes">
+        <button class="btnRedSocial">Agregar Facebook</button>
+        <button class="btnRedSocial">Agregar Instagram</button>
+        <button class="btnRedSocial">Agregar Twitter</button>
+      </div>
+    </div>
+  </div>
+  <div class="containerCentro">
+    <div class="infoUsuario">
+      <div class="ContainerUNO">
+        <div class="infoItemNombre">
+          <label class="LabelNombre">Nombre:</label>
+          <p class="Info">David Tapia</p>
         </div>
-  
-        <div class="perfilFoto">
-          <div class="userSvg">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="size-6"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-              />
-            </svg>
-          </div>
-  
-          <button class="btnSubirFoto">Subir foto</button>
+        <div class="infoItemNombre">
+          <label class="LabelNombre">Rol:</label>
+          <p class="Info">Admin</p>
         </div>
-  
-        <div class="perfilNombre">
-          <input
-            type="text"
-            placeholder="Nombre de Usuario"
-            class="inputNombre"
-          />
+      </div>
+
+      <div class="containerEmailU">
+        <div class="infoItemNombre">
+          <label class="LabelNombre">Correo electrónico:</label>
+          <p class="InfoEmailU">davidtapia123ail.com</p>
         </div>
-  
-        <div class="perfilRedes">
-          <button class="btnRedSocial">Agregar Facebook</button>
-          <button class="btnRedSocial">Agregar Instagram</button>
-          <button class="btnRedSocial">Agregar Twitter</button>
+      </div>
+      <div class="ContainerUNO">
+        <div class="infoItemNombre">
+          <label class="LabelNombre">Contraseña:</label>
+          <p class="Info">......</p>
+        </div>
+        <div class="infoItemNombre">
+          <label class="LabelNombre">Genero:</label>
+          <p class="Info">Femenino</p>
+        </div>
+      </div>
+      <div class="ContainerUNO">
+        <div class="infoItemNombre">
+          <label class="LabelNombre">Metodo de pago:</label>
+          <p class="Info">Numero de tarjeta</p>
+        </div>
+        <div class="infoItemNombre">
+          <label class="LabelNombre">Creado:</label>
+          <p class="Info">Fecha</p>
         </div>
       </div>
     </div>
-    <div class="containerCentro">
-      <div class="infoUsuario">
-        <div class="ContainerUNO">
-          <div class="infoItemNombre">
-            <label class="LabelNombre">Nombre:</label>
-            <p class="Info">David Tapia</p>
-          </div>
-          <div class="infoItemNombre">
-            <label class="LabelNombre">Rol:</label>
-            <p class="Info">Admin</p>
-          </div>
-        </div>
-  
-        <div class="containerEmailU">
-          <div class="infoItemNombre">
-            <label class="LabelNombre">Correo electrónico:</label>
-            <p class="InfoEmailU">davidtapia123ail.com</p>
-          </div>
-        </div>
-        <div class="ContainerUNO">
-          <div class="infoItemNombre">
-            <label class="LabelNombre">Contraseña:</label>
-            <p class="Info">......</p>
-          </div>
-          <div class="infoItemNombre">
-            <label class="LabelNombre">Genero:</label>
-            <p class="Info">Femenino</p>
-          </div>
-        </div>
-        <div class="ContainerUNO">
-          <div class="infoItemNombre">
-            <label class="LabelNombre">Metodo de pago:</label>
-            <p class="Info">Numero de tarjeta</p>
-          </div>
-          <div class="infoItemNombre">
-            <label class="LabelNombre">Creado:</label>
-            <p class="Info">Fecha</p>
-          </div>
-        </div>
-      </div>
-  
-      <div class="propiedadesSection">
-        <h3>Propiedades publicadas:</h3>
-      <div class="propiedadesSubSection">
-  
-        
-        <div class="custom-card">
-          <img src="https://i.pinimg.com/736x/02/17/e8/0217e8ba2cda0577e7a490566a47f49e.jpg" alt="">
-          <div class="card-content">
+
+    <div class="propiedadesSection">
+      <h3>Propiedades publicadas:</h3>
+    <div class="propiedadesSubSection">
+
+      
+      <div class="custom-card">
+        <img src="https://plus.unsplash.com/premium_photo-1661915661139-5b6a4e4a6fcc?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y2FzYSUyMG1vZGVybmF8ZW58MHx8MHx8fDA%3D" alt="Casa en renta">
+        <div class="card-content">
             <div class="containerTitle">
-              <h3 class="card-title">Rentar casa</h3>
-              <h3 class="card-title-2">$20,000</h3>
+                <h3 class="card-title">Rentada</h3>
+                <h3 class="card-title-2">$20,000</h3>
             </div>
             <div class="card-text">
+                <div class="containerD">
+                    <div class="containerSvg">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                        </svg>
+                    </div>
+                    <div class="containerDireccion">
+                        El nigromante
+                    </div>
+                </div>
+                <div class="vistas">210 vistas</div>
+            </div>
+            <button class="card-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <span>Buscar opciones</span>
+            </button>
+            <div class="ver-mas">Ver más</div>
+        </div>
+    </div>
+    
+    <div class="custom-card">
+      <img src="https://i0.wp.com/casactualdiseno.com/wp-content/uploads/2021/06/HU_1-Photo.jpg" alt="Casa en renta">
+      <div class="card-content">
+          <div class="containerTitle">
+              <h3 class="card-title">Rentada</h3>
+              <h3 class="card-title-2">$23,500</h3>
+          </div>
+          <div class="card-text">
+              <div class="containerD">
+                  <div class="containerSvg">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                      </svg>
+                  </div>
+                  <div class="containerDireccion">
+                      La Talega
+                  </div>
+              </div>
+              <div class="vistas">3210 vistas</div>
+          </div>
+          <button class="card-button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <span>Buscar opciones</span>
+          </button>
+          <div class="ver-mas">Ver más</div>
+      </div>
+  </div>
+
+  <div class="custom-card">
+    <img src="https://i.pinimg.com/736x/02/17/e8/0217e8ba2cda0577e7a490566a47f49e.jpg" alt="Casa en renta">
+    <div class="card-content">
+        <div class="containerTitle">
+            <h3 class="card-title">Disponible</h3>
+            <h3 class="card-title-2">$35,000</h3>
+        </div>
+        <div class="card-text">
+            <div class="containerD">
                 <div class="containerSvg">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                  </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                    </svg>
                 </div>
                 <div class="containerDireccion">
-                  <p>El nigromante</p>
+                    San Antonio
                 </div>
-              
             </div>
-                
-              <button class="card-button"><b>Buscar opciones</b></button>
-          </div>
-      </div>
-      <div class="custom-card">
-        <img src="https://i.pinimg.com/736x/02/17/e8/0217e8ba2cda0577e7a490566a47f49e.jpg" alt="">
-        <div class="card-content">
-            <h3 class="card-title">Rentar casa</h3>
-            <p class="card-text"></p>
-            <button class="card-button"><b>Buscar opciones</b></button>
+            <div class="vistas">880 vistas</div>
         </div>
+        <button class="card-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <span>Buscar opciones</span>
+        </button>
+        <div class="ver-mas">Ver más</div>
+    </div>
+</div>
+
+
+<div class="botonVer">
+  <button class="btnVerMas">Ver más</button>
+</div>
+      </div>
+    </div>
+
     </div>
   
-  
-    <div class="custom-card">
-      <img src="https://i.pinimg.com/736x/02/17/e8/0217e8ba2cda0577e7a490566a47f49e.jpg" alt="">
-      <div class="card-content">
-          <h3 class="card-title">Rentar casa</h3>
-          <p class="card-text">Encuentra la mejor opción para tu hogar con nosotros</p>
-          <button class="card-button"><b>Buscar opciones</b></button>
+  <div class="containerDerecha">
+    <div class="menuLateral">
+      <div class="menuItem" routerLink="/principal/perfil">
+        <span routerLink="/principal/perfil">Perfil</span>
       </div>
+      <div class="menuItem" routerLink="/principal/editarPerfil">
+        <span>Editar perfil</span>
+      </div>
+      
+      <div class="menuItem activo">
+        <span>Configuration</span>
+      </div>
+      <div class="menuItem cerrarSesion" (click)="logout()">
+        <span>Cerrar sesión</span>
+      </div>
+    </div>
   </div>
-  <div class="botonVer">
-    <button class="btnVerMas">Ver más</button>
   </div>
-        </div>
-      </div>
-  
-      </div>
-    
-    <div class="containerDerecha">
-      <div class="menuLateral">
-        <div class="menuItem" routerLink="/principal/perfil">
-          <span routerLink="/principal/perfil">Perfil</span>
-        </div>
-        <div class="menuItem" routerLink="/principal/editarPerfil">
-          <span>Editar perfil</span>
-        </div>
-        
-        <div class="menuItem activo" routerLink="/principal/configuracion">
-          <span routerLink="principal/configuracion">Configuration</span>
-        </div>
-        <div class="menuItem cerrarSesion" (click)="logout()">
-          <span>Cerrar sesión</span>
-        </div>
-      </div>
-    </div>
-    </div>
+

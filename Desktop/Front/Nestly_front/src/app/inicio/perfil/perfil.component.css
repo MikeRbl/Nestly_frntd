@@ -6,8 +6,8 @@
 }
 .back{
   margin-left: 20px;
-  width: 25px;
-  height: 25px;
+  width: 40px;
+  height: 40px;
   cursor: pointer;
   color: #f21d1d;
   
@@ -20,13 +20,23 @@
 
   text-align: center;
 }
+.logo{
+  height: 60px;
+  width: 145px;
+}
+.perfilh2{
+  font-size: 30px;
+  font-weight: bold;
+  margin-top: 10px;
+  color: #000;
+}
 .perfilFoto{
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
-.userSvg{
+.userLogo{
   display: flex;
   justify-content: center;
   align-items: center;
@@ -36,7 +46,7 @@
 .containerCentro{
   width: 65%;;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: none;
   text-align: center;
   height: 100vh;
 
@@ -143,6 +153,7 @@
 .containerDerecha {
   height: 100%;
   width: 15%;
+  border: none;
 }
 
 .menuLateral {
@@ -217,64 +228,123 @@ img{
   height: 100px;
   width: 100%;
 }
+/*****************************CARDS***************************/
 .custom-card {
-  width: 250px; 
-  height: 260px;
+  max-width: 250px; 
+  max-height: 280px;
   border-radius: 26px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-color: white;
   margin: 10px;
+} 
+.custom-card {
+  font-family: 'Arial', sans-serif;
+  width: 280px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  transition: transform 0.3s ease;
 }
+
+.custom-card:hover {
+  transform: translateY(-5px);
+}
+
+.custom-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
 .card-content {
+  padding: 16px;
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
+  gap: 12px;
 }
 
 .containerTitle {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between; /* ← esto separa los <h3> */
-  width: 100%;
-  margin-left: 0px;
-  color: rgb(22, 123, 255);
-  padding: 0 10px;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .card-title {
-  color: rgb(22, 123, 255);
-  margin-top: 6px;
-  font-weight: bold;
-  font-size: 20px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
 }
+
 .card-title-2 {
-  color: rgb(122, 214, 129);
-  margin-top: 6px;
-  font-weight: bold;
-  font-size: 20px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #000;
+  margin: 0;
 }
 
 .card-text {
-    
-  color: #666;
-  font-size: 20px;
-  flex-direction: row;
   display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.containerSvg{
-  width: 50px;
-  height: 50px;
-}
-.containerD{
-  justify-content: center;
-  background-color: red;
-  width: 300px;
+  flex-direction: column;
+  gap: 8px;
 }
 
+.containerD {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.containerSvg svg {
+  width: 16px;
+  height: 16px;
+  color: #ff0000;
+}
+
+.containerDireccion {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Estilo para las vistas (agregado según la imagen de referencia) */
+.vistas {
+  font-size: 12px;
+  color: #888;
+  margin-left: 24px; /* Para alinear con el texto de dirección */
+}
+
+.card-button {
+  background-color: transparent;
+  border: none;
+  color: #1a73e8;
+  font-size: 14px;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  font-weight: 600;
+  align-self: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.card-button:hover {
+  text-decoration: underline;
+}
+
+
+
+.ver-mas {
+  font-size: 14px;
+  color: #1a73e8;
+  text-align: right;
+  margin-top: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
 .card-button {
   height: 40px;
   display: inline-block;
@@ -288,16 +358,16 @@ img{
   cursor: pointer;
   transition: background-color 0.3s;
 }
-
+/*****************************CARDS ^ ***************************/
 .botonVer{
   display: flex;
   justify-content: center;
   align-items: center;
 }
 .btnVerMas{
-  height: 220px;
-  width: 50px;
-  background-color: #7fbdff;
+  height: 270px;
+  width: 40px;
+  background-color: #007bff;
   border-radius: 0px 20px 20px 0px;
   border: none;
   color: white;
