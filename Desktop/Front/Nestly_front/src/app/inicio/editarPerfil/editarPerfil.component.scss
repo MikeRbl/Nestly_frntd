@@ -1,7 +1,7 @@
 .containerPrincipal {
   width: 100%;
   height: 100%;
-  display: flex; /* Coloca a los hijos en fila */
+  display: flex; 
   flex-direction: row;
 }
 .back{
@@ -14,6 +14,7 @@
 }
 .containerIzquierda{
   width: 20%; 
+  min-width: 250px;
   height: 100vh;
 
   padding: 10px;
@@ -336,6 +337,14 @@ img{
 }
 
 
+.config-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-top: 50px;
+  margin-bottom: 30px;
+  text-align: center;
+}
 
 .ver-mas {
   font-size: 14px;

@@ -345,6 +345,14 @@ img{
   cursor: pointer;
   font-weight: 500;
 }
+
+.config-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-top: 50px;
+  margin-bottom: 30px;
+  }
 .card-button {
   height: 40px;
   display: inline-block;
