@@ -7,6 +7,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { QnSomosComponent } from './qn-somos/qn-somos.component';
 import { EditarPerfilComponent } from './editarPerfil/editarPerfil.component';
 import { ConfiguracionComponent } from './configuracion/configuracion.component';
+import { PublicarComponent } from './Publicar/publicar.component';
 
 const routes: Routes = [
   {
@@ -18,6 +19,7 @@ const routes: Routes = [
       { path: 'editarPerfil', component: EditarPerfilComponent },
       { path: 'configuracion', component: ConfiguracionComponent },
       { path: 'qnSomos', component: QnSomosComponent },
+      { path: 'publicarCasa', component: PublicarComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   }
