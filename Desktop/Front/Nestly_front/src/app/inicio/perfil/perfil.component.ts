@@ -1,48 +1,59 @@
-import { DashboardComponent } from './../dashboard/dashboard.component';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpLavavelService } from '../../http.service';
-import { Usuario } from '../../interface/usuario.interface';
+
+interface User { //INTERFAZ DE LA API DE LARAVEL
+  id: number;
+  first_name: string;
+  last_name_paternal: string;
+  last_name_maternal: string;
+  email: string;
+  phone: string;
+  role: string;
+  created_at: string;
+  updated_at: string;
+}
 
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
-  styleUrl: './perfil.component.css'
+  styleUrls: ['./perfil.component.css']
 })
-export class PerfilComponent {
-  users:Usuario[]=[];
-  datos:any;
-  total:number = 0;
-  constructor(private Shttp: HttpLavavelService){
-    this.Shttp.Service_Get('user').subscribe((data)=>{
-      console.log(data);
-      
-    })
+export class PerfilComponent implements OnInit {
+  userData: User | null = null; //Almacena los datos del usuario obtenidos del servidor
+  isLoading: boolean = true;
+  errorMessage: string = '';
+
+  constructor(private Shttp: HttpLavavelService) {}
+
+  ngOnInit(): void { //funcion para ejectutar la otra funcion
+    this.loadUserData();
   }
+ 
+  loadUserData(): void { //FUNCION loadUserData es clave para obtener y manejar los datos desde la backend
+    this.isLoading = true; //Solo muestra un mensaje de cargar (mejora la experiencia del usuario)
+    //sbscribe es importante o sino la peticion no se ejecuta
+    this.Shttp.Service_Get('user').subscribe({ //Realiza una petición HTTP GET al endpoint 'user' de tu API Laravel ('user': Ruta relativa del endpoint (normalmente se convierte en algo como https://tudominio.com/api/user)
+      next: (response: any) => { //contiene los datos devueltos por el servidor 
+        console.log('Respuesta completa:', response);
+        
+        // Extrae los datos del objeto 'user' en la respuesta
+        this.userData = response.user; // Guarda los datos en this.userData para usarlos en la vista
+        
+        console.log('Datos del usuario:', this.userData);
+        this.isLoading = false; //Desactiva el indicador de carga
+      },
+      error: (err) => {//err: Objeto con detalles del error
+        console.error('Error al cargar datos:', err);
+        this.errorMessage = 'Error al cargar los datos del usuario';//Guarda un mensaje amigable para mostrar al usuario
+        this.isLoading = false;
+      }
+    });
+  }
+
+ 
+  
   logout() {
-
     localStorage.removeItem('token'); 
-
     window.location.href = '/login'; 
   }
-
-  ngOnInit(): void {
-    this.obtenerData(); // Llama al método al inicializar el componente
-  }
-
-   obtenerData(){
-    this.Shttp.Service_Get('user').subscribe((res:any)=>{
-      console.log(res);
-      if (res.data) {
-        this.users = res.data;
-        this.total = res.total;
-        console.log('users',this.users);
-        
-      }
-    })
-  } 
-
-
-
-
-
 }

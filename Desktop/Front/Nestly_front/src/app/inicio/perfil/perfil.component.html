@@ -48,44 +48,47 @@
     </div>
   </div>
   <div class="containerCentro">
-    <div class="infoUsuario">
+    <div *ngIf="isLoading" class="loading-message">
+      Cargando datos del usuario...
+    </div>
+  
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+    <div *ngIf="userData && !isLoading" class="infoUsuario">
       <h1 class="config-title">Perfil</h1>
 
       <div class="ContainerUNO">
         <div class="infoItemNombre">
           <label class="LabelNombre">Nombre:</label>
-          <p class="Info"></p>
+          <p class="Info">{{userData.first_name}}</p>
         </div>
         <div class="infoItemNombre">
-          <label class="LabelNombre">Rol:</label>
-          <p class="Info">Admin</p>
+          <label class="LabelNombre">Apellidos</label>
+          <p class="Info">{{userData.last_name_paternal}}  {{userData.last_name_maternal}}</p>
         </div>
       </div>
 
       <div class="containerEmailU">
         <div class="infoItemNombre">
           <label class="LabelNombre">Email:</label>
-          <p class="InfoEmailU"></p>
+          <p class="InfoEmailU">{{userData.email}}</p>
         </div>
       </div>
       <div class="ContainerUNO">
         <div class="infoItemNombre">
-          <label class="LabelNombre">Contraseña:</label>
-          <p class="Info">......</p>
+          <label class="LabelNombre">Rol:</label>
+          <p class="Info">{{userData.role}}</p>
         </div>
         <div class="infoItemNombre">
-          <label class="LabelNombre">Genero:</label>
-          <p class="Info">Femenino</p>
+          <label class="LabelNombre">Numero:</label>
+          <p class="Info">{{userData.phone}}</p>
         </div>
       </div>
-      <div class="ContainerUNO">
+      <div class="containerEmailU">
         <div class="infoItemNombre">
-          <label class="LabelNombre">Metodo de pago:</label>
-          <p class="Info">Numero de tarjeta</p>
-        </div>
-        <div class="infoItemNombre">
-          <label class="LabelNombre">Creado:</label>
-          <p class="Info"></p>
+          <label class="LabelNombre">Fecha de registro::</label>
+          <p class="InfoEmailU">{{userData.created_at}}</p>
         </div>
       </div>
     </div>
