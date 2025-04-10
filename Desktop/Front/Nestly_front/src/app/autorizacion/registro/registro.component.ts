@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpLavavelService } from '../../http.service';
-
+import Swal from 'sweetalert2'
 @Component({
   selector: 'app-registro',
   templateUrl: './registro.component.html',
@@ -58,9 +58,15 @@ export class RegistroComponent {
     this.errorMessage = '';
 
     if (this.registroForm.invalid) {
+      Swal.fire({
+        icon: "error",
+        title: "Upsi",
+        text: "Completa todos los campos requeridos",
+      });
       return;
+  
     }
-
+    
     this.loading = true;
     
     const formData = {  
@@ -74,18 +80,41 @@ export class RegistroComponent {
       role: this.registroForm.value.rol
     };
 
-    this.httpService.Service_Post('register', formData).subscribe({
-      next: (response) => {
-        this.loading = false;
-        this.router.navigate(['/login']);
-      },
-      error: (error) => {
-        this.loading = false;
-        console.error('Error en registro:', error);
-        this.errorMessage = error.error?.message || 
-                          error.error?.errors?.email?.[0] || 
-                          'Error al registrar el usuario';
+    Swal.fire({
+      title: 'Registrando...',
+      allowOutsideClick: false,
+      timer: 2000,
+      
+      didOpen: () => {
+        Swal.showLoading();
       }
     });
+    this.httpService.Service_Post('register', formData).subscribe({
+      next: (response) => {
+        Swal.fire({
+          icon: "success",
+          title: "¡Registro exitoso!",
+          text: "Serás redirigido para iniciar sesión",
+          showConfirmButton: false,
+          timer: 2000
+        }).then(() => {
+          this.router.navigate(['/login']);
+        }); 
+      },
+      error: (error) => {
+        console.error('Error en registro:', error);
+        Swal.fire({
+          icon: "error",
+          title: "Error en registro",
+          text: error.error?.message || 
+                error.error?.errors?.email?.[0] || 
+                'Ocurrio un error al registra. Intenta de nuevo',
+        });
+      },
+      complete: () => {
+        this.loading = false;
+      }
+    });
+    
   }
 }

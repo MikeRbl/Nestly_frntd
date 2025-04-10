@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { HttpLavavelService } from '../../http.service';
 import { LocalstorageService } from '../../localstorage.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -38,16 +39,35 @@ export class LoginComponent {
 
   onSubmit(): void {
     if (this.loginForm.invalid) {
+      Swal.fire({
+              icon: "error",
+              title: "Upsi",
+              text: "Completa todos los campos requeridos",
+            });
       this.markFormAsTouched();
       return;
     }
 
     this.loading = true;
+    Swal.fire({
+      title: 'Iniciando sesión...',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      }
+    });
     this.errorMessage = '';
 
     this.httpService.publicPost('login', this.loginForm.value)
       .subscribe({
+        
         next: (response: any) => {
+          Swal.fire({
+            icon: "success",
+            title: "Iniciaste sesión correctamente",
+            showConfirmButton: false,
+            timer: 1500
+          });
           if (response.access_token) {
             localStorage.setItem('accessToken', response.access_token);
             this.router.navigate(['/principal/dashboard']);
@@ -55,7 +75,14 @@ export class LoginComponent {
           this.loading = false;
         },
         error: (error: any) => {
-          this.errorMessage = error.error?.message || 'Error en el inicio de sesión';
+          Swal.fire({
+                    icon: "error",
+                    title: "Error en el inicio de sesión",
+                    text: error.error?.message || 
+                          error.error?.errors?.email?.[0] || 
+                          'Ocurrio un error al iniciar sesion. Intenta de nuevo',
+                  });
+         
           this.loading = false;
         }
       });
