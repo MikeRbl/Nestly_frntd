@@ -30,7 +30,7 @@
 
 .brand-name:hover {
   transform: scale(1.1); /* Usamos scale en lugar de cambiar font-size */
-  color: #007bff;
+  color: #7FA6FF;
   cursor: pointer;
 }
 
@@ -43,7 +43,7 @@
 
 .brand-subname:hover {
   transform: scale(1.1);
-  color: #007bff;
+  color: #D98EDF;
   cursor: pointer;
 }
 
@@ -86,13 +86,13 @@
 .login-button {
   font-weight: bold;
   padding: 0.5rem 1.5rem;
-  background-color: #527aff;
+  background: linear-gradient(45deg, #7FA6FF, #D98EDF);
   color: rgb(255, 255, 255);
   border: none;
   border-radius: 8px;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.7s ease;
+  transition:0.5s;
   text-decoration: none;
   display: inline-block; /* Para que el transform no afecte el flujo */
 }
@@ -112,7 +112,7 @@
 
 .qn-somos:hover{
   transform: scale(1.05);
-  color: #007bff;
+  color: #7FA6FF;
 }
 
 .login-button:hover {

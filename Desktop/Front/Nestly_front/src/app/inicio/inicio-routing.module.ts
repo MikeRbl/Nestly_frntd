@@ -22,6 +22,7 @@ const routes: Routes = [
       { path: 'publicarCasa', component: PublicarComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
+    
   }
 ];
 
