@@ -1,133 +1,195 @@
-/* Estilos generales de la barra de navegación */
-.navbar {
-  font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+:root {
+  --primary-color: #4361ee;
+  --secondary-color: #3a0ca3;
+  --accent-color: #4cc9f0;
+  --text-color: #2b2d42;
+  --light-gray: #f8f9fa;
+  --white: #ffffff;
+  --transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.fresh-navbar {
+  background-color: var(--white);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.fresh-nav-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
-  background-color: #ffffff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  font-family: 'Arial', sans-serif;
-  position: relative; /* Añadido para el posicionamiento absoluto del centro */
-  height: 90px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  height: 80px;
 }
 
-/* Estilos para la marca/logo */
-.navbar-brand {
-  display: flex;
-  align-items: baseline;
-  gap: 15px;
-  flex: 1; /* Añadido para ocupar espacio */
-}
-
-.brand-name {
-  font-size: 1rem;
-  font-weight: bold;
-  color: #070707;
-  transition: all 0.7s ease;
-  display: inline-block; /* Para que el transform no afecte el flujo */
-}
-
-.brand-name:hover {
-  transform: scale(1.1); /* Usamos scale en lugar de cambiar font-size */
-  color: #7FA6FF;
-  cursor: pointer;
-}
-
-.brand-subname {
-  font-size: 1rem;
-  color: #666;
-  transition: all 0.7s ease;
-  display: inline-block; /* Para que el transform no afecte el flujo */
-}
-
-.brand-subname:hover {
-  transform: scale(1.1);
-  color: #D98EDF;
-  cursor: pointer;
-}
-
-/* CENTRO - Solución 1: Usando posición absoluta (recomendado) */
-.navbar-center {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.navbar-center img {
-  height: 100px;
-  width: 100px;
-  border-radius: 50%;
-  object-fit: contain; /* Muestra toda la imagen sin recortar */
-  cursor: pointer;
-  display: block;
-  transition: transform 0.7s ease;
-}
-.navbar-center img:hover{
-  transform: scale(1.08);
-}
-
-/* Solución alternativa si prefieres flex (menos robusta)
-.navbar-center {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-}
-*/
-
-.navbar-actions {
+.fresh-logo {
   display: flex;
   align-items: center;
-  gap: 9px;
-  flex: 1;
-  justify-content: flex-end;
+  gap: 12px;
+  cursor: pointer;
+  transition: var(--transition);
 }
 
-.login-button {
-  font-weight: bold;
-  padding: 0.5rem 1.5rem;
-  background: linear-gradient(45deg, #7FA6FF, #D98EDF);
-  color: rgb(255, 255, 255);
-  border: none;
+.fresh-logo img {
+  height: 40px;
+  width: auto;
   border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition:0.5s;
-  text-decoration: none;
-  display: inline-block; /* Para que el transform no afecte el flujo */
-}
-.qn-somos {
-  font-weight: bold;
-  padding: 0.5rem 1.5rem;
-  background-color: #ffffff;
-  color: rgb(0, 0, 0);
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.8s ease;
-  text-decoration: none;
-  display: inline-block; /* Para que el transform no afecte el flujo */
+  transition: 0.5s;
 }
 
-.qn-somos:hover{
-  transform: scale(1.05);
+
+.fresh-logo:hover {
+  transform: translateY(-2px);
+}
+
+.fresh-nav-links {
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-main-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-color);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.5rem 0;
+  position: relative;
+  transition: 0.5s;
+}
+
+.nav-main-link i {
+  font-size: 1.1rem;
+  color: var(--text-color);
+  transition: var(--transition);
+}
+
+.nav-main-link:hover{
+  transform: scale(1.1);
   color: #7FA6FF;
 }
 
-.login-button:hover {
-  background-color: #2546b4;
-  transform: scale(1.05); /* Efecto hover sin afectar el layout */
+
+
+
+
+.nav-main-link.active {
+  color:#D98EDF;
+  font-weight: 600;
 }
 
-.icono-usuario {
-  height: 40px; /* Reducido para coincidir con la otra imagen */
-  width: 40px;
-  object-fit: contain;
-  transition: transform 0.7s ease;
-  display: block; /* Elimina espacio extra debajo de la imagen */
+.nav-main-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+  border-radius: 3px 3px 0 0;
 }
 
-.icono-usuario:hover {
+.fresh-user-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.signup-btn {
+  text-decoration: none;
+  font-weight: 500;
+  color: #040404;
+}
+.signup-btn:hover{
+  color: #7FA6FF
+}
+
+
+
+.login-btn {
+  color: #929296;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.07s;
+  box-shadow: 0 4px 6px rgba(67, 97, 238, 0.2);
+}
+
+.login-btn:hover {
+  background: linear-gradient(45deg, #7FA6FF, #D98EDF);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(67, 97, 238, 0.25);
+  color: #ffffff;
+}
+
+.user-profile {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid var(--light-gray);
+  transition: var(--transition);
+}
+
+.user-profile:hover {
   transform: scale(1.1);
+  border-color: var(--primary-color);
+}
+
+.user-profile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .fresh-nav-container {
+    padding: 0 1.5rem;
+  }
+  
+  .fresh-nav-links {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .fresh-nav-container {
+    padding: 0 1rem;
+    height: 70px;
+  }
+  
+  .fresh-logo span {
+    display: none;
+  }
+  
+  .nav-main-link span {
+    display: none;
+  }
+  
+  .nav-main-link i {
+    font-size: 1.3rem;
+  }
+  
+  .signup-btn {
+    display: none;
+  }
+  
+  .login-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .user-profile {
+    width: 38px;
+    height: 38px;
+  }
 }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,4 +14,14 @@ export class DashboardComponent {
   handleNavigation(route: string): void {
     this.router.navigate([route]);
   }
+
+
+  Subscrito(){
+    Swal.fire({
+      title: "Drag me!",
+      icon: "success",
+      draggable: true
+    });
+  }
+
 }

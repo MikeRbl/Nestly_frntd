@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-qn-somos',
@@ -7,4 +8,14 @@ import { Component } from '@angular/core';
 })
 export class QnSomosComponent {
 
+
+
+
+   Subscrito(){
+      Swal.fire({
+        title: "Drag me!",
+        icon: "success",
+        draggable: true
+      });
+    }
 }
