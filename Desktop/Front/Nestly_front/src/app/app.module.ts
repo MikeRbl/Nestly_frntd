@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './autorizacion/login/login.component';
 import { RegistroComponent } from './autorizacion/registro/registro.component';
 import { DashboardComponent } from './inicio/dashboard/dashboard.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpLavavelService } from './http.service';
 import { HttpClientModule } from '@angular/common/http';
 import { PerfilComponent } from './inicio/perfil/perfil.component';
@@ -30,7 +30,8 @@ import { PublicarComponent } from './inicio/Publicar/publicar.component';
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [HttpLavavelService],
   bootstrap: [AppComponent]

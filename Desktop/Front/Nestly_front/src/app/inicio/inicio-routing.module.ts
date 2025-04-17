@@ -8,6 +8,7 @@ import { QnSomosComponent } from './qn-somos/qn-somos.component';
 import { EditarPerfilComponent } from './editarPerfil/editarPerfil.component';
 import { ConfiguracionComponent } from './configuracion/configuracion.component';
 import { PublicarComponent } from './Publicar/publicar.component';
+import { FormsModule } from '@angular/forms'; // ← AÑADE AQUÍ
 
 const routes: Routes = [
   {
