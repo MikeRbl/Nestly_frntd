@@ -9,6 +9,7 @@ import { EditarPerfilComponent } from './editarPerfil/editarPerfil.component';
 import { ConfiguracionComponent } from './configuracion/configuracion.component';
 import { PublicarComponent } from './Publicar/publicar.component';
 import { FormsModule } from '@angular/forms'; // ← AÑADE AQUÍ
+import { AlquilarCasaComponent } from './alquilar-casa/alquilar-casa.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
       { path: 'configuracion', component: ConfiguracionComponent },
       { path: 'qnSomos', component: QnSomosComponent },
       { path: 'publicarCasa', component: PublicarComponent },
+      { path: 'alquilarCasa', component: AlquilarCasaComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
     

@@ -13,6 +13,7 @@ import { QnSomosComponent } from './inicio/qn-somos/qn-somos.component';
 import { EditarPerfilComponent } from './inicio/editarPerfil/editarPerfil.component';
 import { ConfiguracionComponent } from './inicio/configuracion/configuracion.component';
 import { PublicarComponent } from './inicio/Publicar/publicar.component';
+import { AlquilarCasaComponent } from './inicio/alquilar-casa/alquilar-casa.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { PublicarComponent } from './inicio/Publicar/publicar.component';
     EditarPerfilComponent,
     ConfiguracionComponent,
     QnSomosComponent,
-    PublicarComponent
+    PublicarComponent,
+    AlquilarCasaComponent,
   ],
   imports: [
     BrowserModule,

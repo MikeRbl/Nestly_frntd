@@ -74,6 +74,7 @@ export class EditarPerfilComponent implements OnInit {
         if (this.password) {
             updateData.password = this.password;
             updateData.password_confirmation = this.passwordConfirmation;
+            
         }
 
         this.Shttp.Service_Put('users', this.userData.id, updateData).subscribe({
