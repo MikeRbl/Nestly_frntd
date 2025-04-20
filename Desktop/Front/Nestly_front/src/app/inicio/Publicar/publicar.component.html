@@ -1,1 +1,52 @@
-Publicar vista
+<div class="publicar-container" *ngIf="!vistaPrevia">
+    <h2 class="titulo-publicar">Publicar Propiedad</h2>
+    <form [formGroup]="formulario" (ngSubmit)="publicarPropiedad()" class="formulario-publicar">
+      <div class="form-group">
+        <label for="titulo">Título</label>
+        <input id="titulo" type="text" formControlName="titulo" placeholder="Ej. Casa en la playa">
+      </div>
+  
+      <div class="form-group">
+        <label for="descripcion">Descripción</label>
+        <textarea id="descripcion" formControlName="descripcion" placeholder="Describe la propiedad"></textarea>
+      </div>
+  
+      <div class="form-row">
+        <div class="form-group">
+          <label for="precio">Precio</label>
+          <input id="precio" type="number" formControlName="precio" placeholder="Ej. 250000">
+        </div>
+        <div class="form-group">
+          <label for="ubicacion">Ubicación</label>
+          <input id="ubicacion" type="text" formControlName="ubicacion" placeholder="Ej. Madrid, España">
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="imagenes">Imágenes</label>
+        <input id="imagenes" type="file" (change)="cargarImagen($event)" multiple>
+      </div>
+  
+      <div class="imagen-preview" *ngIf="imagenURLs.length > 0">
+        <p>Vista previa de las imágenes:</p>
+        <div class="imagen-preview-gallery">
+          <img *ngFor="let img of imagenURLs" [src]="img" alt="Vista previa" class="imagen-preview-img">
+        </div>
+      </div>
+  
+      <button type="submit" class="btn-publicar">Publicar</button>
+    </form>
+  </div>
+  
+  <!-- Vista previa de la publicación -->
+  <div class="publicacion-preview" *ngIf="vistaPrevia">
+    <h2 class="titulo-publicacion">{{ datosPublicacion.titulo }}</h2>
+    <div class="publicacion-gallery">
+      <img *ngFor="let img of datosPublicacion.imagenes" [src]="img" alt="Imagen publicación" class="publicacion-img">
+    </div>
+    <p><strong>Descripción:</strong> {{ datosPublicacion.descripcion }}</p>
+    <p><strong>Precio:</strong> ${{ datosPublicacion.precio }}</p>
+    <p><strong>Ubicación:</strong> {{ datosPublicacion.ubicacion }}</p>
+    <button class="btn-publicar" (click)="editar()">Editar</button>
+  </div>
+  
