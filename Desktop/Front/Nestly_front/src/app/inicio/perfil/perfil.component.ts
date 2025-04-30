@@ -9,6 +9,7 @@ interface User { //INTERFAZ DE LA API DE LARAVEL
   email: string;
   phone: string;
   role: string;
+  profile_picture?: string;
   created_at: string;
   updated_at: string;
 }
@@ -22,13 +23,23 @@ export class PerfilComponent implements OnInit {
   userData: User | null = null; //Almacena los datos del usuario obtenidos del servidor
   isLoading: boolean = true;
   errorMessage: string = '';
-
+  selectedImage: string | ArrayBuffer | null = null;
   constructor(private Shttp: HttpLavavelService) {}
 
   ngOnInit(): void { //funcion para ejectutar la otra funcion
     this.loadUserData();
   }
- 
+   // Maneja la selección de la foto de perfil
+   onFileChange(event: any): void {
+    const file = event.target.files[0]; // Obtener el primer archivo seleccionado
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.selectedImage = reader.result; // Guardar la URL de la imagen seleccionada
+      };
+      reader.readAsDataURL(file); // Leer el archivo como URL base64
+    }
+  }
   loadUserData(): void { //FUNCION loadUserData es clave para obtener y manejar los datos desde la backend
     this.isLoading = true; //Solo muestra un mensaje de cargar (mejora la experiencia del usuario)
     //sbscribe es importante o sino la peticion no se ejecuta
