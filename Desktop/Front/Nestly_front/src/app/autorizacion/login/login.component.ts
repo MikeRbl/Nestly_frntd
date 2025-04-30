@@ -95,7 +95,12 @@ export class LoginComponent {
   }
 
 
-  
+  continueWithoutAccount(): void {
+    // Borrar cualquier token si existe
+    localStorage.removeItem('accessToken');
+    // Redirigir al dashboard
+    this.router.navigate(['/principal/dashboard']); 
+  }
   get email() { return this.loginForm.get('email'); }
   get password() { return this.loginForm.get('password'); }
 }

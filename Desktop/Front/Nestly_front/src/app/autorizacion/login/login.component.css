@@ -138,9 +138,15 @@
 
 .YA {
   color: #606770;
-  margin-right: 0.5rem;
+  margin-right: 2rem;
+  cursor: pointer;
 }
-
+.sinCuenta{
+  display: flex;
+  justify-content: center;
+  padding: 12px;
+  cursor: pointer;
+}
 .recuperarA {
   color: #1877f2;
   text-decoration: none;

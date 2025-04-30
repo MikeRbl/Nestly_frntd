@@ -7,10 +7,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
-  constructor(private router: Router) {}
-
-  
-  handleNavigation(route: string): void {
-    this.router.navigate([route]);
+  constructor() {}
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('accessToken');
   }
+  
+  
 }

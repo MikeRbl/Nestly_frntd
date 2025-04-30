@@ -22,18 +22,22 @@
       </a>
     </div>
 
-    <!-- Acciones de usuario -->
-    <div class="fresh-user-actions">
-      <a class="signup-btn" routerLink="/register">
-        <span>Registrarse</span>
-      </a>
-      <a class="login-btn" routerLink="/login">
-        <span>Iniciar Sesión</span>
-      </a>
-      <div class="user-profile" routerLink="/principal/perfil">
-        <img src="assets/navbar/usuario.png" alt="Usuario">
-      </div>
-    </div>
+<!-- Acciones de usuario -->
+<div class="fresh-user-actions">
+  <!-- Solo mostrar si NO está logueado -->
+  <a class="signup-btn" routerLink="/register" *ngIf="!isLoggedIn()">
+    <span>Registrarse</span>
+  </a>
+  <a class="login-btn" routerLink="/login" *ngIf="!isLoggedIn()">
+    <span>Iniciar Sesión</span>
+  </a>
+
+  <!-- Solo mostrar si SÍ está logueado -->
+  <div class="user-profile" routerLink="/principal/perfil" *ngIf="isLoggedIn()">
+    <img src="assets/navbar/usuario.png" alt="Usuario">
+  </div>
+</div>
+
   </div>
 </nav>
 

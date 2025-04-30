@@ -105,6 +105,7 @@
   text-decoration: none;
   font-weight: 500;
   color: #040404;
+  transition: 0.5s;
 }
 .signup-btn:hover{
   color: #7FA6FF
@@ -113,21 +114,21 @@
 
 
 .login-btn {
-  color: #929296;
+  color: #ffffff;
+  background: linear-gradient(45deg, #7FA6FF, #D98EDF);
   padding: 0.6rem 1.4rem;
   border-radius: 8px;
   text-decoration: none;
   font-weight: 500;
-  transition: 0.07s;
   box-shadow: 0 4px 6px rgba(67, 97, 238, 0.2);
+  transition: background 0.7s ease, box-shadow 0.7s ease; /* Transición continua de fondo y sombra */
 }
 
 .login-btn:hover {
-  background: linear-gradient(45deg, #7FA6FF, #D98EDF);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(67, 97, 238, 0.25);
-  color: #ffffff;
+  
+  box-shadow: 0 6px 12px rgb(119, 136, 214);
 }
+
 
 .user-profile {
   width: 42px;
@@ -140,7 +141,6 @@
 }
 
 .user-profile:hover {
-  transform: scale(1.1);
   border-color: var(--primary-color);
 }
 
