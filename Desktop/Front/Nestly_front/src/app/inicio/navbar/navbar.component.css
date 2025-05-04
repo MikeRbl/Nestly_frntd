@@ -8,8 +8,9 @@
   --transition: all 0.25s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 
+/* Navbar principal */
 .fresh-navbar {
-  background-color: var(--white);
+  background-color: white;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   position: sticky;
   top: 0;
@@ -17,6 +18,7 @@
   font-family: 'Segoe UI', system-ui, sans-serif;
 }
 
+/* Contenedor principal */
 .fresh-nav-container {
   display: flex;
   justify-content: space-between;
@@ -27,6 +29,7 @@
   height: 80px;
 }
 
+/* Logo */
 .fresh-logo {
   display: flex;
   align-items: center;
@@ -42,14 +45,15 @@
   transition: 0.5s;
 }
 
-
 .fresh-logo:hover {
   transform: translateY(-2px);
 }
 
+/* Enlaces principales */
 .fresh-nav-links {
   display: flex;
   gap: 2rem;
+  margin-left: 2rem; /* Espacio entre logo y enlaces */
 }
 
 .nav-main-link {
@@ -70,17 +74,13 @@
   transition: var(--transition);
 }
 
-.nav-main-link:hover{
-  transform: scale(1.1);
+.nav-main-link:hover {
+  transform: scale(1.05);
   color: #7FA6FF;
 }
 
-
-
-
-
 .nav-main-link.active {
-  color:#D98EDF;
+  color: #D98EDF;
   font-weight: 600;
 }
 
@@ -95,40 +95,57 @@
   border-radius: 3px 3px 0 0;
 }
 
-.fresh-user-actions {
+/* Contenedor elementos derecha */
+.right-elements {
   display: flex;
   align-items: center;
   gap: 1.5rem;
+  margin-left: auto;
 }
 
+/* Botón Registrarse */
 .signup-btn {
   text-decoration: none;
   font-weight: 500;
-  color: #040404;
-  transition: 0.5s;
-}
-.signup-btn:hover{
-  color: #7FA6FF
+  color: var(--text-color);
+  transition: var(--transition);
+  padding: 0.5rem 0;
 }
 
+.signup-btn:hover {
+  color: #7FA6FF;
+  transform: translateY(-1px);
+}
 
-
+/* Botón Iniciar Sesión */
 .login-btn {
-  color: #ffffff;
+  color: var(--white);
   background: linear-gradient(45deg, #7FA6FF, #D98EDF);
   padding: 0.6rem 1.4rem;
   border-radius: 8px;
   text-decoration: none;
   font-weight: 500;
   box-shadow: 0 4px 6px rgba(67, 97, 238, 0.2);
-  transition: background 0.7s ease, box-shadow 0.7s ease; /* Transición continua de fondo y sombra */
+  transition: all 0.3s ease;
 }
 
 .login-btn:hover {
-  
-  box-shadow: 0 6px 12px rgb(119, 136, 214);
+  box-shadow: 0 6px 12px rgba(119, 136, 214, 0.4);
+  transform: translateY(-1px);
 }
 
+/* Perfil de usuario */
+.user-info {
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-details {
+  font-weight: bold;
+  color: #333;
+}
 
 .user-profile {
   width: 42px;
@@ -140,21 +157,21 @@
   transition: var(--transition);
 }
 
-.user-profile:hover {
-  border-color: var(--primary-color);
-}
-
 .nombreUsuario{
-  font-weight: bold;
   user-select: none;
 }
+.user-profile:hover {
+  border-color: var(--primary-color);
+  transform: scale(1.05);
+}
+
 .user-profile img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-/* Responsive */
+/* Responsive Design */
 @media (max-width: 992px) {
   .fresh-nav-container {
     padding: 0 1.5rem;
@@ -162,6 +179,10 @@
   
   .fresh-nav-links {
     gap: 1.5rem;
+  }
+  
+  .right-elements {
+    gap: 1rem;
   }
 }
 
@@ -183,7 +204,7 @@
     font-size: 1.3rem;
   }
   
-  .signup-btn {
+  .signup-btn span {
     display: none;
   }
   
@@ -195,5 +216,20 @@
   .user-profile {
     width: 38px;
     height: 38px;
+  }
+}
+
+@media (max-width: 576px) {
+  .fresh-nav-links {
+    display: none;
+  }
+  
+  .right-elements {
+    gap: 0.8rem;
+  }
+  
+  .login-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
   }
 }

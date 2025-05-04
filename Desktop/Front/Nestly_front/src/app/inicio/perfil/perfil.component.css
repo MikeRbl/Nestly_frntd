@@ -319,11 +319,12 @@ body {
 }
 
 .profile-badge {
+  
   padding: 6px 12px;
   background: linear-gradient(135deg, var(--primary-light), var(--primary));
   color: var(--white);
   border-radius: 20px;
-  font-size: 12px;
+  font-size: 20px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
