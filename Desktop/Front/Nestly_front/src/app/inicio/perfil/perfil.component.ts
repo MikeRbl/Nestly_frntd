@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpLavavelService } from '../../http.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import Swal from 'sweetalert2';
 
-interface User { //INTERFAZ DE LA API DE LARAVEL
+interface User {
   id: number;
   first_name: string;
   last_name_paternal: string;
@@ -9,7 +11,7 @@ interface User { //INTERFAZ DE LA API DE LARAVEL
   email: string;
   phone: string;
   role: string;
-  profile_picture?: string;
+  avatar?: string;  // Cambiado de 'profile_picture' a 'avatar' para coincidir con Laravel
   created_at: string;
   updated_at: string;
 }
@@ -20,51 +22,93 @@ interface User { //INTERFAZ DE LA API DE LARAVEL
   styleUrls: ['./perfil.component.css']
 })
 export class PerfilComponent implements OnInit {
-  userData: User | null = null; //Almacena los datos del usuario obtenidos del servidor
+  userData: User | null = null;
   isLoading: boolean = true;
   errorMessage: string = '';
   selectedImage: string | ArrayBuffer | null = null;
-  constructor(private Shttp: HttpLavavelService) {}
+  selectedFile: File | null = null;
+  profileForm: FormGroup;
 
-  ngOnInit(): void { //funcion para ejectutar la otra funcion
+  constructor(
+    private Shttp: HttpLavavelService,
+    private fb: FormBuilder
+  ) {
+    this.profileForm = this.fb.group({
+      first_name: ['', Validators.required],
+      last_name_paternal: ['', Validators.required],
+      last_name_maternal: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', Validators.required]
+    });
+  }
+
+  ngOnInit(): void {
     this.loadUserData();
   }
-   // Maneja la selección de la foto de perfil
-   onFileChange(event: any): void {
-    const file = event.target.files[0]; // Obtener el primer archivo seleccionado
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.selectedImage = reader.result; // Guardar la URL de la imagen seleccionada
-      };
-      reader.readAsDataURL(file); // Leer el archivo como URL base64
-    }
-  }
-  loadUserData(): void { //FUNCION loadUserData es clave para obtener y manejar los datos desde la backend
-    this.isLoading = true; //Solo muestra un mensaje de cargar (mejora la experiencia del usuario)
-    //sbscribe es importante o sino la peticion no se ejecuta
-    this.Shttp.Service_Get('user').subscribe({ //Realiza una petición HTTP GET al endpoint 'user' de tu API Laravel ('user': Ruta relativa del endpoint (normalmente se convierte en algo como https://tudominio.com/api/user)
-      next: (response: any) => { //contiene los datos devueltos por el servidor 
-        console.log('Respuesta completa:', response);
-        
-        // Extrae los datos del objeto 'user' en la respuesta
-        this.userData = response.user; // Guarda los datos en this.userData para usarlos en la vista
-        
-        console.log('Datos del usuario:', this.userData);
-        this.isLoading = false; //Desactiva el indicador de carga
+
+  loadUserData(): void {
+    this.isLoading = true;
+    this.Shttp.Service_Get('user').subscribe({
+      next: (response: any) => {
+        this.userData = response.user;
+        this.profileForm.patchValue(response.user); // Rellena el formulario
+        this.isLoading = false;
       },
-      error: (err) => {//err: Objeto con detalles del error
-        console.error('Error al cargar datos:', err);
-        this.errorMessage = 'Error al cargar los datos del usuario';//Guarda un mensaje amigable para mostrar al usuario
+      error: (err) => {
+        console.error('Error:', err);
+        this.errorMessage = 'Error al cargar datos';
         this.isLoading = false;
       }
     });
   }
 
- 
-  
-  logout() {
-    localStorage.removeItem('token'); 
-    window.location.href = '/login'; 
+  onFileChange(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.selectedImage = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  updateProfile(): void {
+    if (this.profileForm.invalid) return;
+
+    const formData = new FormData();
+    
+    // Agregar campos del formulario
+    Object.keys(this.profileForm.controls).forEach(key => {
+      formData.append(key, this.profileForm.get(key)?.value);
+    });
+
+    // Agregar archivo si existe
+    if (this.selectedFile) {
+      formData.append('avatar', this.selectedFile);
+    }
+
+    this.Shttp.Service_Put('user', formData).subscribe({
+      next: (response: any) => {
+        Swal.fire('¡Éxito!', 'Perfil actualizado', 'success');
+        this.userData = response.user; // Actualiza datos locales
+        this.selectedFile = null; // Resetea el archivo seleccionado
+      },
+      error: (err) => {
+        Swal.fire('Error', err.error?.message || 'Error al actualizar', 'error');
+      }
+    });
+  }
+
+  getAvatarUrl(): string {
+    return this.userData?.avatar 
+      ? `${this.Shttp.apiUrl}/storage/avatars/${this.userData.avatar}` 
+      : 'assets/default-avatar.png';
+  }
+
+  logout(): void {
+    localStorage.removeItem('token');
+    window.location.href = '/login';
   }
 }

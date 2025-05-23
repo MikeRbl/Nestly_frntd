@@ -77,7 +77,7 @@ export class EditarPerfilComponent implements OnInit {
             
         }
 
-        this.Shttp.Service_Put('users', this.userData.id, updateData).subscribe({
+        this.Shttp.Service_Put(`users/${this.userData.id}`, updateData).subscribe({
             next: (response) => {
                 this.isSaving = false;
                 this.successMessage = 'Perfil actualizado correctamente';

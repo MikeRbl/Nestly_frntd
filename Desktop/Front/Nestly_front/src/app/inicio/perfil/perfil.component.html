@@ -13,28 +13,41 @@
     <div class="profile-card">
       <div class="avatar-container">
         <div class="avatar-wrapper">
-          <img src="assets/navbar/usuario.png" alt="Usuario" class="avatar">
+          <img [src]="selectedImage || (userData?.avatar ? (userData.avatar | safeUrl) : 'assets/navbar/usuario.png')" 
+               alt="Usuario" 
+               class="avatar">
           <div class="avatar-badge"></div>
         </div>
-        <!-- Botón de subir foto -->
+        
         <button class="upload-btn" (click)="fileInput.click()">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
           </svg>
-          Subir foto
+          {{ selectedFile ? 'Cambiar foto' : 'Subir foto' }}
         </button>
-
-<!-- Input oculto para seleccionar el archivo -->
-<input type="file" #fileInput (change)="onFileChange($event)" style="display: none;">
-
+        
+        <input type="file" #fileInput (change)="onFileChange($event)" accept="image/*" style="display: none;">
+        
+        <div class="upload-status" *ngIf="uploadProgress > 0 && uploadProgress < 100">
+          <div class="progress-bar" [style.width.%]="uploadProgress"></div>
+          <span>{{ uploadProgress }}%</span>
+        </div>
+        
+        <button class="save-btn" 
+                *ngIf="selectedFile" 
+                (click)="updateProfile()"
+                [disabled]="uploadProgress > 0">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          Guardar cambios
+        </button>
       </div>
 
       <div class="username-container">
-        <input type="text" placeholder="Nombre de Usuario" class="username-input">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-        </svg>
+        <h3>{{ userData?.first_name || 'Usuario' }} {{ userData?.last_name_paternal || '' }}</h3>
+        <div class="user-role">{{ userData?.role | titlecase }}</div>
       </div>
 
       <div class="social-buttons">
@@ -49,12 +62,6 @@
             <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
           </svg>
           Conectar Instagram
-        </button>
-        <button class="social-btn twitter">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
-          </svg>
-          Conectar Twitter
         </button>
       </div>
     </div>
@@ -77,7 +84,7 @@
     <div *ngIf="userData && !isLoading" class="user-info">
       <div class="profile-header">
         <h1 class="profile-title">Mi Perfil</h1>
-        <div class="profile-badge">{{userData.role}}</div>
+        <div class="profile-badge">{{userData.role | titlecase}}</div>
       </div>
 
       <div class="info-grid">
@@ -125,7 +132,7 @@
           </div>
           <div>
             <label>Teléfono</label>
-            <div class="info-value">{{userData.phone}}</div>
+            <div class="info-value">{{userData.phone || 'No especificado'}}</div>
           </div>
         </div>
         
@@ -137,105 +144,55 @@
           </div>
           <div>
             <label>Registro</label>
-            <div class="info-value">{{userData.created_at}}</div>
+            <div class="info-value">{{userData.created_at | date:'longDate'}}</div>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Propiedades publicadas -->
-    <div class="properties-section">
+    <div class="properties-section" *ngIf="userData">
       <div class="section-header">
         <h2 class="section-title">Mis Propiedades</h2>
-        <div class="section-count">3 publicadas</div>
+        <div class="section-count">{{ userData.propiedades?.length || 0 }} publicadas</div>
       </div>
       
       <div class="properties-grid">
         <!-- Propiedad 1 -->
-        <div class="property-card">
-          <div class="property-badge rentada">Rentada</div>
-          <div class="property-image" style="background-image: url('https://plus.unsplash.com/premium_photo-1661915661139-5b6a4e4a6fcc?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y2FzYSUyMG1vZGVybmF8ZW58MHx8MHx8fDA%3D')"></div>
+        <div class="property-card" *ngFor="let propiedad of userData.propiedades">
+          <div class="property-badge" [class.rentada]="propiedad.disponibilidad === false" 
+                                  [class.disponible]="propiedad.disponibilidad">
+            {{ propiedad.disponibilidad ? 'Disponible' : 'Rentada' }}
+          </div>
+          <div class="property-image" [style.backgroundImage]="'url(' + (propiedad.fotos[0] || 'assets/default-property.jpg') + ')'"></div>
           <div class="property-details">
-            <div class="property-price">$20,000/mes</div>
+            <div class="property-price">{{ propiedad.precio | currency:'MXN':'symbol':'1.0-0' }}/mes</div>
             <div class="property-location">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
               </svg>
-              <span>El nigromante</span>
+              <span>{{ propiedad.colonia || 'Ubicación no especificada' }}</span>
             </div>
             <div class="property-footer">
               <div class="property-views">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
                 </svg>
-                210 vistas
+                {{ propiedad.vistas || 0 }} vistas
               </div>
-              <button class="property-action">
+              <button class="property-action" [routerLink]="['/propiedad', propiedad.id]">
                 Ver detalles
               </button>
             </div>
           </div>
         </div>
 
-        <!-- Propiedad 2 -->
-        <div class="property-card">
-          <div class="property-badge rentada">Rentada</div>
-          <div class="property-image" style="background-image: url('https://i0.wp.com/casactualdiseno.com/wp-content/uploads/2021/06/HU_1-Photo.jpg')"></div>
-          <div class="property-details">
-            <div class="property-price">$23,500/mes</div>
-            <div class="property-location">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-              </svg>
-              <span>La Talega</span>
-            </div>
-            <div class="property-footer">
-              <div class="property-views">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
-                </svg>
-                3,210 vistas
-              </div>
-              <button class="property-action">
-                Ver detalles
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Propiedad 3 -->
-        <div class="property-card">
-          <div class="property-badge disponible">Disponible</div>
-          <div class="property-image" style="background-image: url('https://i.pinimg.com/736x/02/17/e8/0217e8ba2cda0577e7a490566a47f49e.jpg')"></div>
-          <div class="property-details">
-            <div class="property-price">$35,000/mes</div>
-            <div class="property-location">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
-              </svg>
-              <span>San Antonio</span>
-            </div>
-            <div class="property-footer">
-              <div class="property-views">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z" />
-                </svg>
-                880 vistas
-              </div>
-              <button class="property-action">
-                Ver detalles
-              </button>
-            </div>
-          </div>
+        <div class="no-properties" *ngIf="!userData.propiedades || userData.propiedades.length === 0">
+          <img src="assets/no-properties.png" alt="Sin propiedades">
+          <p>Aún no has publicado propiedades</p>
+          <button class="btn-primary" routerLink="/principal/publicar">Publicar mi primera propiedad</button>
         </div>
       </div>
-
-      <button class="view-more-btn">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
-        </svg>
-        Ver más propiedades
-      </button>
     </div>
   </div>
 
@@ -270,4 +227,3 @@
     </div>
   </div>
 </div>
-
