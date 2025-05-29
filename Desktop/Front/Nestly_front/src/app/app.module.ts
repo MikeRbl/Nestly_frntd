@@ -14,6 +14,7 @@ import { EditarPerfilComponent } from './inicio/editarPerfil/editarPerfil.compon
 import { ConfiguracionComponent } from './inicio/configuracion/configuracion.component';
 import { PublicarComponent } from './inicio/Publicar/publicar.component';
 import { AlquilarCasaComponent } from './inicio/alquilar-casa/alquilar-casa.component';
+import { BuscarComponent } from './inicio/buscar/buscar.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { AlquilarCasaComponent } from './inicio/alquilar-casa/alquilar-casa.comp
     QnSomosComponent,
     PublicarComponent,
     AlquilarCasaComponent,
+    BuscarComponent,
   ],
   imports: [
     BrowserModule,
