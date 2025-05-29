@@ -1,85 +1,96 @@
-<div class="containerPrincipal">
-  <div class="containerIzquierda">
-    <div class="back" routerLink="/principal/dashboard">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="size-6"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M6 18 18 6M6 6l12 12"
-        />
+<div class="containerPrincipal bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen flex">
+  <!-- Columna Izquierda -->
+  <div class="containerIzquierda bg-gray-100 dark:bg-gray-900 p-4 w-1/4 flex flex-col items-center shadow-lg rounded-lg">
+    <div class="back self-start cursor-pointer mb-4" routerLink="/principal/dashboard">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500 dark:text-red-400 hover:opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
       </svg>
     </div>
-    <div class="containerLogo">
-      <img src="assets/navbar/LogoN.png" alt="Logo" class="logo" />
+
+    <div class="containerLogo mb-6">
+      <img src="assets/navbar/LogoN.png" alt="Logo" class="logo w-24 h-auto rounded-full shadow-md">
     </div>
-    <div class="containerPerfil">
-      <div class="perfilHeader">
-        <h2 class="perfilh2">Perfil</h2>
+
+    <div class="containerPerfil w-full">
+      <div class="perfilHeader text-center mb-4">
+        <h2 class="text-2xl font-semibold">Perfil</h2>
       </div>
 
-      <div class="perfilFoto">
-        <div class="userSvg">
-          <img src="assets/navbar/usuario.png" alt="Usuario" class="userLogo" />
+      <div class="perfilFoto flex flex-col items-center gap-2 mb-6">
+        <img src="assets/navbar/usuario.png" alt="Usuario" class="userLogo w-20 h-20 rounded-full shadow-md">
+        <button class="btnSubirFoto bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white py-2 px-4 rounded transition">
+          Subir foto
+        </button>
+      </div>
+
+      <div class="perfilNombre mb-6">
+        <input type="text" placeholder="Nombre de Usuario"
+          class="w-full p-2 rounded bg-gray-200 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400">
+      </div>
+
+      <div class="perfilRedes flex flex-col gap-2">
+        <button class="btnRedSocial bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white py-2 px-4 rounded transition">
+          Agregar Facebook
+        </button>
+        <button class="btnRedSocial bg-pink-600 hover:bg-pink-700 dark:bg-pink-700 dark:hover:bg-pink-800 text-white py-2 px-4 rounded transition">
+          Agregar Instagram
+        </button>
+        <button class="btnRedSocial bg-blue-400 hover:bg-blue-500 dark:bg-blue-500 dark:hover:bg-blue-600 text-white py-2 px-4 rounded transition">
+          Agregar Twitter
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Columna Central -->
+  <div class="containerCentro w-1/2 p-6">
+    <div class="config-content bg-gray-100 dark:bg-gray-800 rounded-lg shadow-md p-6">
+      <h3 class="text-3xl font-bold mb-6">Configuración</h3>
+
+      <div class="config-menu flex flex-col gap-4">
+        <div class="config-item bg-gray-100 dark:bg-gray-800">
+          <span class="text-xl">🔔</span>
+          <span>Notificaciones</span>
         </div>
-
-        <button class="btnSubirFoto">Subir foto</button>
-      </div>
-
-      <div class="perfilNombre">
-        <input
-          type="text"
-          placeholder="Nombre de Usuario"
-          class="inputNombre"
-        />
-      </div>
-
-      <div class="perfilRedes">
-        <button class="btnRedSocial">Agregar Facebook</button>
-        <button class="btnRedSocial">Agregar Instagram</button>
-        <button class="btnRedSocial">Agregar Twitter</button>
-      </div>
-    </div>
-  </div>
-  
-  
-  <div class="containerCentro">
-    <div class="config-content">
-      <h1 class="config-title">Configuración</h1>
-      <div class="config-menu">
-        <div class="config-item"><span class="config-icon">🔔</span><span>Notificaciones</span></div>
-        <div class="config-item"><span class="config-icon">🔒</span><span>Cambiar contraseña</span></div>
-        <div class="config-item"><span class="config-icon">🌐</span><span>Idioma</span></div>
-        <div class="config-item"><span class="config-icon">🌙</span><span>Modo oscuro</span></div>
-        <div class="config-item"><span class="config-icon">💳</span><span>Añadir tarjeta</span></div>
-        <div class="config-item logout"><span class="config-icon">🚪</span><span>Cerrar Sesión</span></div>
+        <div class="config-item bg-gray-100 dark:bg-gray-800">
+          <span class="text-xl">🔒</span>
+          <span>Cambiar contraseña</span>
+        </div>
+        <div class="config-item bg-gray-100 dark:bg-gray-800">
+          <span class="text-xl">🌐</span>
+          <span>Idioma</span>
+        </div>
+        <div class="config-item bg-gray-100 dark:bg-gray-800" (click)="toggleDarkMode()">
+          <span class="text-xl">{{ darkMode ? '☀️' : '🌙' }}</span>
+          <span>{{ darkMode ? 'Modo Claro' : 'Modo Oscuro' }}</span>
+        </div>
+        <div class="config-item bg-gray-100 dark:bg-gray-800">
+          <span class="text-xl">💳</span>
+          <span class="">Añadir tarjeta</span>
+        </div>
+        <div class="config-item bg-gray-100 dark:bg-gray-800">
+          <span class="text-xl">🚪</span>
+          <span>Cerrar Sesión</span>
+        </div>
       </div>
     </div>
   </div>
-  
-  
-  <div class="containerDerecha">
-    <div class="menuLateral">
-      <div class="menuItem" routerLink="/principal/perfil">
-        <span routerLink="/principal/perfil">Perfil</span>
+
+  <!-- Columna Derecha -->
+  <div class="containerDerecha w-1/4 bg-gray-100 dark:bg-gray-900 p-4 shadow-lg rounded-lg">
+    <div class="menuLateral flex flex-col gap-2">
+      <div class="menuItem p-3 rounded hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer" routerLink="/principal/perfil">
+        <span>Perfil</span>
       </div>
-      <div class="menuItem" routerLink="/principal/editarPerfil">
+      <div class="menuItem p-3 rounded hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer" routerLink="/principal/editarPerfil">
         <span>Editar perfil</span>
       </div>
-      
-      <div class="menuItem activo">
-        <span>Configuration</span>
+      <div class="menuItem activo p-3 rounded bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-white font-semibold">
+        <span>Configuración</span>
       </div>
-      <div class="menuItem cerrarSesion" (click)="logout()">
+      <div class="menuItem cerrarSesion p-3 rounded hover:bg-red-100 dark:hover:bg-red-700 cursor-pointer" (click)="logout()">
         <span>Cerrar sesión</span>
       </div>
     </div>
   </div>
-  </div>
-
+</div>

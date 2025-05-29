@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpLavavelService } from '../../http.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import Swal from 'sweetalert2';
 
 interface User {
   id: number;
@@ -11,7 +9,7 @@ interface User {
   email: string;
   phone: string;
   role: string;
-  avatar?: string;  // Cambiado de 'profile_picture' a 'avatar' para coincidir con Laravel
+  profile_picture?: string;
   created_at: string;
   updated_at: string;
 }
@@ -27,45 +25,18 @@ export class PerfilComponent implements OnInit {
   errorMessage: string = '';
   selectedImage: string | ArrayBuffer | null = null;
   selectedFile: File | null = null;
-  profileForm: FormGroup;
 
-  constructor(
-    private Shttp: HttpLavavelService,
-    private fb: FormBuilder
-  ) {
-    this.profileForm = this.fb.group({
-      first_name: ['', Validators.required],
-      last_name_paternal: ['', Validators.required],
-      last_name_maternal: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', Validators.required]
-    });
-  }
+  constructor(private Shttp: HttpLavavelService) {}
 
   ngOnInit(): void {
     this.loadUserData();
-  }
-
-  loadUserData(): void {
-    this.isLoading = true;
-    this.Shttp.Service_Get('user').subscribe({
-      next: (response: any) => {
-        this.userData = response.user;
-        this.profileForm.patchValue(response.user); // Rellena el formulario
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error('Error:', err);
-        this.errorMessage = 'Error al cargar datos';
-        this.isLoading = false;
-      }
-    });
   }
 
   onFileChange(event: any): void {
     const file = event.target.files[0];
     if (file) {
       this.selectedFile = file;
+      
       const reader = new FileReader();
       reader.onload = () => {
         this.selectedImage = reader.result;
@@ -74,41 +45,51 @@ export class PerfilComponent implements OnInit {
     }
   }
 
-  updateProfile(): void {
-    if (this.profileForm.invalid) return;
+  uploadProfilePicture(): void {
+    if (!this.selectedFile) return;
 
-    const formData = new FormData();
+    this.isLoading = true;
     
-    // Agregar campos del formulario
-    Object.keys(this.profileForm.controls).forEach(key => {
-      formData.append(key, this.profileForm.get(key)?.value);
-    });
+    const formData = new FormData();
+    formData.append('profile_picture', this.selectedFile);
 
-    // Agregar archivo si existe
-    if (this.selectedFile) {
-      formData.append('avatar', this.selectedFile);
-    }
-
-    this.Shttp.Service_Put('user', formData).subscribe({
+    this.Shttp.Service_Post('update-profile-picture', formData).subscribe({
       next: (response: any) => {
-        Swal.fire('¡Éxito!', 'Perfil actualizado', 'success');
-        this.userData = response.user; // Actualiza datos locales
-        this.selectedFile = null; // Resetea el archivo seleccionado
+        console.log('Foto de perfil actualizada:', response);
+        if (this.userData) {
+          this.userData.profile_picture = response.profile_picture;
+        }
+        this.isLoading = false;
+        // Resetear la selección
+        this.selectedImage = null;
+        this.selectedFile = null;
       },
       error: (err) => {
-        Swal.fire('Error', err.error?.message || 'Error al actualizar', 'error');
+        console.error('Error al actualizar foto de perfil:', err);
+        this.errorMessage = 'Error al actualizar la foto de perfil';
+        this.isLoading = false;
       }
     });
   }
 
-  getAvatarUrl(): string {
-    return this.userData?.avatar 
-      ? `${this.Shttp.apiUrl}/storage/avatars/${this.userData.avatar}` 
-      : 'assets/default-avatar.png';
+  loadUserData(): void {
+    this.isLoading = true;
+    this.Shttp.Service_Get('user').subscribe({
+      next: (response: any) => {
+        console.log('Respuesta completa:', response);
+        this.userData = response.user;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error al cargar datos:', err);
+        this.errorMessage = 'Error al cargar los datos del usuario';
+        this.isLoading = false;
+      }
+    });
   }
 
-  logout(): void {
-    localStorage.removeItem('token');
-    window.location.href = '/login';
+  logout() {
+    localStorage.removeItem('token'); 
+    window.location.href = '/login'; 
   }
 }
