@@ -33,6 +33,7 @@
       </a>
 
       <div class="user-info" *ngIf="isLoggedIn()" (click)="handleProfileClick()">
+
         <div class="nombreUsuario">
           <span class="user-name">{{ userData?.first_name }} {{ userData?.last_name_paternal }}</span>
         </div>
@@ -42,6 +43,18 @@
       </div>
 
 
+
+
+  <div class="nombreUsuario">
+    <span class="user-name">
+      {{ userData?.first_name || 'Sin nombre' }} 
+      {{ userData?.last_name_paternal || '' }}
+    </span>
+  
+  </div>
+  <div class="user-profile">
+    <img src="assets/navbar/usuario.png" alt="Usuario">
+  </div>
 
       
     </div>
