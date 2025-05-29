@@ -10,10 +10,9 @@
         <span class="textoBtn">Buscar</span>
       </a>
 
-      <a class="nav-main-link" routerLink="alquilarCasa" routerLinkActive="active" 
-         *ngIf="userRole === 'inquilino' || userRole === 'admin'">
-        <span class="textoBtn">Alquilar</span>
-      </a>
+      <a class="nav-main-link" routerLink="alquilarCasa" routerLinkActive="active">
+  <span class="textoBtn">Alquilar</span>
+</a>
 
       <a class="nav-main-link" routerLink="publicarCasa" routerLinkActive="active"
          *ngIf="userRole === 'propietario' || userRole === 'admin'">
