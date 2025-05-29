@@ -2,215 +2,224 @@
   <h2 class="mb-4">Publicar Propiedad</h2>
 
   <form [formGroup]="formulario" (ngSubmit)="publicarPropiedad()" novalidate>
-    <!-- TITULO -->
-    <div class="mb-3">
-      <label class="form-label">Título *</label>
-      <input type="text" class="form-control" formControlName="titulo"
-        [ngClass]="{ 'is-invalid': f['titulo'].invalid && (f['titulo'].touched || formSubmitted) }" />
-      <div class="invalid-feedback" *ngIf="f['titulo'].errors?.['required']">
-        Campo obligatorio
-      </div>
-      <div class="invalid-feedback" *ngIf="f['titulo'].errors?.['maxlength']">
-        Máximo 255 caracteres
-      </div>
-    </div>
-
-    <!-- DESCRIPCIÓN -->
-    <div class="mb-3">
-      <label class="form-label">Descripción *</label>
-      <textarea class="form-control" rows="3" formControlName="descripcion"
-        [ngClass]="{ 'is-invalid': f['descripcion'].invalid && (f['descripcion'].touched || formSubmitted) }"></textarea>
-      <div class="invalid-feedback" *ngIf="f['descripcion'].errors?.['required']">
-        Campo obligatorio
-      </div>
-    </div>
-
-    <!-- DIRECCIÓN -->
-    <div class="mb-3">
-      <label class="form-label">Dirección *</label>
-      <input type="text" class="form-control" formControlName="direccion"
-        [ngClass]="{ 'is-invalid': f['direccion'].invalid && (f['direccion'].touched || formSubmitted) }" />
-      <div class="invalid-feedback" *ngIf="f['direccion'].errors?.['required']">
-        Campo obligatorio
-      </div>
-    </div>
-
-    <!-- UBICACIÓN -->
     <div class="row">
-      <div class="col-md-3 mb-3">
-        <label class="form-label">País *</label>
-        <input type="text" class="form-control" formControlName="pais"
-          [ngClass]="{ 'is-invalid': f['pais'].invalid && (f['pais'].touched || formSubmitted) }" />
-        <div class="invalid-feedback" *ngIf="f['pais'].errors?.['required']">
-          Campo obligatorio
-        </div>
-      </div>
-      <div class="col-md-3 mb-3">
-        <label class="form-label">Estado *</label>
-        <input type="text" class="form-control" formControlName="estado"
-          [ngClass]="{ 'is-invalid': f['estado'].invalid && (f['estado'].touched || formSubmitted) }" />
-        <div class="invalid-feedback" *ngIf="f['estado'].errors?.['required']">
-          Campo obligatorio
-        </div>
-      </div>
-      <div class="col-md-3 mb-3">
-        <label class="form-label">Ciudad *</label>
-        <input type="text" class="form-control" formControlName="ciudad"
-          [ngClass]="{ 'is-invalid': f['ciudad'].invalid && (f['ciudad'].touched || formSubmitted) }" />
-        <div class="invalid-feedback" *ngIf="f['ciudad'].errors?.['required']">
-          Campo obligatorio
-        </div>
-      </div>
-      <div class="col-md-3 mb-3">
-        <label class="form-label">Colonia</label>
-        <input type="text" class="form-control" formControlName="colonia" />
-      </div>
-    </div>
-
-    <!-- PRECIO / HABITACIONES / BAÑOS / M² -->
-    <div class="row">
-      <div class="col-md-3 mb-3">
-        <label class="form-label">Precio *</label>
-        <input type="number" class="form-control" formControlName="precio"
-          [ngClass]="{ 'is-invalid': f['precio'].invalid && (f['precio'].touched || formSubmitted) }" />
-        <div class="invalid-feedback" *ngIf="f['precio'].errors?.['required']">
-          Campo obligatorio
-        </div>
-      </div>
-      <div class="col-md-3 mb-3">
-        <label class="form-label">Habitaciones *</label>
-        <input type="number" class="form-control" formControlName="habitaciones"
-          [ngClass]="{ 'is-invalid': f['habitaciones'].invalid && (f['habitaciones'].touched || formSubmitted) }" />
-        <div class="invalid-feedback" *ngIf="f['habitaciones'].errors?.['required']">
-          Campo obligatorio
-        </div>
-      </div>
-      <div class="col-md-3 mb-3">
-        <label class="form-label">Baños *</label>
-        <input type="number" class="form-control" formControlName="banos"
-          [ngClass]="{ 'is-invalid': f['banos'].invalid && (f['banos'].touched || formSubmitted) }" />
-        <div class="invalid-feedback" *ngIf="f['banos'].errors?.['required']">
-          Campo obligatorio
-        </div>
-      </div>
-      <div class="col-md-3 mb-3">
-        <label class="form-label">Metros cuadrados *</label>
-        <input type="number" class="form-control" formControlName="metros_cuadrados"
-          [ngClass]="{ 'is-invalid': f['metros_cuadrados'].invalid && (f['metros_cuadrados'].touched || formSubmitted) }" />
-        <div class="invalid-feedback" *ngIf="f['metros_cuadrados'].errors?.['required']">
-          Campo obligatorio
-        </div>
-      </div>
-    </div>
-
-    <!-- AMUEBLADO / DISPONIBILIDAD -->
-    <div class="row">
-      <div class="col-md-6 mb-3 form-check">
-        <input class="form-check-input" type="checkbox" formControlName="amueblado" id="amueblado" />
-        <label class="form-check-label" for="amueblado">¿Está amueblado?</label>
-      </div>
-      <div class="col-md-6 mb-3 form-check">
-        <input class="form-check-input" type="checkbox" formControlName="disponibilidad" id="disponibilidad" />
-        <label class="form-check-label" for="disponibilidad">¿Está disponible?</label>
-      </div>
-    </div>
-
-    <!-- TIPO DE PROPIEDAD -->
-    <div class="mb-3">
-      <label class="form-label">Tipo de Propiedad</label>
-      <div class="form-check form-check-inline">
-        <input type="checkbox" class="form-check-input" formControlName="apartamento" id="apartamento" />
-        <label class="form-check-label" for="apartamento">Apartamento</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input type="checkbox" class="form-check-input" formControlName="casaPlaya" id="casaPlaya" />
-        <label class="form-check-label" for="casaPlaya">Casa de Playa</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input type="checkbox" class="form-check-input" formControlName="industrial" id="industrial" />
-        <label class="form-check-label" for="industrial">Industrial</label>
-      </div>
-    </div>
-
-    <!-- ANUALIZADO / DEPÓSITO / TAMAÑO -->
-    <div class="row">
-      <div class="col-md-4 mb-3 form-check">
-        <input class="form-check-input" type="checkbox" formControlName="anualizado" id="anualizado" />
-        <label class="form-check-label" for="anualizado">Anualizado</label>
-      </div>
-      <div class="col-md-4 mb-3">
-        <label class="form-label">Depósito</label>
-        <input type="number" class="form-control" formControlName="deposito" />
-      </div>
-      <div class="col-md-4 mb-3">
-        <label class="form-label">Tamaño</label>
-        <input type="text" class="form-control" formControlName="tamano" />
-      </div>
-    </div>
-
-    <!-- MASCOTAS -->
-    <div class="mb-3">
-      <label class="form-label">¿Se permiten mascotas? *</label>
-      <select class="form-select" formControlName="mascotas"
-        [ngClass]="{ 'is-invalid': mascotasInvalid }">
-        <option value="" disabled selected>Seleccione una opción</option>
-        <option *ngFor="let opcion of opcionesMascotas" [value]="opcion.value">
-          {{ opcion.label }}
-        </option>
-      </select>
-      <div class="invalid-feedback">
-        {{ f['mascotas'].errors?.['required'] ? 'Campo obligatorio' : 'Selección inválida' }}
-      </div>
-    </div>
-
-    <!-- CONTACTO -->
-    <div class="row">
-      <div class="col-md-6 mb-3">
-        <label class="form-label">Correo electrónico *</label>
-        <input type="email" class="form-control" formControlName="email"
-          [ngClass]="{ 'is-invalid': f['email'].invalid && (f['email'].touched || formSubmitted) }" />
-        <div class="invalid-feedback" *ngIf="f['email'].errors?.['required']">
-          Campo obligatorio
-        </div>
-        <div class="invalid-feedback" *ngIf="f['email'].errors?.['email']">
-          Formato de email inválido
-        </div>
-      </div>
-      <div class="col-md-6 mb-3">
-        <label class="form-label">Teléfono *</label>
-        <input type="text" class="form-control" formControlName="telefono"
-          [ngClass]="{ 'is-invalid': f['telefono'].invalid && (f['telefono'].touched || formSubmitted) }" />
-        <div class="invalid-feedback" *ngIf="f['telefono'].errors?.['required']">
-          Campo obligatorio
-        </div>
-      </div>
-    </div>
-
-    <!-- FOTOS -->
-    <div class="mb-3">
-      <label class="form-label">Fotos *</label>
-      <input type="file" class="form-control" (change)="onFileChange($event)" multiple accept="image/*" />
-      <small class="text-muted">Selecciona al menos una foto</small>
-      <div class="text-danger" *ngIf="fotosInvalid">
-        Debes subir al menos una foto
-      </div>
-      <div class="row mt-2">
-        <div class="col-3 mb-2" *ngFor="let foto of previewUrls; let i = index">
-          <div class="position-relative">
-            <img [src]="foto" class="img-fluid rounded" style="height: 100px; object-fit: cover;" />
-            <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0"
-              (click)="removePhoto(i)">×</button>
+      <!-- COLUMNA IZQUIERDA -->
+      <div class="col-md-6">
+        <!-- TITULO -->
+        <div class="mb-3">
+          <label class="form-label">Título *</label>
+          <input type="text" class="form-control" formControlName="titulo"
+            [ngClass]="{ 'is-invalid': f['titulo'].invalid && (f['titulo'].touched || formSubmitted) }" />
+          <div class="invalid-feedback" *ngIf="f['titulo'].errors?.['required']">
+            Campo obligatorio
+          </div>
+          <div class="invalid-feedback" *ngIf="f['titulo'].errors?.['maxlength']">
+            Máximo 255 caracteres
           </div>
         </div>
-      </div>
-    </div>
 
-    <!-- BOTÓN -->
-    <div class="text-end">
+        <!-- DESCRIPCIÓN -->
+        <div class="mb-3">
+          <label class="form-label">Descripción *</label>
+          <textarea class="form-control" rows="3" formControlName="descripcion"
+            [ngClass]="{ 'is-invalid': f['descripcion'].invalid && (f['descripcion'].touched || formSubmitted) }"></textarea>
+          <div class="invalid-feedback" *ngIf="f['descripcion'].errors?.['required']">
+            Campo obligatorio
+          </div>
+        </div>
+
+        <!-- DIRECCIÓN -->
+        <div class="mb-3">
+          <label class="form-label">Dirección *</label>
+          <input type="text" class="form-control" formControlName="direccion"
+            [ngClass]="{ 'is-invalid': f['direccion'].invalid && (f['direccion'].touched || formSubmitted) }" />
+          <div class="invalid-feedback" *ngIf="f['direccion'].errors?.['required']">
+            Campo obligatorio
+          </div>
+        </div>
+
+        <!-- UBICACIÓN -->
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">País *</label>
+            <input type="text" class="form-control" formControlName="pais"
+              [ngClass]="{ 'is-invalid': f['pais'].invalid && (f['pais'].touched || formSubmitted) }" />
+            <div class="invalid-feedback" *ngIf="f['pais'].errors?.['required']">
+              Campo obligatorio
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Estado *</label>
+            <input type="text" class="form-control" formControlName="estado"
+              [ngClass]="{ 'is-invalid': f['estado'].invalid && (f['estado'].touched || formSubmitted) }" />
+            <div class="invalid-feedback" *ngIf="f['estado'].errors?.['required']">
+              Campo obligatorio
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Ciudad *</label>
+            <input type="text" class="form-control" formControlName="ciudad"
+              [ngClass]="{ 'is-invalid': f['ciudad'].invalid && (f['ciudad'].touched || formSubmitted) }" />
+            <div class="invalid-feedback" *ngIf="f['ciudad'].errors?.['required']">
+              Campo obligatorio
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Colonia</label>
+            <input type="text" class="form-control" formControlName="colonia" />
+          </div>
+        </div>
+
+        <!-- PRECIO / HABITACIONES / BAÑOS / M² -->
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Precio *</label>
+            <input type="number" class="form-control" formControlName="precio"
+              [ngClass]="{ 'is-invalid': f['precio'].invalid && (f['precio'].touched || formSubmitted) }" />
+            <div class="invalid-feedback" *ngIf="f['precio'].errors?.['required']">
+              Campo obligatorio
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Habitaciones *</label>
+            <input type="number" class="form-control" formControlName="habitaciones"
+              [ngClass]="{ 'is-invalid': f['habitaciones'].invalid && (f['habitaciones'].touched || formSubmitted) }" />
+            <div class="invalid-feedback" *ngIf="f['habitaciones'].errors?.['required']">
+              Campo obligatorio
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Baños *</label>
+            <input type="number" class="form-control" formControlName="banos"
+              [ngClass]="{ 'is-invalid': f['banos'].invalid && (f['banos'].touched || formSubmitted) }" />
+            <div class="invalid-feedback" *ngIf="f['banos'].errors?.['required']">
+              Campo obligatorio
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Metros cuadrados *</label>
+            <input type="number" class="form-control" formControlName="metros_cuadrados"
+              [ngClass]="{ 'is-invalid': f['metros_cuadrados'].invalid && (f['metros_cuadrados'].touched || formSubmitted) }" />
+            <div class="invalid-feedback" *ngIf="f['metros_cuadrados'].errors?.['required']">
+              Campo obligatorio
+            </div>
+          </div>
+        </div>
+
+        <!-- AMUEBLADO / DISPONIBILIDAD -->
+        <div class="row">
+          <div class="col-md-6 mb-3 form-check">
+            <input class="form-check-input" type="checkbox" formControlName="amueblado" id="amueblado" />
+            <label class="form-check-label" for="amueblado">¿Está amueblado?</label>
+          </div>
+          <div class="col-md-6 mb-3 form-check">
+            <input class="form-check-input" type="checkbox" formControlName="disponibilidad" id="disponibilidad" />
+            <label class="form-check-label" for="disponibilidad">¿Está disponible?</label>
+          </div>
+        </div>
+
+        <!-- ANUALIZADO / DEPÓSITO / TAMAÑO -->
+        <div class="row">
+          <div class="col-md-4 mb-3 form-check">
+            <input class="form-check-input" type="checkbox" formControlName="anualizado" id="anualizado" />
+            <label class="form-check-label" for="anualizado">Anualizado</label>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Depósito</label>
+            <input type="number" class="form-control" formControlName="deposito" />
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Tamaño</label>
+            <input type="text" class="form-control" formControlName="tamano" />
+          </div>
+        </div>
+
+        <!-- MASCOTAS -->
+        <div class="mb-3">
+          <label class="form-label">¿Se permiten mascotas? *</label>
+          <select class="form-select" formControlName="mascotas"
+            [ngClass]="{ 'is-invalid': mascotasInvalid }">
+            <option value="" disabled selected>Seleccione una opción</option>
+            <option *ngFor="let opcion of opcionesMascotas" [value]="opcion.value">
+              {{ opcion.label }}
+            </option>
+          </select>
+          <div class="invalid-feedback">
+            {{ f['mascotas'].errors?.['required'] ? 'Campo obligatorio' : 'Selección inválida' }}
+          </div>
+        </div>
+
+        
+      </div>
+
+      <!-- COLUMNA DERECHA -->
+      <div class="col-md-6">
+        <!-- FOTOS -->
+        <div class="mb-3">
+          <label class="form-label">Fotos *</label>
+          <input type="file" class="form-control" (change)="onFileChange($event)" multiple accept="image/*" />
+          <small class="text-muted">Selecciona al menos una foto</small>
+          <div class="text-danger" *ngIf="fotosInvalid">
+            Debes subir al menos una foto
+          </div>
+          <div class="row mt-2">
+            <div class="col-6 mb-2" *ngFor="let foto of previewUrls; let i = index">
+              <div class="position-relative">
+                <img [src]="foto" class="img-fluid rounded" style="height: 100px; object-fit: cover;" />
+                <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0"
+                  (click)="removePhoto(i)">×</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      <!-- CONTACTO -->
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Correo electrónico *</label>
+            <input type="email" class="form-control" formControlName="email"
+              [ngClass]="{ 'is-invalid': f['email'].invalid && (f['email'].touched || formSubmitted) }" />
+            <div class="invalid-feedback" *ngIf="f['email'].errors?.['required']">
+              Campo obligatorio
+            </div>
+            <div class="invalid-feedback" *ngIf="f['email'].errors?.['email']">
+              Formato de email inválido
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Teléfono *</label>
+            <input type="text" class="form-control" formControlName="telefono"
+              [ngClass]="{ 'is-invalid': f['telefono'].invalid && (f['telefono'].touched || formSubmitted) }" />
+            <div class="invalid-feedback" *ngIf="f['telefono'].errors?.['required']">
+              Campo obligatorio
+            </div>
+          </div>
+        </div>
+        <!-- TIPO DE PROPIEDAD -->
+        <div class="mb-3">
+          <label class="form-label">Tipo de Propiedad</label>
+          <div class="form-check form-check-inline">
+            <input type="checkbox" class="form-check-input" formControlName="apartamento" id="apartamento" />
+            <label class="form-check-label" for="apartamento">Apartamento</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input type="checkbox" class="form-check-input" formControlName="casaPlaya" id="casaPlaya" />
+            <label class="form-check-label" for="casaPlaya">Casa de Playa</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input type="checkbox" class="form-check-input" formControlName="industrial" id="industrial" />
+            <label class="form-check-label" for="industrial">Industrial</label>
+          </div>
+        </div>
+        <!-- BOTÓN -->
+    <div class="text-end mt-4">
       <button type="submit" class="btn btn-success" [disabled]="isLoading">
         <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
         {{ isLoading ? 'Publicando...' : 'Publicar Propiedad' }}
       </button>
     </div>
+      </div>
+    </div>
+
+    
   </form>
 </div>

@@ -6,13 +6,15 @@
     </div>
 
     <div class="fresh-nav-links">
-      <a class="nav-main-link" routerLink="dashboard" routerLinkActive="active"> 
+      
+      <a class="nav-main-link" routerLink="dashboard" routerLinkActive="active">
+        <span class="textoBtn">Inicio</span>
+      </a>
+
+      <a class="nav-main-link" routerLink="buscarCasa" routerLinkActive="active"> 
         <span class="textoBtn">Buscar</span>
       </a>
 
-      <a class="nav-main-link" routerLink="alquilarCasa" routerLinkActive="active">
-  <span class="textoBtn">Alquilar</span>
-</a>
 
       <a class="nav-main-link" routerLink="publicarCasa" routerLinkActive="active"
          *ngIf="userRole === 'propietario' || userRole === 'admin'">
