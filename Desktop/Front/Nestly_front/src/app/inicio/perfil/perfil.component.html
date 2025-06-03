@@ -12,31 +12,41 @@
 
     <div class="profile-card">
       <div class="avatar-container">
-  <div class="avatar-wrapper">
-    <!-- Mostrar la imagen seleccionada o la predeterminada -->
-    <img [src]="selectedImage || (userData?.profile_picture || 'assets/navbar/usuario.png')" alt="Usuario" class="avatar">
-    <div class="avatar-badge"></div>
-  </div>
-  <!-- Botón de subir foto -->
-  <button class="upload-btn" (click)="fileInput.click()">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-    </svg>
-    {{ selectedImage ? 'Cambiar foto' : 'Subir foto' }}
-  </button>
+        <div class="avatar-wrapper">
+          <!-- Mostrar la imagen seleccionada o la predeterminada -->
+          <img [src]="selectedImage || (userData?.profile_picture || 'assets/navbar/usuario.png')" alt="Usuario" class="avatar">
+          <div class="avatar-badge"></div>
+        </div>
+        <!-- Botón de subir foto -->
+        <button class="upload-btn" (click)="fileInput.click()">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          {{ selectedImage ? 'Cambiar foto' : 'Subir foto' }}
+        </button>
 
-  <!-- Mostrar botón de guardar solo cuando hay una imagen seleccionada -->
-  <button *ngIf="selectedImage" class="save-btn" (click)="uploadProfilePicture()">
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-    </svg>
-    Guardar cambios
-  </button>
-</div>
+        <!-- Mostrar botón de guardar solo cuando hay una imagen seleccionada -->
+        <button *ngIf="selectedImage" class="save-btn" (click)="uploadProfilePicture()" [disabled]="isLoading">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          {{ isLoading ? 'Subiendo...' : 'Guardar cambios' }}
+        </button>
+      </div>
 
-<!-- Input oculto para seleccionar el archivo -->
-<input type="file" #fileInput (change)="onFileChange($event)" accept="image/*" style="display: none;">
+      <!-- Input oculto para seleccionar el archivo -->
+      <input type="file" #fileInput (change)="onFileChange($event)" accept="image/*" style="display: none;">
+
+      <!-- Mensajes de error y progreso -->
+      <div *ngIf="errorMessage" class="error-message" style="margin-top: 10px;">
+        {{ errorMessage }}
+      </div>
+
+      <div *ngIf="uploadProgress > 0" class="upload-progress">
+        <div class="progress-bar" [style.width.%]="uploadProgress"></div>
+        <span>{{ uploadProgress }}%</span>
+      </div>
 
       <div class="username-container">
         <input type="text" placeholder="Nombre de Usuario" class="username-input">
@@ -70,7 +80,7 @@
 
   <!-- Contenido principal -->
   <div class="profile-content">
-    <div *ngIf="isLoading" class="loading-message">
+    <div *ngIf="isLoading && uploadProgress === 0" class="loading-message">
       <div class="spinner"></div>
       <p>Cargando datos del usuario...</p>
     </div>
@@ -277,4 +287,4 @@
       <span>Cerrar sesión</span>
     </div>
   </div>
-</div> 
+</div>
