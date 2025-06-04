@@ -1,0 +1,30 @@
+/* search-filters.component.css */
+.search-filters-bar {
+  display: flex;
+  gap: 10px; /* Espacio entre elementos */
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #f8f9fa; /* Un color de fondo ligero */
+  border-radius: 8px;
+}
+
+.search-filters-bar input,
+.search-filters-bar select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.buscar-btn {
+  padding: 10px 20px;
+  background-color: #007bff; /* Color azul similar al de la imagen */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.buscar-btn:hover {
+  background-color: #0056b3;
+}

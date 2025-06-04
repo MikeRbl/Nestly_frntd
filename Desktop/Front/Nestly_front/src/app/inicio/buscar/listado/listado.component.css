@@ -1,0 +1,60 @@
+/* property-listings.component.css */
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.active-filter {
+  background-color: #e0e0e0;
+  padding: 5px 10px;
+  border-radius: 15px;
+  margin-left: 5px;
+  font-size: 0.9em;
+}
+
+.active-filter button {
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.sort-and-map {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.sort-and-map select {
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.map-icon-button {
+  background-color: #f0f0f0; /* Color de fondo del botón de mapa */
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.listings-grid {
+  display: grid;
+  /* grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); Si quieres un diseño responsivo de tarjetas */
+  gap: 20px;
+}
+
+/* Estilo temporal para placeholder de tarjetas */
+.property-card-placeholder {
+  border: 1px solid #ccc;
+  padding: 20px;
+  height: 200px; /* Altura de ejemplo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f9f9f9;
+}

@@ -1,0 +1,41 @@
+/* sidebar-filters.component.css */
+.accordion-item {
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.accordion-header {
+  background-color: #f1f1f1;
+  color: #333;
+  cursor: pointer;
+  padding: 10px;
+  width: 100%;
+  text-align: left;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.accordion-header:hover {
+  background-color: #ddd;
+}
+
+.accordion-content {
+  padding: 0 10px;
+  /* Por defecto oculto, se muestra con JS o CSS (:checked + .content) */
+  /* max-height: 0; */
+  /* overflow: hidden; */
+  /* transition: max-height 0.2s ease-out; */
+  /* Para un acordeón funcional necesitarás JS o Angular Material Expansion Panel */
+}
+
+.accordion-content ul {
+  list-style: none;
+  padding: 0;
+}
+
+.accordion-content li {
+  margin-bottom: 8px;
+}
