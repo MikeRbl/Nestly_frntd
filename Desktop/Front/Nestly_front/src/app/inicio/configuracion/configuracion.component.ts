@@ -9,6 +9,7 @@ export class ConfiguracionComponent {
  darkMode = false;
 
   toggleDarkMode() {
+    document.documentElement.classList.toggle('dark');
     this.darkMode = !this.darkMode;
     document.documentElement.classList.toggle('dark', this.darkMode);
     localStorage.setItem('darkMode', this.darkMode.toString());

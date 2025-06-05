@@ -9,7 +9,6 @@ body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   line-height: 1.6;
   color: #2d3748;
-  background-color: #ffffff;
 }
 
 .app-container {
@@ -67,7 +66,6 @@ body {
 }
 
 .secondary-button {
-  background-color: white;
   color: #4a6bff;
   border: 2px solid #4a6bff;
   padding: 10px 25px;
@@ -92,12 +90,10 @@ body {
 .section-header h2 {
   font-size: 2.2rem;
   margin-bottom: 10px;
-  color: #2d3748;
 }
 
 .section-header p {
   font-size: 1.1rem;
-  color: #718096;
 }
 
 /* Estilos para beneficios */
@@ -113,7 +109,6 @@ body {
 }
 
 .benefit-card {
-  background: white;
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
@@ -134,11 +129,9 @@ body {
 .benefit-card h3 {
   font-size: 1.4rem;
   margin-bottom: 15px;
-  color: #2d3748;
 }
 
 .benefit-card p {
-  color: #718096;
 }
 
 /* Estilos para propiedades destacadas */
@@ -156,7 +149,6 @@ body {
 }
 
 .property-card {
-  background: white;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
@@ -181,7 +173,6 @@ body {
 .property-location {
   display: flex;
   align-items: center;
-  color: #718096;
   font-size: 0.9rem;
   margin-bottom: 10px;
 }
@@ -189,14 +180,12 @@ body {
 .property-card h3 {
   font-size: 1.3rem;
   margin-bottom: 15px;
-  color: #2d3748;
 }
 
 .property-features {
   display: flex;
   gap: 15px;
   margin-bottom: 20px;
-  color: #4a5568;
 }
 
 .property-footer {
@@ -208,7 +197,6 @@ body {
 .property-price {
   font-weight: 700;
   font-size: 1.2rem;
-  color: #2d3748;
 }
 
 .save-btn {
@@ -242,7 +230,6 @@ body {
 }
 
 .testimonial-card {
-  background: white;
   padding: 30px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
@@ -257,7 +244,6 @@ body {
 
 .testimonial-content p {
   font-style: italic;
-  color: #4a5568;
   margin-bottom: 25px;
 }
 
@@ -276,12 +262,10 @@ body {
 
 .testimonial-author h4 {
   font-size: 1.1rem;
-  color: #2d3748;
 }
 
 .testimonial-author p {
   font-size: 0.9rem;
-  color: #718096;
 }
 
 /* Estilos para CTA final */

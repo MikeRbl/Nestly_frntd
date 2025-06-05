@@ -1,62 +1,61 @@
-<nav class="fresh-navbar">
-  <div class="fresh-nav-container">
+<div class="background background bg-gray-50 dark:bg-gray-800">
+<nav class="fresh-navbar background bg-gray-50 dark:bg-gray-800">
+  <div class="fresh-nav-container background bg-gray-50 dark:bg-gray-800">
 
     <div class="fresh-logo" routerLink="/principal/dashboard">
-      <img src="assets/navbar/LogoN.png" alt="Westly">
+      <img src="assets/navbar/LogoN.png" class="dark:invert transition-all duration-300" alt="Westly">
     </div>
 
     <div class="fresh-nav-links">
 
-      <a class="nav-main-link" routerLink="dashboard" routerLinkActive="active">
+      <a class="nav-main-link" 
+         routerLink="dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
         <span class="textoBtn">Inicio</span>
       </a>
 
-      <a class="nav-main-link" routerLink="buscarCasa" routerLinkActive="active"> 
+      <a class="nav-main-link" 
+         routerLink="buscarCasa" routerLinkActive="active">
         <span class="textoBtn">Buscar</span>
       </a>
 
-
-      <a class="nav-main-link" routerLink="publicarCasa" routerLinkActive="active"
+      <a class="nav-main-link" 
+         routerLink="publicarCasa" routerLinkActive="active"
          *ngIf="userRole === 'propietario' || userRole === 'admin'">
         <span class="textoBtn">Publicar Propiedad</span>
       </a>
 
-      <a class="nav-main-link" routerLink="qnSomos" routerLinkActive="active">
+      <a class="nav-main-link" 
+         routerLink="qnSomos" routerLinkActive="active">
         <span class="textoBtn">¿Quiénes somos?</span>
       </a>
     </div>
 
     <div class="right-elements">
-      <a class="signup-btn" routerLink="/register" *ngIf="!isLoggedIn()">
+      <a class="signup-btn text-white" 
+         routerLink="/register" *ngIf="!isLoggedIn()">
         <span>Registrarse</span>
       </a>
-      <a class="login-btn" routerLink="/login" *ngIf="!isLoggedIn()">
+      <a class="login-btn" 
+         routerLink="/login" *ngIf="!isLoggedIn()">
         <span>Iniciar Sesión</span>
       </a>
 
-      <div class="user-info" *ngIf="isLoggedIn()" (click)="handleProfileClick()">
-    <div class="nombreUsuario">
-        <span class="user-name">{{ userData?.first_name }} {{ userData?.last_name_paternal }}</span>
-    </div>
-    <div class="user-profile">
-        <img 
+      <div class="user-info" 
+           *ngIf="isLoggedIn()" (click)="handleProfileClick()">
+        <div class="nombreUsuario">
+          <span class="user-name">{{ userData?.first_name }} {{ userData?.last_name_paternal }}</span>
+        </div>
+        <div class="user-profile">
+          <img 
             [src]="userData?.profile_picture || 'assets/navbar/usuario.png'" 
             alt="Foto de perfil de {{ userData?.first_name }}"
             class="avatar-image"> 
+        </div>
+      </div>
     </div>
-</div>
-  
 
-      
-    </div>
-    
   </div>
 </nav>
+</div>
+
 <router-outlet></router-outlet>
-
-
-
-
-
-
-
