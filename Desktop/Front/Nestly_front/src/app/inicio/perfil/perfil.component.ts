@@ -36,6 +36,12 @@ export class PerfilComponent implements OnInit {
   ngOnInit(): void {
     this.loadUserData(); // Carga los datos del usuario al iniciar
   }
+removeSelectedImage(): void {
+  this.selectedImage = null;
+  this.selectedFile = null;
+  const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+  if (fileInput) fileInput.value = '';
+}
 
   onFileChange(event: any): void {
     const file = event.target.files[0]; // Obtiene el archivo
@@ -84,6 +90,8 @@ export class PerfilComponent implements OnInit {
         if (this.userData && response.profile_picture_url) { // Verificar que profile_picture_url exista
           // CORRECCIÓN AQUÍ: Usar response.profile_picture_url
           this.userData.profile_picture = `${response.profile_picture_url}?${new Date().getTime()}`;
+           
+           window.location.reload();// Recargar la página para reflejar el cambio
         } else if (this.userData) {
             // Si profile_picture_url no viene en la respuesta, recargar los datos del usuario
             // para obtener la URL actualizada del avatar desde el endpoint 'user'.
