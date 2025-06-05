@@ -275,7 +275,6 @@ body {
   border-radius: 10px;
   font-size: 14px;
   font-weight: 500;
-  color: var(--gray);
   cursor: pointer;
   transition: all 0.3s;
 }
@@ -408,7 +407,6 @@ body {
 
 .form-header h2 {
   font-size: 1.8rem;
-  color: var(--primary-dark);
   margin-bottom: 0.5rem;
   display: flex;
   align-items: center;
@@ -417,7 +415,6 @@ body {
 }
 
 .form-header h2 i {
-  color: var(--accent);
 }
 
 .form-header p {

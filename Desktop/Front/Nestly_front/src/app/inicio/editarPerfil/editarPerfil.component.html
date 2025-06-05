@@ -73,15 +73,15 @@
     <form *ngIf="userData && !isLoading" (ngSubmit)="onSubmit()" #profileForm="ngForm" class="bg-gray-100 text-white dark:bg-gray-900 dark:text-white">
         <div class="cont-form">
             <div class="form-header">
-                <h2><i class="fas fa-user-edit"></i> Editar Perfil</h2>
-                <p class="text-gray-600">Actualiza tu información personal</p>
+                <h2> Editar Perfil</h2>
+                <p class="dark:text-gray-300">Actualiza tu información personal</p>
             </div>
 
             <div class="casillas">
                 <div class="input-group">
                     <div class="inputs">
                         <label for="first_name">Nombre</label>
-                        <input id="first_name" class="input bg-gray-200" type="text" 
+                        <input id="first_name" class="input background bg-gray-50 dark:bg-gray-800" type="text" 
                                [(ngModel)]="userData.first_name" 
                                name="first_name"
                                (ngModelChange)="onFieldChange('first_name', $event)"
@@ -90,7 +90,7 @@
 
                     <div class="inputs">
                         <label for="last_name_paternal">Apellido Paterno</label>
-                        <input id="last_name_paternal" class="input bg-gray-200" type="text" 
+                        <input id="last_name_paternal" class="input background bg-gray-50 dark:bg-gray-800" type="text" 
                                [(ngModel)]="userData.last_name_paternal"
                                name="last_name_paternal"
                                (ngModelChange)="onFieldChange('last_name_paternal', $event)"
@@ -101,7 +101,7 @@
                 <div class="input-group">
                     <div class="inputs">
                         <label for="last_name_maternal">Apellido Materno</label>
-                        <input id="last_name_maternal" class="input bg-gray-200" type="text" 
+                        <input id="last_name_maternal" class="input background bg-gray-50 dark:bg-gray-800" type="text" 
                                [(ngModel)]="userData.last_name_maternal"
                                name="last_name_maternal"
                                (ngModelChange)="onFieldChange('last_name_maternal', $event)">
@@ -109,7 +109,7 @@
 
                     <div class="inputs">
                         <label for="email">Email</label>
-                        <input id="email" class="input bg-gray-200" type="email" 
+                        <input id="email" class="input background bg-gray-50 dark:bg-gray-800" type="email" 
                                [(ngModel)]="userData.email"
                                name="email"
                                (ngModelChange)="onFieldChange('email', $event)"
@@ -120,7 +120,7 @@
                 <div class="input-group">
                     <div class="inputs">
                         <label for="phone">Teléfono</label>
-                        <input id="phone" class="input bg-gray-200" type="tel" 
+                        <input id="phone" class="input background bg-gray-50 dark:bg-gray-800" type="tel" 
                                [(ngModel)]="userData.phone"
                                name="phone"
                                (ngModelChange)="onFieldChange('phone', $event)">
@@ -128,7 +128,7 @@
                     
                     <div class="inputs">
                         <label for="password">Nueva Contraseña</label>
-                        <input id="password" class="input bg-gray-200" type="password" 
+                        <input id="password" class="input background bg-gray-50 dark:bg-gray-800" type="password" 
                                [(ngModel)]="password"
                                name="password"
                                placeholder="Nueva contraseña">
@@ -138,7 +138,7 @@
                 <div class="input-group" *ngIf="password">
                     <div class="inputs">
                         <label for="passwordConfirmation">Confirmar Contraseña</label>
-                        <input id="passwordConfirmation" class="input bg-gray-200" type="password" 
+                        <input id="passwordConfirmation" class="input background bg-gray-50 dark:bg-gray-800" type="password" 
                                [(ngModel)]="passwordConfirmation"
                                name="passwordConfirmation"
                                placeholder="Confirmar nueva contraseña">

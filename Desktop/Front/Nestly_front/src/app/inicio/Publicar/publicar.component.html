@@ -8,7 +8,7 @@
         <!-- TITULO -->
         <div class="mb-3">
           <label class="form-label">Título *</label>
-          <input type="text" class="form-control" formControlName="titulo"
+          <input type="text" class="form-control background bg-gray-50 dark:bg-gray-800" formControlName="titulo"
             [ngClass]="{ 'is-invalid': f['titulo'].invalid && (f['titulo'].touched || formSubmitted) }" />
           <div class="invalid-feedback" *ngIf="f['titulo'].errors?.['required']">
             Campo obligatorio
@@ -21,7 +21,7 @@
         <!-- DESCRIPCIÓN -->
         <div class="mb-3">
           <label class="form-label">Descripción *</label>
-          <textarea class="form-control" rows="3" formControlName="descripcion"
+          <textarea class="form-control background bg-gray-50 dark:bg-gray-800" rows="3" formControlName="descripcion"
             [ngClass]="{ 'is-invalid': f['descripcion'].invalid && (f['descripcion'].touched || formSubmitted) }"></textarea>
           <div class="invalid-feedback" *ngIf="f['descripcion'].errors?.['required']">
             Campo obligatorio
@@ -31,7 +31,7 @@
         <!-- DIRECCIÓN -->
         <div class="mb-3">
           <label class="form-label">Dirección *</label>
-          <input type="text" class="form-control" formControlName="direccion"
+          <input type="text" class="form-control background bg-gray-50 dark:bg-gray-800" formControlName="direccion"
             [ngClass]="{ 'is-invalid': f['direccion'].invalid && (f['direccion'].touched || formSubmitted) }" />
           <div class="invalid-feedback" *ngIf="f['direccion'].errors?.['required']">
             Campo obligatorio
@@ -42,7 +42,7 @@
         <div class="row">
           <div class="col-md-6 mb-3">
             <label class="form-label">País *</label>
-            <input type="text" class="form-control" formControlName="pais"
+            <input type="text" class="form-control background bg-gray-50 dark:bg-gray-800" formControlName="pais"
               [ngClass]="{ 'is-invalid': f['pais'].invalid && (f['pais'].touched || formSubmitted) }" />
             <div class="invalid-feedback" *ngIf="f['pais'].errors?.['required']">
               Campo obligatorio
@@ -50,7 +50,7 @@
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">Estado *</label>
-            <input type="text" class="form-control" formControlName="estado"
+            <input type="text" class="form-control background bg-gray-50 dark:bg-gray-800" formControlName="estado"
               [ngClass]="{ 'is-invalid': f['estado'].invalid && (f['estado'].touched || formSubmitted) }" />
             <div class="invalid-feedback" *ngIf="f['estado'].errors?.['required']">
               Campo obligatorio
@@ -58,7 +58,7 @@
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">Ciudad *</label>
-            <input type="text" class="form-control" formControlName="ciudad"
+            <input type="text" class="form-control background bg-gray-50 dark:bg-gray-800" formControlName="ciudad"
               [ngClass]="{ 'is-invalid': f['ciudad'].invalid && (f['ciudad'].touched || formSubmitted) }" />
             <div class="invalid-feedback" *ngIf="f['ciudad'].errors?.['required']">
               Campo obligatorio
@@ -66,7 +66,7 @@
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">Colonia</label>
-            <input type="text" class="form-control" formControlName="colonia" />
+            <input type="text" class="form-control background bg-gray-50 dark:bg-gray-800" formControlName="colonia" />
           </div>
         </div>
 
@@ -74,7 +74,7 @@
         <div class="row">
           <div class="col-md-6 mb-3">
             <label class="form-label">Precio *</label>
-            <input type="number" class="form-control" formControlName="precio"
+            <input type="number" class="form-control background bg-gray-50 dark:bg-gray-800" formControlName="precio"
               [ngClass]="{ 'is-invalid': f['precio'].invalid && (f['precio'].touched || formSubmitted) }" />
             <div class="invalid-feedback" *ngIf="f['precio'].errors?.['required']">
               Campo obligatorio
@@ -82,7 +82,7 @@
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">Habitaciones *</label>
-            <input type="number" class="form-control" formControlName="habitaciones"
+            <input type="number" class="form-control background bg-gray-50 dark:bg-gray-800" formControlName="habitaciones"
               [ngClass]="{ 'is-invalid': f['habitaciones'].invalid && (f['habitaciones'].touched || formSubmitted) }" />
             <div class="invalid-feedback" *ngIf="f['habitaciones'].errors?.['required']">
               Campo obligatorio
@@ -90,7 +90,7 @@
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">Baños *</label>
-            <input type="number" class="form-control" formControlName="banos"
+            <input type="number" class="form-control background bg-gray-50 dark:bg-gray-800" formControlName="banos"
               [ngClass]="{ 'is-invalid': f['banos'].invalid && (f['banos'].touched || formSubmitted) }" />
             <div class="invalid-feedback" *ngIf="f['banos'].errors?.['required']">
               Campo obligatorio
@@ -98,7 +98,7 @@
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">Metros cuadrados *</label>
-            <input type="number" class="form-control" formControlName="metros_cuadrados"
+            <input type="number" class="form-control background bg-gray-50 dark:bg-gray-800" formControlName="metros_cuadrados"
               [ngClass]="{ 'is-invalid': f['metros_cuadrados'].invalid && (f['metros_cuadrados'].touched || formSubmitted) }" />
             <div class="invalid-feedback" *ngIf="f['metros_cuadrados'].errors?.['required']">
               Campo obligatorio
@@ -109,11 +109,11 @@
         <!-- AMUEBLADO / DISPONIBILIDAD -->
         <div class="row">
           <div class="col-md-6 mb-3 form-check">
-            <input class="form-check-input" type="checkbox" formControlName="amueblado" id="amueblado" />
+            <input class="form-check-input background bg-gray-50 dark:bg-gray-800" type="checkbox" formControlName="amueblado" id="amueblado" />
             <label class="form-check-label" for="amueblado">¿Está amueblado?</label>
           </div>
           <div class="col-md-6 mb-3 form-check">
-            <input class="form-check-input" type="checkbox" formControlName="disponibilidad" id="disponibilidad" />
+            <input class="form-check-input background bg-gray-50 dark:bg-gray-800" type="checkbox" formControlName="disponibilidad" id="disponibilidad" />
             <label class="form-check-label" for="disponibilidad">¿Está disponible?</label>
           </div>
         </div>
@@ -121,23 +121,23 @@
         <!-- ANUALIZADO / DEPÓSITO / TAMAÑO -->
         <div class="row">
           <div class="col-md-4 mb-3 form-check">
-            <input class="form-check-input" type="checkbox" formControlName="anualizado" id="anualizado" />
+            <input class="form-check-input background bg-gray-50 dark:bg-gray-800" type="checkbox" formControlName="anualizado" id="anualizado" />
             <label class="form-check-label" for="anualizado">Anualizado</label>
           </div>
           <div class="col-md-4 mb-3">
             <label class="form-label">Depósito</label>
-            <input type="number" class="form-control" formControlName="deposito" />
+            <input type="number" class="form-control background bg-gray-50 dark:bg-gray-800" formControlName="deposito" />
           </div>
           <div class="col-md-4 mb-3">
             <label class="form-label">Tamaño</label>
-            <input type="text" class="form-control" formControlName="tamano" />
+            <input type="text" class="form-control background bg-gray-50 dark:bg-gray-800" formControlName="tamano" />
           </div>
         </div>
 
         <!-- MASCOTAS -->
         <div class="mb-3">
           <label class="form-label">¿Se permiten mascotas? *</label>
-          <select class="form-select" formControlName="mascotas"
+          <select class="form-select background bg-gray-50 dark:bg-gray-800" formControlName="mascotas"
             [ngClass]="{ 'is-invalid': mascotasInvalid }">
             <option value="" disabled selected>Seleccione una opción</option>
             <option *ngFor="let opcion of opcionesMascotas" [value]="opcion.value">
@@ -157,7 +157,7 @@
         <!-- FOTOS -->
         <div class="mb-3">
           <label class="form-label">Fotos *</label>
-          <input type="file" class="form-control" (change)="onFileChange($event)" multiple accept="image/*" />
+          <input type="file" class="form-control background bg-gray-50 dark:bg-gray-800" (change)="onFileChange($event)" multiple accept="image/*" />
           <small class="text-muted">Selecciona al menos una foto</small>
           <div class="text-danger" *ngIf="fotosInvalid">
             Debes subir al menos una foto
@@ -176,18 +176,18 @@
         <div class="row">
           <div class="col-md-6 mb-3">
             <label class="form-label">Correo electrónico *</label>
-            <input type="email" class="form-control" formControlName="email"
+            <input type="email" class="form-control background bg-gray-50 dark:bg-gray-800" formControlName="email"
               [ngClass]="{ 'is-invalid': f['email'].invalid && (f['email'].touched || formSubmitted) }" />
             <div class="invalid-feedback" *ngIf="f['email'].errors?.['required']">
               Campo obligatorio
             </div>
-            <div class="invalid-feedback" *ngIf="f['email'].errors?.['email']">
+            <div class="invalid-feedback " *ngIf="f['email'].errors?.['email']">
               Formato de email inválido
             </div>
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">Teléfono *</label>
-            <input type="text" class="form-control" formControlName="telefono"
+            <input type="text" class="form-control background bg-gray-50 dark:bg-gray-800" formControlName="telefono"
               [ngClass]="{ 'is-invalid': f['telefono'].invalid && (f['telefono'].touched || formSubmitted) }" />
             <div class="invalid-feedback" *ngIf="f['telefono'].errors?.['required']">
               Campo obligatorio
@@ -198,15 +198,15 @@
         <div class="mb-3">
           <label class="form-label">Tipo de Propiedad</label>
           <div class="form-check form-check-inline">
-            <input type="checkbox" class="form-check-input" formControlName="apartamento" id="apartamento" />
+            <input type="checkbox" class="form-check-input background bg-gray-50 dark:bg-gray-800" formControlName="apartamento" id="apartamento" />
             <label class="form-check-label" for="apartamento">Apartamento</label>
           </div>
           <div class="form-check form-check-inline">
-            <input type="checkbox" class="form-check-input" formControlName="casaPlaya" id="casaPlaya" />
+            <input type="checkbox" class="form-check-input background bg-gray-50 dark:bg-gray-800" formControlName="casaPlaya" id="casaPlaya" />
             <label class="form-check-label" for="casaPlaya">Casa de Playa</label>
           </div>
           <div class="form-check form-check-inline">
-            <input type="checkbox" class="form-check-input" formControlName="industrial" id="industrial" />
+            <input type="checkbox" class="form-check-input background bg-gray-50 dark:bg-gray-800" formControlName="industrial" id="industrial" />
             <label class="form-check-label" for="industrial">Industrial</label>
           </div>
         </div>
