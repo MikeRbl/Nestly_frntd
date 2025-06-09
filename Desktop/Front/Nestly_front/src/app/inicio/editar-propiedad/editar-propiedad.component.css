@@ -1,0 +1,20 @@
+/* --- Estilos para el contenedor principal que enmarca el GIF --- */
+.container-principal {
+    background-color: #ffffff;
+    display: flex;    
+    flex-direction: column; /* Alinea los elementos en una columna */
+    justify-content: center; /* Centra horizontalmente el contenido */
+    align-items: center; /* Centra verticalmente el contenido */
+    width: 100%;   
+    height: 100vh;
+
+}
+
+.container-principal img {
+    width: 100%; /* Ancho completo del contenedor */
+    height: auto; /* Mantiene la proporción de aspecto */
+    max-width: 300px; /* Ancho máximo para evitar que se estire demasiado */
+    border-radius: 10px; /* Bordes redondeados para un mejor estilo */
+}
+
+

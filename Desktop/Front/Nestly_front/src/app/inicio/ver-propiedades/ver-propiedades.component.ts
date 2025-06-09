@@ -136,8 +136,8 @@ export class VerPropiedadesComponent implements OnInit {
     this.router.navigate(['/editar-propiedad', id]);
   }
 
-  verDetalles(id: number): void {
-    this.router.navigate(['/principal/vista-propiedad', id]);
+  EditarPropiedad(id: number): void {
+    this.router.navigate(['/principal/editar-propiedad', id]);
   }
 
   getFullImageUrl(path: string): string {
