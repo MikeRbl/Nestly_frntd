@@ -14,6 +14,9 @@ import { EditarPerfilComponent } from './inicio/editarPerfil/editarPerfil.compon
 import { ConfiguracionComponent } from './inicio/configuracion/configuracion.component';
 import { PublicarComponent } from './inicio/Publicar/publicar.component';
 import { AlquilarCasaComponent } from './inicio/alquilar-casa/alquilar-casa.component';
+import { VerPropiedadesComponent } from './inicio/ver-propiedades/ver-propiedades.component';
+import { EditarPropiedadComponent } from './inicio/editar-propiedad/editar-propiedad.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 
 @NgModule({
@@ -27,12 +30,16 @@ import { AlquilarCasaComponent } from './inicio/alquilar-casa/alquilar-casa.comp
     ConfiguracionComponent,
     QnSomosComponent,
     PublicarComponent,
-    AlquilarCasaComponent
+    AlquilarCasaComponent,
+    VerPropiedadesComponent,
+    EditarPropiedadComponent,
+    
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    MatPaginatorModule,
     HttpClientModule,
     FormsModule
   ],

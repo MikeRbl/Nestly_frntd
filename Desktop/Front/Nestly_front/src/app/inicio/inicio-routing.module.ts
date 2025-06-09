@@ -1,4 +1,3 @@
-// inicio/inicio-routing.module.ts
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -8,9 +7,11 @@ import { QnSomosComponent } from './qn-somos/qn-somos.component';
 import { EditarPerfilComponent } from './editarPerfil/editarPerfil.component';
 import { ConfiguracionComponent } from './configuracion/configuracion.component';
 import { PublicarComponent } from './Publicar/publicar.component';
-import { FormsModule } from '@angular/forms'; // ← AÑADE AQUÍ
+
 import { AlquilarCasaComponent } from './alquilar-casa/alquilar-casa.component';
 import { BuscarComponent } from './buscar/buscar.component';
+import { VerPropiedadesComponent } from './ver-propiedades/ver-propiedades.component';
+import { EditarPropiedadComponent } from './editar-propiedad/editar-propiedad.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,8 @@ const routes: Routes = [
       { path: 'qnSomos', component: QnSomosComponent },
       { path: 'publicarCasa', component: PublicarComponent },
       { path: 'alquilarCasa', component: AlquilarCasaComponent },
+      { path: 'verPropiedades', component: VerPropiedadesComponent },
+      { path: 'editar-propiedad/:id', component: EditarPropiedadComponent },
       { path: 'buscarCasa', component: BuscarComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]

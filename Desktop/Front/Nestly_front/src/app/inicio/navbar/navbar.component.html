@@ -25,6 +25,12 @@
       </a>
 
       <a class="nav-main-link" 
+         routerLink="verPropiedades" routerLinkActive="active"
+         *ngIf="userRole === 'propietario' || userRole === 'admin'">
+        <span class="textoBtn">Mis Propiedades</span>
+      </a>
+
+      <a class="nav-main-link" 
          routerLink="qnSomos" routerLinkActive="active">
         <span class="textoBtn">¿Quiénes somos?</span>
       </a>
