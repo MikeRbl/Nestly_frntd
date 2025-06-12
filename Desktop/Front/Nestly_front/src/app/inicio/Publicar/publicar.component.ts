@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HttpLavavelService } from '../../http.service';
+import { HttpLavavelService } from '../../http.service'; // Asegúrate que la ruta sea correcta
 import { DomSanitizer } from '@angular/platform-browser';
 import Swal from 'sweetalert2';
 
@@ -13,16 +13,12 @@ import Swal from 'sweetalert2';
 export class PublicarComponent implements OnInit, OnDestroy {
   formulario: FormGroup;
   fotos: File[] = [];
-  previewUrls: (string | null)[] = [];
+  previewUrls: (string | ArrayBuffer | null)[] = [];
   formSubmitted = false;
   isLoading = false;
   
-  // Cambiado a los valores que espera el backend ('si', 'no')
-  opcionesMascotas = [
-    { value: 'si', label: 'Permitido' },
-    { value: 'no', label: 'No permitido' },
-    { value: 'consultar', label: 'Consultar' }
-  ];
+  // Array para guardar los tipos de propiedad que vienen de la API
+  tiposDePropiedad: any[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -30,34 +26,56 @@ export class PublicarComponent implements OnInit, OnDestroy {
     private router: Router,
     private sanitizer: DomSanitizer
   ) {
+    // El FormGroup ahora refleja la estructura final de la base de datos
     this.formulario = this.fb.group({
+      // Información Principal
       titulo: ['', [Validators.required, Validators.maxLength(255)]],
       descripcion: ['', [Validators.required]],
+      
+      // Ubicación
       direccion: ['', [Validators.required, Validators.maxLength(255)]],
       pais: ['', [Validators.required, Validators.maxLength(100)]],
-      estado: ['', [Validators.required, Validators.maxLength(100)]],
+      estado_ubicacion: ['', [Validators.required, Validators.maxLength(100)]],
       ciudad: ['', [Validators.required, Validators.maxLength(100)]],
       colonia: [''],
+
+      // Características y Especificaciones
       precio: ['', [Validators.required, Validators.min(0)]],
       habitaciones: ['', [Validators.required, Validators.min(0)]],
       banos: ['', [Validators.required, Validators.min(0)]],
       metros_cuadrados: ['', [Validators.required, Validators.min(0)]],
+      deposito: [''],
+      
+      // Toggles de Sí/No
       amueblado: [false, [Validators.required]],
-      disponibilidad: [false, [Validators.required]],
+      anualizado: [false, [Validators.required]],
+      mascotas: ['', [Validators.required]],
+      
+      // El campo relacional
+      tipo_propiedad_id: ['', [Validators.required]],
+
+      // Multimedia
+      fotos: [[], [Validators.required]],
+      
+      // Contacto
       email: ['', [Validators.required, Validators.email, Validators.maxLength(255)]],
       telefono: ['', [Validators.required, Validators.maxLength(15)]],
-      apartamento: [false],
-      casaPlaya: [false],
-      industrial: [false],
-      anualizado: [false],
-      deposito: [''],
-      mascotas: ['', [Validators.required]], // Valor enviado será 'si', 'no' o 'consultar'
-      tamano: [''],
-      fotos: [[], [Validators.required]]
+      // 'tamano' ha sido eliminado de esta sección
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // Se llama a la API para obtener los tipos de propiedad al cargar el componente
+    this.httpService.getTiposDePropiedad().subscribe({
+      next: (tipos) => {
+        this.tiposDePropiedad = tipos;
+      },
+      error: (err) => {
+        console.error('Error al cargar los tipos de propiedad', err);
+        Swal.fire('Error', 'No se pudieron cargar las categorías de propiedad. Inténtalo de nuevo más tarde.', 'error');
+      }
+    });
+  }
 
   onFileChange(event: any): void {
     if (event.target.files && event.target.files.length > 0) {
@@ -92,19 +110,10 @@ export class PublicarComponent implements OnInit, OnDestroy {
 
   private clearPreviewUrls(): void {
     this.previewUrls.forEach(url => {
-      if (url) URL.revokeObjectURL(url);
+      if (url) URL.revokeObjectURL(url as string);
     });
     this.previewUrls = [];
     this.fotos = [];
-  }
-
-  mostrarErrores(): void {
-    Object.keys(this.formulario.controls).forEach(key => {
-      const control = this.formulario.get(key);
-      if (control?.errors) {
-        console.log(`Campo ${key} tiene errores:`, control.errors);
-      }
-    });
   }
 
   publicarPropiedad(): void {
@@ -112,73 +121,65 @@ export class PublicarComponent implements OnInit, OnDestroy {
     this.isLoading = true;
 
     if (this.formulario.invalid) {
-      this.mostrarErrores();
       this.isLoading = false;
-      Swal.fire('Error', 'Por favor completa todos los campos requeridos correctamente', 'error');
+      Swal.fire('Error', 'Por favor completa todos los campos requeridos correctamente.', 'error');
+      // Marca todos los campos como "tocados" para mostrar los mensajes de error
+      Object.values(this.formulario.controls).forEach(control => {
+        control.markAsTouched();
+      });
       return;
     }
 
     const formData = new FormData();
     const formValue = this.formulario.value;
 
-    // Procesar todos los campos excepto 'fotos'
+    // Itera sobre los valores del formulario y los agrega a formData
     Object.keys(formValue).forEach(key => {
       if (key !== 'fotos') {
         let value = formValue[key];
         
-        // Conversión específica para campos booleanos
         if (typeof value === 'boolean') {
           value = value ? '1' : '0';
-        } else if (value === null || value === undefined) {
-          return; // Saltar valores nulos
         }
         
-        formData.append(key, String(value)); // Asegurar que todo sea string
+        if (value !== null && value !== undefined) {
+          formData.append(key, String(value));
+        }
       }
     });
 
-    // Añadir fotos
-    this.fotos.forEach((file, index) => {
-      formData.append(`fotos[${index}]`, file, file.name);
+    // Agrega los archivos de las fotos
+    this.fotos.forEach((file) => {
+      formData.append(`fotos[]`, file, file.name);
     });
 
-    // Debug: Mostrar datos en consola
-    console.log('Datos a enviar:', {
-      ...formValue,
-      fotos: this.fotos.map(f => f.name)
-    });
-
+    // Envía los datos al backend
     this.httpService.Service_Post('propiedades', formData).subscribe({
       next: (response) => {
         this.isLoading = false;
-        if (response.success) {
-          Swal.fire('Éxito', 'Propiedad publicada exitosamente', 'success').then(() => {
-            this.router.navigate(['/dashboard']);
-          });
-        } else {
-          Swal.fire('Error', response.message || 'Error al publicar la propiedad', 'error');
-        }
+        Swal.fire('¡Éxito!', 'Propiedad publicada correctamente.', 'success').then(() => {
+          this.router.navigate(['/dashboard']); // O la ruta a la que quieras redirigir
+        });
       },
       error: (err) => {
         this.isLoading = false;
-        console.error('Error completo:', err);
+        console.error('Error completo al publicar:', err);
         
-        if (err.status === 401) {
-          Swal.fire('Sesión expirada', 'Por favor inicia sesión nuevamente.', 'warning');
-        } else if (err.status === 422 && err.error.errors) {
-          const errors = Object.values(err.error.errors).flat().join('\n');
+        if (err.status === 422 && err.error.errors) {
+          const errors = Object.values(err.error.errors).flat().join('<br>');
           Swal.fire({
-            title: 'Error de validación',
-            html: `<pre>${errors}</pre>`,
+            title: 'Error de Validación',
+            html: `<div class="text-start p-3">${errors}</div>`,
             icon: 'error'
           });
         } else {
-          Swal.fire('Error', err.error?.message || err.message || 'Error de conexión', 'error');
+          Swal.fire('Error Inesperado', err.error?.message || 'Ocurrió un error al conectar con el servidor.', 'error');
         }
       }
     });
   }
 
+  // Getter para un acceso más fácil a los controles del formulario en la plantilla HTML
   get f() {
     return this.formulario.controls;
   }
@@ -188,8 +189,7 @@ export class PublicarComponent implements OnInit, OnDestroy {
   }
 
   get mascotasInvalid() {
-    const control = this.formulario.get('mascotas');
-    return control?.invalid && (control?.touched || this.formSubmitted);
+    return this.f['mascotas'].invalid && (this.f['mascotas'].touched || this.formSubmitted);
   }
 
   ngOnDestroy() {

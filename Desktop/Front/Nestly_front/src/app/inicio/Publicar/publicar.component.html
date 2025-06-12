@@ -1,225 +1,172 @@
 <div class="container py-4">
-  <h2 class="mb-4">Publicar Propiedad</h2>
-
+  <h2 class="mb-4">Publicar una Nueva Propiedad</h2>
+  
   <form [formGroup]="formulario" (ngSubmit)="publicarPropiedad()" novalidate>
     <div class="row">
-      <!-- COLUMNA IZQUIERDA -->
-      <div class="col-md-6">
-        <!-- TITULO -->
-        <div class="mb-3">
-          <label class="form-label">Título *</label>
-          <input type="text" class="form-control background bg-gray-50 dark:bg-gray-800" formControlName="titulo"
-            [ngClass]="{ 'is-invalid': f['titulo'].invalid && (f['titulo'].touched || formSubmitted) }" />
-          <div class="invalid-feedback" *ngIf="f['titulo'].errors?.['required']">
-            Campo obligatorio
-          </div>
-          <div class="invalid-feedback" *ngIf="f['titulo'].errors?.['maxlength']">
-            Máximo 255 caracteres
-          </div>
-        </div>
 
-        <!-- DESCRIPCIÓN -->
+      <!-- =================================== -->
+      <!-- ========= COLUMNA IZQUIERDA ========= -->
+      <!-- =================================== -->
+      <div class="col-lg-6">
+        
+        <!-- SECCIÓN 1: INFORMACIÓN PRINCIPAL -->
+        <h5>Información Principal</h5>
+        <hr class="mt-2 mb-3">
+        <div class="mb-2">
+          <label class="form-label">Título de la Publicación *</label>
+          <input type="text" class="form-control form-control-sm" formControlName="titulo"
+            [ngClass]="{ 'is-invalid': f['titulo'].invalid && (f['titulo'].touched || formSubmitted) }" />
+        </div>
         <div class="mb-3">
           <label class="form-label">Descripción *</label>
-          <textarea class="form-control background bg-gray-50 dark:bg-gray-800" rows="3" formControlName="descripcion"
+          <textarea class="form-control form-control-sm" rows="4" formControlName="descripcion"
             [ngClass]="{ 'is-invalid': f['descripcion'].invalid && (f['descripcion'].touched || formSubmitted) }"></textarea>
-          <div class="invalid-feedback" *ngIf="f['descripcion'].errors?.['required']">
-            Campo obligatorio
-          </div>
         </div>
 
-        <!-- DIRECCIÓN -->
-        <div class="mb-3">
-          <label class="form-label">Dirección *</label>
-          <input type="text" class="form-control background bg-gray-50 dark:bg-gray-800" formControlName="direccion"
+        <!-- SECCIÓN 2: UBICACIÓN -->
+        <h5>Ubicación</h5>
+        <hr class="mt-2 mb-3">
+        <div class="mb-2">
+          <label class="form-label">Dirección Completa *</label>
+          <input type="text" class="form-control form-control-sm" formControlName="direccion"
             [ngClass]="{ 'is-invalid': f['direccion'].invalid && (f['direccion'].touched || formSubmitted) }" />
-          <div class="invalid-feedback" *ngIf="f['direccion'].errors?.['required']">
-            Campo obligatorio
-          </div>
         </div>
-
-        <!-- UBICACIÓN -->
         <div class="row">
-          <div class="col-md-6 mb-3">
+          <div class="col-md-6 mb-2">
             <label class="form-label">País *</label>
-            <input type="text" class="form-control background bg-gray-50 dark:bg-gray-800" formControlName="pais"
+            <input type="text" class="form-control form-control-sm" formControlName="pais"
               [ngClass]="{ 'is-invalid': f['pais'].invalid && (f['pais'].touched || formSubmitted) }" />
-            <div class="invalid-feedback" *ngIf="f['pais'].errors?.['required']">
-              Campo obligatorio
-            </div>
           </div>
-          <div class="col-md-6 mb-3">
+          <div class="col-md-6 mb-2">
             <label class="form-label">Estado *</label>
-            <input type="text" class="form-control background bg-gray-50 dark:bg-gray-800" formControlName="estado"
-              [ngClass]="{ 'is-invalid': f['estado'].invalid && (f['estado'].touched || formSubmitted) }" />
-            <div class="invalid-feedback" *ngIf="f['estado'].errors?.['required']">
-              Campo obligatorio
-            </div>
+            <input type="text" class="form-control form-control-sm" formControlName="estado_ubicacion"
+              [ngClass]="{ 'is-invalid': f['estado_ubicacion'].invalid && (f['estado_ubicacion'].touched || formSubmitted) }" />
           </div>
-          <div class="col-md-6 mb-3">
+          <div class="col-md-6 mb-2">
             <label class="form-label">Ciudad *</label>
-            <input type="text" class="form-control background bg-gray-50 dark:bg-gray-800" formControlName="ciudad"
+            <input type="text" class="form-control form-control-sm" formControlName="ciudad"
               [ngClass]="{ 'is-invalid': f['ciudad'].invalid && (f['ciudad'].touched || formSubmitted) }" />
-            <div class="invalid-feedback" *ngIf="f['ciudad'].errors?.['required']">
-              Campo obligatorio
-            </div>
           </div>
-          <div class="col-md-6 mb-3">
+          <div class="col-md-6 mb-2">
             <label class="form-label">Colonia</label>
-            <input type="text" class="form-control background bg-gray-50 dark:bg-gray-800" formControlName="colonia" />
+            <input type="text" class="form-control form-control-sm" formControlName="colonia" />
           </div>
         </div>
 
-        <!-- PRECIO / HABITACIONES / BAÑOS / M² -->
+        <!-- SECCIÓN 3: CONTACTO -->
+        <h5 class="mt-3">Información de Contacto</h5>
+        <hr class="mt-2 mb-3">
         <div class="row">
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Precio *</label>
-            <input type="number" class="form-control background bg-gray-50 dark:bg-gray-800" formControlName="precio"
-              [ngClass]="{ 'is-invalid': f['precio'].invalid && (f['precio'].touched || formSubmitted) }" />
-            <div class="invalid-feedback" *ngIf="f['precio'].errors?.['required']">
-              Campo obligatorio
-            </div>
+          <div class="col-md-6 mb-2">
+            <label class="form-label">Correo electrónico *</label>
+            <input type="email" class="form-control form-control-sm" formControlName="email"
+              [ngClass]="{ 'is-invalid': f['email'].invalid && (f['email'].touched || formSubmitted) }" />
           </div>
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Habitaciones *</label>
-            <input type="number" class="form-control background bg-gray-50 dark:bg-gray-800" formControlName="habitaciones"
-              [ngClass]="{ 'is-invalid': f['habitaciones'].invalid && (f['habitaciones'].touched || formSubmitted) }" />
-            <div class="invalid-feedback" *ngIf="f['habitaciones'].errors?.['required']">
-              Campo obligatorio
-            </div>
-          </div>
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Baños *</label>
-            <input type="number" class="form-control background bg-gray-50 dark:bg-gray-800" formControlName="banos"
-              [ngClass]="{ 'is-invalid': f['banos'].invalid && (f['banos'].touched || formSubmitted) }" />
-            <div class="invalid-feedback" *ngIf="f['banos'].errors?.['required']">
-              Campo obligatorio
-            </div>
-          </div>
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Metros cuadrados *</label>
-            <input type="number" class="form-control background bg-gray-50 dark:bg-gray-800" formControlName="metros_cuadrados"
-              [ngClass]="{ 'is-invalid': f['metros_cuadrados'].invalid && (f['metros_cuadrados'].touched || formSubmitted) }" />
-            <div class="invalid-feedback" *ngIf="f['metros_cuadrados'].errors?.['required']">
-              Campo obligatorio
-            </div>
+          <div class="col-md-6 mb-2">
+            <label class="form-label">Teléfono *</label>
+            <input type="text" class="form-control form-control-sm" formControlName="telefono"
+              [ngClass]="{ 'is-invalid': f['telefono'].invalid && (f['telefono'].touched || formSubmitted) }" />
           </div>
         </div>
-
-        <!-- AMUEBLADO / DISPONIBILIDAD -->
-        <div class="row">
-          <div class="col-md-6 mb-3 form-check">
-            <input class="form-check-input background bg-gray-50 dark:bg-gray-800" type="checkbox" formControlName="amueblado" id="amueblado" />
-            <label class="form-check-label" for="amueblado">¿Está amueblado?</label>
-          </div>
-          <div class="col-md-6 mb-3 form-check">
-            <input class="form-check-input background bg-gray-50 dark:bg-gray-800" type="checkbox" formControlName="disponibilidad" id="disponibilidad" />
-            <label class="form-check-label" for="disponibilidad">¿Está disponible?</label>
-          </div>
-        </div>
-
-        <!-- ANUALIZADO / DEPÓSITO / TAMAÑO -->
-        <div class="row">
-          <div class="col-md-4 mb-3 form-check">
-            <input class="form-check-input background bg-gray-50 dark:bg-gray-800" type="checkbox" formControlName="anualizado" id="anualizado" />
-            <label class="form-check-label" for="anualizado">Anualizado</label>
-          </div>
-          <div class="col-md-4 mb-3">
-            <label class="form-label">Depósito</label>
-            <input type="number" class="form-control background bg-gray-50 dark:bg-gray-800" formControlName="deposito" />
-          </div>
-          <div class="col-md-4 mb-3">
-            <label class="form-label">Tamaño</label>
-            <input type="text" class="form-control background bg-gray-50 dark:bg-gray-800" formControlName="tamano" />
-          </div>
-        </div>
-
-        <!-- MASCOTAS -->
-        <div class="mb-3">
-          <label class="form-label">¿Se permiten mascotas? *</label>
-          <select class="form-select background bg-gray-50 dark:bg-gray-800" formControlName="mascotas"
-            [ngClass]="{ 'is-invalid': mascotasInvalid }">
-            <option value="" disabled selected>Seleccione una opción</option>
-            <option *ngFor="let opcion of opcionesMascotas" [value]="opcion.value">
-              {{ opcion.label }}
-            </option>
-          </select>
-          <div class="invalid-feedback">
-            {{ f['mascotas'].errors?.['required'] ? 'Campo obligatorio' : 'Selección inválida' }}
-          </div>
-        </div>
-
-        
       </div>
 
-      <!-- COLUMNA DERECHA -->
-      <div class="col-md-6">
-        <!-- FOTOS -->
-        <div class="mb-3">
-          <label class="form-label">Fotos *</label>
-          <input type="file" class="form-control background bg-gray-50 dark:bg-gray-800" (change)="onFileChange($event)" multiple accept="image/*" />
-          <small class="text-muted">Selecciona al menos una foto</small>
-          <div class="text-danger" *ngIf="fotosInvalid">
-            Debes subir al menos una foto
+      <!-- ================================= -->
+      <!-- ========= COLUMNA DERECHA ========= -->
+      <!-- ================================= -->
+      <div class="col-lg-6">
+
+        <!-- SECCIÓN 4: CARACTERÍSTICAS -->
+        <h5>Características y Detalles</h5>
+        <hr class="mt-2 mb-3">
+        <div class="row">
+          <div class="col-md-6 mb-2">
+              <label class="form-label">Tipo de Propiedad *</label>
+              <select class="form-select form-select-sm" formControlName="tipo_propiedad_id" 
+                [ngClass]="{ 'is-invalid': f['tipo_propiedad_id'].invalid && (f['tipo_propiedad_id'].touched || formSubmitted) }">
+                <option value="" disabled selected>Selecciona una opción</option>
+                <option *ngFor="let tipo of tiposDePropiedad" [value]="tipo.id">{{ tipo.nombre }}</option>
+              </select>
           </div>
-          <div class="row mt-2">
-            <div class="col-6 mb-2" *ngFor="let foto of previewUrls; let i = index">
+          <div class="col-md-6 mb-2">
+            <label class="form-label">Precio (MXN) *</label>
+            <input type="number" class="form-control form-control-sm" formControlName="precio"
+              [ngClass]="{ 'is-invalid': f['precio'].invalid && (f['precio'].touched || formSubmitted) }" />
+          </div>
+          <div class="col-md-6 mb-2">
+            <label class="form-label">Habitaciones *</label>
+            <input type="number" class="form-control form-control-sm" formControlName="habitaciones"
+              [ngClass]="{ 'is-invalid': f['habitaciones'].invalid && (f['habitaciones'].touched || formSubmitted) }" />
+          </div>
+          <div class="col-md-6 mb-2">
+            <label class="form-label">Baños *</label>
+            <input type="number" class="form-control form-control-sm" formControlName="banos"
+              [ngClass]="{ 'is-invalid': f['banos'].invalid && (f['banos'].touched || formSubmitted) }" />
+          </div>
+          <div class="col-md-6 mb-2">
+            <label class="form-label">Metros Cuadrados *</label>
+            <input type="number" class="form-control form-control-sm" formControlName="metros_cuadrados"
+              [ngClass]="{ 'is-invalid': f['metros_cuadrados'].invalid && (f['metros_cuadrados'].touched || formSubmitted) }" />
+          </div>
+          <div class="col-md-6 mb-2">
+            <label class="form-label">Depósito</label>
+            <input type="number" class="form-control form-control-sm" formControlName="deposito" />
+          </div>
+        </div>
+
+        <!-- Toggles de Características -->
+        <div class="row mt-2">
+          <div class="col-md-4 mb-3">
+              <label class="form-label d-block">¿Amueblado? *</label>
+              <div class="btn-group btn-group-sm" role="group">
+                  <button type="button" class="btn" [ngClass]="f['amueblado'].value ? 'btn-success' : 'btn-outline-secondary'" (click)="f['amueblado'].setValue(true)">Sí</button>
+                  <button type="button" class="btn" [ngClass]="!f['amueblado'].value ? 'btn-danger' : 'btn-outline-secondary'" (click)="f['amueblado'].setValue(false)">No</button>
+              </div>
+          </div>
+          <div class="col-md-4 mb-3">
+              <label class="form-label d-block">¿Renta anual? *</label>
+              <div class="btn-group btn-group-sm" role="group">
+                  <button type="button" class="btn" [ngClass]="f['anualizado'].value ? 'btn-success' : 'btn-outline-secondary'" (click)="f['anualizado'].setValue(true)">Sí</button>
+                  <button type="button" class="btn" [ngClass]="!f['anualizado'].value ? 'btn-danger' : 'btn-outline-secondary'" (click)="f['anualizado'].setValue(false)">No</button>
+              </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label d-block">¿Mascotas? *</label>
+            <div class="btn-group btn-group-sm" role="group">
+              <button type="button" class="btn" [ngClass]="f['mascotas'].value === 'si' ? 'btn-success' : 'btn-outline-secondary'" (click)="f['mascotas'].setValue('si')">Sí</button>
+              <button type="button" class="btn" [ngClass]="f['mascotas'].value === 'no' ? 'btn-danger' : 'btn-outline-secondary'" (click)="f['mascotas'].setValue('no')">No</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECCIÓN 5: MULTIMEDIA -->
+        <h5 class="mt-2">Fotos de la Propiedad</h5>
+        <hr class="mt-2 mb-3">
+        <div class="mb-3">
+          <label class="form-label">Cargar Imágenes *</label>
+          <input type="file" class="form-control form-control-sm" (change)="onFileChange($event)" multiple accept="image/*" />
+          <div class="text-danger small mt-1" *ngIf="fotosInvalid">Debes subir al menos una foto.</div>
+          <div class="row mt-2 g-2">
+            <div class="col-4" *ngFor="let foto of previewUrls; let i = index">
               <div class="position-relative">
-                <img [src]="foto" class="img-fluid rounded" style="height: 100px; object-fit: cover;" />
-                <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0"
-                  (click)="removePhoto(i)">×</button>
+                <img [src]="foto" class="img-fluid rounded border" style="height: 80px; width: 100%; object-fit: cover;" />
+                <button type="button" class="btn btn-sm btn-danger rounded-circle position-absolute top-0 end-0 m-1 lh-1" (click)="removePhoto(i)">
+                  &times;
+                </button>
               </div>
             </div>
           </div>
         </div>
-      <!-- CONTACTO -->
-        <div class="row">
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Correo electrónico *</label>
-            <input type="email" class="form-control background bg-gray-50 dark:bg-gray-800" formControlName="email"
-              [ngClass]="{ 'is-invalid': f['email'].invalid && (f['email'].touched || formSubmitted) }" />
-            <div class="invalid-feedback" *ngIf="f['email'].errors?.['required']">
-              Campo obligatorio
-            </div>
-            <div class="invalid-feedback " *ngIf="f['email'].errors?.['email']">
-              Formato de email inválido
-            </div>
-          </div>
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Teléfono *</label>
-            <input type="text" class="form-control background bg-gray-50 dark:bg-gray-800" formControlName="telefono"
-              [ngClass]="{ 'is-invalid': f['telefono'].invalid && (f['telefono'].touched || formSubmitted) }" />
-            <div class="invalid-feedback" *ngIf="f['telefono'].errors?.['required']">
-              Campo obligatorio
-            </div>
-          </div>
-        </div>
-        <!-- TIPO DE PROPIEDAD -->
-        <div class="mb-3">
-          <label class="form-label">Tipo de Propiedad</label>
-          <div class="form-check form-check-inline">
-            <input type="checkbox" class="form-check-input background bg-gray-50 dark:bg-gray-800" formControlName="apartamento" id="apartamento" />
-            <label class="form-check-label" for="apartamento">Apartamento</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input type="checkbox" class="form-check-input background bg-gray-50 dark:bg-gray-800" formControlName="casaPlaya" id="casaPlaya" />
-            <label class="form-check-label" for="casaPlaya">Casa de Playa</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input type="checkbox" class="form-check-input background bg-gray-50 dark:bg-gray-800" formControlName="industrial" id="industrial" />
-            <label class="form-check-label" for="industrial">Industrial</label>
-          </div>
-        </div>
-        <!-- BOTÓN -->
-    <div class="text-end mt-4">
-      <button type="submit" class="btn btn-success" [disabled]="isLoading">
+         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+      <button type="submit" class="btn btn-primary px-4" [disabled]="isLoading">
         <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
         {{ isLoading ? 'Publicando...' : 'Publicar Propiedad' }}
       </button>
     </div>
       </div>
+      
     </div>
 
-    
+   
+   
   </form>
 </div>

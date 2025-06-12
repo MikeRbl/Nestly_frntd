@@ -68,4 +68,7 @@ export class HttpLavavelService {
       headers: this.getHeaders()
     });
   }
+  public getTiposDePropiedad(): Observable<any> {
+  return this.http.get(`${this.apiUrl}/tipos-propiedad`);
+}
 }
