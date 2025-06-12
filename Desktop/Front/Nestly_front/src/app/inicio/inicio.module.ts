@@ -5,6 +5,7 @@ import { InicioRoutingModule } from './inicio-routing.module';
 import { NavbarComponent } from './navbar/navbar.component';
 
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { ɵBrowserAnimationBuilder } from '@angular/animations';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
   imports: [
     CommonModule,
     InicioRoutingModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    
   ]
 })
 export class InicioModule { }

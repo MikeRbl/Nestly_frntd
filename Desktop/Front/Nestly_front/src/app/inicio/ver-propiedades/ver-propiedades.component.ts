@@ -11,15 +11,29 @@ import { Router } from '@angular/router';
   styleUrls: ['./ver-propiedades.component.css']
 })
 export class VerPropiedadesComponent implements OnInit {
-  // Propiedades existentes
+  // Array que SIEMPRE contiene todas las propiedades sin filtrar
+  private todasLasPropiedades: any[] = [];
+  
+  // Array que se muestra en la vista y que sí se modifica con los filtros y la paginación
   propiedades: any[] = [];
+  
+  tiposDePropiedad: any[] = [];
   loading = false;
   error = '';
   menuAbiertoId: number | null = null;
   propiedadSeleccionada: any | null = null;
   
- totalItems = 0;
-  pageSize = 12;
+  // Objeto para mantener el estado de los filtros
+  filtros = {
+    titulo: '',
+    tipoId: '', // Usaremos string vacío para "Todos"
+    precioMin: null,
+    precioMax: null
+  };
+
+  // Paginación
+  totalItems = 0;
+  pageSize = 3;
   pageIndex = 0;
   pageSizeOptions = [3, 6, 9];
   
@@ -37,69 +51,120 @@ export class VerPropiedadesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.cargarPropiedades();
-  }
-  
-  toggleMenu(event: MouseEvent, propiedadId: number): void {
-    event.stopPropagation();
-    this.menuAbiertoId = this.menuAbiertoId === propiedadId ? null : propiedadId;
+    this.cargarDatosIniciales();
   }
 
-  abrirModal(propiedad: any): void {
-    this.propiedadSeleccionada = propiedad; 
-  }
-
-  cerrarModal(): void {
-    this.propiedadSeleccionada = null;
-    document.body.style.overflow = 'auto';
-  }
-
-  cargarPropiedades(): void {
+  cargarDatosIniciales(): void {
     this.loading = true;
     this.error = '';
-
     const userId = this.authService.obtenerUsuarioActualId();
 
     if (!userId) {
-      this.error = 'No se pudo identificar al usuario. Por favor, inicie sesión de nuevo.';
+      // Manejar error de usuario no encontrado
       this.loading = false;
       return;
     }
 
-    // Convertimos pageIndex (base 0) a currentPage (base 1) para Laravel
-    const currentPage = this.pageIndex + 1;
-    const endpoint = `users/${userId}/propiedades?page=${currentPage}&per_page=${this.pageSize}`;
+    // Usamos una ruta que nos traiga TODAS las propiedades del usuario
+    const endpoint = `users/${userId}/propiedades?all=true`; 
     
     this.httpService.Service_Get(endpoint).subscribe({
       next: (res) => {
-        if (res && res.data) {
-          this.propiedades = res.data;
-          this.totalItems = res.total;
-          // Aseguramos que pageSize coincida con lo que devuelve el backend
-          this.pageSize = res.per_page;
-          // Convertimos current_page (base 1) a pageIndex (base 0)
-          this.pageIndex = res.current_page - 1;
-        } else {
-          this.propiedades = [];
-          this.totalItems = 0;
-          this.error = 'No se encontraron propiedades.';
-        }
+        // Guardamos la lista completa en nuestro array maestro
+        this.todasLasPropiedades = res.data;
+        this.aplicarFiltrosYPaginacion();
         this.loading = false;
       },
       error: (err) => {
         this.loading = false;
-        this.error = 'Error al cargar las propiedades desde el servidor.';
+        this.error = 'Error al cargar las propiedades.';
         console.error(err);
       }
     });
+
+    // Cargamos los tipos de propiedad para el filtro
+    this.cargarTiposDePropiedad();
   }
 
- onPageChange(event: PageEvent): void {
-  this.pageSize = event.pageSize;
-  this.pageIndex = event.pageIndex;
-  this.cargarPropiedades();
+  cargarTiposDePropiedad(): void {
+    this.httpService.getTiposDePropiedad().subscribe({
+      next: (tipos) => { this.tiposDePropiedad = tipos; },
+      error: (err) => { console.error('Error al cargar tipos', err); }
+    });
   }
 
+  aplicarFiltrosYPaginacion(): void {
+    let propiedadesFiltradas = this.todasLasPropiedades;
+
+    // 1. Aplicar filtro por título
+    if (this.filtros.titulo) {
+      propiedadesFiltradas = propiedadesFiltradas.filter(p => 
+        p.titulo.toLowerCase().includes(this.filtros.titulo.toLowerCase())
+      );
+    }
+
+    // 2. Aplicar filtro por tipo de propiedad (usando el ID)
+    if (this.filtros.tipoId) {
+      propiedadesFiltradas = propiedadesFiltradas.filter(p => 
+        p.tipo_propiedad_id == this.filtros.tipoId
+      );
+    }
+
+    // 3. Aplicar filtro por precio mínimo
+    if (this.filtros.precioMin !== null) {
+      propiedadesFiltradas = propiedadesFiltradas.filter(p => 
+        p.precio >= this.filtros.precioMin!
+      );
+    }
+    
+    // 4. Aplicar filtro por precio máximo
+    if (this.filtros.precioMax !== null) {
+      propiedadesFiltradas = propiedadesFiltradas.filter(p => 
+        p.precio <= this.filtros.precioMax!
+      );
+    }
+
+    // Actualizamos el total de items para el paginador
+    this.totalItems = propiedadesFiltradas.length;
+
+    // 5. Aplicamos la paginación a los resultados ya filtrados
+    const startIndex = this.pageIndex * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.propiedades = propiedadesFiltradas.slice(startIndex, endIndex);
+  }
+
+  limpiarFiltros(): void {
+    this.filtros = {
+      titulo: '',
+      tipoId: '',
+      precioMin: null,
+      precioMax: null
+    };
+    this.pageIndex = 0; // Regresar a la primera página
+    this.aplicarFiltrosYPaginacion();
+  }
+  
+  onPageChange(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.aplicarFiltrosYPaginacion();
+  }
+
+  // ... (tus otros métodos como abrirModal, eliminarPropiedad, etc. se quedan igual)
+  toggleMenu(event: MouseEvent, propiedadId: number): void {
+    event.stopPropagation();
+    this.menuAbiertoId = this.menuAbiertoId === propiedadId ? null : propiedadId;
+  }
+  
+  abrirModal(propiedad: any): void {
+    this.propiedadSeleccionada = propiedad; 
+  }
+  
+  cerrarModal(): void {
+    this.propiedadSeleccionada = null;
+    document.body.style.overflow = 'auto';
+  }
+  
   eliminarPropiedad(id: number): void {
     Swal.fire({
       title: '¿Estás seguro?',
@@ -113,13 +178,10 @@ export class VerPropiedadesComponent implements OnInit {
     }).then((result) => {
       if (result.isConfirmed) {
         this.httpService.Service_Delete('propiedades', id).subscribe({
-          next: (res) => {
+          next: () => {
             Swal.fire('¡Eliminada!', 'Tu propiedad ha sido eliminada.', 'success');
-            // Si era el último ítem de la página y no estamos en la primera página
-            if (this.propiedades.length === 1 && this.pageIndex > 0) {
-              this.pageIndex--;
-            }
-            this.cargarPropiedades();
+            // Recargamos la lista completa desde cero
+            this.cargarDatosIniciales();
           },
           error: (err) => {
             Swal.fire('Error', 'No se pudo eliminar la propiedad.', 'error');
@@ -131,12 +193,6 @@ export class VerPropiedadesComponent implements OnInit {
   }
 
   editarPropiedad(id: number): void {
-    if (!id) return;
-    this.cerrarModal();
-    this.router.navigate(['/editar-propiedad', id]);
-  }
-
-  EditarPropiedad(id: number): void {
     this.router.navigate(['/principal/editar-propiedad', id]);
   }
 

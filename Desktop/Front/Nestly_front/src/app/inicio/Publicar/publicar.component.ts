@@ -158,7 +158,7 @@ export class PublicarComponent implements OnInit, OnDestroy {
       next: (response) => {
         this.isLoading = false;
         Swal.fire('¡Éxito!', 'Propiedad publicada correctamente.', 'success').then(() => {
-          this.router.navigate(['/dashboard']); // O la ruta a la que quieras redirigir
+          this.router.navigate(['/principal/publicarCasa']); 
         });
       },
       error: (err) => {

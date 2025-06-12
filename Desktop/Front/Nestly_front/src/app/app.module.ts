@@ -17,6 +17,7 @@ import { AlquilarCasaComponent } from './inicio/alquilar-casa/alquilar-casa.comp
 import { VerPropiedadesComponent } from './inicio/ver-propiedades/ver-propiedades.component';
 import { EditarPropiedadComponent } from './inicio/editar-propiedad/editar-propiedad.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations'; 
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     ReactiveFormsModule,
     MatPaginatorModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    NoopAnimationsModule 
   ],
   providers: [HttpLavavelService],
   bootstrap: [AppComponent]
