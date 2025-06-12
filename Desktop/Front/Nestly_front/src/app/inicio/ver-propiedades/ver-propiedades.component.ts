@@ -58,7 +58,7 @@ export class VerPropiedadesComponent implements OnInit {
     this.loading = true;
     this.error = '';
     const userId = this.authService.obtenerUsuarioActualId();
-
+    console.log('ID del usuario autenticado:', userId); // 👈
     if (!userId) {
       // Manejar error de usuario no encontrado
       this.loading = false;
@@ -69,6 +69,7 @@ export class VerPropiedadesComponent implements OnInit {
     const endpoint = `users/${userId}/propiedades?all=true`; 
     
     this.httpService.Service_Get(endpoint).subscribe({
+      
       next: (res) => {
         // Guardamos la lista completa en nuestro array maestro
         this.todasLasPropiedades = res.data;
