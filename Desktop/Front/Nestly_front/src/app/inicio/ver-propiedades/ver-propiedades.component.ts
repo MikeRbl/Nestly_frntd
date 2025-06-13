@@ -33,9 +33,9 @@ export class VerPropiedadesComponent implements OnInit {
 
   // Paginación
   totalItems = 0;
-  pageSize = 3;
+  pageSize = 6;
   pageIndex = 0;
-  pageSizeOptions = [3, 6, 9];
+  pageSizeOptions = [6, 9, 12];
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -178,11 +178,13 @@ export class VerPropiedadesComponent implements OnInit {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
+
         this.httpService.Service_Delete('propiedades', id).subscribe({
           next: () => {
             Swal.fire('¡Eliminada!', 'Tu propiedad ha sido eliminada.', 'success');
             // Recargamos la lista completa desde cero
             this.cargarDatosIniciales();
+            this.cerrarModal();
           },
           error: (err) => {
             Swal.fire('Error', 'No se pudo eliminar la propiedad.', 'error');
@@ -197,6 +199,11 @@ export class VerPropiedadesComponent implements OnInit {
     this.router.navigate(['/principal/editar-propiedad', id]);
   }
 
+  publicarNuevaPropiedad() {
+    // Navegar a la página de creación o abrir un modal
+    this.router.navigate(['/principal/publicarCasa']);
+    
+}
   getFullImageUrl(path: string): string {
     return `http://127.0.0.1:8000/storage/${path}`;
   }
