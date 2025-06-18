@@ -50,6 +50,8 @@ export class EditarPropiedadComponent implements OnInit {
       amueblado: [false, Validators.required],
       anualizado: [false, Validators.required],
       mascotas: ['', Validators.required],
+      estado_propiedad: ['', Validators.required],
+
       // El control 'fotos' ya no es necesario para la lógica de archivos, pero lo dejamos para no romper el formGroup
       fotos: [null]
     });
@@ -100,7 +102,8 @@ export class EditarPropiedadComponent implements OnInit {
           deposito: data.deposito,
           amueblado: !!data.amueblado,
           anualizado: !!data.anualizado,
-          mascotas: data.mascotas
+          mascotas: data.mascotas,
+          estado_propiedad: data.estado_propiedad,
         });
 
         // Llenamos la lista de imágenes existentes desde el servidor
@@ -169,16 +172,17 @@ export class EditarPropiedadComponent implements OnInit {
 
     // 1. Añade los datos del formulario (título, descripción, etc.)
     Object.entries(this.formulario.value).forEach(([key, value]) => {
-      if (key !== 'fotos') {
-        if (value !== null && value !== undefined) {
-          if (typeof value === 'boolean') {
-            formData.append(key, value ? '1' : '0');
-          } else {
-            formData.append(key, value as string);
-          }
-        }
+  if (key !== 'fotos') {
+    if (value !== null && value !== undefined) {
+      if (typeof value === 'boolean') {
+        formData.append(key, value ? '1' : '0');
+      } else {
+        formData.append(key, value as string);
       }
-    });
+    }
+  }
+});
+
 
     // 2. Añade las FOTOS NUEVAS al FormData
     this.newImageFiles.forEach(file => {

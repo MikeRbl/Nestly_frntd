@@ -125,12 +125,17 @@
       <div class="flex flex-col">
         <!-- Encabezado -->
         <div class="flex-shrink-0">
-          <span *ngIf="propiedadSeleccionada.estado_propiedad === 'Disponible'" class="mb-2 inline-block text-xs font-semibold px-3 py-1 rounded-full bg-pink-100 text-pink-800">
-            Disponible
-          </span>
-          <span *ngIf="propiedadSeleccionada.estado_propiedad !== 'Disponible'" class="mb-2 inline-block text-xs font-semibold px-3 py-1 rounded-full bg-gray-200 text-gray-800">
+          <span 
+            class="mb-2 inline-block text-xs font-semibold px-3 py-1 rounded-full"
+            [ngClass]="{
+                'bg-green-100 text-green-700': propiedadSeleccionada.estado_propiedad === 'Disponible',
+                'bg-sky-100 text-sky-800': propiedadSeleccionada.estado_propiedad === 'Rentada',
+                'bg-red-200 text-red-600': propiedadSeleccionada.estado_propiedad === 'Inactiva'
+            }"
+            >
             {{ propiedadSeleccionada.estado_propiedad }}
-          </span>
+            </span>
+
           <h3 class="text-3xl font-bold text-gray-900">{{ propiedadSeleccionada.titulo }}</h3>
           <p class="text-md text-gray-500 mt-1">{{ propiedadSeleccionada.direccion }}, {{ propiedadSeleccionada.ciudad }}</p>
         </div>
