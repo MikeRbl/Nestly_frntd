@@ -43,81 +43,84 @@
     </div>
   </section>
 
-  <!-- Propiedades destacadas -->
-  <section class="featured-properties bg-gray-50 dark:bg-gray-800">
-    <div class="section-header">
-      <h2 class="">Propiedades destacadas</h2>
-      <p class="">Las mejores opciones esta semana</p>
-    </div>
-    
-    <div class="property-grid">
-      <!-- Card 1 -->
-      <div class="property-card bg-white hover:shadow-lg dark:bg-gray-700 dark:hover:bg-gray-600">
-        <img src="assets/dashboard/depa.jpg" alt="Departamento" class="property-image">
-        <div class="property-info background bg-gray-50 dark:bg-gray-800">
-          <div class="property-location text-gray-600 dark:text-gray-300">📍 Condesa, CDMX</div>
-          <h3 class="text-gray-900 dark:text-white">Departamento moderno</h3>
-          <div class="property-features text-gray-600 dark:text-gray-400">
-            <span>🛏️ 2</span>
-            <span>🚿 1</span>
-            <span>📏 75m²</span>
-          </div>
-          <div class="property-footer">
-            <p class="property-price text-gray-900 dark:text-white">$15,000/mes</p>
-            <button class="save-btn text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-500">
-              ❤️
-            </button>
-          </div>
+ <!-- Propiedades destacadas -->
+<section class="featured-properties bg-gray-50 dark:bg-gray-800">
+  <div class="section-header">
+    <h2>Propiedades destacadas</h2>
+    <p>Las mejores opciones esta semana</p>
+  </div>
+  
+  <!-- Estado de carga -->
+  <div *ngIf="isLoading" class="property-grid">
+    <div *ngFor="let item of [1,2,3]" class="property-card bg-white dark:bg-gray-700 animate-pulse">
+      <div class="property-image h-48 bg-gray-200 dark:bg-gray-600"></div>
+      <div class="property-info p-4">
+        <div class="h-4 bg-gray-200 dark:bg-gray-600 rounded w-3/4 mb-2"></div>
+        <div class="h-6 bg-gray-200 dark:bg-gray-600 rounded w-full mb-3"></div>
+        <div class="flex space-x-4">
+          <div class="h-4 bg-gray-200 dark:bg-gray-600 rounded w-1/4"></div>
+          <div class="h-4 bg-gray-200 dark:bg-gray-600 rounded w-1/4"></div>
+          <div class="h-4 bg-gray-200 dark:bg-gray-600 rounded w-1/4"></div>
+        </div>
+        <div class="flex justify-between mt-4">
+          <div class="h-6 bg-gray-200 dark:bg-gray-600 rounded w-1/3"></div>
+          <div class="h-6 bg-gray-200 dark:bg-gray-600 rounded w-6"></div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Mensaje de error -->
+  <div *ngIf="errorMessage && !isLoading" class="text-center py-8">
+    <p class="text-red-500">{{ errorMessage }}</p>
+    <button (click)="loadProperties()" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+      Reintentar
+    </button>
+  </div>
+
+  <!-- Propiedades aleatorias -->
+  <div *ngIf="!isLoading && !errorMessage" class="property-grid">
+    <div *ngFor="let property of featuredProperties" class="property-card bg-white hover:shadow-lg dark:bg-gray-700 dark:hover:bg-gray-600">
+      <!-- Imagen de la propiedad -->
+      <img [src]="getFirstPhoto(property)" [alt]="property.titulo" class="property-image">
       
-      <!-- Card 2 -->
-      <div class="property-card bg-white hover:shadow-lg dark:bg-gray-700 dark:hover:bg-gray-600">
-        <img src="assets/dashboard/roma.avif" alt="Casa" class="property-image">
-        <div class="property-info background bg-gray-50 dark:bg-gray-800">
-          <div class="property-location text-gray-600 dark:text-gray-300">📍 Roma Norte, CDMX</div>
-          <h3 class="text-gray-900 dark:text-white">Casa con patio</h3>
-          <div class="property-features text-gray-600 dark:text-gray-400">
-            <span>🛏️ 3</span>
-            <span>🚿 2</span>
-            <span>📏 120m²</span>
-          </div>
-          <div class="property-footer">
-            <p class="property-price text-gray-900 dark:text-white">$20,000/mes</p>
-            <button class="save-btn text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-500">
-              ❤️
-            </button>
-          </div>
+      <div class="property-info background bg-gray-50 dark:bg-gray-800">
+        <!-- Ubicación -->
+        <div class="property-location text-gray-600 dark:text-gray-300">
+          📍 {{ property.colonia }}, {{ property.ciudad }}
+          
         </div>
-      </div>
-      
-      <!-- Card 3 -->
-      <div class="property-card bg-white hover:shadow-lg dark:bg-gray-700 dark:hover:bg-gray-600">
-        <img src="assets/dashboard/casaBravo.avif" alt="Loft" class="property-image">
-        <div class="property-info background bg-gray-50 dark:bg-gray-800">
-          <div class="property-location text-gray-600 dark:text-gray-300">📍 Polanco, CDMX</div>
-          <h3 class="text-gray-900 dark:text-white">Loft minimalista</h3>
-          <div class="property-features text-gray-600 dark:text-gray-400">
-            <span>🛏️ 1</span>
-            <span>🚿 1</span>
-            <span>📏 50m²</span>
-          </div>
-          <div class="property-footer">
-            <p class="property-price text-gray-900 dark:text-white">$18,000/mes</p>
-            <button class="save-btn text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-500">
-              ❤️
-            </button>
-          </div>
+        
+        <!-- Título -->
+        <h3 class="text-gray-900 dark:text-white">{{ property.titulo }}</h3>
+        
+        <!-- Características -->
+        <div class="property-features text-gray-600 dark:text-gray-400">
+          <span>Habitaciones {{ property.habitaciones }}</span>
+          <span>Baños {{ property.banos }}</span>
+          <span>Espacio {{ property.metros_cuadrados }}m²</span>
+        </div>
+        
+        <!-- Pie de card -->
+        <div class="property-footer">
+          <!-- Precio -->
+          <p class="property-price text-gray-900 dark:text-white">
+            {{ formatPrice(property.precio, property.anualizado) }}
+          </p>
+          
+         
         </div>
       </div>
     </div>
-    
-    <div class="view-all">
-      <button routerLink="/principal/buscarCasa" class="secondary-button border border-blue-600 text-blue-600 hover:bg-blue-50 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-gray-700">
-        Ver todas las propiedades
-      </button>
-    </div>
-  </section>
+  </div>
+  
+  <!-- Botón "Ver todas" -->
+  <div class="view-all">
+    <button routerLink="/principal/buscarCasa" class="secondary-button border border-blue-600 text-blue-600 hover:bg-blue-50 dark:border-blue-400 dark:text-blue-400 dark:hover:bg-gray-700">
+      Ver todas las propiedades
+    </button>
+  </div>
+</section>
 
   <!-- Testimonios -->
   <section class="testimonials-section background bg-gray-50 dark:bg-gray-800">
@@ -202,7 +205,7 @@
               <p class="newsletter-text text-gray-600 dark:text-gray-300">Suscríbete para recibir las mejores ofertas</p>
               <form class="newsletter-form">
                   <input type="email" placeholder="Tu correo electrónico" class="bg-white dark:bg-gray-700 text-gray-800 dark:text-white" required>
-                  <button (click)="Subscrito()"></button>
+                 
               </form>
           </div>
       </div>
