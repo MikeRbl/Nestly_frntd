@@ -117,7 +117,7 @@ export class EditarPropiedadComponent implements OnInit {
         this.isLoading = false;
         console.error('Error cargando la propiedad', error);
         Swal.fire('Error', `No se pudo cargar la información de la propiedad. ${error.error?.message || ''}`, 'error');
-        this.router.navigate(['/mis-propiedades']);
+        this.router.navigate(['/verPropiedades']);
       }
     });
   }
@@ -194,7 +194,7 @@ export class EditarPropiedadComponent implements OnInit {
       next: (response) => {
         this.isLoading = false;
         Swal.fire('¡Propiedad Actualizada!', 'Los cambios se han guardado exitosamente.', 'success');
-        this.router.navigate(['/mis-propiedades']);
+        this.router.navigate(['/verPropiedades']);
       },
       error: (error) => {
         this.isLoading = false;
@@ -204,4 +204,10 @@ export class EditarPropiedadComponent implements OnInit {
       }
     });
   }
+
+  cancelarEdicion() {
+this.router.navigate(['/principal/verPropiedades']);
+}
+
+
 }

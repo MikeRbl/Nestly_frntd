@@ -172,10 +172,16 @@
         </div>
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+          <button type="button" class="btn btn-danger px-4" (click)="cancelarEdicion()" [disabled]="isLoading">
+  Cancelar
+</button>
+
+
           <button type="submit" class="btn btn-primary px-4" [disabled]="isLoading">
             <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
             {{ isLoading ? 'Actualizando...' : 'Actualizar Propiedad' }}
           </button>
+          
         </div>
       </div>
       
