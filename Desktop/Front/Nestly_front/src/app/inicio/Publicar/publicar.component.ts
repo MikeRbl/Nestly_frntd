@@ -1,25 +1,44 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core'; // Añade AfterViewInit
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HttpLavavelService } from '../../http.service'; // Asegúrate que la ruta sea correcta
+import { HttpLavavelService } from '../../http.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import Swal from 'sweetalert2';
+import * as L from 'leaflet'; // <-- Importa Leaflet aquí
 
 @Component({
   selector: 'app-publicar',
   templateUrl: './publicar.component.html',
   styleUrls: ['./publicar.component.css']
 })
-export class PublicarComponent implements OnInit, OnDestroy {
+export class PublicarComponent implements OnInit, OnDestroy, AfterViewInit { // Implementa AfterViewInit
   formulario: FormGroup;
   fotos: File[] = [];
   previewUrls: (string | ArrayBuffer | null)[] = [];
   formSubmitted = false;
   isLoading = false;
   
-  // Array para guardar los tipos de propiedad que vienen de la API
   tiposDePropiedad: any[] = [];
 
+  // Variables para Leaflet Map
+  map!: L.Map;
+  marker!: L.Marker;
+
+  // Configuración para que Leaflet encuentre sus iconos predeterminados en la carpeta 'assets'
+  // Si tus iconos no se muestran, asegúrate de tener las imágenes 
+  // "marker-icon-2x.png", "marker-icon.png", "marker-shadow.png" en src/assets/
+  // Puedes descargarlas de la carpeta node_modules/leaflet/dist/images/
+  private defaultIcon = L.icon({
+    iconRetinaUrl: 'assets/marker-icon-2x.png',
+    iconUrl: 'assets/marker-icon.png',
+    shadowUrl: 'assets/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    tooltipAnchor: [16, -28],
+    shadowSize: [41, 41]
+  });
+  
   constructor(
     private fb: FormBuilder,
     private httpService: HttpLavavelService,
@@ -38,6 +57,9 @@ export class PublicarComponent implements OnInit, OnDestroy {
       estado_ubicacion: ['', [Validators.required, Validators.maxLength(100)]],
       ciudad: ['', [Validators.required, Validators.maxLength(100)]],
       colonia: [''],
+      // AGREGAR: latitud y longitud para guardar las coordenadas del mapa
+      latitud: ['', [Validators.required]], 
+      longitud: ['', [Validators.required]],
 
       // Características y Especificaciones
       precio: ['', [Validators.required, Validators.min(0)]],
@@ -60,7 +82,6 @@ export class PublicarComponent implements OnInit, OnDestroy {
       // Contacto
       email: ['', [Validators.required, Validators.email, Validators.maxLength(255)]],
       telefono: ['', [Validators.required, Validators.maxLength(15)]],
-      // 'tamano' ha sido eliminado de esta sección
     });
   }
 
@@ -75,6 +96,130 @@ export class PublicarComponent implements OnInit, OnDestroy {
         Swal.fire('Error', 'No se pudieron cargar las categorías de propiedad. Inténtalo de nuevo más tarde.', 'error');
       }
     });
+  }
+
+  // Se llama después de que la vista del componente ha sido completamente inicializada
+  ngAfterViewInit(): void {
+    this.initMap(); // Inicializa el mapa de Leaflet
+  }
+
+  /**
+   * Inicializa el mapa de Leaflet en el div con id "map".
+   */
+  initMap(): void {
+    const mapElement = document.getElementById('map');
+    if (mapElement) {
+      // Centrar el mapa en una ubicación inicial (ej. Ciudad de México)
+      const initialCoords: L.LatLngExpression = [19.4326, -99.1332]; 
+
+      this.map = L.map(mapElement).setView(initialCoords, 12); // Nivel de zoom inicial
+
+      // Agrega una capa de tiles de OpenStreetMap
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }).addTo(this.map);
+
+      // Crea el marcador con el icono por defecto
+      this.marker = L.marker(initialCoords, {
+        draggable: true, // Permite arrastrar el marcador
+        icon: this.defaultIcon // Asigna el icono personalizado
+      }).addTo(this.map);
+
+      // Evento al hacer clic en el mapa: mueve el marcador y geocodifica
+      this.map.on('click', (e: L.LeafletMouseEvent) => {
+        this.placeMarkerAndGeocode(e.latlng);
+      });
+
+      // Evento al arrastrar el marcador: actualiza la posición y geocodifica
+      this.marker.on('dragend', (e: any) => {
+        const latLng = e.target.getLatLng();
+        this.placeMarkerAndGeocode(latLng);
+      });
+
+      // Rellena los campos iniciales de latitud y longitud
+      this.formulario.patchValue({
+        latitud: initialCoords[0], // Latitud
+        longitud: initialCoords[1] // Longitud
+      });
+    } else {
+      console.error('El elemento del mapa con id "map" no se encontró. Asegúrate de que el HTML esté cargado.');
+    }
+  }
+
+  /**
+   * Coloca el marcador en la ubicación dada y realiza la geocodificación inversa.
+   * @param latLng Las coordenadas LatLng para el marcador.
+   */
+  placeMarkerAndGeocode(latLng: L.LatLng): void {
+    this.marker.setLatLng(latLng);
+    this.formulario.patchValue({
+      latitud: latLng.lat,
+      longitud: latLng.lng
+    });
+    this.geocodeLatLng(latLng);
+  }
+
+  /**
+   * Realiza la geocodificación inversa utilizando la API de Nominatim de OpenStreetMap.
+   * @param latlng Las coordenadas LatLng para geocodificar.
+   */
+  geocodeLatLng(latlng: L.LatLng): void {
+    const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latlng.lat}&lon=${latlng.lng}&zoom=18&addressdetails=1`;
+
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        if (data.address) {
+          const address = data.address;
+          let fullAddress = data.display_name;
+
+          // Intenta reconstruir una dirección más concisa si display_name es muy largo
+          const parts = [];
+          if (address.road) parts.push(address.road + (address.house_number ? ' ' + address.house_number : ''));
+          if (address.suburb) parts.push(address.suburb);
+          if (address.city) parts.push(address.city);
+          else if (address.town) parts.push(address.town);
+          else if (address.village) parts.push(address.village);
+          if (address.state) parts.push(address.state);
+          if (address.country) parts.push(address.country);
+
+          if (parts.length > 0 && parts.join(', ').length < fullAddress.length) {
+              fullAddress = parts.join(', ');
+          }
+
+          this.formulario.patchValue({
+            direccion: fullAddress || '',
+            pais: address.country || '',
+            estado_ubicacion: address.state || address.state_district || '', // state, o state_district
+            ciudad: address.city || address.town || address.village || '', // city, town o village
+            colonia: address.suburb || address.neighbourhood || '' // suburb o neighbourhood
+          });
+
+        } else {
+          Swal.fire('Error', 'No se encontraron resultados de dirección para la ubicación seleccionada.', 'warning');
+          // Puedes limpiar los campos de dirección si no se encuentra nada
+          this.formulario.patchValue({
+            direccion: '',
+            pais: '',
+            estado_ubicacion: '',
+            ciudad: '',
+            colonia: ''
+          });
+        }
+      })
+      .catch(error => {
+        Swal.fire('Error', 'Error al realizar la geocodificación inversa: ' + error.message, 'error');
+        console.error('Error al geocodificar:', error);
+        // En caso de error, también puedes limpiar los campos
+        this.formulario.patchValue({
+          direccion: '',
+          pais: '',
+          estado_ubicacion: '',
+          ciudad: '',
+          colonia: ''
+        });
+      });
   }
 
   onFileChange(event: any): void {
@@ -194,5 +339,9 @@ export class PublicarComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.clearPreviewUrls();
+    // Destruye el mapa para liberar recursos cuando el componente se destruye
+    if (this.map) {
+      this.map.remove();
+    }
   }
 }
