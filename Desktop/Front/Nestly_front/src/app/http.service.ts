@@ -71,4 +71,16 @@ export class HttpLavavelService {
   public getTiposDePropiedad(): Observable<any> {
   return this.http.get(`${this.apiUrl}/tipos-propiedad`);
 }
+
+getPropiedad(id: number) {
+  return this.http.get(`/api/propiedades/${id}`);
+}
+
+actualizarPropiedad(id: number, formData: FormData) {
+  // Laravel espera que le digas que quieres simular un PUT
+  formData.append('_method', 'PUT'); 
+
+  // La petición se hace como POST, pero Laravel la enrutará al método update()
+  return this.http.post(`https://tu-api.com/api/propiedades/${id}`, formData); 
+}
 }
