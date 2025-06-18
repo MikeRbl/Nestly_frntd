@@ -34,23 +34,25 @@ export class AuthService {
     return this.loggedIn || localStorage.getItem('loggedIn') === 'true';
   }
 
-  // 👇 MÉTODO CORREGIDO
   obtenerUsuarioActualId(): number | null {
-    const userString = localStorage.getItem('user');
+  const userString = localStorage.getItem('user');
 
-    // Comprueba si el string es nulo, vacío o literalmente "undefined"
-    if (!userString || userString === 'undefined') {
-      return null;
-    }
-
-    try {
-      const user = JSON.parse(userString);
-      return user?.id ?? null; // Devuelve el id o null si no existe
-    } catch (e) {
-      console.error("Error al procesar los datos del usuario desde localStorage:", e);
-      return null; // Si hay un error de parseo, devuelve null
-    }
+  if (!userString || userString === 'undefined') {
+    console.warn('⚠️ No hay usuario guardado en localStorage');
+    return null;
   }
+
+  try {
+    const user = JSON.parse(userString);
+    const id = user?.id ?? null;
+    console.log('🧠 ID obtenido del usuario actual:', id);
+    return id;
+  } catch (e) {
+    console.error("❌ Error al procesar el user guardado:", e);
+    return null;
+  }
+}
+
 
   // 👇 MÉTODO CORREGIDO
   obtenerUsuarioActual(): any | null {
