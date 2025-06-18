@@ -194,7 +194,7 @@ export class EditarPropiedadComponent implements OnInit {
       next: (response) => {
         this.isLoading = false;
         Swal.fire('¡Propiedad Actualizada!', 'Los cambios se han guardado exitosamente.', 'success');
-        this.router.navigate(['/verPropiedades']);
+        this.router.navigate(['/principal/verPropiedades']);
       },
       error: (error) => {
         this.isLoading = false;
