@@ -24,7 +24,7 @@ const routes: Routes = [
       { path: 'configuracion', component: ConfiguracionComponent },
       { path: 'qnSomos', component: QnSomosComponent },
       { path: 'publicarCasa', component: PublicarComponent },
-      { path: 'alquilarCasa', component: AlquilarCasaComponent },
+      { path: 'propiedad/:id', component: AlquilarCasaComponent },
       { path: 'verPropiedades', component: VerPropiedadesComponent },
       { path: 'editar-propiedad/:id', component: EditarPropiedadComponent },
       { path: 'buscarCasa', component: BuscarComponent },
@@ -35,7 +35,11 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  imports: [RouterModule.forChild(routes),
+    
+  ],
+  exports: [RouterModule,
+    
+  ]
 })
 export class InicioRoutingModule { }

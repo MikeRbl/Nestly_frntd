@@ -79,12 +79,12 @@
   </div>
 
   <!-- Propiedades aleatorias -->
-  <div *ngIf="!isLoading && !errorMessage" class="property-grid">
-    <div *ngFor="let property of featuredProperties" class="property-card bg-white hover:shadow-lg dark:bg-gray-700 dark:hover:bg-gray-600">
+  <div *ngIf="!isLoading && !errorMessage" class="property-grid" >
+    <div *ngFor="let property of featuredProperties" class="property-card bg-white hover:shadow-lg dark:bg-gray-700 dark:hover:bg-gray-600" (click)="navigateToProperty(property.id_propiedad)" style="cursor: pointer;">
       <!-- Imagen de la propiedad -->
       <img [src]="getFirstPhoto(property)" [alt]="property.titulo" class="property-image">
       
-      <div class="property-info background bg-gray-50 dark:bg-gray-800">
+      <div class="property-info background bg-gray-50 dark:bg-gray-800" >
         <!-- Ubicación -->
         <div class="property-location text-gray-600 dark:text-gray-300">
           📍 {{ property.colonia }}, {{ property.ciudad }}

@@ -18,6 +18,8 @@ import { VerPropiedadesComponent } from './inicio/ver-propiedades/ver-propiedade
 import { EditarPropiedadComponent } from './inicio/editar-propiedad/editar-propiedad.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations'; 
+import { RouterModule } from '@angular/router';
+import { InicioRoutingModule } from './inicio/inicio-routing.module';
 
 
 @NgModule({
@@ -43,7 +45,9 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     MatPaginatorModule,
     HttpClientModule,
     FormsModule,
-    NoopAnimationsModule 
+    NoopAnimationsModule,
+    RouterModule.forRoot([]),
+    InicioRoutingModule,
   ],
   providers: [HttpLavavelService],
   bootstrap: [AppComponent]

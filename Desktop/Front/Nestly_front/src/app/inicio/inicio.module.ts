@@ -17,6 +17,7 @@ import { ɵBrowserAnimationBuilder } from '@angular/animations';
     InicioRoutingModule,
     MatPaginatorModule,
     
+    
   ]
 })
 export class InicioModule { }
