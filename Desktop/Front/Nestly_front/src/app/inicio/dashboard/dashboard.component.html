@@ -78,41 +78,52 @@
     </button>
   </div>
 
-  <!-- Propiedades aleatorias -->
-  <div *ngIf="!isLoading && !errorMessage" class="property-grid" >
-    <div *ngFor="let property of featuredProperties" class="property-card bg-white hover:shadow-lg dark:bg-gray-700 dark:hover:bg-gray-600" (click)="navigateToProperty(property.id_propiedad)" style="cursor: pointer;">
-      <!-- Imagen de la propiedad -->
-      <img [src]="getFirstPhoto(property)" [alt]="property.titulo" class="property-image">
+<!-- Propiedades aleatorias -->
+<div *ngIf="!isLoading && !errorMessage" class="property-grid">
+  <div *ngFor="let property of featuredProperties" class="property-card bg-white hover:shadow-lg dark:bg-gray-700 dark:hover:bg-gray-600 cursor-pointer" (click)="navigateToProperty(property.id_propiedad)">
+
+    <!-- Imagen de la propiedad -->
+    <img [src]="getFirstPhoto(property)" [alt]="property.titulo" class="property-image w-full h-48 object-cover rounded-t-md">
+
+    <div class="property-info bg-gray-50 dark:bg-gray-800 p-4 flex flex-col">
       
-      <div class="property-info background bg-gray-50 dark:bg-gray-800" >
-        <!-- Ubicación -->
-        <div class="property-location text-gray-600 dark:text-gray-300">
+      <!-- Ubicación y Publicado por -->
+      <div class="flex justify-between items-center mb-2 text-gray-600 dark:text-gray-300 text-sm">
+        <div class="property-location">
           📍 {{ property.colonia }}, {{ property.ciudad }}
-          
         </div>
-        
-        <!-- Título -->
-        <h3 class="text-gray-900 dark:text-white">{{ property.titulo }}</h3>
-        
-        <!-- Características -->
-        <div class="property-features text-gray-600 dark:text-gray-400">
-          <span>Habitaciones {{ property.habitaciones }}</span>
-          <span>Baños {{ property.banos }}</span>
-          <span>Espacio {{ property.metros_cuadrados }}m²</span>
-        </div>
-        
-        <!-- Pie de card -->
-        <div class="property-footer">
-          <!-- Precio -->
-          <p class="property-price text-gray-900 dark:text-white">
-            {{ formatPrice(property.precio, property.anualizado) }}
-          </p>
-          
-         
+
+        <div class="flex items-center space-x-2 text-right">
+          <img *ngIf="property['propietario']?.avatar_url" [src]="property['propietario'].avatar_url" alt="Avatar propietario" class="w-6 h-6 rounded-full object-cover" />
+          <span class="font-semibold text-gray-800 dark:text-gray-200 truncate max-w-[120px]">
+            {{ property['propietario']?.first_name }} {{ property['propietario']?.last_name_paternal }}
+          </span>
         </div>
       </div>
+
+      <!-- Título -->
+      <h3 class="text-gray-900 dark:text-white font-bold mb-1 truncate">{{ property.titulo }}</h3>
+
+      <!-- Características -->
+      <div class="property-features text-gray-600 dark:text-gray-400 text-xs mb-3 flex justify-between">
+        <span>Habitaciones {{ property.habitaciones }}</span>
+        <span>Baños {{ property.banos }}</span>
+        <span>Espacio {{ property.metros_cuadrados }}m²</span>
+      </div>
+
+      <!-- Pie de card -->
+      <div class="property-footer flex justify-between items-center">
+        <!-- Precio -->
+        <p class="property-price text-gray-900 dark:text-white font-bold text-lg">
+          {{ formatPrice(property.precio, property.anualizado) }}
+        </p>
+      </div>
+
     </div>
   </div>
+</div>
+
+
   
   <!-- Botón "Ver todas" -->
   <div class="view-all">

@@ -38,9 +38,23 @@
           {{ property.habitaciones || 0 }} Habitaciones · {{ property.banos || 0 }} Baños · {{ property.metros_cuadrados || 0 }} m²
         </div>
         
-        <div class="property-owner">
-          <strong>Propietario:</strong> {{ property.id_propietario || 'No disponible' }}
-        </div>
+<div class="owner-info">
+  <h2>{{ property['tipo_propiedad']?.nombre || 'Propiedad' }} en {{ property.ciudad }}</h2>
+
+  <div class="property-owner">
+    
+    <img [src]="getFullImageUrl(property['propietario']?.avatar_url, 'assets/navbar/usuario.png')" alt="Avatar del propietario" class="owner-avatar">
+    
+    <div>
+      <span class="owner-label">Publicado por</span>
+      
+      <span class="owner-name">
+        {{ property['propietario']?.first_name || 'Propietario' }} {{ property['propietario']?.last_name_paternal || '' }}
+      </span>
+
+    </div>
+  </div>
+</div>
         
         <div class="divider"></div>
         

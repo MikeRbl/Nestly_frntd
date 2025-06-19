@@ -83,30 +83,65 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="p-6 flex flex-col flex-grow w-full md:w-2/3">
-                            <div class="flex-grow">
-                                <h3 class="text-xl font-bold text-gray-900 mb-1">{{ propiedad.titulo }}</h3>
-                                <p class="text-sm text-gray-500 flex items-center mb-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-gray-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" /></svg>
-                                    <span *ngIf="propiedad.direccion">{{ propiedad.direccion }}, </span> <span *ngIf="propiedad.ciudad">{{ propiedad.ciudad }}</span>
-                                </p>
-                                <p class="text-sm text-gray-600 mb-4 line-clamp-2">{{ propiedad.descripcion }}</p>
-                                <p class="text-sm text-gray-600 mb-4"><span class="font-semibold">Tipo:</span> {{ propiedad.tipo_propiedad?.nombre || 'No especificado' }}</p>
-                            </div>
-                            <hr class="my-4">
-                            <div class="flex flex-col sm:flex-row items-end">
-                                <div class="w-full sm:w-1/2 space-y-2 text-sm text-gray-600 mb-4 sm:mb-0">
-                                    <div class="flex space-x-4">
-                                        <span>{{ propiedad.banos || '0' }} baños</span>
-                                        <span>{{ propiedad.habitaciones || '0' }} habs.</span>
-                                    </div>
-                                </div>
-                                <div class="w-full sm:w-1/2 flex flex-col items-end">
-                                    <p class="text-2xl font-bold text-gray-900 mb-2">${{ propiedad.precio | number:'1.0-0' }} <span class="text-sm font-normal text-gray-500">MXN</span></p>
-                                    <div class="w-full sm:w-auto bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-200 text-center">Ver detalles</div>
-                                </div>
-                            </div>
-                        </div>
+<div class="p-6 flex flex-col flex-grow w-full md:w-2/3">
+  <!-- Contenedor título y propietario en línea -->
+  <div class="flex items-center justify-between mb-4">
+    <h3 class="text-xl font-bold text-gray-900">{{ propiedad.titulo }}</h3>
+
+    <div class="flex items-center space-x-3">
+      <!-- Avatar si tienes -->
+      <img 
+        *ngIf="propiedad.propietario?.avatar_url" 
+        [src]="propiedad.propietario.avatar_url" 
+        alt="Avatar propietario" 
+        class="w-8 h-8 rounded-full object-cover"
+      />
+      <div class="text-right">
+        <p class="text-xs text-gray-500 font-semibold leading-tight">Publicado por:</p>
+        <p class="text-sm text-gray-900 font-medium leading-tight">
+          {{ propiedad.propietario?.first_name }} {{ propiedad.propietario?.last_name_paternal }}
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <p class="text-sm text-gray-500 flex items-center mb-3">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+    </svg>
+    <span *ngIf="propiedad.direccion">{{ propiedad.direccion }}, </span>
+    <span *ngIf="propiedad.ciudad">{{ propiedad.ciudad }}</span>
+  </p>
+
+  <p class="text-sm text-gray-600 mb-4 line-clamp-2">{{ propiedad.descripcion }}</p>
+
+  <p class="text-sm text-gray-600 mb-4">
+    <span class="font-semibold">Tipo:</span> {{ propiedad.tipo_propiedad?.nombre || 'No especificado' }}
+  </p>
+
+  <hr class="my-4">
+
+  <div class="flex flex-col sm:flex-row items-end justify-between">
+    <div class="w-full sm:w-1/2 space-y-2 text-sm text-gray-600 mb-4 sm:mb-0">
+      <div class="flex space-x-4">
+        <span>{{ propiedad.banos || '0' }} baños</span>
+        <span>{{ propiedad.habitaciones || '0' }} habs.</span>
+      </div>
+    </div>
+
+    <div class="w-full sm:w-1/2 flex flex-col items-end">
+      <p class="text-2xl font-bold text-gray-900 mb-2">
+        ${{ propiedad.precio | number:'1.0-0' }} 
+        <span class="text-sm font-normal text-gray-500">MXN</span>
+      </p>
+      <button class="w-full sm:w-auto bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-200 text-center">
+        Ver detalles
+      </button>
+    </div>
+  </div>
+</div>
+
+
                     </div>
                     </div>
                 <mat-paginator class="mt-8 bg-transparent" [length]="totalItems" [pageSize]="pageSize" [pageIndex]="pageIndex" [pageSizeOptions]="pageSizeOptions" (page)="onPageChange($event)"></mat-paginator>
