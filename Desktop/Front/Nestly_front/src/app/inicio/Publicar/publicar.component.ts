@@ -303,7 +303,7 @@ export class PublicarComponent implements OnInit, OnDestroy, AfterViewInit { // 
       next: (response) => {
         this.isLoading = false;
         Swal.fire('¡Éxito!', 'Propiedad publicada correctamente.', 'success').then(() => {
-          this.router.navigate(['/principal/publicarCasa']); 
+          this.router.navigate(['/principal/verPropiedades']); 
         });
       },
       error: (err) => {

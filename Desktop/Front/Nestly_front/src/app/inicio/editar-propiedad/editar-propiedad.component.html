@@ -89,6 +89,17 @@
                 <option *ngFor="let tipo of tiposDePropiedad" [value]="tipo.id">{{ tipo.nombre }}</option>
               </select>
           </div>
+            <div class="col-md-6 mb-2">
+            <label class="form-label">Estado de la Propiedad *</label>
+            <select class="form-select form-select-sm" formControlName="estado_propiedad"
+                    [ngClass]="{ 'is-invalid': f['estado_propiedad'].invalid && (f['estado_propiedad'].touched || formSubmitted) }">
+              <option value="" disabled>Selecciona un estado</option>
+              <option value="Disponible">Disponible</option>
+              <option value="Rentada">Rentada</option>
+              <option value="Inactiva">Inactiva</option>
+            </select>
+          </div>
+
           <div class="col-md-6 mb-2">
             <label class="form-label">Precio (MXN) *</label>
             <input type="number" class="form-control form-control-sm" formControlName="precio"
