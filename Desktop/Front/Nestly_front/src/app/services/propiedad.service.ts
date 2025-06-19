@@ -83,4 +83,10 @@ export class PropiedadesService {
     const headers = this.getAuthHeaders();
     return this.http.delete(`${this.apiUrl}/propiedades/${id}`, { headers });
   }
+
+  // Agrega este método a tu PropiedadesService
+public getTodasPropiedades(): Observable<any> {
+  const headers = this.getAuthHeaders();
+  return this.http.get(`${this.apiUrl}/propiedades`, { headers });
+}
 }

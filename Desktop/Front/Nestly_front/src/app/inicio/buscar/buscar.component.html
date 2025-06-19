@@ -1,184 +1,184 @@
-<div class="flex flex-col lg:flex-row gap-6 p-4 md:p-6 bg-gray-50 min-h-screen">
-
-  <aside class="lg:w-1/4 xl:w-1/5 space-y-6">
-    <div class="bg-white p-4 rounded-lg shadow">
-      <h3 class="text-lg font-semibold mb-3 text-gray-700">Filtrar tus resultados</h3>
-      <input type="text" placeholder="Nombre de la casa, apartamento" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+<div class="container mx-auto p-4">
+    <div *ngIf="loading" class="text-center p-4">
+        <div class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-indigo-600"></div>
+        <p class="mt-2 text-gray-600">Cargando propiedades...</p>
     </div>
-
-    <div class="bg-white rounded-lg shadow">
-      <button class="w-full flex justify-between items-center p-4 font-semibold text-gray-700 focus:outline-none">
-        <span>Precio Total</span>
-        <svg class="w-5 h-5 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-      <div class="p-4 border-t border-gray-200 hidden"> <p class="text-gray-600">Opciones de precio aquí...</p>
-        </div>
-    </div>
-
-    <div class="bg-white rounded-lg shadow">
-      <button class="w-full flex justify-between items-center p-4 font-semibold text-gray-700 focus:outline-none">
-        <span>Calificaciones</span>
-        <svg class="w-5 h-5 transform transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-      <div class="p-4 border-t border-gray-200"> <ul class="space-y-2">
-          <li><label class="flex items-center text-gray-600"><input type="checkbox" class="mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"> 1 Estrella</label></li>
-          <li><label class="flex items-center text-gray-600"><input type="checkbox" class="mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"> 2 Estrellas</label></li>
-          <li><label class="flex items-center text-gray-600"><input type="checkbox" checked class="mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"> 3 Estrellas <span class="ml-auto text-green-500">✓</span></label></li>
-          <li><label class="flex items-center text-gray-600"><input type="checkbox" checked class="mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"> 4 Estrellas <span class="ml-auto text-green-500">✓</span></label></li>
-          <li><label class="flex items-center text-gray-600"><input type="checkbox" class="mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"> 5 Estrellas</label></li>
-          <li><label class="flex items-center text-gray-600"><input type="checkbox" class="mr-2 h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"> Otros</label></li>
-        </ul>
-      </div>
-    </div>
-  </aside>
-
-  <main class="flex-1 space-y-6">
-
-    <div class="bg-white p-4 rounded-lg shadow flex flex-wrap items-center gap-3">
-      <div class="flex-grow min-w-[150px]">
-        <label for="location" class="block text-sm font-medium text-gray-700 mb-1">Ubicación</label>
-        <input type="text" id="location" value="Las Picachas" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
-      </div>
-      <div class="flex-grow min-w-[120px]">
-        <label for="date" class="block text-sm font-medium text-gray-700 mb-1">Fecha</label>
-        <input type="text" id="date" value="11 Sep" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"> </div>
-      <div class="flex-grow min-w-[100px]">
-        <label for="bathrooms" class="block text-sm font-medium text-gray-700 mb-1">Baños</label>
-        <select id="bathrooms" class="w-full px-3 py-2 border border-gray-300 rounded-md bg-white focus:ring-blue-500 focus:border-blue-500">
-          <option disabled selected>Baños</option>
-          <option>1</option>
-          <option>2</option>
-          <option>3+</option>
-        </select>
-      </div>
-      <div class="flex-grow min-w-[120px]">
-        <label for="bedrooms" class="block text-sm font-medium text-gray-700 mb-1">Habitaciones</label>
-        <select id="bedrooms" class="w-full px-3 py-2 border border-gray-300 rounded-md bg-white focus:ring-blue-500 focus:border-blue-500">
-          <option disabled selected>Habitaciones</option>
-          <option>1</option>
-          <option>2</option>
-          <option>3+</option>
-        </select>
-      </div>
-      <div class="flex-grow min-w-[100px]">
-        <label for="type" class="block text-sm font-medium text-gray-700 mb-1">Tipo</label>
-        <select id="type" class="w-full px-3 py-2 border border-gray-300 rounded-md bg-white focus:ring-blue-500 focus:border-blue-500">
-          <option disabled selected>Tipo</option>
-          <option>Casa</option>
-          <option>Apartamento</option>
-        </select>
-      </div>
-      <button class="self-end h-[42px] px-6 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-        Buscar
-      </button>
-    </div>
-
-    <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
-      <div>
-        <p class="text-gray-700"><span class="font-semibold">6</span> alojamientos disponibles desde <span class="font-semibold">$20,000</span></p>
-        <div class="mt-1">
-          <span class="inline-flex items-center bg-blue-100 text-blue-700 text-xs font-semibold px-2.5 py-0.5 rounded-full mr-2">
-            3 estrellas
-            <button class="ml-1 text-blue-500 hover:text-blue-700">×</button>
-          </span>
-          <span class="inline-flex items-center bg-blue-100 text-blue-700 text-xs font-semibold px-2.5 py-0.5 rounded-full">
-            4 estrellas
-            <button class="ml-1 text-blue-500 hover:text-blue-700">×</button>
-          </span>
-        </div>
-      </div>
-      <div class="flex items-center gap-3">
-        <select class="px-3 py-2 border border-gray-300 rounded-md bg-white text-sm focus:ring-blue-500 focus:border-blue-500">
-          <option>Ordenar por: Relevancia</option>
-          <option>Precio: Menor a Mayor</option>
-          <option>Precio: Mayor a Menor</option>
-        </select>
-        <button class="p-2 border border-gray-300 rounded-md hover:bg-gray-100">
-          <svg class="w-5 h-5 text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M9 6.75V15m0-2.25L12.75 15m0 0L16.5 12.75m-3.75 2.25V6.75m0 2.25L12.75 6.75M3.75 6.75h16.5M3.75 12.75h16.5m-16.5 5.25h16.5" />
-          </svg>
+    <div *ngIf="error && !loading" class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
+        <p class="font-bold">Ocurrió un error</p>
+        <p>{{ error }}</p>
+        <button (click)="cargarPropiedades()" class="mt-2 bg-red-500 text-white px-3 py-1 rounded-md text-sm">
+            Reintentar
         </button>
-      </div>
     </div>
 
-    <div class="space-y-4">
-      <div class="bg-white rounded-lg shadow-md flex flex-col md:flex-row overflow-hidden">
-        <img src="https://via.placeholder.com/250x200.png?text=Casa+Playa" alt="Casa cerca de la Playa" class="w-full md:w-1/3 lg:w-1/4 h-64 md:h-auto object-cover">
-        <div class="p-4 flex flex-col flex-grow">
-          <div class="flex justify-between items-start mb-1">
-            <h3 class="text-xl font-semibold text-gray-800">Casa cerca de la Playa</h3>
-            <div class="flex items-center text-yellow-400">
-              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-              <svg class="w-4 h-4 text-gray-300 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-            </div>
-          </div>
-          <p class="text-sm text-gray-500 mb-2">📍 Ixtapa, Calle Los Alpes #2</p>
-          <p class="text-sm text-gray-700 mb-3">Tipo: Casa</p>
-          <div class="flex flex-wrap gap-2 text-xs text-gray-600 mb-3">
-            <span class="bg-gray-100 px-2 py-1 rounded">4 baños</span>
-            <span class="bg-gray-100 px-2 py-1 rounded">3 habitaciones</span>
-            <span class="bg-gray-100 px-2 py-1 rounded">1 cocina</span>
-          </div>
-          <div class="mt-auto flex flex-col sm:flex-row items-end sm:items-center justify-between">
-            <div class="text-right sm:text-left mb-2 sm:mb-0">
-              <p class="text-xs text-gray-500 line-through">$23,000</p>
-              <p class="text-xl font-bold text-green-600">$21,000</p>
-            </div>
-            <div class="flex items-center gap-2">
-                <button class="p-2 text-red-500 hover:text-red-700">
-                    <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-                </button>
-                <button class="px-5 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 text-sm">
-                Ver más
-                </button>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div class="lg:flex lg:space-x-8" *ngIf="!loading && !error">
+        <aside class="lg:w-1/4 mb-8 lg:mb-0">
+            <div class="p-4 bg-white rounded-xl shadow-md sticky top-4">
+                <h3 class="text-lg font-bold mb-4 border-b pb-2">Filtrar tus resultados</h3>
 
-      <div class="bg-white rounded-lg shadow-md flex flex-col md:flex-row overflow-hidden">
-        <img src="https://via.placeholder.com/250x200.png?text=Casa+Alberca" alt="Casa con alberca" class="w-full md:w-1/3 lg:w-1/4 h-64 md:h-auto object-cover">
-        <div class="p-4 flex flex-col flex-grow">
-          <div class="flex justify-between items-start mb-1">
-            <h3 class="text-xl font-semibold text-gray-800">Casa con alberca</h3>
-            <div class="flex items-center text-yellow-400">
-              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-              <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z"/></svg>
-            </div>
-          </div>
-          <p class="text-sm text-gray-500 mb-2">📍 Las Lomas, Calle Huiscol #02</p>
-          <p class="text-sm text-gray-700 mb-3">Tipo: Casa</p>
-          <div class="flex flex-wrap gap-2 text-xs text-gray-600 mb-3">
-            <span class="bg-gray-100 px-2 py-1 rounded">2 baños</span>
-            <span class="bg-gray-100 px-2 py-1 rounded">3 habitaciones</span>
-            <span class="bg-gray-100 px-2 py-1 rounded">1 cocina</span>
-            <span class="bg-gray-100 px-2 py-1 rounded">Cuarto de lavado</span>
-          </div>
-          <div class="mt-auto flex flex-col sm:flex-row items-end sm:items-center justify-between">
-            <div class="text-right sm:text-left mb-2 sm:mb-0">
-              <p class="text-xs text-gray-500 line-through">$270,000</p>
-              <p class="text-xl font-bold text-green-600">$240,000</p>
-            </div>
-            <div class="flex items-center gap-2">
-                <button class="p-2 text-gray-400 hover:text-red-500"> <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                <div class="mb-4">
+                    <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Buscar por título</label>
+                    <input type="text" id="search" placeholder="Ej: Casa en la playa"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                           [(ngModel)]="filtros.titulo" (input)="aplicarFiltrosYPaginacion()">
+                </div>
+
+                <div class="mb-4">
+                    <label for="tipo" class="block text-sm font-medium text-gray-700 mb-1">Tipo de propiedad</label>
+                    <select id="tipo" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                            [(ngModel)]="filtros.tipoId" (change)="aplicarFiltrosYPaginacion()">
+                        <option value="">Todos los tipos</option>
+                        <option *ngFor="let tipo of tiposDePropiedad" [value]="tipo.id">{{ tipo.nombre }}</option>
+                    </select>
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Rango de precios</label>
+                    <div class="flex items-center space-x-2">
+                        <input type="number" placeholder="Mínimo" min="0"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                               [(ngModel)]="filtros.precioMin" (input)="aplicarFiltrosYPaginacion()">
+                        <span class="text-gray-500">-</span>
+                        <input type="number" placeholder="Máximo" min="0"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                               [(ngModel)]="filtros.precioMax" (input)="aplicarFiltrosYPaginacion()">
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="habitaciones" class="block text-sm font-medium text-gray-700 mb-1">Habitaciones (mínimo)</label>
+                    <input type="number" id="habitaciones" placeholder="Cualquier cantidad" min="0"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                           [(ngModel)]="filtros.habitaciones" (input)="aplicarFiltrosYPaginacion()">
+                </div>
+
+                <div class="mb-4">
+                    <label for="banos" class="block text-sm font-medium text-gray-700 mb-1">Baños (mínimo)</label>
+                    <input type="number" id="banos" placeholder="Cualquier cantidad" min="0"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                           [(ngModel)]="filtros.banos" (input)="aplicarFiltrosYPaginacion()">
+                </div>
+
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Características</label>
+                    <div class="space-y-2">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="mascotas" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                                   [(ngModel)]="filtros.mascotas" (change)="aplicarFiltrosYPaginacion()">
+                            <label for="mascotas" class="ml-2 block text-sm text-gray-700">Acepta mascotas</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="amueblado" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                                   [(ngModel)]="filtros.amueblado" (change)="aplicarFiltrosYPaginacion()">
+                            <label for="amueblado" class="ml-2 block text-sm text-gray-700">Amueblado</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button (click)="limpiarFiltros()"
+                        class="w-full bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-gray-700 transition duration-200">
+                    Limpiar Filtros
                 </button>
-                <button class="px-5 py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 text-sm">
-                Ver más
-                </button>
             </div>
-          </div>
+        </aside>
+
+        <main class="lg:w-3/4">
+            <div *ngIf="!loading && propiedades.length === 0" class="text-center p-8 bg-gray-50 rounded-lg border border-gray-200">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <h3 class="mt-2 text-lg font-medium text-gray-900">No se encontraron propiedades</h3>
+                <p class="mt-1 text-sm text-gray-500">Intenta ajustar los filtros de búsqueda o límpialos para ver todos los resultados.</p>
+            </div>
+
+            <div *ngIf="!loading && propiedades.length > 0">
+                <div class="mb-4">
+                    <h2 class="text-xl font-bold text-gray-800">{{ totalItems }} alojamiento{{ totalItems !== 1 ? 's' : '' }} disponible{{ totalItems !== 1 ? 's' : '' }}</h2>
+                </div>
+
+                <div class="space-y-6">
+                    <div *ngFor="let propiedad of propiedades" (click)="abrirModal(propiedad)"
+                         class="flex flex-col md:flex-row bg-white rounded-xl shadow-md overflow-hidden transition hover:shadow-lg cursor-pointer border border-gray-200">
+                        <div class="md:w-1/3 flex-shrink-0">
+                            <div class="relative h-48 md:h-full overflow-hidden">
+                                <img *ngIf="propiedad.fotos?.length > 0" [src]="getFullImageUrl(propiedad.fotos[0])" alt="Imagen de {{ propiedad.titulo }}" class="w-full h-full object-cover">
+                                <div *ngIf="!propiedad.fotos?.length" class="w-full h-full bg-gray-200 flex items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow w-full md:w-2/3">
+                            <div class="flex-grow">
+                                <h3 class="text-xl font-bold text-gray-900 mb-1">{{ propiedad.titulo }}</h3>
+                                <p class="text-sm text-gray-500 flex items-center mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-gray-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" /></svg>
+                                    <span *ngIf="propiedad.direccion">{{ propiedad.direccion }}, </span> <span *ngIf="propiedad.ciudad">{{ propiedad.ciudad }}</span>
+                                </p>
+
+                                <p class="text-sm text-gray-600 mb-4 line-clamp-2">
+                                    {{ propiedad.descripcion }}
+                                </p>
+                                <p class="text-sm text-gray-600 mb-4"><span class="font-semibold">Tipo:</span> {{ propiedad.tipo_propiedad?.nombre || 'No especificado' }}</p>
+                            </div>
+                            <hr class="my-4">
+                            <div class="flex flex-col sm:flex-row items-end">
+                                <div class="w-full sm:w-1/2 space-y-2 text-sm text-gray-600 mb-4 sm:mb-0">
+                                    <div class="flex space-x-4">
+                                        <span>{{ propiedad.banos || '0' }} baños</span>
+                                        <span>{{ propiedad.habitaciones || '0' }} habs.</span>
+                                    </div>
+                                </div>
+                                <div class="w-full sm:w-1/2 flex flex-col items-end">
+                                    <p class="text-2xl font-bold text-gray-900 mb-2">${{ propiedad.precio | number:'1.0-0' }} <span class="text-sm font-normal text-gray-500">MXN</span></p>
+                                    <div class="w-full sm:w-auto bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-200 text-center">Ver más</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+
+                <mat-paginator class="mt-8 bg-transparent"
+                               [length]="totalItems" [pageSize]="pageSize" [pageIndex]="pageIndex"
+                               [pageSizeOptions]="pageSizeOptions" (page)="onPageChange($event)">
+                </mat-paginator>
+            </div>
+        </main>
+    </div>
+
+    <div *ngIf="propiedadSeleccionada" class="fixed inset-0 bg-black/60 flex justify-center items-center z-50 p-4">
+        <div class="relative bg-white max-w-4xl w-full flex flex-col rounded-2xl shadow-2xl overflow-hidden max-h-[90vh]">
+            
+            <button (click)="cerrarModal()" class="absolute top-4 right-4 bg-white/80 hover:bg-white text-gray-800 rounded-full shadow-md z-20 p-2 transition duration-200" aria-label="Cerrar">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                    <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clip-rule="evenodd" />
+                </svg>
+            </button>
+            
+            <div class="relative flex-shrink-0 h-64 w-full bg-gray-200">
+                <img *ngIf="propiedadSeleccionada.fotos?.length > 0" 
+                     [src]="getFullImageUrl(propiedadSeleccionada.fotos[0])" 
+                     alt="Imagen de {{ propiedadSeleccionada.titulo }}" 
+                     class="w-full h-full object-cover">
+                <div *ngIf="!propiedadSeleccionada.fotos?.length" class="w-full h-full flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                </div>
+            </div>
+    
+            <div class="flex-grow p-6 sm:p-8 overflow-y-auto">
+                <div class="mb-6">
+                    <span *ngIf="propiedadSeleccionada.estado_propiedad === 'Disponible'" class="inline-block text-sm font-semibold px-3 py-1 rounded-full bg-green-100 text-green-800 mb-3">
+                        Disponible
+                    </span>
+                    <h3 class="text-3xl font-bold text-gray-900">{{ propiedadSeleccionada.titulo }}</h3>
+                    <p class="text-md text-gray-500 mt-1">
+                        <span *ngIf="propiedadSeleccionada.direccion">{{ propiedadSeleccionada.direccion }}, </span>
+                        <span *ngIf="propiedadSeleccionada.ciudad">{{ propiedadSeleccionada.ciudad }}</span>
+                    </p>
+                </div>
+                <p class="text-gray-600 text-sm leading-relaxed whitespace-pre-line">
+                    {{ propiedadSeleccionada.descripcion || 'No hay descripción disponible.' }}
+                </p>
+                </div>
         </div>
-      </div>
-      </div>
-  </main>
-</div>
+    </div>
+    </div>

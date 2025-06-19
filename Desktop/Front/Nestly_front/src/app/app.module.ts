@@ -18,6 +18,7 @@ import { VerPropiedadesComponent } from './inicio/ver-propiedades/ver-propiedade
 import { EditarPropiedadComponent } from './inicio/editar-propiedad/editar-propiedad.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations'; 
+import { BuscarComponent } from './inicio/buscar/buscar.component';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
     AlquilarCasaComponent,
     VerPropiedadesComponent,
     EditarPropiedadComponent,
+    BuscarComponent
     
   ],
   imports: [
