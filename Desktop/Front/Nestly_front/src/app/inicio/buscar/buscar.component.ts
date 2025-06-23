@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-// IMPORTANTE: Añadir ActivatedRoute para la navegación relativa
 import { Router, ActivatedRoute } from '@angular/router'; 
 import { PropiedadesService } from '../../../app/services/propiedad.service';
 import { PageEvent } from '@angular/material/paginator';
@@ -32,11 +31,10 @@ export class BuscarComponent implements OnInit {
   pageIndex = 0;
   pageSizeOptions = [6, 9, 12];
 
-  // IMPORTANTE: Inyectar Router y ActivatedRoute
   constructor(
     private propiedadesService: PropiedadesService,
     private router: Router,
-    private route: ActivatedRoute // Añadir esto
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -88,6 +86,10 @@ export class BuscarComponent implements OnInit {
   aplicarFiltros(): void {
     let propiedadesFiltradas = [...this.todasLasPropiedades];
 
+    // --- FILTRO BASE PARA MOSTRAR SOLO PROPIEDADES DISPONIBLES ---
+    propiedadesFiltradas = propiedadesFiltradas.filter(p => p.estado_propiedad === 'Disponible');
+
+    // Filtros del usuario
     if (this.filtros.titulo) {
       propiedadesFiltradas = propiedadesFiltradas.filter(p => p.titulo.toLowerCase().includes(this.filtros.titulo.toLowerCase()));
     }
@@ -140,11 +142,8 @@ export class BuscarComponent implements OnInit {
     this.aplicarFiltros();
   }
 
-  // ===== LA ÚNICA LÍNEA MODIFICADA ESTÁ AQUÍ DENTRO =====
   verDetallePropiedad(propiedad: any): void {
     if (propiedad && propiedad.id_propiedad) {
-      // Navegamos a la ruta 'propiedad' pasando el ID.
-      // El leading '/' se quita para que la navegación sea relativa a la ruta actual.
       this.router.navigate(['../propiedad', propiedad.id_propiedad], { relativeTo: this.route });
     } else {
       console.error('No se puede navegar: la propiedad no tiene un id_propiedad válido.', propiedad);
