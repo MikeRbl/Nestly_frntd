@@ -14,14 +14,16 @@ export class BuscarComponent implements OnInit {
   tiposDePropiedad: any[] = [];
   loading = false;
   error = '';
+  precioMaximoDelSlider: number = 10000000; 
 
   filtros = {
     titulo: '',
     tipoId: '',
-    precioMin: null as number | null,
+    precioMin: 0,
     precioMax: null as number | null,
     habitaciones: null as number | null,
     banos: null as number | null,
+    puntuacionMin: null as number | null,
     mascotas: false,
     amueblado: false,
   };
@@ -53,6 +55,20 @@ export class BuscarComponent implements OnInit {
         } else {
           this.todasLasPropiedades = [];
           this.error = 'Los datos recibidos del servidor no tienen el formato esperado.';
+        }
+        if (this.todasLasPropiedades && this.todasLasPropiedades.length > 0) {
+          // Calcula el precio máximo real de tus propiedades
+          const maxPrice = Math.max(...this.todasLasPropiedades.map(p => p.precio));
+          // Usa Math.ceil para redondear hacia arriba a la centena o millar más cercano
+          this.precioMaximoDelSlider = Math.ceil(maxPrice / 1000) * 1000; 
+          
+          // Inicializa el filtro de precio máximo con este valor
+          if (this.filtros.precioMax === null) {
+              this.filtros.precioMax = this.precioMaximoDelSlider;
+          }
+           if (this.filtros.precioMin === null) {
+              this.filtros.precioMin = 0;
+          }
         }
         this.aplicarFiltrosYPaginacion();
         this.loading = false;
@@ -108,11 +124,14 @@ export class BuscarComponent implements OnInit {
     if (this.filtros.banos !== null && this.filtros.banos >= 0) {
       propiedadesFiltradas = propiedadesFiltradas.filter(p => p.banos >= this.filtros.banos!);
     }
+    if(this.filtros.puntuacionMin !== null && this.filtros.puntuacionMin >= 0) {
+      propiedadesFiltradas = propiedadesFiltradas.filter(p => p.resenas_avg_puntuacion && p.resenas_avg_puntuacion >= this.filtros.puntuacionMin!);
+    }
     if (this.filtros.mascotas) {
-      propiedadesFiltradas = propiedadesFiltradas.filter(p => p.acepta_mascotas);
+      propiedadesFiltradas = propiedadesFiltradas.filter(p => p.acepta_mascotas == true);
     }
     if (this.filtros.amueblado) {
-      propiedadesFiltradas = propiedadesFiltradas.filter(p => p.amueblado);
+      propiedadesFiltradas = propiedadesFiltradas.filter(p => p.amueblado == true);
     }
 
     this.totalItems = propiedadesFiltradas.length;
@@ -125,10 +144,11 @@ export class BuscarComponent implements OnInit {
     this.filtros = {
       titulo: '',
       tipoId: '',
-      precioMin: null,
-      precioMax: null,
+      precioMin: 0,
+      precioMax: this.precioMaximoDelSlider,
       habitaciones: null,
       banos: null,
+      puntuacionMin: null,
       mascotas: false,
       amueblado: false
     };
@@ -142,6 +162,32 @@ export class BuscarComponent implements OnInit {
     this.aplicarFiltros();
   }
 
+  //* ============== Funcion para el filtro por estrellas ============== *//
+  setRatingFilter(rating: number): void {
+      // Si el usuario hace clic en la misma calificación que ya está seleccionada, la limpia.
+    if (this.filtros.puntuacionMin ===rating){
+      this.filtros.puntuacionMin = null;
+    } else {
+      this.filtros.puntuacionMin = rating;
+    }
+    this.aplicarFiltrosYPaginacion();
+  }
+ 
+handlePriceRangeChange(): void {
+    if (this.filtros.precioMin! > this.filtros.precioMax!) {
+      // Si el mínimo supera al máximo, los igualamos para evitar un rango inválido.
+      // Puedes decidir cuál de los dos tiene prioridad. Aquí, el mínimo empuja al máximo.
+      this.filtros.precioMax = this.filtros.precioMin;
+    }
+  }
+    ajustarCantidad(filtro: 'habitaciones' | 'banos', cantidad: number): void {
+    if (this.filtros[filtro] === null) {
+      this.filtros[filtro] = 0; // Inicia en 0 si no hay valor
+    }
+    const nuevoValor = this.filtros[filtro]! + cantidad;
+    this.filtros[filtro] = Math.max(0, nuevoValor); // Se asegura que el mínimo sea 0
+    this.aplicarFiltrosYPaginacion();
+  }
   verDetallePropiedad(propiedad: any): void {
     if (propiedad && propiedad.id_propiedad) {
       this.router.navigate(['../propiedad', propiedad.id_propiedad], { relativeTo: this.route });

@@ -1,0 +1,55 @@
+/* Estilo base reutilizable para los inputs de texto y select */
+.input-filtro {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #d1d5db; /* gray-300 */
+    border-radius: 0.5rem; /* rounded-lg */
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.input-filtro:focus {
+    outline: none;
+    border-color: #4f46e5; /* indigo-600 */
+    box-shadow: 0 0 0 3px rgb(79 70 229 / 0.2);
+}
+
+/* Estilos para los botones +/- (Stepper) */
+.stepper-btn {
+    width: 2.25rem; /* w-9 */
+    height: 2.25rem; /* h-9 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem; /* text-xl */
+    font-weight: 600; /* font-semibold */
+    color: #4f46e5; /* text-indigo-600 */
+    background-color: #eef2ff; /* indigo-100 */
+    border-radius: 9999px; /* rounded-full */
+    transition: background-color 0.2s;
+}
+.stepper-btn:hover {
+    background-color: #e0e7ff; /* indigo-200 */
+}
+
+/* Estilo para el display numérico del stepper */
+.stepper-input {
+    width: 100%;
+    text-align: center;
+    font-size: 1rem; /* text-base */
+    font-weight: 600; /* font-semibold */
+    color: #1f2937; /* gray-800 */
+    border: none;
+    background: transparent;
+}
+.stepper-input:focus {
+    outline: none;
+}
+
+/* Estilos para el interruptor (Toggle) */
+input[type="checkbox"]:checked + div .dot {
+    transform: translateX(100%);
+    background-color: #ffffff;
+}
+input[type="checkbox"]:checked + div {
+    background-color: #4f46e5; /* indigo-600 */
+}
