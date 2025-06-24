@@ -1,67 +1,92 @@
-<div class="background background bg-gray-50 dark:bg-gray-800">
-<nav class="fresh-navbar background bg-gray-50 dark:bg-gray-800">
-  <div class="fresh-nav-container background bg-gray-50 dark:bg-gray-800">
+<div class="background bg-gray-50 dark:bg-gray-800">
+  <nav class="fresh-navbar background bg-gray-50 dark:bg-gray-800">
+    <div class="fresh-nav-container background bg-gray-50 dark:bg-gray-800">
+      
+      <!-- Logo centrado en móvil -->
+      <div class="fresh-logo" routerLink="/principal/dashboard">
+        <img src="assets/navbar/LogoN.png" alt="Westly">
+      </div>
 
-    <div class="fresh-logo" routerLink="/principal/dashboard">
-      <img src="assets/navbar/LogoN.png" class="" alt="Westly">
-    </div>
+      <!-- Menú de navegación principal -->
+      <div class="fresh-nav-links" [class.active]="mobileMenuOpen">
+        <a class="nav-main-link"
+           routerLink="dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+           (click)="closeMenus()">
+          <span class="textoBtn">Inicio</span>
+        </a>
 
-    <div class="fresh-nav-links">
+        <a class="nav-main-link"
+           routerLink="buscarCasa" routerLinkActive="active"
+           (click)="closeMenus()">
+          <span class="textoBtn">Buscar</span>
+        </a>
 
-      <a class="nav-main-link" 
-         routerLink="dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-        <span class="textoBtn">Inicio</span>
-      </a>
+        <a class="nav-main-link"
+           routerLink="publicarCasa" routerLinkActive="active"
+           *ngIf="userRole === 'propietario' || userRole === 'admin'"
+           (click)="closeMenus()">
+          <span class="textoBtn">Publicar Propiedad</span>
+        </a>
 
-      <a class="nav-main-link" 
-         routerLink="buscarCasa" routerLinkActive="active">
-        <span class="textoBtn">Buscar</span>
-      </a>
+        <a class="nav-main-link"
+           routerLink="verPropiedades" routerLinkActive="active"
+           *ngIf="userRole === 'propietario' || userRole === 'admin'"
+           (click)="closeMenus()">
+          <span class="textoBtn">Mis Propiedades</span>
+        </a>
 
-      <a class="nav-main-link" 
-         routerLink="publicarCasa" routerLinkActive="active"
-         *ngIf="userRole === 'propietario' || userRole === 'admin'">
-        <span class="textoBtn">Publicar Propiedad</span>
-      </a>
+        <a class="nav-main-link"
+           routerLink="qnSomos" routerLinkActive="active"
+           (click)="closeMenus()">
+          <span class="textoBtn">¿Quiénes somos?</span>
+        </a>
+      </div>
 
-      <a class="nav-main-link" 
-         routerLink="verPropiedades" routerLinkActive="active"
-         *ngIf="userRole === 'propietario' || userRole === 'admin'">
-        <span class="textoBtn">Mis Propiedades</span>
-      </a>
+      <!-- Botón de perfil y acciones a la derecha -->
+      <div class="right-elements">
+        <a class="signup-btn"
+           routerLink="/register" *ngIf="!isLoggedIn()">
+          <span>Registrarse</span>
+        </a>
+        <a class="login-btn"
+           routerLink="/login" *ngIf="!isLoggedIn()">
+          <span>Iniciar Sesión</span>
+        </a>
 
-      <a class="nav-main-link" 
-         routerLink="qnSomos" routerLinkActive="active">
-        <span class="textoBtn">¿Quiénes somos?</span>
-      </a>
-    </div>
+        <div class="user-info-container" *ngIf="isLoggedIn()">
+          <div class="user-info" (click)="toggleUserMenu()">
+            <div class="nombreUsuario">
+              <span class="user-name">{{ userData?.first_name }} {{ userData?.last_name_paternal }}</span>
+            </div>
+            <div class="user-profile">
+              <img 
+                [src]="userData?.profile_picture || 'assets/navbar/usuario.png'" 
+                alt="Foto de perfil de {{ userData?.first_name }}"
+                class="avatar-image"> 
+            </div>
+          </div>
+          
+          <!-- Menú desplegable del usuario -->
+          <div class="user-dropdown-menu" [class.active]="userMenuOpen">
+            <a routerLink="/principal/perfil" class="dropdown-item" (click)="closeMenus()">Mi Perfil</a>
+            <a routerLink="/principal/perfil" class="dropdown-item" (click)="closeMenus()">Favoritos</a>
 
-    <div class="right-elements">
-      <a class="signup-btn" 
-         routerLink="/register" *ngIf="!isLoggedIn()">
-        <span>Registrarse</span>
-      </a>
-      <a class="login-btn" 
-         routerLink="/login" *ngIf="!isLoggedIn()">
-        <span>Iniciar Sesión</span>
-      </a>
+            <!-- Mostrar enlaces de navegación solo en móvil -->
+            <div class="mobile-nav-links" *ngIf="isMobileView()">
+              <a class="dropdown-item" routerLink="dashboard" (click)="closeMenus()">Inicio</a>
+              <a class="dropdown-item" routerLink="buscarCasa" (click)="closeMenus()">Buscar</a>
+              <a class="dropdown-item" routerLink="publicarCasa" (click)="closeMenus()" *ngIf="userRole === 'propietario' || userRole === 'admin'">Publicar Propiedad</a>
+              <a class="dropdown-item" routerLink="verPropiedades" (click)="closeMenus()" *ngIf="userRole === 'propietario' || userRole === 'admin'">Mis Propiedades</a>
+              <a class="dropdown-item" routerLink="qnSomos" (click)="closeMenus()">¿Quiénes somos?</a>
+            </div>
 
-      <div class="user-info" 
-           *ngIf="isLoggedIn()" (click)="handleProfileClick()">
-        <div class="nombreUsuario">
-          <span class="user-name">{{ userData?.first_name }} {{ userData?.last_name_paternal }}</span>
-        </div>
-        <div class="user-profile">
-          <img 
-            [src]="userData?.profile_picture || 'assets/navbar/usuario.png'" 
-            alt="Foto de perfil de {{ userData?.first_name }}"
-            class="avatar-image"> 
+            <a class="dropdown-item" (click)="logout()">Cerrar Sesión</a>
+          </div>
         </div>
       </div>
-    </div>
 
-  </div>
-</nav>
+    </div>
+  </nav>
 </div>
 
 <router-outlet></router-outlet>
