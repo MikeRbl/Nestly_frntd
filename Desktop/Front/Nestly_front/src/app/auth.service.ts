@@ -1,73 +1,69 @@
+
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { User } from './interface/usuario.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private loggedIn = false; 
+  //* 1. BehaviorSubject: El "corazón" reactivo del servicio.
+  private currentUserSubject: BehaviorSubject<User | null>;
+  
+  //* 2. Observable público: Los componentes se suscriben a esto para recibir actualizaciones.
+  public currentUser$: Observable<User | null>;
 
   constructor(private router: Router) {
-    this.loggedIn = localStorage.getItem('loggedIn') === 'true';
+    //* Se inicializa el BehaviorSubject con el usuario que pueda existir en localStorage.
+    const storedUser = this.getUserFromStorage();
+    this.currentUserSubject = new BehaviorSubject<User | null>(storedUser);
+    this.currentUser$ = this.currentUserSubject.asObservable();
   }
 
-  login(userData: any, token: string): void {
-    this.loggedIn = true;
-    localStorage.setItem('loggedIn', 'true');
+  login(userData: User, token: string): void {
     localStorage.setItem('accessToken', token);
-    // Asegurarse de no guardar 'undefined'
-    if (userData) {
-      localStorage.setItem('user', JSON.stringify(userData));
-    }
+    localStorage.setItem('user', JSON.stringify(userData));
+
+    //* Notifica a todos los componentes suscritos que hay un nuevo usuario.
+    this.currentUserSubject.next(userData);
   }
 
   logout(): void {
-    this.loggedIn = false;
-    localStorage.removeItem('loggedIn');
     localStorage.removeItem('accessToken');
     localStorage.removeItem('user');
+
+    //* Notifica a todos que el usuario ya no existe.
+    this.currentUserSubject.next(null);
+    
+    //* Mantenemos la lógica de navegación y recarga si la necesitas.
     this.router.navigate(['/login']);
-    window.location.reload();
+    window.location.reload(); 
   }
 
   isLoggedIn(): boolean {
-    return this.loggedIn || localStorage.getItem('loggedIn') === 'true';
+    //* Lee el valor actual del BehaviorSubject.
+    return !!this.currentUserSubject.getValue();
   }
 
-  obtenerUsuarioActualId(): number | null {
-  const userString = localStorage.getItem('user');
-
-  if (!userString || userString === 'undefined') {
-    console.warn('⚠️ No hay usuario guardado en localStorage');
-    return null;
+  
+   //* Devuelve el valor actual del usuario de forma síncrona.
+   
+  obtenerUsuarioActualId(): User | null {
+    return this.currentUserSubject.getValue();
   }
 
-  try {
-    const user = JSON.parse(userString);
-    const id = user?.id ?? null;
-    console.log('🧠 ID obtenido del usuario actual:', id);
-    return id;
-  } catch (e) {
-    console.error("❌ Error al procesar el user guardado:", e);
-    return null;
-  }
-}
-
-
-  // 👇 MÉTODO CORREGIDO
-  obtenerUsuarioActual(): any | null {
+  //* Helper privado para leer de localStorage de forma segura.
+  private getUserFromStorage(): User | null {
     const userString = localStorage.getItem('user');
-
-    // Comprueba si el string es nulo, vacío o literalmente "undefined"
     if (!userString || userString === 'undefined') {
       return null;
     }
-
     try {
-      return JSON.parse(userString);
+      return JSON.parse(userString) as User;
     } catch (e) {
-      console.error("Error al procesar los datos del usuario desde localStorage:", e);
-      return null; // Si hay un error de parseo, devuelve null
+      console.error("Error al procesar usuario de localStorage:", e);
+      return null;
     }
   }
 }

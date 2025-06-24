@@ -1,0 +1,13 @@
+<div *ngIf="!resenas || resenas.length === 0">
+  <p>No hay reseñas para mostrar.</p>
+</div>
+
+<div *ngFor="let item of resenas">
+  <app-resena-item 
+    [resena]="item" 
+    [currentUserId]="currentUserId"
+    (eliminar)="onEliminar($event)"
+    (votar)="onVotar($event)"
+    (editar)="onEditar($event)">
+  </app-resena-item>
+</div>

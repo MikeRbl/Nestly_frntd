@@ -57,7 +57,7 @@ export class VerPropiedadesComponent implements OnInit {
   cargarDatosIniciales(): void {
     this.loading = true;
     this.error = '';
-    const userId = this.authService.obtenerUsuarioActualId();
+    const userId = this.authService.obtenerUsuarioActualId()?.id;
     console.log('ID del usuario autenticado:', userId); // 👈
     if (!userId) {
       // Manejar error de usuario no encontrado
@@ -180,7 +180,8 @@ export class VerPropiedadesComponent implements OnInit {
       if (result.isConfirmed) {
 
         this.httpService.Service_Delete('propiedades', id).subscribe({
-          next: () => {
+          next: (res) => {
+            console.log('Respuesta del endpoint:', res)
             Swal.fire('¡Eliminada!', 'Tu propiedad ha sido eliminada.', 'success');
             // Recargamos la lista completa desde cero
             this.cargarDatosIniciales();

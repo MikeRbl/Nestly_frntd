@@ -1,98 +1,154 @@
-<div class="contenedor">
-  <div *ngIf="isLoading" class="loading-spinner">
-    <!-- Tu spinner de carga -->
-    Cargando...
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 font-sans">
+  
+  <div class="mb-6">
+    <button
+      (click)="goBack()"
+      class="inline-flex items-center text-gray-600 hover:text-gray-900 font-medium text-sm transition-colors duration-200"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+      </svg>
+      Regresar
+    </button>
   </div>
 
-  <div *ngIf="errorMessage" class="error-message">
-    {{ errorMessage }}
-    <button (click)="retryLoad()">Reintentar</button>
+  <div *ngIf="isLoading" class="text-center py-20">
+    <p class="text-lg text-gray-500">Cargando detalles de la propiedad...</p>
   </div>
 
-  <div *ngIf="property && !isLoading" class="property-card">
-    <div class="gallery-container">
-      <h1 class="property-title">{{ property.titulo || 'Propiedad sin título' }}</h1>
-      
-      <!-- Imagen principal -->
-      <div class="main-image">
-        <img [src]="mainImage" [alt]="'Imagen principal de ' + (property.titulo || 'la propiedad')">
+  <div *ngIf="errorMessage && !isLoading" class="border-l-4 border-red-500 text-red-700 p-4" role="alert">
+    <p class="font-bold">Ocurrió un error</p>
+    <p>{{ errorMessage }}</p>
+    <button (click)="retryLoad()" class="mt-3 bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-md transition-colors duration-300">
+      Reintentar
+    </button>
+  </div>
+
+  <div *ngIf="property && !isLoading">
+    
+    <header class="mb-6">
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-900">{{ property.titulo || 'Propiedad sin título' }}</h1>
+      <div class="flex items-center text-gray-500 mt-3 text-sm space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-pink-500" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+        </svg>
+        <span>{{ averageRating | number:'1.1-1' }}</span>
+        <span class="text-gray-300">·</span>
+        <span class="underline cursor-pointer hover:text-gray-800">{{ reviewCount }} reseñas</span>
+        <span class="text-gray-300">·</span>
+        <span class="font-medium text-gray-700">{{ property.ciudad || 'Sin ciudad' }}, {{ property.pais || 'Sin país' }}</span>
       </div>
-      
-      <!-- Galería de imágenes -->
-      <div class="secondary-images">
-        <img *ngFor="let img of allImages; let i = index" 
-             [src]="img" 
-             [alt]="'Imagen ' + (i + 1) + ' de ' + (property.titulo || 'la propiedad')"
-             (click)="changeMainImage(img)"
-             class="thumbnail">
+    </header>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mb-10 h-96">
+      <div class="col-span-2 row-span-2">
+        <img [src]="mainImage" [alt]="'Imagen principal de ' + (property.titulo || 'la propiedad')" class="w-full h-full object-cover rounded-lg cursor-pointer hover:opacity-95 transition-opacity">
       </div>
+      <img *ngFor="let img of allImages | slice:0:2" [src]="img" [alt]="'Imagen de ' + (property.titulo || 'la propiedad')" class="w-full h-full object-cover rounded-lg cursor-pointer hover:opacity-95 transition-opacity" (click)="changeMainImage(img)">
     </div>
 
-    <div class="info-container">
-      <div class="info-casa">
-        <p class="property-subtitle">
-          {{ property.descripcion || 'Sin descripción' }} en {{ property.ciudad || 'Sin ciudad' }}, {{ property.estado_ubicacion || 'Sin estado' }}
-        </p>
-
-        <div class="property-details">
-          {{ property.habitaciones || 0 }} Habitaciones · {{ property.banos || 0 }} Baños · {{ property.metros_cuadrados || 0 }} m²
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-x-16">
+      <div class="lg:col-span-2">
+        <div class="pb-6 border-b border-gray-100">
+          <h2 class="text-2xl font-semibold text-gray-800">{{ property.tipo_propiedad?.nombre || 'Propiedad' }} en {{ property.ciudad }}</h2>
+          <p class="text-gray-500 mt-2">
+            {{ property.habitaciones || 0 }} Habitaciones · {{ property.banos || 0 }} Baños · {{ property.metros_cuadrados || 0 }} m²
+          </p>
         </div>
         
-<div class="owner-info">
-  <h2>{{ property['tipo_propiedad']?.nombre || 'Propiedad' }} en {{ property.ciudad }}</h2>
-
-  <div class="property-owner">
-    
-    <img [src]="getFullImageUrl(property['propietario']?.avatar_url, 'assets/navbar/usuario.png')" alt="Avatar del propietario" class="owner-avatar">
-    
-    <div>
-      <span class="owner-label">Publicado por</span>
-      
-      <span class="owner-name">
-        {{ property['propietario']?.first_name || 'Propietario' }} {{ property['propietario']?.last_name_paternal || '' }}
-      </span>
-
-    </div>
-  </div>
-</div>
-        
-        <div class="divider"></div>
-        
-        <div class="property-rating">
-          <span class="rating-value">4.5</span>|<span class="review-count">16</span>
-          <span class="rating-label">Evaluaciones</span>
-        </div>
-
-        <div class="divider"></div>
-        
-        <ul class="property-features">
-          <li *ngIf="property.mascotas">Aprueba mascotas</li>
-          <li *ngIf="property.amueblado">Amueblado</li>
-          <li *ngIf="property.deposito">Depósito: ${{ property.deposito | number }}</li>
-        </ul>
-      </div>
-
-      <div class="info-precio">
-        <div class="property-pricing">
-          <div class="price-container">
-            <span class="current-price">${{ property.precio | number }} / </span>
-            <span class="price-period">{{ property.anualizado ? 'Año' : 'Mes' }}</span>
+        <div class="py-6 border-b border-gray-100 flex items-center space-x-4">
+          <img [src]="getFullImageUrl(property.propietario?.avatar_url, 'assets/navbar/usuario.png')" alt="Avatar del propietario" class="h-12 w-12 rounded-full object-cover">
+          <div>
+            <p class="font-semibold text-gray-800">Publicado por {{ property.propietario?.first_name || 'Propietario' }}</p>
+            <p class="text-sm text-gray-500">Miembro desde {{ property.propietario?.created_at | date:'MMMM yyyy' }}</p>
           </div>
-          
-          <ul class="price-terms">
-            <li>Tarifa de servicio de Nestly</li>
-            <li class="li-price">10%</li> 
+        </div>
+
+        <div class="py-8 border-b border-gray-100">
+          <h3 class="text-xl font-semibold text-gray-800 mb-4">Lo que este lugar ofrece</h3>
+          <ul class="space-y-4">
+            <li *ngIf="property.amueblado" class="flex items-start">
+              <span class="text-xl mr-4">🛋️</span>
+              <div>
+                <p class="font-medium text-gray-700">Totalmente amueblado</p>
+                <p class="text-sm text-gray-500">Listo para que te instales sin preocupaciones.</p>
+              </div>
+            </li>
+            <li *ngIf="property.mascotas" class="flex items-start">
+              <span class="text-xl mr-4">🐾</span>
+              <div>
+                <p class="font-medium text-gray-700">Se admiten mascotas</p>
+                <p class="text-sm text-gray-500">Trae a tus amigos peludos contigo.</p>
+              </div>
+            </li>
           </ul>
-
-          <div class="divider"></div>
-          
-          <div class="price-total">
-            <div>Total antes de impuestos</div>
-            <div>${{ getTotalPrice() | number }} MXN</div>
-          </div>
         </div>
         
-        <button class="rent-button">Rentar</button>
+        <div class="py-8">
+          <h3 class="text-xl font-semibold text-gray-800 mb-3">Acerca de este lugar</h3>
+          <p class="text-gray-600 leading-relaxed whitespace-pre-line">{{ property.descripcion || 'No hay descripción disponible.' }}</p>
+        </div>
+      </div>
+
+      <div class="lg:col-span-1">
+        <div class="sticky top-10 border border-gray-200 rounded-xl p-6">
+          <div class="flex items-baseline mb-5">
+            <span class="text-3xl font-bold text-gray-900">${{ property.precio | number }}</span>
+            <span class="text-gray-500 ml-1.5">/ {{ property.anualizado ? 'año' : 'mes' }}</span>
+          </div>
+          
+          <div class="space-y-3 text-sm mb-5">
+            <div class="flex justify-between text-gray-600">
+              <span>Tarifa de servicio Nestly</span>
+              <span>10%</span>
+            </div>
+            <div *ngIf="property.deposito" class="flex justify-between text-gray-600">
+              <span>Depósito de seguridad</span>
+              <span>${{ property.deposito | number }}</span>
+            </div>
+          </div>
+          
+          <div class="my-5 border-t border-gray-100"></div>
+
+          <div class="flex justify-between font-semibold text-base">
+            <span>Total (antes de impuestos)</span>
+            <span>${{ getTotalPrice() | number }} MXN</span>
+          </div>
+
+          <button 
+            (click)="rentarAhora()"
+            class="mt-6 w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 rounded-lg text-base transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+            Rentar ahora
+          </button>
+          <p class="text-xs text-gray-500 text-center mt-3">Aún no se te cobrará nada</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="mt-12 pt-10 border-t border-gray-100">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center gap-3">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-pink-500" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+        </svg>
+        <span>{{ averageRating | number:'1.1-1' }} · {{ reviewCount }} evaluaciones</span>
+      </h2>
+      
+      <div class="mb-8">
+        <app-resena-form (formSubmit)="onCrearResena($event)"></app-resena-form>
+      </div>
+
+      <div *ngIf="isLoadingResenas" class="text-center py-10">
+        <p class="text-gray-500">Cargando reseñas...</p>
+      </div>
+      
+      <div *ngIf="!isLoadingResenas">
+        <app-resena-list
+          [resenas]="resenas"
+          [currentUserId]="usuarioActual?.id"
+          (eliminar)="onEliminarResena($event)"
+          (votar)="onToggleVoto($event)"
+          (editar)="onEditarResena($event)">
+        </app-resena-list>
       </div>
     </div>
   </div>

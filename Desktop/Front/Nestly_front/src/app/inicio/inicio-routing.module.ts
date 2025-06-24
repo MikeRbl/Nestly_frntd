@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
+// Componentes que se usan en las rutas de este módulo
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PerfilComponent } from './perfil/perfil.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -7,7 +9,6 @@ import { QnSomosComponent } from './qn-somos/qn-somos.component';
 import { EditarPerfilComponent } from './editarPerfil/editarPerfil.component';
 import { ConfiguracionComponent } from './configuracion/configuracion.component';
 import { PublicarComponent } from './Publicar/publicar.component';
-
 import { AlquilarCasaComponent } from './alquilar-casa/alquilar-casa.component';
 import { BuscarComponent } from './buscar/buscar.component';
 import { VerPropiedadesComponent } from './ver-propiedades/ver-propiedades.component';
@@ -16,7 +17,7 @@ import { EditarPropiedadComponent } from './editar-propiedad/editar-propiedad.co
 const routes: Routes = [
   {
     path: '',
-    component: NavbarComponent,
+    component: NavbarComponent, // Navbar actúa como un contenedor para las demás vistas
     children: [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'perfil', component: PerfilComponent },
@@ -28,18 +29,16 @@ const routes: Routes = [
       { path: 'verPropiedades', component: VerPropiedadesComponent },
       { path: 'editar-propiedad/:id', component: EditarPropiedadComponent },
       { path: 'buscarCasa', component: BuscarComponent },
+      // Redirección por defecto dentro de la sección 'principal'
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
-    
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes),
-    
-  ],
-  exports: [RouterModule,
-    
-  ]
+  // RouterModule.forChild() se usa para módulos cargados de forma perezosa
+  imports: [RouterModule.forChild(routes)],
+  // Se exporta RouterModule para que los componentes de este módulo puedan usar directivas como [routerLink]
+  exports: [RouterModule]
 })
 export class InicioRoutingModule { }
