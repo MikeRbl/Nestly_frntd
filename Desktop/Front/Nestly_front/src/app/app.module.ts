@@ -15,6 +15,7 @@ import { PrimeraMayusculaPipe } from './inicio/pipes/primera-mayuscula.pipe';
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,

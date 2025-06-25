@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
 import { Propiedad } from '../../interface/propiedades.interface';
 import { AuthService } from '../../auth.service';
+import { PropiedadesService } from '../../services/propiedad.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,16 +17,23 @@ export class DashboardComponent implements OnInit {
   featuredProperties: Propiedad[] = [];
   isLoading: boolean = true;
   errorMessage: string = '';
+  favoritoIds = new Set<number>();
+  isUserLoggedIn = false;
 
   constructor(
     private Shttp: HttpLavavelService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    private propiedadesService: PropiedadesService
   ) {}
 
   ngOnInit(): void {
+    this.isUserLoggedIn = this.authService.isLoggedIn();
     this.loadProperties();
+    if (this.isUserLoggedIn) {
+      this.cargarIdsFavoritos();
+    }
   }
  handlePropertyClick(id: number): void {
   if (this.authService.isLoggedIn()) {
@@ -49,6 +57,48 @@ export class DashboardComponent implements OnInit {
       } else if (result.isDenied) {
         this.router.navigate(['/register']); 
         } 
+    });
+  }
+}
+  cargarIdsFavoritos(): void {
+    this.propiedadesService.getIdsFavoritos().subscribe({
+      next: (response) => {
+        // Creamos un Set con los IDs para una comprobación muy rápida
+        this.favoritoIds = new Set(response.data);
+      },
+      error: (err) => console.error('Error al cargar IDs de favoritos en Dashboard:', err)
+    });
+  }
+toggleFavorito(propiedad: Propiedad, event: MouseEvent): void {
+  event.stopPropagation(); 
+  if (!this.isUserLoggedIn) {
+    console.warn('Usuario no autenticado, redirigiendo al detalle de la propiedad');
+    this.handlePropertyClick(propiedad.id_propiedad); 
+    return;
+  }
+
+  const propiedadId = propiedad.id_propiedad;
+  const esFavorito = this.favoritoIds.has(propiedadId);
+
+  if (esFavorito) {
+    console.log(`Quitando de favoritos propiedad ID: ${propiedadId}`);
+    this.favoritoIds.delete(propiedadId); // Actualización optimista de la UI
+    this.propiedadesService.quitarFavorito(propiedadId).subscribe({
+      next: () => console.log(`✅ Propiedad ${propiedadId} quitada de favoritos correctamente.`),
+      error: (error) => {
+        console.error(`❌ Error al quitar favorito (ID: ${propiedadId})`, error);
+        this.favoritoIds.add(propiedadId); // Revertimos el cambio
+      }
+    });
+  } else {
+    console.log(`Agregando a favoritos propiedad ID: ${propiedadId}`);
+    this.favoritoIds.add(propiedadId); // Actualización optimista de la UI
+    this.propiedadesService.agregarFavorito(propiedadId).subscribe({
+      next: () => console.log(`✅ Propiedad ${propiedadId} agregada a favoritos correctamente.`),
+      error: (error) => {
+        console.error(`❌ Error al agregar favorito (ID: ${propiedadId})`, error);
+        this.favoritoIds.delete(propiedadId); // Revertimos el cambio
+      }
     });
   }
 }

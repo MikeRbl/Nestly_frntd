@@ -12,12 +12,8 @@ export class PropiedadesService {
 
   constructor(private http: HttpClient) { }
 
-  /**
-   * Crea los encabezados de autenticación para las peticiones protegidas.
-   * @param isFormData Indica si la petición es de tipo FormData para omitir el 'Content-Type'.
-   */
   private getAuthHeaders(isFormData: boolean = false): HttpHeaders {
-    const token = localStorage.getItem('accessToken'); // O como hayas guardado tu token
+    const token = localStorage.getItem('accessToken');
     if (!token) {
       // Si no hay token, no podemos hacer peticiones autenticadas
       return new HttpHeaders();
@@ -33,10 +29,6 @@ export class PropiedadesService {
 
     return new HttpHeaders(headersConfig);
   }
-
-  // =======================================================
-  // MÉTODOS PÚBLICOS DEL SERVICIO DE PROPIEDADES
-  // =======================================================
 
   /**
    * Obtiene la lista de tipos de propiedad (endpoint público, no requiere token).
@@ -69,24 +61,45 @@ export class PropiedadesService {
   }
 
   /**
-   * Crea una nueva propiedad (Ejemplo adicional, sigue el mismo patrón que actualizar).
+   * Crea una nueva propiedad 
    */
   public crearPropiedad(formData: FormData): Observable<any> {
     const headers = this.getAuthHeaders(true);
     return this.http.post(`${this.apiUrl}/propiedades`, formData, { headers });
   }
-  
+
   /**
-   * Elimina una propiedad (Ejemplo adicional).
+   * Elimina una propiedad 
    */
   public eliminarPropiedad(id: number): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.delete(`${this.apiUrl}/propiedades/${id}`, { headers });
   }
 
-  // Agrega este método a tu PropiedadesService
-public getTodasPropiedades(): Observable<any> {
+  public getTodasPropiedades(): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.get(`${this.apiUrl}/propiedades`, { headers });
+  }
+
+  //Favoritos
+  getFavoritos(): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.get(`${this.apiUrl}/favoritos`, { headers });
+  }
+
+  getIdsFavoritos(): Observable<{ data: number[] }> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<{ data: number[] }>(`${this.apiUrl}/favoritos/ids`, { headers });
+  }
+
+  agregarFavorito(propiedadId: number): Observable<any> {
   const headers = this.getAuthHeaders();
-  return this.http.get(`${this.apiUrl}/propiedades`, { headers });
+  return this.http.post(`${this.apiUrl}/propiedades/${propiedadId}/favorito`, {}, { headers });
 }
+
+quitarFavorito(propiedadId: number): Observable<any> {
+  const headers = this.getAuthHeaders();
+  return this.http.delete(`${this.apiUrl}/propiedades/${propiedadId}/favorito`, { headers });
+}
+
 }

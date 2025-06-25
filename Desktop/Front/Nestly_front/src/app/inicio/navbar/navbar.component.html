@@ -69,7 +69,8 @@
           <!-- Menú desplegable del usuario -->
           <div class="user-dropdown-menu" [class.active]="userMenuOpen">
             <a routerLink="/principal/perfil" class="dropdown-item" (click)="closeMenus()">Mi Perfil</a>
-            <a routerLink="/principal/perfil" class="dropdown-item" (click)="closeMenus()">Favoritos</a>
+            <a routerLink="/principal/favoritos" class="dropdown-item" (click)="closeMenus()">Favoritos</a>
+            <a routerLink="/principal/configuracion" class="dropdown-item" (click)="closeMenus()">Configuracion</a>
 
             <!-- Mostrar enlaces de navegación solo en móvil -->
             <div class="mobile-nav-links" *ngIf="isMobileView()">
