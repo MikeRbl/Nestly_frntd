@@ -14,15 +14,16 @@ export class BuscarComponent implements OnInit {
   tiposDePropiedad: any[] = [];
   loading = false;
   error = '';
-  precioMaximoDelSlider: number = 10000000; 
+  precioMaximoDelSlider: number = 100000; 
 
   filtros = {
     titulo: '',
+    direccion: '', // Filtro para la nueva barra superior
     tipoId: '',
     precioMin: 0,
     precioMax: null as number | null,
-    habitaciones: null as number | null,
-    banos: null as number | null,
+    habitaciones: 0, // Inicia en 0 para el stepper
+    banos: 0,      // Inicia en 0 para el stepper
     puntuacionMin: null as number | null,
     mascotas: false,
     amueblado: false,
@@ -52,23 +53,18 @@ export class BuscarComponent implements OnInit {
       next: (res: any) => {
         if (res && res.data && Array.isArray(res.data.data)) {
           this.todasLasPropiedades = res.data.data;
+          
+          if (this.todasLasPropiedades.length > 0) {
+            const maxPrice = Math.max(...this.todasLasPropiedades.map(p => p.precio));
+            this.precioMaximoDelSlider = Math.ceil(maxPrice / 1000) * 1000; 
+            
+            if (this.filtros.precioMax === null) {
+                this.filtros.precioMax = this.precioMaximoDelSlider;
+            }
+          }
         } else {
           this.todasLasPropiedades = [];
           this.error = 'Los datos recibidos del servidor no tienen el formato esperado.';
-        }
-        if (this.todasLasPropiedades && this.todasLasPropiedades.length > 0) {
-          // Calcula el precio máximo real de tus propiedades
-          const maxPrice = Math.max(...this.todasLasPropiedades.map(p => p.precio));
-          // Usa Math.ceil para redondear hacia arriba a la centena o millar más cercano
-          this.precioMaximoDelSlider = Math.ceil(maxPrice / 1000) * 1000; 
-          
-          // Inicializa el filtro de precio máximo con este valor
-          if (this.filtros.precioMax === null) {
-              this.filtros.precioMax = this.precioMaximoDelSlider;
-          }
-           if (this.filtros.precioMin === null) {
-              this.filtros.precioMin = 0;
-          }
         }
         this.aplicarFiltrosYPaginacion();
         this.loading = false;
@@ -102,34 +98,52 @@ export class BuscarComponent implements OnInit {
   aplicarFiltros(): void {
     let propiedadesFiltradas = [...this.todasLasPropiedades];
 
-    // --- FILTRO BASE PARA MOSTRAR SOLO PROPIEDADES DISPONIBLES ---
+    // Filtro base para mostrar solo propiedades disponibles
     propiedadesFiltradas = propiedadesFiltradas.filter(p => p.estado_propiedad === 'Disponible');
 
     // Filtros del usuario
     if (this.filtros.titulo) {
       propiedadesFiltradas = propiedadesFiltradas.filter(p => p.titulo.toLowerCase().includes(this.filtros.titulo.toLowerCase()));
     }
+    
+    // Nueva lógica de filtrado por dirección
+    if (this.filtros.direccion) {
+      const terminoBusqueda = this.filtros.direccion.toLowerCase();
+      propiedadesFiltradas = propiedadesFiltradas.filter(p => 
+        (p.direccion && p.direccion.toLowerCase().includes(terminoBusqueda)) ||
+        (p.ciudad && p.ciudad.toLowerCase().includes(terminoBusqueda)) ||
+        (p.colonia && p.colonia.toLowerCase().includes(terminoBusqueda))
+      );
+    }
+
     if (this.filtros.tipoId) {
       propiedadesFiltradas = propiedadesFiltradas.filter(p => p.tipo_propiedad_id == this.filtros.tipoId);
     }
+
     if (this.filtros.precioMin !== null && this.filtros.precioMin >= 0) {
       propiedadesFiltradas = propiedadesFiltradas.filter(p => p.precio >= this.filtros.precioMin!);
     }
+
     if (this.filtros.precioMax !== null && this.filtros.precioMax >= 0) {
       propiedadesFiltradas = propiedadesFiltradas.filter(p => p.precio <= this.filtros.precioMax!);
     }
-    if (this.filtros.habitaciones !== null && this.filtros.habitaciones >= 0) {
+    
+    if (this.filtros.habitaciones && this.filtros.habitaciones > 0) {
       propiedadesFiltradas = propiedadesFiltradas.filter(p => p.habitaciones >= this.filtros.habitaciones!);
     }
-    if (this.filtros.banos !== null && this.filtros.banos >= 0) {
+
+    if (this.filtros.banos && this.filtros.banos > 0) {
       propiedadesFiltradas = propiedadesFiltradas.filter(p => p.banos >= this.filtros.banos!);
     }
+
     if(this.filtros.puntuacionMin !== null && this.filtros.puntuacionMin >= 0) {
       propiedadesFiltradas = propiedadesFiltradas.filter(p => p.resenas_avg_puntuacion && p.resenas_avg_puntuacion >= this.filtros.puntuacionMin!);
     }
+
     if (this.filtros.mascotas) {
       propiedadesFiltradas = propiedadesFiltradas.filter(p => p.acepta_mascotas == true);
     }
+
     if (this.filtros.amueblado) {
       propiedadesFiltradas = propiedadesFiltradas.filter(p => p.amueblado == true);
     }
@@ -143,11 +157,12 @@ export class BuscarComponent implements OnInit {
   limpiarFiltros(): void {
     this.filtros = {
       titulo: '',
+      direccion: '', // Limpiar el nuevo filtro
       tipoId: '',
       precioMin: 0,
       precioMax: this.precioMaximoDelSlider,
-      habitaciones: null,
-      banos: null,
+      habitaciones: 0,
+      banos: 0,
       puntuacionMin: null,
       mascotas: false,
       amueblado: false
@@ -162,10 +177,8 @@ export class BuscarComponent implements OnInit {
     this.aplicarFiltros();
   }
 
-  //* ============== Funcion para el filtro por estrellas ============== *//
   setRatingFilter(rating: number): void {
-      // Si el usuario hace clic en la misma calificación que ya está seleccionada, la limpia.
-    if (this.filtros.puntuacionMin ===rating){
+    if (this.filtros.puntuacionMin === rating){
       this.filtros.puntuacionMin = null;
     } else {
       this.filtros.puntuacionMin = rating;
@@ -173,21 +186,20 @@ export class BuscarComponent implements OnInit {
     this.aplicarFiltrosYPaginacion();
   }
  
-handlePriceRangeChange(): void {
+  handlePriceRangeChange(): void {
     if (this.filtros.precioMin! > this.filtros.precioMax!) {
-      // Si el mínimo supera al máximo, los igualamos para evitar un rango inválido.
-      // Puedes decidir cuál de los dos tiene prioridad. Aquí, el mínimo empuja al máximo.
       this.filtros.precioMax = this.filtros.precioMin;
     }
-  }
-    ajustarCantidad(filtro: 'habitaciones' | 'banos', cantidad: number): void {
-    if (this.filtros[filtro] === null) {
-      this.filtros[filtro] = 0; // Inicia en 0 si no hay valor
-    }
-    const nuevoValor = this.filtros[filtro]! + cantidad;
-    this.filtros[filtro] = Math.max(0, nuevoValor); // Se asegura que el mínimo sea 0
     this.aplicarFiltrosYPaginacion();
   }
+
+  ajustarCantidad(filtro: 'habitaciones' | 'banos', cantidad: number): void {
+    const valorActual = this.filtros[filtro] || 0;
+    const nuevoValor = valorActual + cantidad;
+    this.filtros[filtro] = Math.max(0, nuevoValor); 
+    this.aplicarFiltrosYPaginacion();
+  }
+  
   verDetallePropiedad(propiedad: any): void {
     if (propiedad && propiedad.id_propiedad) {
       this.router.navigate(['../propiedad', propiedad.id_propiedad], { relativeTo: this.route });
