@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpLavavelService } from '../../http.service'; // Asegúrate que la ruta sea correcta
+import { HttpLavavelService } from '../../http.service';
 import Swal from 'sweetalert2';
 
-// Interfaz para tipar los datos del usuario. Define la estructura esperada.
 interface UserData {
   id: number;
   first_name: string;
@@ -12,46 +11,74 @@ interface UserData {
   email: string;
   phone: string;
   role: string;
-  avatar_url?: string;      // URL original del avatar desde el backend.
-  profile_picture?: string; // URL procesada con timestamp para el template (evita caché).
+  avatar_url?: string;
+  profile_picture?: string;
   created_at: string;
   updated_at: string;
 }
 
 @Component({
-  selector: 'app-navbar',              
+  selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css'] 
+  styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  userData: UserData | null = null; // Almacena los datos del usuario actual, o null si no hay.
-  isLoading: boolean = true;        // Indica si se están cargando los datos del usuario.
-  errorMessage: string = '';        // Para mostrar mensajes de error si la carga falla.
-  userRole: string = '';            // Almacena el rol del usuario para control de acceso o UI.
+  userData: UserData | null = null;
+  isLoading: boolean = true;
+  errorMessage: string = '';
+  userRole: string = '';
+  mobileMenuOpen: boolean = false;
+  userMenuOpen: boolean = false;
+  screenWidth: number = 0;
 
-  // Inyección de dependencias: Router para navegación y HttpLavavelService para peticiones HTTP.
-  constructor(private Shttp: HttpLavavelService, private router: Router) {}
+  constructor(private Shttp: HttpLavavelService, private router: Router) {
+    this.screenWidth = window.innerWidth;
+  }
 
-  // Método del ciclo de vida de Angular, se ejecuta al iniciar el componente.
   ngOnInit() {
-    if (this.isLoggedIn()) { // Verifica si el usuario ha iniciado sesión.
-      this.loadUserData();     // Si está logueado, carga sus datos.
+    if (this.isLoggedIn()) {
+      this.loadUserData();
     } else {
-      this.isLoading = false;    // Si no, finaliza el estado de carga.
-      this.userData = null;      // Asegura que no haya datos de usuario.
-      this.userRole = '';        // Limpia el rol del usuario.
+      this.isLoading = false;
+      this.userData = null;
+      this.userRole = '';
     }
   }
 
-  // Verifica si existe un token de acceso en localStorage para determinar si el usuario está logueado.
-  isLoggedIn(): boolean {
-    return !!localStorage.getItem('accessToken'); // Devuelve true si 'accessToken' existe.
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.screenWidth = window.innerWidth;
+    // Cerrar menús si se cambia a vista grande
+    if (this.screenWidth > 640) {
+      this.mobileMenuOpen = false;
+    }
   }
 
-  // Maneja el clic en el área de perfil del usuario en la navbar.
+  isMobileView(): boolean {
+    return this.screenWidth <= 640;
+  }
+
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('accessToken');
+  }
+
+
+
+  toggleUserMenu(): void {
+    this.userMenuOpen = !this.userMenuOpen;
+    // Cerrar el menú móvil si está abierto
+    if (this.userMenuOpen) {
+      this.mobileMenuOpen = false;
+    }
+  }
+
+  closeMenus(): void {
+    this.mobileMenuOpen = false;
+    this.userMenuOpen = false;
+  }
+
   handleProfileClick(): void {
-    if (!this.isLoggedIn()) { // Si el usuario no está logueado.
-      // Muestra una alerta pidiendo iniciar sesión.
+    if (!this.isLoggedIn()) {
       Swal.fire({
         title: 'Acceso restringido',
         text: 'Primero debes iniciar sesión o crear una cuenta para acceder al perfil.',
@@ -62,53 +89,53 @@ export class NavbarComponent implements OnInit {
         confirmButtonColor: '#7FA6FF',
         cancelButtonColor: '#d33'
       }).then((result) => {
-        if (result.isConfirmed) { // Si el usuario confirma, redirige al login.
+        if (result.isConfirmed) {
           this.router.navigate(['/login']);
         }
       });
-      return; // Termina la ejecución para no navegar al perfil.
+      return;
     }
-    // Si está logueado, navega a la página de perfil.
     this.router.navigate(['/principal/perfil']);
+    this.closeMenus();
   }
 
-  // Carga los datos del usuario desde el backend.
+  logout(): void {
+    localStorage.removeItem('accessToken');
+    this.userData = null;
+    this.userRole = '';
+    this.router.navigate(['/login']);
+    this.closeMenus();
+  }
+
   loadUserData(): void {
-    this.isLoading = true;     // Inicia el estado de carga.
-    this.errorMessage = '';    // Limpia mensajes de error previos.
+    this.isLoading = true;
+    this.errorMessage = '';
 
-    // Realiza una petición GET al endpoint 'user'.
     this.Shttp.Service_Get('user').subscribe({
-      next: (response: any) => { // Callback para respuesta exitosa.
-        if (response && response.user) { // Si la respuesta contiene datos de usuario.
-          this.userData = response.user as UserData; // Asigna los datos y castea al tipo UserData.
-
-          // Asigna el rol del usuario.
+      next: (response: any) => {
+        if (response && response.user) {
+          this.userData = response.user as UserData;
           this.userRole = this.userData.role || '';
-
-          // Intenta obtener la URL de la imagen de 'avatar_url' o 'profile_picture'.
           const imageUrl = this.userData.avatar_url || this.userData.profile_picture;
 
           if (imageUrl) {
-            // Añade un timestamp a la URL para evitar problemas de caché del navegador.
-            // Esto fuerza al navegador a recargar la imagen si ha cambiado, aunque la URL base sea la misma.
             this.userData.profile_picture = `${imageUrl.split('?')[0]}?${new Date().getTime()}`;
-          } else if (this.userData) { // Si no hay URL de imagen.
-            this.userData.profile_picture = undefined; // Establece profile_picture a undefined.
+          } else if (this.userData) {
+            this.userData.profile_picture = undefined;
           }
-        } else { // Si la respuesta no es la esperada.
+        } else {
           this.userData = null;
           this.userRole = '';
           this.errorMessage = 'No se pudieron obtener los datos del usuario.';
         }
-        this.isLoading = false; // Finaliza el estado de carga
+        this.isLoading = false;
       },
-      error: (err) => { // Callback para manejar errores en la petición
+      error: (err) => {
         console.error('Error al cargar datos del usuario en Navbar:', err);
         this.errorMessage = err.error?.message || 'Error al cargar los datos del usuario.';
-        this.isLoading = false; // Finaliza el estado de carga
-        this.userData = null;   // Limpia datos de usuario en caso de error
-        this.userRole = '';     // Limpia rol de usuario
+        this.isLoading = false;
+        this.userData = null;
+        this.userRole = '';
       }
     });
   }
