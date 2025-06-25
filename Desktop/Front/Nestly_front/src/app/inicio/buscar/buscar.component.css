@@ -53,3 +53,20 @@ input[type="checkbox"]:checked + div .dot {
 input[type="checkbox"]:checked + div {
     background-color: #4f46e5; /* indigo-600 */
 }
+
+.top-filter-bar {
+  position: sticky; /* La magia para que sea "pegajoso" */
+  top: 0; /* Se pegará en la parte superior de la ventana */
+  z-index: 40; /* Se asegura de que esté por encima de otro contenido */
+  background-color: rgba(255, 255, 255, 0.9); /* Blanco con un poco de transparencia */
+  backdrop-filter: blur(8px); /* Efecto de desenfoque para navegadores modernos */
+  -webkit-backdrop-filter: blur(8px);
+  width: 100%;
+  border-bottom: 1px solid #e5e7eb; /* Borde sutil */
+  transition: box-shadow 0.3s;
+}
+
+/* Sombra cuando el usuario hace scroll */
+.top-filter-bar.scrolled {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
