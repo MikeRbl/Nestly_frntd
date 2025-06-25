@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpLavavelService } from '../../http.service'; // Asumo que HttpLaravelService es el nombre correcto
+import { HttpLavavelService } from '../../http.service'; // Assuming HttpLaravelService is the correct name for your HTTP service
 
-// Interfaz para el usuario
+// Interface for the User data structure
 interface User {
   id: number;
   first_name: string;
@@ -10,8 +10,8 @@ interface User {
   email: string;
   phone: string;
   role: string;
-  profile_picture?: string; // Usaremos este campo en el frontend para la URL completa
-  avatar_url?: string; // Potencialmente viene del backend con este nombre
+  profile_picture?: string; // This field will hold the complete URL for the frontend avatar
+  avatar_url?: string; // Potentially another field name from the backend for the avatar URL
   created_at: string;
   updated_at: string;
 }
@@ -22,141 +22,197 @@ interface User {
   styleUrls: ['./perfil.component.css']
 })
 export class PerfilComponent implements OnInit {
-  userData: User | null = null; // Guarda los datos del usuario
-  isLoading: boolean = true; // Controla el estado de carga
-  errorMessage: string = ''; // Mensaje de error en caso de fallos
-  selectedImage: string | ArrayBuffer | null = null; // Imagen cargada en formato base64 para previsualización
-  selectedFile: File | null = null; // Archivo seleccionado para enviar
-  uploadProgress: number = 0; // Progreso de carga (no usado visualmente aún)
-  maxFileSize: number = 5 * 1024 * 1024; // Tamaño máximo del archivo (5MB)
-  validExtensions: string[] = ['image/jpeg', 'image/png', 'image/gif']; // Tipos de archivo válidos
+  userData: User | null = null; // Holds the user's profile data
+  isLoading: boolean = true; // Controls the loading state indicator
+  errorMessage: string = ''; // Stores error messages to display to the user
+  selectedImage: string | ArrayBuffer | null = null; // For previewing the selected image (base64)
+  selectedFile: File | null = null; // The actual file object to be uploaded
+  uploadProgress: number = 0; // Tracks the progress of the file upload (0-100)
+  maxFileSize: number = 5 * 1024 * 1024; // Maximum allowed file size for upload (5 MB)
+  validExtensions: string[] = ['image/jpeg', 'image/png', 'image/gif']; // Allowed image file types
 
-  constructor(private Shttp: HttpLavavelService) {} // Inyecta el servicio HTTP personalizado
+  // Inject HttpLavavelService into the component's constructor
+  constructor(private Shttp: HttpLavavelService) {}
 
+  /**
+   * Lifecycle hook that runs after Angular initializes the component's views.
+   * Used here to load user data when the component is first created.
+   */
   ngOnInit(): void {
-    this.loadUserData(); // Carga los datos del usuario al iniciar
+    this.loadUserData();
   }
-removeSelectedImage(): void {
-  this.selectedImage = null;
-  this.selectedFile = null;
-  const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-  if (fileInput) fileInput.value = '';
-}
 
-  onFileChange(event: any): void {
-    const file = event.target.files[0]; // Obtiene el archivo
+  /**
+   * Clears the currently selected image preview and resets the file input.
+   * Useful if the user decides not to upload a selected image.
+   */
+  removeSelectedImage(): void {
+    this.selectedImage = null; // Clears the image preview
+    this.selectedFile = null; // Clears the file selected for upload
+    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = ''; // Resets the file input field, clearing its value
+    }
+  }
 
-    if (!file) return;
+  /**
+   * Handles the event when a file is selected from the file input.
+   * Performs validation (size, type) and sets up a preview for the image.
+   * @param event The DOM event object from the file input change.
+   */
+  onFileChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0]; // Get the first selected file
 
-    // Validar tamaño
+    if (!file) {
+      this.removeSelectedImage(); // Clear selection if no file or selection canceled
+      return;
+    }
+
+    // Validate file size against the maximum allowed size
     if (file.size > this.maxFileSize) {
-      this.errorMessage = 'La imagen es demasiado grande (máximo 5MB)';
+      this.errorMessage = 'La imagen es demasiado grande (máximo 5MB).';
       this.selectedFile = null;
-      this.selectedImage = null; // Limpiar previsualización
+      this.selectedImage = null;
       return;
     }
 
-    // Validar formato
+    // Validate file type against allowed extensions
     if (!this.validExtensions.includes(file.type)) {
-      this.errorMessage = 'Formato no válido. Use JPEG, PNG o GIF';
+      this.errorMessage = 'Formato de imagen no válido. Use JPEG, PNG o GIF.';
       this.selectedFile = null;
-      this.selectedImage = null; // Limpiar previsualización
+      this.selectedImage = null;
       return;
     }
 
-    this.selectedFile = file;
-    this.errorMessage = ''; // Limpiar errores previos
+    this.selectedFile = file; // Store the valid file
+    this.errorMessage = ''; // Clear any previous error messages
 
-    const reader = new FileReader(); // Crear lector de archivos
+    // Read the file as a data URL for immediate preview
+    const reader = new FileReader();
     reader.onload = () => {
-      this.selectedImage = reader.result; // Guardar base64 para previsualizar
+      this.selectedImage = reader.result; // Store the base64 string for the image preview
     };
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(file); // Start reading the file
   }
 
+  /**
+   * Initiates the upload of the selected profile picture to the backend.
+   * Displays loading and progress indicators, and handles success/error responses.
+   */
   uploadProfilePicture(): void {
-    if (!this.selectedFile) return;
+    if (!this.selectedFile) {
+      this.errorMessage = 'No se ha seleccionado ninguna imagen para subir.';
+      return; // Exit if no file is selected
+    }
 
-    this.isLoading = true;
-    this.uploadProgress = 0;
-    this.errorMessage = ''; // Limpiar mensajes de error previos
+    this.isLoading = true; // Activate loading state
+    this.uploadProgress = 0; // Reset upload progress
+    this.errorMessage = ''; // Clear previous error messages
 
-    const formData = new FormData(); // Crear formulario para enviar archivo
-    formData.append('profile_picture', this.selectedFile);
+    const formData = new FormData(); // Create a FormData object to send the file
+    formData.append('profile_picture', this.selectedFile); // Append the file with the expected key
 
+    // Make the POST request to update the profile picture
     this.Shttp.Service_Post('update-profile-picture', formData).subscribe({
       next: (response: any) => {
-        console.log('Foto de perfil actualizada:', response);
-        if (this.userData && response.profile_picture_url) { // Verificar que profile_picture_url exista
-          // CORRECCIÓN AQUÍ: Usar response.profile_picture_url
+        console.log('Foto de perfil actualizada con éxito:', response);
+        // If the backend returns the new URL, update it. Add a cache-busting timestamp.
+        if (this.userData && response.profile_picture_url) {
           this.userData.profile_picture = `${response.profile_picture_url}?${new Date().getTime()}`;
-           
-           window.location.reload();// Recargar la página para reflejar el cambio
-        } else if (this.userData) {
-            // Si profile_picture_url no viene en la respuesta, recargar los datos del usuario
-            // para obtener la URL actualizada del avatar desde el endpoint 'user'.
-            console.warn('profile_picture_url no encontrada en la respuesta de subida, recargando datos del usuario...');
-            this.loadUserData();
+          window.location.reload(); // Reload the page to ensure the new image is displayed
+        } else {
+          console.warn('profile_picture_url no encontrada en la respuesta de subida. Recargando datos del usuario para actualizar la imagen...');
+          this.loadUserData(); // If URL not in response, re-fetch user data to get it
         }
-        this.resetUpload();
-        this.isLoading = false;
+        this.resetUpload(); // Reset upload state after success
+        this.isLoading = false; // Deactivate loading state
       },
       error: (err) => {
         console.error('Error al actualizar foto de perfil:', err);
-        this.errorMessage = err.error?.message || 'Error al actualizar la foto de perfil';
-        this.isLoading = false;
-        this.resetUpload(); // Asegurarse de resetear también en caso de error
+        // Extract error message from backend response or use a generic one
+        this.errorMessage = err.error?.message || 'Error al actualizar la foto de perfil. Inténtalo de nuevo.';
+        this.isLoading = false; // Deactivate loading state
+        this.resetUpload(); // Reset upload state even on error
       }
     });
   }
 
+  /**
+   * Resets all state variables related to image upload (preview, file, progress, errors).
+   */
   private resetUpload(): void {
     this.selectedImage = null;
     this.selectedFile = null;
     this.uploadProgress = 0;
+    // Visually clear the file input field
     const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-    if (fileInput) fileInput.value = '';
+    if (fileInput) {
+      fileInput.value = '';
+    }
   }
 
+  /**
+   * Fetches the current user's data from the backend.
+   * Displays loading state and handles potential errors.
+   */
   loadUserData(): void {
-    this.isLoading = true;
-    this.errorMessage = ''; // Limpiar mensajes de error previos
+    this.isLoading = true; // Activate loading state
+    this.errorMessage = ''; // Clear previous errors
+
     this.Shttp.Service_Get('user').subscribe({
       next: (response: any) => {
         if (response && response.user) {
-          this.userData = response.user;
-          // CORRECCIÓN/MEJORA AQUÍ:
-          // Asumimos que el backend devuelve 'avatar_url' con la URL completa.
-          // Si no, y devuelve 'profile_picture' con la URL, usa eso.
-          // Lo importante es que this.userData.profile_picture obtenga la URL correcta.
-          const imageUrl = response.user.avatar_url || response.user.profile_picture; 
+          this.userData = response.user; // Assign fetched user data
+
+          // Determine the correct image URL from backend response (either avatar_url or profile_picture)
+          const imageUrl = response.user.avatar_url || response.user.profile_picture;
 
           if (this.userData && imageUrl) {
+            // Add a cache-busting parameter to the image URL to ensure it's always fresh
             this.userData.profile_picture = `${imageUrl}?${new Date().getTime()}`;
           } else if (this.userData) {
-            // Si no hay URL de imagen, puedes dejar profile_picture como undefined o null
-            // para que el template muestre un avatar por defecto.
-            this.userData.profile_picture = undefined; 
+            // If no valid image URL is provided by the backend, ensure profile_picture is undefined
+            // so the default placeholder image is shown in the template.
+            this.userData.profile_picture = undefined;
           }
         } else {
-          this.errorMessage = 'Respuesta inesperada al cargar datos del usuario.';
-          this.userData = null;
+          this.errorMessage = 'Respuesta inesperada al cargar los datos del usuario.';
+          this.userData = null; // Clear user data if response is malformed
         }
-        this.isLoading = false;
+        this.isLoading = false; // Deactivate loading state
       },
       error: (err) => {
-        console.error('Error al cargar datos del usuario:', err);
-        this.errorMessage = err.error?.message || 'Error al cargar los datos del usuario';
-        this.isLoading = false;
-        this.userData = null;
+        console.error('Error al cargar los datos del usuario:', err);
+        this.errorMessage = err.error?.message || 'Error al cargar los datos del usuario. Por favor, inténtalo de nuevo más tarde.';
+        this.isLoading = false; // Deactivate loading state
+        this.userData = null; // Clear user data on error
       }
     });
   }
 
-  logout() {
-    // Considera llamar a un endpoint de logout en el backend también si es necesario
-    // this.Shttp.Service_Post('logout', {}).subscribe(...);
-    localStorage.removeItem('token'); 
-    window.location.href = '/login'; // O usa Angular Router para navegar
+  /**
+   * Handles the user logout process.
+   * Removes the authentication token from local storage and redirects to the login page.
+   * (Consider adding a backend logout call here if your authentication system requires it).
+   */
+  logout(): void {
+    // Optional: Call a backend logout endpoint if your authentication system requires it
+    // this.Shttp.Service_Post('logout', {}).subscribe({
+    //   next: () => {
+    //     localStorage.removeItem('token');
+    //     window.location.href = '/login';
+    //   },
+    //   error: (err) => {
+    //     console.error('Error al cerrar sesión en el backend:', err);
+    //     // Still proceed with client-side logout even if backend fails
+    //     localStorage.removeItem('token');
+    //     window.location.href = '/login';
+    //   }
+    // });
+
+    localStorage.removeItem('token'); // Remove the authentication token from local storage
+    window.location.href = '/login'; // Redirect the user to the login page
+    // In a full Angular app, you would typically use this.router.navigate(['/login']);
   }
 }

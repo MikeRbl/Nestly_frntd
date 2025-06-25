@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 /* Transición suave para dark mode */
 .dark {
   @apply transition-colors duration-200;

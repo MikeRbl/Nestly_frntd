@@ -1,7 +1,12 @@
 {
   "devDependencies": {
+    "@types/notyf": "^2.0.0",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.4",
     "tailwindcss": "^4.1.8"
+  },
+  "dependencies": {
+    "notif": "^0.0.1",
+    "notyf": "^3.10.0"
   }
 }

@@ -1,22 +1,26 @@
+/* Variables CSS para colores y temas */
 :root {
-  --primary: #4361ee;
-  --primary-light: #4895ef;
-  --primary-dark: #3f37c9;
-  --secondary: #3a0ca3;
-  --accent: #f72585;
-  --success: #4cc9f0;
-  --warning: #f8961e;
-  --danger: #ef233c;
-  --light: #f8f9fa;
-  --light-gray: #e9ecef;
-  --gray: #adb5bd;
-  --dark: #212529;
-  --white: #ffffff;
-  --facebook: #1877f2;
-  --instagram: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-  --twitter: #1da1f2;
+  --primary: #6366f1; /* Tailwind indigo-500 */
+  --primary-light: #818cf8; /* Tailwind indigo-400 */
+  --primary-dark: #4338ca; /* Tailwind indigo-700 */
+  --secondary: #a78bfa; /* Tailwind violet-400 */
+  --accent: #ec4899; /* Tailwind pink-500 */
+  --success: #22c55e; /* Tailwind green-500 */
+  --warning: #f59e0b; /* Tailwind amber-500 */
+  --danger: #ef4444; /* Tailwind red-500 */
+  --background-light: #f9fafb; /* Tailwind gray-50 */
+  --background-dark: #1f2937; /* Tailwind gray-800 */
+  --card-light: #ffffff; /* White for cards */
+  --card-dark: #374151; /* Tailwind gray-700 for dark mode cards */
+  --text-light: #111827; /* Tailwind gray-900 */
+  --text-dark: #e5e7eb; /* Tailwind gray-200 */
+  --border-light: #e5e7eb; /* Tailwind gray-200 */
+  --border-dark: #4b5563; /* Tailwind gray-600 */
+  --gray: #6b7280; /* Tailwind gray-500 */
+  --white: #ffffff; /* Explicitly define white */
 }
 
+/* Estilos globales y reseteo */
 * {
   margin: 0;
   padding: 0;
@@ -25,54 +29,91 @@
 }
 
 body {
-  background-color: #f5f7ff;
+  background-color: var(--background-light);
+  color: var(--text-light);
+  transition: background-color 0.3s, color 0.3s;
 }
 
+/* Contenedor principal del perfil */
 .profile-container {
   display: flex;
   min-height: 100vh;
+  background-color: var(--background-light);
+  color: var(--text-light);
+  transition: background-color 0.3s, color 0.3s;
+  /* Margen y alineación como en PerfilComponent si es un layout similar */
+  margin: 20px;
+  border-radius: 12px; /* Consistent with profile-sidebar */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); /* Consistent with card-panel */
+  gap: 20px; /* Gap between panels */
+  padding: 0; /* Panels will have their own padding */
 }
 
-/* Panel izquierdo */
+/* Ajustes para el modo oscuro */
+.dark body {
+  background-color: var(--background-dark);
+  color: var(--text-dark);
+}
+
+.dark .profile-container {
+  background-color: var(--background-dark);
+  color: var(--text-dark);
+}
+
+/* Panel lateral izquierdo (sidebar) */
 .profile-sidebar {
   width: 300px;
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  background-color: var(--card-light); /* Fondo sólido para un look minimalista */
   padding: 25px;
-  color: var(--white);
   position: relative;
   overflow: hidden;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05); /* Sombra sutil */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 12px; /* Esquinas redondeadas para todo el sidebar */
+  margin: 20px; /* Consistent with the PerfilComponent's provided CSS */
+  flex-shrink: 0;
+  position: sticky;
+  top: 20px; /* Align with parent margin */
+  align-self: flex-start;
 }
 
-.profile-sidebar::before {
-  content: '';
-  position: absolute;
-  top: -50px;
-  right: -50px;
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
+.dark .profile-sidebar {
+  background-color: var(--card-dark);
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
 }
 
+/* Cabecera del sidebar */
 .sidebar-header {
   display: flex;
   align-items: center;
+  width: 100%;
   margin-bottom: 40px;
+  justify-content: flex-start; /* Alinear el botón de regreso al inicio */
   position: relative;
   z-index: 1;
 }
 
+/* Botón de regreso */
 .back-btn {
   background: none;
   border: none;
   cursor: pointer;
-  margin-right: 15px;
-  color: var(--white);
-  transition: transform 0.3s;
+  color: var(--text-light);
+  transition: transform 0.3s, color 0.3s, background-color 0.3s; /* Añadido background-color para hover */
+  padding: 8px; /* Añadido padding para un área de click más grande */
+  border-radius: 8px;
+}
+
+.dark .back-btn {
+  color: var(--text-dark);
 }
 
 .back-btn:hover {
   transform: scale(1.1);
+  color: var(--primary); /* Acento al pasar el ratón */
+  background-color: rgba(99, 102, 241, 0.1); /* Fondo sutil para hover */
 }
 
 .back-btn svg {
@@ -82,9 +123,10 @@ body {
 
 .logo {
   height: 40px;
-  filter: brightness(0) invert(1);
+  /* Ajustar si el logo está presente y necesita filtro para modo oscuro */
 }
 
+/* Tarjeta de perfil dentro del sidebar */
 .profile-card {
   display: flex;
   flex-direction: column;
@@ -92,26 +134,33 @@ body {
   padding: 20px 0;
   position: relative;
   z-index: 1;
+  width: 100%;
 }
 
+/* Contenedor del avatar */
 .avatar-container {
   position: relative;
   margin-bottom: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .avatar-wrapper {
   position: relative;
 }
 
+/* Imagen del avatar */
 .avatar {
   width: 120px;
   height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid var(--white);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  border: 3px solid var(--primary-light); /* Borde más suave */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Sombra más ligera */
 }
 
+/* Insignia del avatar (ej. para estado en línea) */
 .avatar-badge {
   position: absolute;
   bottom: 5px;
@@ -119,42 +168,51 @@ body {
   width: 25px;
   height: 25px;
   border-radius: 50%;
-  background-color: var(--accent);
-  border: 3px solid var(--white);
+  background-color: var(--success); /* Verde para estado activo/online */
+  border: 3px solid var(--card-light);
+}
+
+.dark .avatar-badge {
+  border: 3px solid var(--card-dark);
+}
+
+/* Botones de subir y guardar foto */
+.upload-btn, .save-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centrar contenido */
+  gap: 8px;
+  margin-top: 15px;
+  padding: 10px 20px;
+  color: var(--white);
+  border: none;
+  border-radius: 25px; /* Más redondeado */
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil para botones */
 }
 
 .upload-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 15px;
-  padding: 10px 20px;
-  
-  color: var(--white);
-  border: none;
-  border-radius: 30px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s;
+  background-color: var(--primary);
 }
-.save-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 15px;
-  padding: 10px 20px;
-  background-color: rgb(120, 255, 94);
-  color: var(--white);
-  border: none;
-  border-radius: 30px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s;
-}
+
 .upload-btn:hover {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: var(--primary-dark);
+  transform: translateY(-3px); /* Lift más pronunciado */
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4); /* Sombra más grande y con color primario */
+}
+
+.save-btn {
+  background-color: var(--success); /* Verde para guardar */
+}
+
+.save-btn:hover {
+  background-color: var(--success); /* Verde más oscuro al pasar el ratón */
+  opacity: 0.9;
+  transform: translateY(-3px); /* Lift más pronunciado */
+  box-shadow: 0 8px 20px rgba(34, 197, 94, 0.4); /* Sombra más grande y con color de éxito */
 }
 
 .upload-btn svg {
@@ -162,6 +220,7 @@ body {
   height: 16px;
 }
 
+/* Contenedor del campo de usuario (si editable) */
 .username-container {
   position: relative;
   width: 100%;
@@ -170,23 +229,33 @@ body {
 
 .username-input {
   width: 100%;
-  padding: 12px 15px 12px 40px;
-  background-color: rgba(255, 255, 255, 0.1);
-  color: var(--white);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 12px 15px;
+  background-color: var(--background-light); /* Fondo consistente */
+  color: var(--text-light);
+  border: 1px solid var(--border-light);
   border-radius: 8px;
   font-size: 14px;
   transition: all 0.3s;
 }
 
+.dark .username-input {
+  background-color: var(--background-dark);
+  color: var(--text-dark);
+  border-color: var(--border-dark);
+}
+
 .username-input::placeholder {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--gray);
+}
+
+.dark .username-input::placeholder {
+  color: var(--border-dark); /* Placeholder más claro en modo oscuro */
 }
 
 .username-input:focus {
   outline: none;
-  background-color: rgba(255, 255, 255, 0.2);
-  border-color: var(--white);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); /* Anillo de enfoque */
 }
 
 .username-container svg {
@@ -196,9 +265,14 @@ body {
   transform: translateY(-50%);
   width: 16px;
   height: 16px;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--gray);
 }
 
+.dark .username-container svg {
+  color: var(--border-dark);
+}
+
+/* Botones de redes sociales */
 .social-buttons {
   width: 100%;
   display: flex;
@@ -214,59 +288,66 @@ body {
   width: 100%;
   padding: 12px;
   border: none;
-  border-radius: 8px;
-  color: var(--white);
+  border-radius: 25px; /* IMP: Redondeado a 25px para consistencia */
+  color: var(--white); /* Asegura que el texto sea blanco */
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08); /* Sombra sutil del botón */
 }
 
 .social-btn svg {
   width: 18px;
   height: 18px;
+  color: var(--white); /* Asegura que los iconos sean blancos */
 }
 
-.facebook {
-  background: linear-gradient(45deg, #7FA6FF, #D98EDF);
-  transition: 0.5s;
+.social-btn.facebook {
+  background-color: #3b5998; /* Azul estándar de Facebook */
+}
+.social-btn.facebook:hover {
+  background-color: #2d4373;
+  transform: translateY(-2px); /* Lift sutil al pasar el ratón */
+  box-shadow: 0 4px 10px rgba(59, 89, 152, 0.3); /* Sombra con color de red social */
 }
 
-.facebook:hover {
-  background: #bec0c2;
+.social-btn.instagram {
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); /* Degradado de Instagram */
+}
+.social-btn.instagram:hover {
+  opacity: 0.9;
+  transform: translateY(-2px); /* Lift sutil al pasar el ratón */
+  box-shadow: 0 4px 10px rgba(220, 39, 67, 0.3); /* Sombra con color de red social (ej. rojo de Insta) */
 }
 
-.instagram {
-  background: linear-gradient(45deg, #7FA6FF, #D98EDF);
-  transition: 0.5s;
+.social-btn.twitter {
+  background-color: #1da1f2; /* Azul estándar de Twitter */
+}
+.social-btn.twitter:hover {
+  background-color: #0d8ddb;
+  transform: translateY(-2px); /* Lift sutil al pasar el ratón */
+  box-shadow: 0 4px 10px rgba(29, 161, 242, 0.3); /* Sombra con color de red social */
 }
 
-.instagram:hover {
-  
-  background: #bec0c2;
-}
-
-.twitter {
-  background: linear-gradient(45deg, #7FA6FF, #D98EDF);
-  transition: 0.5s;
-}
-
-.twitter:hover {
-  background: #bec0c2;
-}
-
-/* Contenido principal */
+/* Contenido principal del perfil */
 .profile-content {
   flex: 1;
   padding: 30px;
-  background-color: var(--white);
-  border-radius: 20px 0 0 20px;
-  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.05);
-  margin: 20px 0;
+  background-color: var(--card-light);
+  border-radius: 12px; /* Esquinas redondeadas consistentes */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  margin: 20px; /* Consistent with the PerfilComponent's provided CSS */
 }
 
+.dark .profile-content {
+  background-color: var(--card-dark);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Mensajes de carga y error */
 .loading-message,
-.error-message {
+.error-message { /* Retained original name .error-message */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -274,12 +355,18 @@ body {
   height: 300px;
   gap: 15px;
   text-align: center;
+  color: var(--text-light);
+}
+
+.dark .loading-message,
+.dark .error-message {
+  color: var(--text-dark);
 }
 
 .loading-message p,
 .error-message p {
   font-size: 16px;
-  color: var(--dark);
+  color: inherit; /* Hereda el color del padre */
 }
 
 .error-message {
@@ -292,13 +379,19 @@ body {
   color: var(--danger);
 }
 
+/* Spinner de carga */
 .spinner {
   width: 40px;
   height: 40px;
-  border: 4px solid var(--light-gray);
+  border: 4px solid var(--border-light);
   border-top: 4px solid var(--primary);
   border-radius: 50%;
   animation: spin 1s linear infinite;
+}
+
+.dark .spinner {
+  border-color: var(--border-dark);
+  border-top-color: var(--primary-light);
 }
 
 @keyframes spin {
@@ -306,6 +399,7 @@ body {
   100% { transform: rotate(360deg); }
 }
 
+/* Animación de entrada para la información del usuario */
 .user-info {
   animation: fadeIn 0.5s ease-out;
 }
@@ -315,66 +409,85 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Cabecera de la sección principal del perfil */
 .profile-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 30px;
+  border-bottom: 1px solid var(--border-light); /* Separador sutil */
+  padding-bottom: 20px;
+}
+
+.dark .profile-header {
+  border-bottom-color: var(--border-dark);
 }
 
 .profile-title {
   font-size: 28px;
   font-weight: 700;
-  color: var(--dark);
-  background: linear-gradient(to right, var(--primary), var(--accent));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  display: inline-block;
+  color: var(--text-light); /* Usar color directo para mejor compatibilidad con modo oscuro */
 }
 
+.dark .profile-title {
+  color: var(--text-dark);
+}
+
+/* Insignia de rol (badge) */
 .profile-badge {
-  
   padding: 6px 12px;
-  background: linear-gradient(135deg, var(--primary-light), var(--primary));
+  background-color: var(--primary-light);
   color: var(--white);
   border-radius: 20px;
-  font-size: 20px;
+  font-size: 14px; /* Insignia ligeramente más pequeña */
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
+/* Cuadrícula de información del usuario */
 .info-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
   margin-bottom: 40px;
 }
 
+/* Item individual de información */
 .info-item {
   display: flex;
+  align-items: center; /* Alinear elementos verticalmente */
   gap: 15px;
   padding: 20px;
-  background-color: var(--light);
+  background-color: var(--background-light); /* Fondo más claro para items de información */
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* Sombra muy sutil */
   transition: transform 0.3s, box-shadow 0.3s;
+  border: 1px solid var(--border-light); /* Borde claro */
+}
+
+.dark .info-item {
+  background-color: var(--card-dark);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border-color: var(--border-dark);
 }
 
 .info-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px); /* Lift más pronunciado */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); /* Sombra ligeramente más grande */
 }
 
+/* Icono dentro del item de información */
 .info-icon {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-  border-radius: 10px;
+  background-color: var(--primary); /* Color primario sólido */
+  border-radius: 8px; /* Ligeramente menos redondeado */
   color: var(--white);
+  flex-shrink: 0; /* Evitar que se encoja */
 }
 
 .info-icon svg {
@@ -382,61 +495,85 @@ body {
   height: 20px;
 }
 
+/* Etiqueta del item de información */
 .info-item label {
   font-size: 12px;
   color: var(--gray);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-bottom: 5px;
+  margin-bottom: 4px; /* Margen reducido */
   display: block;
 }
 
+.dark .info-item label {
+  color: var(--border-dark); /* Gris más claro para etiquetas en modo oscuro */
+}
+
+/* Valor del item de información */
 .info-value {
   font-size: 16px;
   font-weight: 500;
-  color: var(--dark);
+  color: var(--text-light);
 }
 
-/* Propiedades */
+.dark .info-value {
+  color: var(--text-dark);
+}
+
+/* Sección de propiedades */
 .properties-section {
   margin-top: 50px;
 }
 
+/* Cabecera de la sección de propiedades */
 .section-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 25px;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 15px;
+}
+
+.dark .section-header {
+  border-bottom-color: var(--border-dark);
 }
 
 .section-title {
   font-size: 24px;
   font-weight: 700;
-  color: var(--dark);
+  color: var(--text-light);
   position: relative;
   display: inline-block;
 }
 
+.dark .section-title {
+  color: var(--text-dark);
+}
+
+/* Subrayado del título de sección */
 .section-title::after {
   content: '';
   position: absolute;
   bottom: -5px;
   left: 0;
-  width: 50px;
+  width: 40px; /* Subrayado más corto */
   height: 3px;
-  background: linear-gradient(to right, var(--primary), var(--accent));
+  background-color: var(--primary); /* Primario sólido */
   border-radius: 3px;
 }
 
+/* Contador de propiedades */
 .section-count {
   padding: 6px 12px;
-  background-color: var(--light);
-  color: var(--primary);
+  background-color: var(--primary-light);
+  color: var(--white);
   border-radius: 20px;
   font-size: 12px;
   font-weight: 600;
 }
 
+/* Cuadrícula de propiedades */
 .properties-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -444,20 +581,28 @@ body {
   margin-bottom: 30px;
 }
 
+/* Tarjeta de propiedad */
 .property-card {
-  background: var(--white);
-  border-radius: 16px;
+  background: var(--card-light);
+  border-radius: 12px; /* Esquinas redondeadas consistentes */
   overflow: hidden;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); /* Sombra más ligera */
   transition: transform 0.3s, box-shadow 0.3s;
-  position: relative;
+  border: 1px solid var(--border-light); /* Borde sutil */
+}
+
+.dark .property-card {
+  background-color: var(--card-dark);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  border-color: var(--border-dark);
 }
 
 .property-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+  transform: translateY(-5px); /* Lift más pronunciado */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18); /* Sombra más grande y visible */
 }
 
+/* Insignia de estado de propiedad */
 .property-badge {
   position: absolute;
   top: 15px;
@@ -471,18 +616,21 @@ body {
 }
 
 .property-badge.rentada {
-  background-color: var(--success);
+  background-color: var(--danger); /* Rojo para rentada */
 }
 
 .property-badge.disponible {
-  background-color: var(--primary);
+  background-color: var(--success); /* Verde para disponible */
 }
 
+/* Imagen de la propiedad */
 .property-image {
   height: 200px;
   background-size: cover;
   background-position: center;
   position: relative;
+  border-top-left-radius: 12px; /* Coincidir con el radio de la tarjeta */
+  border-top-right-radius: 12px;
 }
 
 .property-image::after {
@@ -492,20 +640,33 @@ body {
   left: 0;
   width: 100%;
   height: 50%;
-  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+  background: linear-gradient(to top, rgba(0,0,0,0.5), transparent); /* Degradado más suave */
 }
 
+/* Detalles de la propiedad */
 .property-details {
   padding: 20px;
+  background-color: var(--card-light);
+  color: var(--text-light);
+}
+
+.dark .property-details {
+  background-color: var(--card-dark);
+  color: var(--text-dark);
 }
 
 .property-price {
   font-size: 20px;
   font-weight: 700;
-  color: var(--dark);
+  color: var(--text-light);
   margin-bottom: 10px;
 }
 
+.dark .property-price {
+  color: var(--text-dark);
+}
+
+/* Ubicación de la propiedad */
 .property-location {
   display: flex;
   align-items: center;
@@ -515,18 +676,24 @@ body {
   color: var(--gray);
 }
 
+.dark .property-location {
+  color: var(--border-dark);
+}
+
 .property-location svg {
   width: 16px;
   height: 16px;
-  color: var(--accent);
+  color: var(--primary-light); /* Icono en color primario claro */
 }
 
+/* Pie de la tarjeta de propiedad */
 .property-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
+/* Vistas de la propiedad */
 .property-views {
   display: flex;
   align-items: center;
@@ -535,11 +702,17 @@ body {
   color: var(--gray);
 }
 
+.dark .property-views {
+  color: var(--border-dark);
+}
+
 .property-views svg {
   width: 14px;
   height: 14px;
+  color: var(--primary-light);
 }
 
+/* Botón de acción de la propiedad */
 .property-action {
   padding: 8px 16px;
   background-color: var(--primary);
@@ -549,13 +722,17 @@ body {
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s; /* Añadido transform */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
 }
 
 .property-action:hover {
   background-color: var(--primary-dark);
+  transform: translateY(-2px); /* Lift sutil */
+  box-shadow: 0 4px 10px rgba(99, 102, 241, 0.3); /* Sombra con color primario */
 }
 
+/* Botón "Ver más propiedades" */
 .view-more-btn {
   display: flex;
   align-items: center;
@@ -563,20 +740,21 @@ body {
   gap: 8px;
   margin: 0 auto;
   padding: 12px 24px;
-  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  background-color: var(--primary); /* Primario sólido */
   color: var(--white);
   border: none;
   border-radius: 30px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); /* Sombra más suave */
 }
 
 .view-more-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(67, 97, 238, 0.4);
+  transform: translateY(-3px); /* Lift más pronunciado */
+  background-color: var(--primary-dark);
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4); /* Sombra más grande y con color primario */
 }
 
 .view-more-btn svg {
@@ -584,20 +762,34 @@ body {
   height: 16px;
 }
 
-/* Panel derecho */
+/* Panel lateral derecho (Menú) */
 .profile-menu {
   width: 250px;
-  background-color: var(--white);
+  background-color: var(--card-light);
   padding: 25px;
-  border-radius: 0 20px 20px 0;
-  box-shadow: 5px 0 15px rgba(0, 0, 0, 0.05);
-  margin: 20px 20px 20px 0;
+  border-radius: 12px; /* Esquinas redondeadas consistentes */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  margin: 20px; /* Margen consistente */
+  flex-shrink: 0;
+  position: sticky;
+  top: 20px;
+  align-self: flex-start;
 }
 
+.dark .profile-menu {
+  background-color: var(--card-dark);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Cabecera del menú */
 .menu-header {
   padding-bottom: 15px;
   margin-bottom: 15px;
-  border-bottom: 1px solid var(--light-gray);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.dark .menu-header {
+  border-bottom-color: var(--border-dark);
 }
 
 .menu-header h3 {
@@ -608,6 +800,11 @@ body {
   letter-spacing: 1px;
 }
 
+.dark .menu-header h3 {
+  color: var(--border-dark); /* Más claro en modo oscuro */
+}
+
+/* Item del menú */
 .menu-item {
   display: flex;
   align-items: center;
@@ -617,76 +814,123 @@ body {
   border-radius: 10px;
   font-size: 14px;
   font-weight: 500;
-  color: var(--gray);
+  color: var(--text-light);
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.3s ease-in-out;
+}
+
+.dark .menu-item {
+  color: var(--text-dark);
 }
 
 .menu-item svg {
   width: 18px;
   height: 18px;
   color: var(--gray);
+  transition: all 0.3s ease-in-out;
+}
+
+.dark .menu-item svg {
+  color: var(--border-dark);
 }
 
 .menu-item:hover {
-  background: linear-gradient(45deg, #7FA6FF, #D98EDF);
+  background-color: var(--primary-light); /* Primario sólido más claro para hover */
+  color: var(--white); /* Color de texto blanco al pasar el ratón */
+  transform: translateX(5px); /* Movimiento más pronunciado al pasar el ratón */
 }
 
 .menu-item:hover svg {
-  color: var(--primary);
+  color: var(--white); /* Color de icono blanco al pasar el ratón */
 }
 
+/* Item de menú activo */
 .menu-item.active {
-  background: linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(63, 55, 201, 0.1));
-  color: var(--primary);
-}
-
-.menu-item.active:hover{
-  background: linear-gradient(45deg, #7FA6FF, #D98EDF);
+  background-color: var(--primary); /* Primario sólido para activo */
+  color: var(--white);
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4); /* Sombra más grande para el activo */
+  border: 2px solid var(--primary-dark); /* Borde distintivo para el activo */
+  transform: translateX(0); /* Asegura que no haya transformaciones no deseadas */
 }
 
 .menu-item.active svg {
-  color: var(--primary);
+  color: var(--white);
 }
 
+.menu-item.active:hover {
+  background-color: var(--primary-dark); /* Primario más oscuro al pasar el ratón en activo */
+  box-shadow: 0 6px 18px rgba(99, 102, 241, 0.5); /* Sombra ligeramente más grande al pasar el ratón en activo */
+}
+
+/* Item de menú de cerrar sesión */
 .menu-item.logout {
   color: var(--danger);
-  background-color: rgba(239, 35, 60, 0.1);
+  background-color: rgba(239, 68, 68, 0.1); /* Tono rojo más claro */
   margin-top: 30px;
 }
 
+.dark .menu-item.logout {
+  background-color: rgba(239, 68, 68, 0.2); /* Tono ligeramente más oscuro en modo oscuro */
+}
+
 .menu-item.logout:hover {
-  background-color: rgba(239, 35, 60, 0.2);
+  background-color: var(--danger); /* Rojo sólido al pasar el ratón */
+  color: var(--white);
 }
 
-.menu-item.logout svg {
-  color: var(--danger);
+.menu-item.logout:hover svg {
+  color: var(--white);
 }
 
-/* Responsive */
+/* Media Queries para Responsive Design */
 @media (max-width: 1200px) {
   .profile-container {
     flex-direction: column;
+    align-items: center; /* Centrar elementos en diseño de columna */
   }
-  
+
   .profile-sidebar,
   .profile-content,
   .profile-menu {
-    width: 100%;
-    margin: 0;
-    border-radius: 0;
+    width: 95%; /* Ligeramente más estrechos para padding */
+    margin: 15px auto; /* Margen automático para centrar */
+    border-radius: 12px; /* Mantener esquinas redondeadas */
   }
-  
+
   .profile-content {
-    order: 2;
+    order: 2; /* Ordenar para que el contenido principal aparezca primero en móvil */
   }
-  
+
   .profile-menu {
     order: 3;
-    border-radius: 0;
+    border-radius: 12px;
   }
-  
+
   .properties-grid {
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-sidebar,
+  .profile-content,
+  .profile-menu {
+    width: 100%; /* Ancho completo en pantallas pequeñas */
+    margin: 10px 0;
+    border-radius: 0; /* Quitar esquinas redondeadas en ancho completo */
+    box-shadow: none; /* Quitar sombras en ancho completo */
+  }
+
+  .profile-content {
+    padding: 20px;
+  }
+
+  .profile-sidebar {
+    padding-bottom: 50px; /* Más espacio en la parte inferior para scroll */
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr; /* Apilar ítems de información en pantallas pequeñas */
   }
 }
