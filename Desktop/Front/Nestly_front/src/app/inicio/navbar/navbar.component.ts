@@ -22,6 +22,7 @@ interface UserData {
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
+
 export class NavbarComponent implements OnInit {
   userData: UserData | null = null;
   isLoading: boolean = true;
@@ -44,6 +45,30 @@ export class NavbarComponent implements OnInit {
       this.userRole = '';
     }
   }
+handleFavoritosClick() {
+  if (!this.isLoggedIn()) {
+    import('sweetalert2').then(Swal => {
+      Swal.default.fire({
+        icon: 'info',
+        title: 'Debes crear una cuenta',
+        text: 'Para ver tus favoritos, primero debes registrarte o iniciar sesión.',
+        showCancelButton: true,
+        confirmButtonText: 'Registrarme',
+        cancelButtonText: 'Iniciar Sesión',
+      }).then(result => {
+        if (result.isConfirmed) {
+          this.router.navigate(['/register']);
+        } else if (result.dismiss === Swal.default.DismissReason.cancel) {
+          this.router.navigate(['/login']);
+        }
+      });
+    });
+  } else {
+    // Si está logueado, navega directo a favoritos
+    this.router.navigate(['/principal/favoritos']);
+    this.closeMenus();
+  }
+}
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {

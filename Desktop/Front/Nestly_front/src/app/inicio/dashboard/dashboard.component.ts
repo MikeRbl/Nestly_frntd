@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { Propiedad } from '../../interface/propiedades.interface';
 import { AuthService } from '../../auth.service';
 import { PropiedadesService } from '../../services/propiedad.service';
+import { NotyfService } from '../../services/notyf.service';  
 
 @Component({
   selector: 'app-dashboard',
@@ -12,6 +13,7 @@ import { PropiedadesService } from '../../services/propiedad.service';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+  
   // Se usa Propiedad en lugar de Property
   properties: Propiedad[] = [];
   featuredProperties: Propiedad[] = [];
@@ -25,7 +27,8 @@ export class DashboardComponent implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private authService: AuthService,
-    private propiedadesService: PropiedadesService
+    private propiedadesService: PropiedadesService,
+    private notyf: NotyfService
   ) {}
 
   ngOnInit(): void {
@@ -69,10 +72,10 @@ export class DashboardComponent implements OnInit {
       error: (err) => console.error('Error al cargar IDs de favoritos en Dashboard:', err)
     });
   }
-toggleFavorito(propiedad: Propiedad, event: MouseEvent): void {
+
+ toggleFavorito(propiedad: Propiedad, event: MouseEvent): void {
   event.stopPropagation(); 
   if (!this.isUserLoggedIn) {
-    console.warn('Usuario no autenticado, redirigiendo al detalle de la propiedad');
     this.handlePropertyClick(propiedad.id_propiedad); 
     return;
   }
@@ -81,52 +84,56 @@ toggleFavorito(propiedad: Propiedad, event: MouseEvent): void {
   const esFavorito = this.favoritoIds.has(propiedadId);
 
   if (esFavorito) {
-    console.log(`Quitando de favoritos propiedad ID: ${propiedadId}`);
-    this.favoritoIds.delete(propiedadId); // Actualización optimista de la UI
     this.propiedadesService.quitarFavorito(propiedadId).subscribe({
-      next: () => console.log(`✅ Propiedad ${propiedadId} quitada de favoritos correctamente.`),
-      error: (error) => {
-        console.error(`❌ Error al quitar favorito (ID: ${propiedadId})`, error);
-        this.favoritoIds.add(propiedadId); // Revertimos el cambio
+      next: () => {
+        this.favoritoIds.delete(propiedadId);
+        this.notyf.success('Eliminado de favoritos');
+      },
+      error: () => {
+        this.notyf.error('Error al quitar favorito. Intenta de nuevo.');
       }
     });
   } else {
-    console.log(`Agregando a favoritos propiedad ID: ${propiedadId}`);
-    this.favoritoIds.add(propiedadId); // Actualización optimista de la UI
     this.propiedadesService.agregarFavorito(propiedadId).subscribe({
-      next: () => console.log(`✅ Propiedad ${propiedadId} agregada a favoritos correctamente.`),
-      error: (error) => {
-        console.error(`❌ Error al agregar favorito (ID: ${propiedadId})`, error);
-        this.favoritoIds.delete(propiedadId); // Revertimos el cambio
+      next: () => {
+        this.favoritoIds.add(propiedadId);
+        this.notyf.success('Agregado a favoritos   ');
+      },
+      error: () => {
+        this.notyf.error('Error al agregar favorito. Intenta de nuevo.');
       }
     });
   }
 }
 
+
+
   loadProperties(): void {
-    this.isLoading = true;
-    this.errorMessage = '';
-    
-    this.Shttp.Service_Get('propiedades').subscribe({
-      next: (response: any) => {
-        if (response?.data?.data) {
-          this.properties = this.processProperties(response.data.data);
-          this.featuredProperties = this.getRandomProperties(this.properties, 3);
-        } else if (response?.data) {
-          this.properties = this.processProperties(Array.isArray(response.data) ? response.data : [response.data]);
-          this.featuredProperties = this.getRandomProperties(this.properties, 3);
-        } else {
-          this.errorMessage = 'No se encontraron propiedades disponibles';
-        }
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error('Error al cargar propiedades:', err);
-        this.errorMessage = 'Error al cargar las propiedades. Intenta nuevamente.';
-        this.isLoading = false;
+  this.isLoading = true;
+  this.errorMessage = '';
+
+  this.Shttp.Service_Get('propiedades').subscribe({
+    next: (response: any) => {
+      if (response?.data?.data) {
+        this.properties = this.processProperties(response.data.data);
+        this.featuredProperties = this.getRandomProperties(this.properties, 4);
+      } else if (response?.data) {
+        this.properties = this.processProperties(Array.isArray(response.data) ? response.data : [response.data]);
+        this.featuredProperties = this.getRandomProperties(this.properties, 4);
+      } else {
+        this.errorMessage = 'No se encontraron propiedades disponibles';
+        this.notyf.warning('No hay propiedades disponibles');
       }
-    });
-  }
+      this.isLoading = false;
+    },
+    error: (err) => {
+      console.error('Error al cargar propiedades:', err);
+      this.errorMessage = 'Error al cargar las propiedades. Intenta nuevamente.';
+      this.isLoading = false;
+      this.notyf.error('Error al cargar propiedades');
+    }
+  });
+}
   
   // El tipo de retorno ahora es Propiedad[]
   private processProperties(properties: any[]): Propiedad[] {

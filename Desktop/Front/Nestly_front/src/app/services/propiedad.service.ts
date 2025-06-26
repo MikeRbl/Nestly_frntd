@@ -81,7 +81,10 @@ export class PropiedadesService {
     return this.http.get(`${this.apiUrl}/propiedades`, { headers });
   }
 
-  //Favoritos
+   // =======================================================
+  // MÉTODOS PARA FAVORITOS 
+  // =======================================================
+  
   getFavoritos(): Observable<any> {
     const headers = this.getAuthHeaders();
     return this.http.get(`${this.apiUrl}/favoritos`, { headers });
@@ -93,13 +96,13 @@ export class PropiedadesService {
   }
 
   agregarFavorito(propiedadId: number): Observable<any> {
-  const headers = this.getAuthHeaders();
-  return this.http.post(`${this.apiUrl}/propiedades/${propiedadId}/favorito`, {}, { headers });
-}
+    const headers = this.getAuthHeaders();
+    return this.http.post(`${this.apiUrl}/favoritos/agregar/${propiedadId}`, {}, { headers });
+  }
 
-quitarFavorito(propiedadId: number): Observable<any> {
-  const headers = this.getAuthHeaders();
-  return this.http.delete(`${this.apiUrl}/propiedades/${propiedadId}/favorito`, { headers });
-}
+  quitarFavorito(propiedadId: number): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.delete(`${this.apiUrl}/favoritos/quitar/${propiedadId}`, { headers });
+  }
 
 }
