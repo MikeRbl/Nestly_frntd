@@ -240,8 +240,11 @@ preConfirm: () => {
     return this.resenas.length;
   }
 rentarAhora(){
-  console.log("funciono")
-  this.notyf.error('La opcion de rentar estara disponible proximamente');
+  if (this.property){
+    this.router.navigate(['/pago', this.property.id_propiedad]);
+  }else {
+    this.notyf.error('No se pudo encontrar la propiedad para rentar.');
+  }
 }
   
   get averageRating(): number {

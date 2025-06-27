@@ -21,6 +21,7 @@ import { ResenasItemComponent } from './resenas/resenas-item/resena-item.compone
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PrimeraMayusculaPipe } from './pipes/primera-mayuscula.pipe';
+import { PagosComponent } from './pagos/pagos.component';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { PrimeraMayusculaPipe } from './pipes/primera-mayuscula.pipe';
     ResenaFormComponent,
     ResenaListComponent,
     ResenasItemComponent,
-    PrimeraMayusculaPipe
+    PrimeraMayusculaPipe,
+    PagosComponent
   ],
   imports: [
     CommonModule,
