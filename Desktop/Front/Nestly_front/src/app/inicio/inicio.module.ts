@@ -21,7 +21,11 @@ import { ResenasItemComponent } from './resenas/resenas-item/resena-item.compone
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PrimeraMayusculaPipe } from './pipes/primera-mayuscula.pipe';
+<<<<<<< HEAD
 import { PagosComponent } from './pagos/pagos.component';
+=======
+import { PropiedadesFavoritosComponent } from './propiedades-favoritos/propiedades-favoritos.component';
+>>>>>>> 3b121d01928088298782dbf73da1547b0d2f247c
 
 
 @NgModule({
@@ -42,7 +46,11 @@ import { PagosComponent } from './pagos/pagos.component';
     ResenaListComponent,
     ResenasItemComponent,
     PrimeraMayusculaPipe,
+<<<<<<< HEAD
     PagosComponent
+=======
+    PropiedadesFavoritosComponent
+>>>>>>> 3b121d01928088298782dbf73da1547b0d2f247c
   ],
   imports: [
     CommonModule,

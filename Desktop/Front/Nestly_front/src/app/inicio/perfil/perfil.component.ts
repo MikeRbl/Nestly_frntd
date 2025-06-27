@@ -77,38 +77,34 @@ removeSelectedImage(): void {
   uploadProfilePicture(): void {
     if (!this.selectedFile) return;
 
-    this.isLoading = true;
-    this.uploadProgress = 0;
-    this.errorMessage = ''; // Limpiar mensajes de error previos
+  this.isLoading = true;
+  this.uploadProgress = 0;
+  this.errorMessage = ''; 
 
-    const formData = new FormData(); // Crear formulario para enviar archivo
-    formData.append('profile_picture', this.selectedFile);
+  const formData = new FormData();
+  formData.append('avatar', this.selectedFile); // ojo, que aquí el backend espera 'avatar' no 'profile_picture'
 
-    this.Shttp.Service_Post('update-profile-picture', formData).subscribe({
-      next: (response: any) => {
-        console.log('Foto de perfil actualizada:', response);
-        if (this.userData && response.profile_picture_url) { // Verificar que profile_picture_url exista
-          // CORRECCIÓN AQUÍ: Usar response.profile_picture_url
-          this.userData.profile_picture = `${response.profile_picture_url}?${new Date().getTime()}`;
-           
-           window.location.reload();// Recargar la página para reflejar el cambio
-        } else if (this.userData) {
-            // Si profile_picture_url no viene en la respuesta, recargar los datos del usuario
-            // para obtener la URL actualizada del avatar desde el endpoint 'user'.
-            console.warn('profile_picture_url no encontrada en la respuesta de subida, recargando datos del usuario...');
-            this.loadUserData();
-        }
-        this.resetUpload();
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error('Error al actualizar foto de perfil:', err);
-        this.errorMessage = err.error?.message || 'Error al actualizar la foto de perfil';
-        this.isLoading = false;
-        this.resetUpload(); // Asegurarse de resetear también en caso de error
+  this.Shttp.Service_Post('user/avatar', formData).subscribe({
+    next: (response: any) => {
+      console.log('Foto de perfil actualizada:', response);
+      if (this.userData && response.avatar_url) {
+        this.userData.profile_picture = `${response.avatar_url}?${new Date().getTime()}`;
+        window.location.reload();
+      } else if (this.userData) {
+        this.loadUserData();
       }
-    });
-  }
+      this.resetUpload();
+      this.isLoading = false;
+    },
+    error: (err) => {
+      console.error('Error al actualizar foto de perfil:', err);
+      this.errorMessage = err.error?.message || 'Error al actualizar la foto de perfil';
+      this.isLoading = false;
+      this.resetUpload();
+    }
+  });
+}
+
 
   private resetUpload(): void {
     this.selectedImage = null;

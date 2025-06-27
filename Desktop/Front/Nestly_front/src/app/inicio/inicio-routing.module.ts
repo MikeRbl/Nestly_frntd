@@ -13,7 +13,11 @@ import { AlquilarCasaComponent } from './alquilar-casa/alquilar-casa.component';
 import { BuscarComponent } from './buscar/buscar.component';
 import { VerPropiedadesComponent } from './ver-propiedades/ver-propiedades.component';
 import { EditarPropiedadComponent } from './editar-propiedad/editar-propiedad.component';
+<<<<<<< HEAD
 import { PagosComponent } from './pagos/pagos.component';
+=======
+import { PropiedadesFavoritosComponent } from './propiedades-favoritos/propiedades-favoritos.component';
+>>>>>>> 3b121d01928088298782dbf73da1547b0d2f247c
 
 const routes: Routes = [
   {
@@ -30,7 +34,12 @@ const routes: Routes = [
       { path: 'verPropiedades', component: VerPropiedadesComponent },
       { path: 'editar-propiedad/:id', component: EditarPropiedadComponent },
       { path: 'buscarCasa', component: BuscarComponent },
+<<<<<<< HEAD
       { path: 'pago/:id', component: PagosComponent},
+=======
+      { path: 'favoritos', component: PropiedadesFavoritosComponent },
+      // Redirección por defecto dentro de la sección 'principal'
+>>>>>>> 3b121d01928088298782dbf73da1547b0d2f247c
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   }

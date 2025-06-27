@@ -4,6 +4,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
 import { Propiedad } from '../../interface/propiedades.interface';
 import { AuthService } from '../../auth.service';
+import { PropiedadesService } from '../../services/propiedad.service';
+import { NotyfService } from '../../services/notyf.service';  
 
 @Component({
   selector: 'app-dashboard',
@@ -11,21 +13,30 @@ import { AuthService } from '../../auth.service';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+  
   // Se usa Propiedad en lugar de Property
   properties: Propiedad[] = [];
   featuredProperties: Propiedad[] = [];
   isLoading: boolean = true;
   errorMessage: string = '';
+  favoritoIds = new Set<number>();
+  isUserLoggedIn = false;
 
   constructor(
     private Shttp: HttpLavavelService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    private propiedadesService: PropiedadesService,
+    private notyf: NotyfService
   ) {}
 
   ngOnInit(): void {
+    this.isUserLoggedIn = this.authService.isLoggedIn();
     this.loadProperties();
+    if (this.isUserLoggedIn) {
+      this.cargarIdsFavoritos();
+    }
   }
  handlePropertyClick(id: number): void {
   if (this.authService.isLoggedIn()) {
@@ -52,31 +63,77 @@ export class DashboardComponent implements OnInit {
     });
   }
 }
-
-  loadProperties(): void {
-    this.isLoading = true;
-    this.errorMessage = '';
-    
-    this.Shttp.Service_Get('propiedades').subscribe({
-      next: (response: any) => {
-        if (response?.data?.data) {
-          this.properties = this.processProperties(response.data.data);
-          this.featuredProperties = this.getRandomProperties(this.properties, 3);
-        } else if (response?.data) {
-          this.properties = this.processProperties(Array.isArray(response.data) ? response.data : [response.data]);
-          this.featuredProperties = this.getRandomProperties(this.properties, 3);
-        } else {
-          this.errorMessage = 'No se encontraron propiedades disponibles';
-        }
-        this.isLoading = false;
+  cargarIdsFavoritos(): void {
+    this.propiedadesService.getIdsFavoritos().subscribe({
+      next: (response) => {
+        // Creamos un Set con los IDs para una comprobación muy rápida
+        this.favoritoIds = new Set(response.data);
       },
-      error: (err) => {
-        console.error('Error al cargar propiedades:', err);
-        this.errorMessage = 'Error al cargar las propiedades. Intenta nuevamente.';
-        this.isLoading = false;
+      error: (err) => console.error('Error al cargar IDs de favoritos en Dashboard:', err)
+    });
+  }
+
+ toggleFavorito(propiedad: Propiedad, event: MouseEvent): void {
+  event.stopPropagation(); 
+  if (!this.isUserLoggedIn) {
+    this.handlePropertyClick(propiedad.id_propiedad); 
+    return;
+  }
+
+  const propiedadId = propiedad.id_propiedad;
+  const esFavorito = this.favoritoIds.has(propiedadId);
+
+  if (esFavorito) {
+    this.propiedadesService.quitarFavorito(propiedadId).subscribe({
+      next: () => {
+        this.favoritoIds.delete(propiedadId);
+        this.notyf.success('Eliminado de favoritos');
+      },
+      error: () => {
+        this.notyf.error('Error al quitar favorito. Intenta de nuevo.');
+      }
+    });
+  } else {
+    this.propiedadesService.agregarFavorito(propiedadId).subscribe({
+      next: () => {
+        this.favoritoIds.add(propiedadId);
+        this.notyf.success('Agregado a favoritos   ');
+      },
+      error: () => {
+        this.notyf.error('Error al agregar favorito. Intenta de nuevo.');
       }
     });
   }
+}
+
+
+
+  loadProperties(): void {
+  this.isLoading = true;
+  this.errorMessage = '';
+
+  this.Shttp.Service_Get('propiedades').subscribe({
+    next: (response: any) => {
+      if (response?.data?.data) {
+        this.properties = this.processProperties(response.data.data);
+        this.featuredProperties = this.getRandomProperties(this.properties, 4);
+      } else if (response?.data) {
+        this.properties = this.processProperties(Array.isArray(response.data) ? response.data : [response.data]);
+        this.featuredProperties = this.getRandomProperties(this.properties, 4);
+      } else {
+        this.errorMessage = 'No se encontraron propiedades disponibles';
+        this.notyf.warning('No hay propiedades disponibles');
+      }
+      this.isLoading = false;
+    },
+    error: (err) => {
+      console.error('Error al cargar propiedades:', err);
+      this.errorMessage = 'Error al cargar las propiedades. Intenta nuevamente.';
+      this.isLoading = false;
+      this.notyf.error('Error al cargar propiedades');
+    }
+  });
+}
   
   // El tipo de retorno ahora es Propiedad[]
   private processProperties(properties: any[]): Propiedad[] {
