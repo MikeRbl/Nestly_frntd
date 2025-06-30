@@ -1,201 +1,178 @@
-<div class="container py-4">
-  <h2 class="mb-4">Editar Propiedad</h2>
-  
-  <div *ngIf="isLoading && !formulario.dirty" class="text-center py-5">
-    <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
-      <span class="visually-hidden">Cargando...</span>
-    </div>
-    <p class="mt-3">Cargando datos de la propiedad...</p>
+<div class="max-w-6xl mx-auto p-6">
+  <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Editar Propiedad</h2>
+
+  <div *ngIf="isLoading && !formulario.dirty" class="flex flex-col items-center justify-center py-10">
+    <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500"></div>
+    <p class="mt-4 text-gray-500">Cargando datos de la propiedad...</p>
   </div>
-  
-  <form *ngIf="!isLoading || formulario.dirty" [formGroup]="formulario" (ngSubmit)="actualizarPropiedad()" novalidate>
-    <div class="row">
 
-      <div class="col-lg-6">
-        
-        <h5>Información Principal</h5>
-        <hr class="mt-2 mb-3">
-        <div class="mb-2">
-          <label class="form-label">Título de la Publicación *</label>
-          <input type="text" class="form-control form-control-sm" formControlName="titulo"
-                 [ngClass]="{ 'is-invalid': f['titulo'].invalid && (f['titulo'].touched || formSubmitted) }" />
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Descripción *</label>
-          <textarea class="form-control form-control-sm" rows="4" formControlName="descripcion"
-                    [ngClass]="{ 'is-invalid': f['descripcion'].invalid && (f['descripcion'].touched || formSubmitted) }"></textarea>
-        </div>
-
-        <h5>Ubicación</h5>
-        <hr class="mt-2 mb-3">
-        <div class="mb-2">
-          <label class="form-label">Dirección Completa *</label>
-          <input type="text" class="form-control form-control-sm" formControlName="direccion"
-                 [ngClass]="{ 'is-invalid': f['direccion'].invalid && (f['direccion'].touched || formSubmitted) }" />
-        </div>
-        <div class="row">
-          <div class="col-md-6 mb-2">
-            <label class="form-label">País *</label>
-            <input type="text" class="form-control form-control-sm" formControlName="pais"
-                   [ngClass]="{ 'is-invalid': f['pais'].invalid && (f['pais'].touched || formSubmitted) }" />
+  <form *ngIf="!isLoading || formulario.dirty" [formGroup]="formulario" (ngSubmit)="actualizarPropiedad()" novalidate class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    
+    <!-- Columna Izquierda -->
+    <div class="space-y-6">
+      <!-- Información Principal -->
+      <div>
+        <h3 class="text-lg font-medium text-gray-700">Información Principal</h3>
+        <div class="mt-4 space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-600">Título de la Publicación *</label>
+            <input type="text" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="titulo" />
           </div>
-          <div class="col-md-6 mb-2">
-            <label class="form-label">Estado *</label>
-            <input type="text" class="form-control form-control-sm" formControlName="estado_ubicacion"
-                   [ngClass]="{ 'is-invalid': f['estado_ubicacion'].invalid && (f['estado_ubicacion'].touched || formSubmitted) }" />
-          </div>
-          <div class="col-md-6 mb-2">
-            <label class="form-label">Ciudad *</label>
-            <input type="text" class="form-control form-control-sm" formControlName="ciudad"
-                   [ngClass]="{ 'is-invalid': f['ciudad'].invalid && (f['ciudad'].touched || formSubmitted) }" />
-          </div>
-          <div class="col-md-6 mb-2">
-            <label class="form-label">Colonia</label>
-            <input type="text" class="form-control form-control-sm" formControlName="colonia" />
-          </div>
-        </div>
-
-        <h5 class="mt-3">Información de Contacto</h5>
-        <hr class="mt-2 mb-3">
-        <div class="row">
-          <div class="col-md-6 mb-2">
-            <label class="form-label">Correo electrónico *</label>
-            <input type="email" class="form-control form-control-sm" formControlName="email"
-                   [ngClass]="{ 'is-invalid': f['email'].invalid && (f['email'].touched || formSubmitted) }" />
-          </div>
-          <div class="col-md-6 mb-2">
-            <label class="form-label">Teléfono *</label>
-            <input type="text" class="form-control form-control-sm" formControlName="telefono"
-                   [ngClass]="{ 'is-invalid': f['telefono'].invalid && (f['telefono'].touched || formSubmitted) }" />
+          <div>
+            <label class="block text-sm font-medium text-gray-600">Descripción *</label>
+            <textarea rows="4" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="descripcion"></textarea>
           </div>
         </div>
       </div>
 
-      <div class="col-lg-6">
-
-        <h5>Características y Detalles</h5>
-        <hr class="mt-2 mb-3">
-
-        <div *ngIf="tiposDePropiedad.length === 0">
-          <small>Cargando tipos de propiedad...</small>
-        </div>
-
-        <div class="row" *ngIf="tiposDePropiedad.length > 0">
-          <div class="col-md-6 mb-2">
-              <label class="form-label">Tipo de Propiedad *</label>
-              <select class="form-select form-select-sm" formControlName="tipo_propiedad_id" 
-                      [ngClass]="{ 'is-invalid': f['tipo_propiedad_id'].invalid && (f['tipo_propiedad_id'].touched || formSubmitted) }">
-                <option value="" disabled>Selecciona una opción</option>
-                <option *ngFor="let tipo of tiposDePropiedad" [value]="tipo.id">{{ tipo.nombre }}</option>
-              </select>
+      <!-- Ubicación -->
+      <div>
+        <h3 class="text-lg font-medium text-gray-700">Ubicación</h3>
+        <div class="mt-4 space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-600">Dirección Completa *</label>
+            <input type="text" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="direccion" />
           </div>
-            <div class="col-md-6 mb-2">
-            <label class="form-label">Estado de la Propiedad *</label>
-            <select class="form-select form-select-sm" formControlName="estado_propiedad"
-                    [ngClass]="{ 'is-invalid': f['estado_propiedad'].invalid && (f['estado_propiedad'].touched || formSubmitted) }">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-600">País *</label>
+              <input type="text" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="pais" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600">Estado *</label>
+              <input type="text" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="estado_ubicacion" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600">Ciudad *</label>
+              <input type="text" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="ciudad" />
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-600">Colonia</label>
+              <input type="text" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="colonia" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contacto -->
+      <div>
+        <h3 class="text-lg font-medium text-gray-700">Información de Contacto</h3>
+        <div class="mt-4 grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-600">Correo electrónico *</label>
+            <input type="email" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="email" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-600">Teléfono *</label>
+            <input type="text" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="telefono" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Columna Derecha -->
+    <div class="space-y-6">
+      <!-- Características -->
+      <div>
+        <h3 class="text-lg font-medium text-gray-700">Características y Detalles</h3>
+
+        <div *ngIf="tiposDePropiedad.length === 0" class="text-sm text-gray-500">Cargando tipos de propiedad...</div>
+
+        <div *ngIf="tiposDePropiedad.length > 0" class="mt-4 grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-600">Tipo de Propiedad *</label>
+            <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="tipo_propiedad_id">
+              <option value="" disabled>Selecciona una opción</option>
+              <option *ngFor="let tipo of tiposDePropiedad" [value]="tipo.id">{{ tipo.nombre }}</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-600">Estado de la Propiedad *</label>
+            <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="estado_propiedad">
               <option value="" disabled>Selecciona un estado</option>
               <option value="Disponible">Disponible</option>
               <option value="Rentada">Rentada</option>
               <option value="Inactiva">Inactiva</option>
             </select>
           </div>
-
-          <div class="col-md-6 mb-2">
-            <label class="form-label">Precio (MXN) *</label>
-            <input type="number" class="form-control form-control-sm" formControlName="precio"
-                   [ngClass]="{ 'is-invalid': f['precio'].invalid && (f['precio'].touched || formSubmitted) }" />
+          <div>
+            <label class="block text-sm font-medium text-gray-600">Precio (MXN) *</label>
+            <input type="number" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="precio" />
           </div>
-          <div class="col-md-6 mb-2">
-            <label class="form-label">Habitaciones *</label>
-            <input type="number" class="form-control form-control-sm" formControlName="habitaciones"
-                   [ngClass]="{ 'is-invalid': f['habitaciones'].invalid && (f['habitaciones'].touched || formSubmitted) }" />
+          <div>
+            <label class="block text-sm font-medium text-gray-600">Habitaciones *</label>
+            <input type="number" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="habitaciones" />
           </div>
-          <div class="col-md-6 mb-2">
-            <label class="form-label">Baños *</label>
-            <input type="number" class="form-control form-control-sm" formControlName="banos"
-                   [ngClass]="{ 'is-invalid': f['banos'].invalid && (f['banos'].touched || formSubmitted) }" />
+          <div>
+            <label class="block text-sm font-medium text-gray-600">Baños *</label>
+            <input type="number" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="banos" />
           </div>
-          <div class="col-md-6 mb-2">
-            <label class="form-label">Metros Cuadrados *</label>
-            <input type="number" class="form-control form-control-sm" formControlName="metros_cuadrados"
-                   [ngClass]="{ 'is-invalid': f['metros_cuadrados'].invalid && (f['metros_cuadrados'].touched || formSubmitted) }" />
+          <div>
+            <label class="block text-sm font-medium text-gray-600">Metros Cuadrados *</label>
+            <input type="number" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="metros_cuadrados" />
           </div>
-          <div class="col-md-6 mb-2">
-            <label class="form-label">Depósito</label>
-            <input type="number" class="form-control form-control-sm" formControlName="deposito" />
+          <div>
+            <label class="block text-sm font-medium text-gray-600">Depósito</label>
+            <input type="number" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="deposito" />
           </div>
-        </div>
-
-        <div class="row mt-2">
-          <div class="col-md-4 mb-3">
-              <label class="form-label d-block">¿Amueblado? *</label>
-              <div class="btn-group btn-group-sm" role="group">
-                  <button type="button" class="btn" [class.btn-success]="f['amueblado'].value === true" [class.btn-outline-secondary]="f['amueblado'].value !== true" (click)="f['amueblado'].setValue(true)">Sí</button>
-                  <button type="button" class="btn" [class.btn-danger]="f['amueblado'].value === false" [class.btn-outline-secondary]="f['amueblado'].value !== false" (click)="f['amueblado'].setValue(false)">No</button>
-              </div>
-          </div>
-          <div class="col-md-4 mb-3">
-              <label class="form-label d-block">¿Renta anual? *</label>
-              <div class="btn-group btn-group-sm" role="group">
-                  <button type="button" class="btn" [class.btn-success]="f['anualizado'].value === true" [class.btn-outline-secondary]="f['anualizado'].value !== true" (click)="f['anualizado'].setValue(true)">Sí</button>
-                  <button type="button" class="btn" [class.btn-danger]="f['anualizado'].value === false" [class.btn-outline-secondary]="f['anualizado'].value !== false" (click)="f['anualizado'].setValue(false)">No</button>
-              </div>
-          </div>
-          <div class="col-md-4 mb-3">
-            <label class="form-label d-block">¿Mascotas? *</label>
-            <div class="btn-group btn-group-sm" role="group">
-              <button type="button" class="btn" [class.btn-success]="f['mascotas'].value === 'si'" [class.btn-outline-secondary]="f['mascotas'].value !== 'si'" (click)="f['mascotas'].setValue('si')">Sí</button>
-              <button type="button" class="btn" [class.btn-danger]="f['mascotas'].value === 'no'" [class.btn-outline-secondary]="f['mascotas'].value !== 'no'" (click)="f['mascotas'].setValue('no')">No</button>
-            </div>
-          </div>
-        </div>
-
-        <h5 class="mt-2">Fotos de la Propiedad</h5>
-        <hr class="mt-2 mb-3">
-        <div class="mb-3">
-          <label for="file-input" class="form-label">Añadir más imágenes</label>
-          <input id="file-input" type="file" class="form-control form-control-sm" 
-                 (change)="onFileChange($event)" multiple accept="image/*" />
-
-          <div class="row mt-3 g-2">
-            <h6 *ngIf="existingImages.length > 0" class="col-12 text-muted">Imágenes Actuales</h6>
-            <div class="col-4 col-md-3" *ngFor="let foto of existingImages; let i = index">
-              <div class="position-relative">
-                <img [src]="foto.url" class="img-fluid rounded border" style="height: 100px; width: 100%; object-fit: cover;" alt="Imagen existente de la propiedad" />
-                <button type="button" class="btn btn-sm btn-danger rounded-circle position-absolute top-0 end-0 m-1 p-0 lh-1" style="width: 24px; height: 24px;" (click)="removeExistingImage(i)">
-                  &times;
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div class="row mt-2 g-2">
-            <h6 *ngIf="newImagePreviews.length > 0" class="col-12 text-muted">Nuevas Imágenes para Subir</h6>
-            <div class="col-4 col-md-3" *ngFor="let foto of newImagePreviews; let i = index">
-              <div class="position-relative">
-                <img [src]="foto" class="img-fluid rounded border" style="height: 100px; width: 100%; object-fit: cover;" alt="Previsualización de imagen nueva" />
-                <button type="button" class="btn btn-sm btn-danger rounded-circle position-absolute top-0 end-0 m-1 p-0 lh-1" style="width: 24px; height: 24px;" (click)="removeNewImage(i)">
-                  &times;
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
-          <button type="button" class="btn btn-danger px-4" (click)="cancelarEdicion()" [disabled]="isLoading">
-  Cancelar
-</button>
-
-
-          <button type="submit" class="btn btn-primary px-4" [disabled]="isLoading">
-            <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
-            {{ isLoading ? 'Actualizando...' : 'Actualizar Propiedad' }}
-          </button>
-          
         </div>
       </div>
-      
+
+      <!-- Opciones -->
+      <div class="grid grid-cols-3 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-600 mb-1">¿Amueblado?</label>
+          <div class="flex space-x-2">
+            <button type="button" class="px-3 py-1 rounded border text-sm" [class.bg-green-500]="f['amueblado'].value === true" (click)="f['amueblado'].setValue(true)">Sí</button>
+            <button type="button" class="px-3 py-1 rounded border text-sm" [class.bg-red-500]="f['amueblado'].value === false" (click)="f['amueblado'].setValue(false)">No</button>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-600 mb-1">¿Renta anual?</label>
+          <div class="flex space-x-2">
+            <button type="button" class="px-3 py-1 rounded border text-sm" [class.bg-green-500]="f['anualizado'].value === true" (click)="f['anualizado'].setValue(true)">Sí</button>
+            <button type="button" class="px-3 py-1 rounded border text-sm" [class.bg-red-500]="f['anualizado'].value === false" (click)="f['anualizado'].setValue(false)">No</button>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-600 mb-1">¿Mascotas?</label>
+          <div class="flex space-x-2">
+            <button type="button" class="px-3 py-1 rounded border text-sm" [class.bg-green-500]="f['mascotas'].value === 'si'" (click)="f['mascotas'].setValue('si')">Sí</button>
+            <button type="button" class="px-3 py-1 rounded border text-sm" [class.bg-red-500]="f['mascotas'].value === 'no'" (click)="f['mascotas'].setValue('no')">No</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fotos -->
+      <div>
+        <h3 class="text-lg font-medium text-gray-700 mt-4">Fotos de la Propiedad</h3>
+        <input type="file" (change)="onFileChange($event)" multiple accept="image/*" class="w-full mt-2 text-sm" />
+
+        <!-- Imágenes actuales -->
+        <div class="mt-4 grid grid-cols-3 gap-2">
+          <div *ngFor="let foto of existingImages; let i = index" class="relative">
+            <img [src]="foto.url" alt="imagen" class="w-full h-24 object-cover rounded" />
+            <button type="button" (click)="removeExistingImage(i)" class="absolute top-1 right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">&times;</button>
+          </div>
+        </div>
+
+        <!-- Previews nuevas -->
+        <div class="mt-4 grid grid-cols-3 gap-2">
+          <div *ngFor="let foto of newImagePreviews; let i = index" class="relative">
+            <img [src]="foto" alt="preview" class="w-full h-24 object-cover rounded" />
+            <button type="button" (click)="removeNewImage(i)" class="absolute top-1 right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">&times;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones -->
+      <div class="flex justify-end space-x-3 mt-6">
+        <button type="button" (click)="cancelarEdicion()" [disabled]="isLoading" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition">Cancelar</button>
+        <button type="submit" [disabled]="isLoading" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+          <span *ngIf="isLoading" class="loader mr-2"></span>
+          {{ isLoading ? 'Actualizando...' : 'Actualizar Propiedad' }}
+        </button>
+      </div>
     </div>
   </form>
 </div>
