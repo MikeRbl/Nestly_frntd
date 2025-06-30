@@ -68,12 +68,9 @@ export class PropiedadesFavoritosComponent implements OnInit {
           todas = this.processProperties(Array.isArray(response.data) ? response.data : [response.data]);
         }
 
-        this.properties = todas.filter(p => this.favoritoIds.has(p.id_propiedad));
+        this.featuredProperties = todas.filter(p => this.favoritoIds.has(p.id_propiedad));
         this.isLoading = false;
 
-        if (this.properties.length === 0) {
-          this.notyf.warning('No tienes propiedades favoritas aún');
-        }
       },
       error: (err) => {
         console.error('Error al cargar propiedades:', err);
