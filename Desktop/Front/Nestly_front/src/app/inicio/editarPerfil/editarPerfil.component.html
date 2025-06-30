@@ -1,190 +1,183 @@
-<div class="profile-container profile-container bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-white" *ngIf="userData && !isLoading">
-  <!-- Panel izquierdo -->
-  <div class="profile-sidebar bg-gray-100">
-    <div class="sidebar-header">
-      <button class="back-btn text-red-500 hover:opacity-80" routerLink="/principal/dashboard">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
-    </div>
+<div class="edit-profile-main-wrapper">
+  <div class="edit-profile-container">
 
-    <div class="profile-card">
-      <div class="avatar-container">
-        <div class="avatar-wrapper">
-          <img src="assets/navbar/usuario.png" alt="Usuario" class="avatar">
-          <div class="avatar-badge"></div>
+    <div class="edit-profile-sidebar">
+      <nav class="profile-nav-menu">
+        <div class="sidebar-header">
+          <button class="back-btn" routerLink="/principal/dashboard">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/>
+            </svg>
+            <span>Volver</span>
+          </button>
         </div>
-        <button class="upload-btn bg-blue-500 hover:bg-blue-600 text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
-          Subir foto
-        </button>
-      </div>
 
-      <div class="username-container">
-        <p>
-          {{userData.first_name}} {{userData.last_name_paternal}}
-        </p>
-      </div>
+        <div class="user-details-section">
+          <div class="avatar-upload-container">
+            <div class="avatar-wrapper">
+              <img *ngIf="selectedImage || userData?.profile_picture" [src]="selectedImage || userData?.profile_picture || 'assets/default-avatar.png'" alt="Avatar" class="user-avatar">
+              <svg *ngIf="!selectedImage && !userData?.profile_picture" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="user-avatar-placeholder-svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.29-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.93-3.5 3.22-6 3.22z"/>
+              </svg>
+            </div>
+            <input type="file" #fileInput (change)="onFileChange($event)" accept="image/*" style="display: none;">
+            
+            <button class="simple-upload-btn" (click)="fileInput.click()">
+                {{ selectedFile || (userData?.profile_picture && !selectedImage) ? 'Cambiar foto' : 'Subir foto' }}
+            </button>
 
-      <div class="social-buttons">
-        <button class="social-btn facebook bg-blue-600 hover:bg-blue-700 text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
-          </svg>
-          Conectar Facebook
-        </button>
-        <button class="social-btn instagram bg-pink-600 hover:bg-pink-700 text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
-          </svg>
-          Conectar Instagram
-        </button>
-        <button class="social-btn twitter bg-blue-400 hover:bg-blue-500 text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
-          </svg>
-          Conectar Twitter
-        </button>
-      </div>
+            <button *ngIf="selectedFile" class="save-photo-btn" (click)="uploadProfilePicture()" [disabled]="isLoading">
+              <span *ngIf="!isLoading">Guardar foto</span>
+              <span *ngIf="isLoading">Guardando...</span>
+              <svg *ngIf="isLoading" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" opacity=".3"/>
+                <path d="M12 4c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 15c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
+              </svg>
+            </button>
+          </div>
+
+          <div *ngIf="errorMessage && selectedFile" class="alert-message error">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+            </svg>
+            <span>{{ errorMessage }}</span>
+          </div>
+          <div *ngIf="uploadProgress > 0 && uploadProgress < 100" class="upload-progress">
+            <div class="progress-bar" [style.width.%]="uploadProgress"></div>
+            <span>{{ uploadProgress }}%</span>
+          </div>
+          <div *ngIf="uploadProgress === 100" class="alert-message success">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+            <span>Foto subida con éxito!</span>
+          </div>
+
+          <h3 class="user-name-display">
+            {{userData?.first_name || 'Usuario'}} {{userData?.last_name_paternal || ''}}
+          </h3>
+          <div class="user-role-badge">{{userData?.role || 'Usuario'}}</div>
+        </div>
+
+        <div class="nav-items-container">
+          <a class="nav-item" routerLink="/principal/perfil">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            <span>Perfil</span>
+          </a>
+          <a class="nav-item active" routerLink="/principal/editarPerfil">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+            <span>Editar Perfil</span>
+          </a>
+          <a class="nav-item" routerLink="/principal/configuracion">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l-.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.12 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>
+            <span>Configuración</span>
+          </a>
+          <a class="nav-item logout-item" (click)="logout()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+            <span>Cerrar Sesión</span>
+          </a>
+        </div>
+      </nav>
     </div>
-  </div>
 
-  <!-- Contenido central -->
-  <div class="profile-content h-full min-h-[calc(100vh-2rem)] w-full min-w-[600px] bg-gray-100">
-    <!-- Estado de carga -->
-    <div *ngIf="isLoading" class="loading-message bg-gray-100 text-white">
+    <div class="edit-profile-content">
+      <div *ngIf="isLoading && !userData && uploadProgress === 0" class="loading-message-full">
         <div class="spinner"></div>
         <p>Cargando datos del usuario...</p>
-    </div>
+      </div>
 
-    <!-- Mensajes de error/success -->
-    <div *ngIf="errorMessage" class="alert alert-danger bg-red-100 text-red-800">
-        <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
-    </div>
-    <div *ngIf="successMessage" class="alert alert-success bg-green-100 text-green-800">
-        <i class="fas fa-check-circle"></i> {{ successMessage }}
-    </div>
+      <div *ngIf="errorMessage && !selectedFile" class="alert-message error">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+        </svg>
+        <span>{{ errorMessage }}</span>
+      </div>
+      
+      <div *ngIf="successMessage" class="alert-message success">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+        </svg>
+        <span>{{ successMessage }}</span>
+      </div>
 
-    <!-- Formulario -->
-    <form *ngIf="userData && !isLoading" (ngSubmit)="onSubmit()" #profileForm="ngForm" class="bg-gray-100 text-white dark:bg-gray-900 dark:text-white">
-        <div class="cont-form">
-            <div class="form-header">
-                <h2> Editar Perfil</h2>
-                <p class="dark:text-gray-300">Actualiza tu información personal</p>
-            </div>
-
-            <div class="casillas">
-                <div class="input-group">
-                    <div class="inputs">
-                        <label for="first_name">Nombre</label>
-                        <input id="first_name" class="input background bg-gray-50 dark:bg-gray-800" type="text" 
-                               [(ngModel)]="userData.first_name" 
-                               name="first_name"
-                               (ngModelChange)="onFieldChange('first_name', $event)"
-                               required>
-                    </div>
-
-                    <div class="inputs">
-                        <label for="last_name_paternal">Apellido Paterno</label>
-                        <input id="last_name_paternal" class="input background bg-gray-50 dark:bg-gray-800" type="text" 
-                               [(ngModel)]="userData.last_name_paternal"
-                               name="last_name_paternal"
-                               (ngModelChange)="onFieldChange('last_name_paternal', $event)"
-                               required>
-                    </div>
-                </div>
-
-                <div class="input-group">
-                    <div class="inputs">
-                        <label for="last_name_maternal">Apellido Materno</label>
-                        <input id="last_name_maternal" class="input background bg-gray-50 dark:bg-gray-800" type="text" 
-                               [(ngModel)]="userData.last_name_maternal"
-                               name="last_name_maternal"
-                               (ngModelChange)="onFieldChange('last_name_maternal', $event)">
-                    </div>
-
-                    <div class="inputs">
-                        <label for="email">Email</label>
-                        <input id="email" class="input background bg-gray-50 dark:bg-gray-800" type="email" 
-                               [(ngModel)]="userData.email"
-                               name="email"
-                               (ngModelChange)="onFieldChange('email', $event)"
-                               required>
-                    </div>
-                </div>
-
-                <div class="input-group">
-                    <div class="inputs">
-                        <label for="phone">Teléfono</label>
-                        <input id="phone" class="input background bg-gray-50 dark:bg-gray-800" type="tel" 
-                               [(ngModel)]="userData.phone"
-                               name="phone"
-                               (ngModelChange)="onFieldChange('phone', $event)">
-                    </div>
-                    
-                    <div class="inputs">
-                        <label for="password">Nueva Contraseña</label>
-                        <input id="password" class="input background bg-gray-50 dark:bg-gray-800" type="password" 
-                               [(ngModel)]="password"
-                               name="password"
-                               placeholder="Nueva contraseña">
-                    </div>
-                </div>
-
-                <div class="input-group" *ngIf="password">
-                    <div class="inputs">
-                        <label for="passwordConfirmation">Confirmar Contraseña</label>
-                        <input id="passwordConfirmation" class="input background bg-gray-50 dark:bg-gray-800" type="password" 
-                               [(ngModel)]="passwordConfirmation"
-                               name="passwordConfirmation"
-                               placeholder="Confirmar nueva contraseña">
-                    </div>
-                </div>
-            </div>
+      <form *ngIf="userData && !isLoading" (ngSubmit)="onSubmit()" #profileForm="ngForm">
+        <div class="form-header">
+          <h1>Editar Perfil</h1>
+          <p>Actualiza tu información personal</p>
         </div>
 
-        <!-- Botón de acción -->
-        <div class="form-footer">
-            <button type="submit" class="btn-guardar bg-blue-500 hover:bg-blue-600 text-white" [disabled]="profileForm.invalid || isSaving">
-                <i class="fas" [ngClass]="{'fa-save': !isSaving, 'fa-spinner fa-spin': isSaving}"></i>
-                {{ isSaving ? 'Guardando...' : 'Guardar cambios' }}
-            </button>
-        </div>
-    </form>
-  </div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="first_name">Nombre</label>
+            <input id="first_name" type="text"
+                  [(ngModel)]="userData.first_name"
+                  name="first_name"
+                  (ngModelChange)="onFieldChange('first_name', $event)"
+                  required>
+          </div>
 
-  <!-- Panel derecho -->
-  <div class="profile-menu bg-gray-100 text-white">
-    <div class="menu-header">
-      <h3>Menú</h3>
-    </div>
-    <div class="menu-item hover:bg-gray-200" routerLink="/principal/perfil">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
-      </svg>
-      <span>Perfil</span>
-    </div>
-    <div class="menu-item active bg-blue-100 text-blue-800" routerLink="/principal/editarPerfil">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
-      </svg>
-      <span>Editar perfil</span>
-    </div>
-    <div class="menu-item hover:bg-gray-200" routerLink="/principal/configuracion">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z" />
-      </svg>
-      <span>Configuración</span>
-    </div>
-    <div class="menu-item logout hover:bg-red-100" (click)="logout()">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" />
-      </svg>
-      <span>Cerrar sesión</span>
+          <div class="form-group">
+            <label for="last_name_paternal">Apellido Paterno</label>
+            <input id="last_name_paternal" type="text"
+                  [(ngModel)]="userData.last_name_paternal"
+                  name="last_name_paternal"
+                  (ngModelChange)="onFieldChange('last_name_paternal', $event)"
+                  required>
+          </div>
+
+          <div class="form-group">
+            <label for="last_name_maternal">Apellido Materno</label>
+            <input id="last_name_maternal" type="text"
+                  [(ngModel)]="userData.last_name_maternal"
+                  name="last_name_maternal"
+                  (ngModelChange)="onFieldChange('last_name_maternal', $event)">
+          </div>
+
+          <div class="form-group">
+            <label for="email">Correo Electrónico</label>
+            <input id="email" type="email"
+                  [(ngModel)]="userData.email"
+                  name="email"
+                  (ngModelChange)="onFieldChange('email', $event)"
+                  required>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Teléfono</label>
+            <input id="phone" type="tel"
+                  [(ngModel)]="userData.phone"
+                  name="phone"
+                  (ngModelChange)="onFieldChange('phone', $event)">
+          </div>
+
+          <div class="form-group">
+            <label for="password">Nueva Contraseña</label>
+            <input id="password" type="password"
+                  [(ngModel)]="password"
+                  name="password"
+                  placeholder="Deja en blanco para no cambiar">
+          </div>
+
+          <div class="form-group" *ngIf="password">
+            <label for="passwordConfirmation">Confirmar Contraseña</label>
+            <input id="passwordConfirmation" type="password"
+                  [(ngModel)]="passwordConfirmation"
+                  name="passwordConfirmation"
+                  placeholder="Repite la nueva contraseña">
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="save-btn" [disabled]="profileForm.invalid || isSaving">
+            <span *ngIf="!isSaving">Guardar Cambios</span>
+            <span *ngIf="isSaving">Guardando...</span>
+            <svg *ngIf="isSaving" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" opacity=".3"/>
+              <path d="M12 4c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 15c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
+            </svg>
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 </div>

@@ -1,96 +1,115 @@
-<div class="containerPrincipal bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen flex">
-  <!-- Columna Izquierda -->
-  <div class="containerIzquierda bg-gray-100 dark:bg-gray-900 p-4 w-1/4 flex flex-col items-center shadow-lg rounded-lg">
-    <div class="back self-start cursor-pointer mb-4" routerLink="/principal/dashboard">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500 dark:text-red-400 hover:opacity-80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
-      </svg>
+<div class="main-wrapper">
+  <div class="config-container">
+
+    <!-- Sidebar Izquierdo (Mismo diseño que Perfil/EditarPerfil) -->
+    <div class="sidebar">
+      <nav class="profile-nav-menu">
+        <div class="sidebar-header">
+          <button class="back-btn" routerLink="/principal/dashboard">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/>
+            </svg>
+            <span>Volver</span>
+          </button>
+        </div>
+
+        <div class="user-details-section">
+          <div class="avatar-upload-container">
+            <div class="avatar-wrapper">
+              <img *ngIf="userData?.profile_picture" [src]="userData?.profile_picture || 'assets/default-avatar.png'" alt="Avatar" class="user-avatar">
+              <svg *ngIf="!userData?.profile_picture" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="user-avatar-placeholder-svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.29-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.93-3.5 3.22-6 3.22z"/>
+              </svg>
+            </div>
+          </div>
+
+          <h3 class="user-name-display">
+            {{userData?.first_name || 'Usuario'}} {{userData?.last_name_paternal || ''}}
+          </h3>
+          <div class="user-role-badge">{{userData?.role || 'Usuario'}}</div>
+        </div>
+
+        <div class="nav-items-container">
+          <a class="nav-item" routerLink="/principal/perfil">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            <span>Perfil</span>
+          </a>
+          <a class="nav-item" routerLink="/principal/editarPerfil">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+            <span>Editar Perfil</span>
+          </a>
+          <a class="nav-item active" routerLink="/principal/configuracion">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l-.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.12 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>
+            <span>Configuración</span>
+          </a>
+          <a class="nav-item logout-item" (click)="logout()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+            <span>Cerrar Sesión</span>
+          </a>
+        </div>
+      </nav>
     </div>
 
-    <div class="containerLogo mb-6">
-      <img src="assets/navbar/LogoN.png" alt="Logo" class="logo w-24 h-auto rounded-full shadow-md">
-    </div>
-
-    <div class="containerPerfil w-full">
-      <div class="perfilHeader text-center mb-4">
-        <h2 class="text-2xl font-semibold">Perfil</h2>
+    <!-- Contenido Principal de Configuración -->
+    <div class="config-content">
+      <div *ngIf="isLoading && !userData" class="loading-message-full">
+        <div class="spinner"></div>
+        <p>Cargando datos de configuración...</p>
       </div>
 
-      <div class="perfilFoto flex flex-col items-center gap-2 mb-6">
-        <img src="assets/navbar/usuario.png" alt="Usuario" class="userLogo w-20 h-20 rounded-full shadow-md">
-        <button class="btnSubirFoto bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white py-2 px-4 rounded transition">
-          Subir foto
-        </button>
+      <div *ngIf="errorMessage" class="alert-message error">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+        </svg>
+        <span>{{ errorMessage }}</span>
       </div>
 
-      <div class="perfilNombre mb-6">
-        <input type="text" placeholder="Nombre de Usuario"
-          class="w-full p-2 rounded bg-gray-200 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400">
+      <div *ngIf="successMessage" class="alert-message success">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+        </svg>
+        <span>{{ successMessage }}</span>
       </div>
 
-      <div class="perfilRedes flex flex-col gap-2">
-        <button class="btnRedSocial bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-800 text-white py-2 px-4 rounded transition">
-          Agregar Facebook
-        </button>
-        <button class="btnRedSocial bg-pink-600 hover:bg-pink-700 dark:bg-pink-700 dark:hover:bg-pink-800 text-white py-2 px-4 rounded transition">
-          Agregar Instagram
-        </button>
-        <button class="btnRedSocial bg-blue-400 hover:bg-blue-500 dark:bg-blue-500 dark:hover:bg-blue-600 text-white py-2 px-4 rounded transition">
-          Agregar Twitter
-        </button>
+      <div class="section-header">
+        <h1>Configuración de la Cuenta</h1>
+        <p>Administra las preferencias de tu cuenta y la aplicación.</p>
       </div>
-    </div>
-  </div>
 
-  <!-- Columna Central -->
-  <div class="containerCentro">
-    <div class="config-content bg-gray-100 dark:bg-gray-800">
-      <h3 class="text-3xl font-bold mb-6">Configuración</h3>
-
-      <div class="config-menu flex flex-col gap-4">
-        <div class="config-item bg-gray-100 dark:bg-gray-800">
-          <span class="text-xl">🔔</span>
-          <span>Notificaciones</span>
-        </div>
-        <div class="config-item bg-gray-100 dark:bg-gray-800">
-          <span class="text-xl">🔒</span>
-          <span>Cambiar contraseña</span>
-        </div>
-        <div class="config-item bg-gray-100 dark:bg-gray-800">
-          <span class="text-xl">🌐</span>
-          <span>Idioma</span>
-        </div>
-        <div class="config-item bg-gray-100 dark:bg-gray-800" (click)="toggleDarkMode()">
-          <span class="text-xl">{{ darkMode ? '☀️' : '🌙' }}</span>
-          <span>{{ darkMode ? 'Modo Claro' : 'Modo Oscuro' }}</span>
-        </div>
-        <div class="config-item bg-gray-100 dark:bg-gray-800">
-          <span class="text-xl">💳</span>
-          <span class="">Añadir tarjeta</span>
-        </div>
-        <div class="config-item bg-gray-100 dark:bg-gray-800">
-          <span class="text-xl">🚪</span>
-          <span>Cerrar Sesión</span>
+      <!-- Sección de Notificaciones -->
+      <div class="settings-section">
+        <div class="setting-item">
+          <div class="setting-info">
+            <h2>Notificaciones</h2>
+            <p>Recibe alertas importantes y actualizaciones de la aplicación.</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" [(ngModel)]="notificationsEnabled" (change)="saveSettings()">
+            <span class="slider round"></span>
+          </label>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Columna Derecha -->
-  <div class="containerDerecha w-1/4 bg-gray-100 dark:bg-gray-900 p-4 shadow-lg rounded-lg">
-    <div class="menuLateral flex flex-col gap-2">
-      <div class="menuItem p-3 rounded hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer" routerLink="/principal/perfil">
-        <span>Perfil</span>
+      <!-- Sección de Apariencia -->
+      <div class="settings-section">
+        <div class="setting-item">
+          <div class="setting-info">
+            <h2>Modo Oscuro</h2>
+            <p>Cambia el tema de la aplicación a oscuro para mayor comodidad visual.</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" [(ngModel)]="darkModeEnabled" (change)="toggleDarkMode()">
+            <span class="slider round"></span>
+          </label>
+        </div>
       </div>
-      <div class="menuItem p-3 rounded hover:bg-gray-200 dark:hover:bg-gray-700 cursor-pointer" routerLink="/principal/editarPerfil">
-        <span>Editar perfil</span>
+
+      <!-- Otras secciones de configuración pueden ir aquí -->
+
+      <div class="disclaimer-text">
+        <p>Algunos cambios pueden requerir un reinicio de la aplicación para surtir efecto completo.</p>
       </div>
-      <div class="menuItem activo p-3 rounded bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-white font-semibold">
-        <span>Configuración</span>
-      </div>
-      <div class="menuItem cerrarSesion p-3 rounded hover:bg-red-100 dark:hover:bg-red-700 cursor-pointer" (click)="logout()">
-        <span>Cerrar sesión</span>
-      </div>
+
     </div>
   </div>
 </div>
