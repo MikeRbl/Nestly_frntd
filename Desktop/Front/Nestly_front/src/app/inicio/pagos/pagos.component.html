@@ -1,1 +1,88 @@
-<p>pagos works!</p>
+<div *ngIf="isLoading" class="flex justify-center items-center h-screen"><p>Cargando...</p></div>
+<div *ngIf="error" class="container mx-auto p-8 text-center text-red-500">{{ error }}</div>
+
+<div *ngIf="property && !isLoading" class="min-h-screen bg-gray-50 font-sans">
+  <div class="container mx-auto px-4 py-8 lg:grid lg:grid-cols-2 lg:gap-x-16">
+    
+    <main class="lg:pr-8">
+      <div class="text-sm text-gray-500 mb-6">
+        <a [routerLink]="['/alquilar-casa', property.id_propiedad]" class="hover:text-pink-500">Detalles de Propiedad</a> &gt;
+        <span class="font-semibold text-gray-700">Pago</span>
+      </div>
+
+      <form [formGroup]="pagoForm" (ngSubmit)="procesarPago()" novalidate>
+        <div class="mb-8">
+          <h2 class="text-lg font-semibold border-b border-gray-200 pb-3 mb-4">Información de Contacto</h2>
+          <div>
+            <label for="email" class="form-label">Correo electrónico</label>
+            <input type="email" id="email" formControlName="email" class="form-input" [ngClass]="{ 'is-invalid': f['email'].touched && f['email'].invalid }">
+            <div *ngIf="f['email'].touched && f['email'].invalid" class="form-error">
+              <span *ngIf="f['email'].errors?.['required']">El correo es obligatorio.</span>
+              <span *ngIf="f['email'].errors?.['email']">Introduce un correo válido.</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h2 class="text-lg font-semibold border-b border-gray-200 pb-3 mb-4">Detalles del Pago</h2>
+          <div class="space-y-4">
+            <div>
+              <label for="nombreTarjeta" class="form-label">Nombre en la tarjeta</label>
+              <input type="text" id="nombreTarjeta" formControlName="nombreTarjeta" class="form-input" [ngClass]="{ 'is-invalid': f['nombreTarjeta'].touched && f['nombreTarjeta'].invalid }">
+            </div>
+            <div>
+              <label for="numeroTarjeta" class="form-label">Número de tarjeta</label>
+              <input type="text" id="numeroTarjeta" placeholder="0000 0000 0000 0000" maxlength="16" formControlName="numeroTarjeta" class="form-input" [ngClass]="{ 'is-invalid': f['numeroTarjeta'].touched && f['numeroTarjeta'].invalid }">
+            </div>
+            <div class="flex space-x-4">
+              <div class="w-1/2">
+                <label for="expiracion" class="form-label">Expiración (MM/AA)</label>
+                <input type="text" id="expiracion" placeholder="MM/AA" formControlName="expiracion" class="form-input" [ngClass]="{ 'is-invalid': f['expiracion'].touched && f['expiracion'].invalid }">
+              </div>
+              <div class="w-1/2">
+                <label for="cvc" class="form-label">CVC</label>
+                <input type="text" id="cvc" placeholder="123" maxlength="4" formControlName="cvc" class="form-input" [ngClass]="{ 'is-invalid': f['cvc'].touched && f['cvc'].invalid }">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-8">
+          <button type="submit" [disabled]="isProcessing" class="w-full bg-pink-500 text-white font-bold py-3 rounded-lg hover:bg-pink-600 transition disabled:bg-pink-300 disabled:cursor-not-allowed">
+            <span *ngIf="isProcessing" class="inline-block animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white mr-2"></span>
+            {{ isProcessing ? 'Procesando...' : 'Pagar ' + (totalPagar | currency:'MXN':'symbol':'1.2-2') }}
+          </button>
+        </div>
+      </form>
+    </main>
+
+    <aside class="bg-white p-6 rounded-lg shadow-md mt-10 lg:mt-0 h-fit lg:sticky lg:top-8 border border-gray-200">
+      <h2 class="text-lg font-semibold border-b border-gray-200 pb-3 mb-4">Resumen de Alquiler</h2>
+      <div class="flex items-center space-x-4 mb-6">
+        <img [src]="getFullImageUrl(property.fotos[0])" alt="Propiedad" class="w-24 h-20 rounded-lg object-cover border">
+        <div>
+          <p class="font-semibold text-gray-800">{{ property.titulo }}</p>
+          <p class="text-sm text-gray-500">{{ property.ciudad }}, {{ property.pais }}</p>
+        </div>
+      </div>
+
+      <div class="space-y-2 text-sm border-t border-gray-100 pt-4">
+        <div class="flex justify-between">
+          <span class="text-gray-600">Renta ({{ property.anualizado ? 'anual' : 'mensual' }})</span>
+          <span class="font-medium">{{ precioRenta | currency:'MXN':'symbol':'1.2-2' }}</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-gray-600">Tarifa de servicio (10%)</span>
+          <span class="font-medium">{{ tarifaServicio | currency:'MXN':'symbol':'1.2-2' }}</span>
+        </div>
+      </div>
+
+      <hr class="my-4">
+
+      <div class="flex justify-between items-center font-bold text-lg">
+        <span>Total</span>
+        <span>{{ totalPagar | currency:'MXN':'symbol':'1.2-2' }}</span>
+      </div>
+    </aside>
+  </div>
+</div>
