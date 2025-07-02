@@ -142,14 +142,14 @@
       </div>
       
       <div *ngIf="!isLoadingResenas">
-        <app-resena-list
-          [resenas]="resenas"
-          [currentUserId]="usuarioActual?.id"
-          (eliminar)="onEliminarResena($event)"
-          (votar)="onToggleVoto($event)"
-          (editar)="onEditarResena($event)">
-        </app-resena-list>
-      </div>
+  <app-resena-list
+    [resenas]="resenas"
+    [currentUserId]="usuarioActual?.id ?? null"  [likedResenaIds]="likedResenaIds"
+    (eliminar)="onEliminarResena($event)"
+    (votar)="onToggleVoto($event)"
+    (editar)="onEditarResena($event)">
+  </app-resena-list>
+</div>
     </div>
   </div>
 </div>

@@ -10,6 +10,8 @@ import { NotyfService } from '../../services/notyf.service'; // Importamos el nu
 
 // --- Interfaces ---
 import { Propiedad } from '../../interface/propiedades.interface';
+import { Resena } from '../../interface/resena.interface';
+import { User } from '../../interface/usuario.interface';
 
 @Component({
   selector: 'app-alquilar-casa',
@@ -26,9 +28,11 @@ export class AlquilarCasaComponent implements OnInit {
   mainImage = 'assets/default-property.jpg';
   
   // --- Propiedades para las reseñas y el usuario ---
-  resenas: any[] = []; 
+  resenas: Resena[] = [];
+  isUserLoggedIn = false;
+  likedResenaIds = new Set<number>();
   isLoadingResenas = true;
-  usuarioActual: any = null;
+  usuarioActual: User | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,16 +40,21 @@ export class AlquilarCasaComponent implements OnInit {
     private router: Router,
     private resenaService: ResenaService,
     private authService: AuthService,
-    private notyf: NotyfService // Inyectamos NotyfService
+    private notyf: NotyfService 
   ) {}
 
   ngOnInit(): void {
-    this.usuarioActual = this.authService.obtenerUsuarioActualId(); 
-    this.propertyId = this.route.snapshot.paramMap.get('id');
+    this.isUserLoggedIn = this.authService.isLoggedIn();
+     this.usuarioActual = this.authService.obtenerUsuarioActualId()
     
+    this.propertyId = this.route.snapshot.paramMap.get('id');
+
     if (this.propertyId) {
       this.loadProperty(this.propertyId);
       this.loadResenas(Number(this.propertyId));
+       if (this.isUserLoggedIn) {
+        this.cargarIdsResenasLikeadas();
+      }
     } else {
       this.errorMessage = 'ID de propiedad no proporcionado';
       this.isLoading = false;
@@ -76,16 +85,12 @@ export class AlquilarCasaComponent implements OnInit {
   // --- MÉTODOS PARA LA GESTIÓN DE RESEÑAS CON NOTYF ---
   // ================================================================
 
-  loadResenas(propiedadId: number): void {
+loadResenas(propiedadId: number): void {
     this.isLoadingResenas = true;
     this.resenaService.getResenas(propiedadId).subscribe({
       next: (response) => {
-        this.resenas = response.data.map((resena: any) => ({
-        ...resena,
-        likedByCurrentUser: resena.likedByCurrentUser ?? false  // <- Aquí se asegura que esté definido
-      }));
+        this.resenas = response.data;
         this.isLoadingResenas = false;
-        
       },
       error: (err) => {
         console.error('Error al cargar resenas:', err);
@@ -94,7 +99,14 @@ export class AlquilarCasaComponent implements OnInit {
       }
     });
   }
-
+  cargarIdsResenasLikeadas(): void {
+    this.resenaService.getLikedResenaIds().subscribe({
+      next: (response) => {
+        this.likedResenaIds = new Set(response.data);
+      },
+      error: (err) => console.error('Error al cargar IDs de reseñas likeadas:', err)
+    });
+  }
   onCrearResena(formData: { puntuacion: number, comentario: string }): void {
     if (!this.property) return;
     this.resenaService.createResena(this.property.id_propiedad, formData).subscribe({
@@ -133,20 +145,47 @@ export class AlquilarCasaComponent implements OnInit {
     });
   }
 
+  
   onToggleVoto(resenaId: number): void {
-  this.resenaService.toggleVoto(resenaId).subscribe({
-    next: (response) => {
-      const resena = this.resenas.find(r => r.id === resenaId);
-      if (resena) {
-        resena.votos_count = response.votos_count;
-        resena.likedByCurrentUser = !resena.likedByCurrentUser; 
-      }
-    },
-    error: () => {
-      this.notyf.error('No se pudo procesar tu voto.');
+    if (!this.isUserLoggedIn) {
+      this.notyf.error('Debes iniciar sesión para dar "Me gusta".');
+      return;
     }
-  });
-}
+
+    const resena = this.resenas.find(r => r.id === resenaId);
+    if (!resena) return;
+
+    resena.votos_count = resena.votos_count ?? 0;
+    let successMessage = '';
+    // Ahora el resto de la lógica funciona sin problemas.
+    if (this.likedResenaIds.has(resenaId)) {
+      this.likedResenaIds.delete(resenaId);
+      resena.votos_count--;
+      successMessage = 'Quitaste tu like';
+    } else {
+      this.likedResenaIds.add(resenaId);
+      resena.votos_count++;
+      successMessage = 'Diste like a la reseña';
+    }
+
+    this.resenaService.toggleVoto(resenaId).subscribe({
+      next: (response) => {
+        resena.votos_count = response.votos_count;
+        this.notyf.success(successMessage);
+      },
+      error: () => {
+        if (this.likedResenaIds.has(resenaId)) {
+          this.likedResenaIds.delete(resenaId);
+          resena.votos_count--;
+        } else {
+          this.likedResenaIds.add(resenaId);
+          resena.votos_count++;
+        }
+        this.notyf.error('Error al registrar el voto.');
+      }
+    });
+  }
+
 
   
   onEditarResena(resenaId: number): void {
@@ -172,7 +211,7 @@ Swal.fire({
     <textarea id="swal-comentario" class="swal2-textarea" placeholder="Escribe tu comentario aquí...">${comentarioLimpio}</textarea>
   `,
   showCancelButton: true,
-confirmButtonText: 'Guardar Cambios',
+  confirmButtonText: 'Guardar Cambios',
   cancelButtonText: 'Cancelar',
   customClass: {
       confirmButton: 'bg-pink-400 hover:bg-pink-500 text-white font-semibold px-6 py-2 rounded-lg transition-colors',

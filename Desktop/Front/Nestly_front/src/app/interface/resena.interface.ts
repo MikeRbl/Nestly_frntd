@@ -9,6 +9,7 @@ export interface Resena {
   updated_at: string;
   
   user: User;
-  votos_count?: number; 
+  votos_count: number; 
   
+ likedByCurrentUser?: boolean; 
 }

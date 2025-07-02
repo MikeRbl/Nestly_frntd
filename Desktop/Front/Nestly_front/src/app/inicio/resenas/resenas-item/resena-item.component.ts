@@ -12,7 +12,7 @@ export class ResenasItemComponent{
 
   
   @Input() currentUserId: number | null = null;
-
+  @Input() likedResenaIds = new Set<number>();
   /**
    * @Output() permite que este componente envíe "eventos" a su padre.
    * Usamos EventEmitter para notificar cuando se hace clic en un botón.
