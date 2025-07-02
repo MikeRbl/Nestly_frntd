@@ -9,7 +9,7 @@ export class ResenaListComponent {
   @Input() resenas: any[] = [];
   
   @Input() currentUserId: number | null = null;
-  
+  @Input() likedResenaIds = new Set<number>();
   @Output() eliminar = new EventEmitter<number>();
   @Output() votar = new EventEmitter<number>();
   @Output() editar = new EventEmitter<number>();

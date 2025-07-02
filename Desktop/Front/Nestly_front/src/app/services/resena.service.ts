@@ -51,8 +51,16 @@ export class ResenaService {
     });
   }
 
-  toggleVoto(resenaId: number): Observable<{votos_count: number}> {
-    return this.http.post<{votos_count: number}>(`${this.apiUrl}/resenas/${resenaId}/voto`, {}, {
+  toggleVoto(resenaId: number): Observable<{ votos_count: number; liked_by_current_user: boolean }> {
+  return this.http.post<{ votos_count: number; liked_by_current_user: boolean }>(
+    `${this.apiUrl}/resenas/${resenaId}/voto`, {}, {
+      headers: this.getAuthHeaders()
+    }
+  );
+  }
+  getLikedResenaIds(): Observable<{data: number[]}> {
+    // Asegúrate que tu API tenga este endpoint: /api/resenas/liked-ids
+    return this.http.get<{data: number[]}>(`${this.apiUrl}/resenas/liked-ids`, {
       headers: this.getAuthHeaders()
     });
   }

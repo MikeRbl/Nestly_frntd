@@ -6,7 +6,7 @@
   <app-resena-item 
     [resena]="item" 
     [currentUserId]="currentUserId"
-    (eliminar)="onEliminar($event)"
+    [likedResenaIds]="likedResenaIds"  (eliminar)="onEliminar($event)"
     (votar)="onVotar($event)"
     (editar)="onEditar($event)">
   </app-resena-item>
