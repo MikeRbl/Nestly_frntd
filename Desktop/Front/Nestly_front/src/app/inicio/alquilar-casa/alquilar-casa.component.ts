@@ -278,11 +278,14 @@ preConfirm: () => {
   get reviewCount(): number {
     return this.resenas.length;
   }
-rentarAhora(){
-  if (this.property){
-    this.router.navigate(['/pago', this.property.id_propiedad]);
-  }else {
-    this.notyf.error('No se pudo encontrar la propiedad para rentar.');
+rentarAhora() {
+  if (this.property && this.property.id_propiedad) {
+    // Usamos navegación relativa para ir a la ruta hermana 'pago/:id'
+    // '..' sube un nivel desde la ruta actual ('alquilar-casa/:id')
+    // y luego entra a 'pago/:id'
+    this.router.navigate(['../pago', this.property.id_propiedad], { relativeTo: this.route });
+  } else {
+    this.notyf.error('No se pudo encontrar la información de la propiedad para rentar.');
   }
 }
   
