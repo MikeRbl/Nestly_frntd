@@ -31,7 +31,7 @@ const routes: Routes = [
       { path: 'verPropiedades', component: VerPropiedadesComponent },
       { path: 'editar-propiedad/:id', component: EditarPropiedadComponent },
       { path: 'buscarCasa', component: BuscarComponent },
-      { path: 'pago/:id', component: PagosComponent },
+      { path: 'pagos/:id', component: PagosComponent },
       { path: 'favoritos', component: PropiedadesFavoritosComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
