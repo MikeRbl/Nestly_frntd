@@ -14,7 +14,7 @@
           (focus)="isFormActive = true"
           formControlName="comentario"
           rows="2"
-          class="block w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-light-blue focus:border-transparent transition-all placeholder-gray-400"
+          class="block w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-light-blue focus:border-transparent transition-all"
           placeholder="Escribe tu reseña..."
         >
         </textarea>
@@ -23,7 +23,7 @@
           *ngIf="!isFormActive"
           class="absolute right-3 bottom-3 flex items-center"
         >
-          <span class="text-sm text-gray-500 mr-2">Puntuar</span>
+          <span class="text-sm mr-2">Puntuar</span>
           <div class="flex space-x-1">
               <ng-container *ngFor="let star of stars">
                 <svg
@@ -32,7 +32,7 @@
                   (mouseleave)="onStarLeave()"
                   class="w-5 h-5 cursor-pointer transition-colors duration-150"
                   [class.text-yellow-400]="star <= (hoveredRating || f['puntuacion'].value)"
-                  [class.text-gray-300]="star > (hoveredRating || f['puntuacion'].value)"
+                  [class.text-white-300]="star > (hoveredRating || f['puntuacion'].value)"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"

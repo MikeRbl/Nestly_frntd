@@ -44,12 +44,11 @@ body {
   border: none;
   border-radius: 16px;
   box-shadow: 0 15px 45px rgba(0, 0, 0, 0.1); /* Sombra más suave y moderna */
-  background-color: #ffffff;
+  
   overflow: hidden; /* Asegura que el contenido interno se recorte */
 }
 
 .card-header {
-  background-color: #ffffff;
   border-bottom: 1px solid var(--border-light);
   padding: 30px 50px; /* Padding ajustado */
   flex-shrink: 0; /* No permite que el header se encoja */
@@ -176,7 +175,7 @@ textarea.form-control {
 textarea.form-control:focus {
   border-color: var(--primary-blue);
   box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.15); /* Sombra de enfoque más definida */
-  background-color: #ffffff; /* Blanco puro al enfocar */
+  
   outline: none;
 }
 
@@ -303,7 +302,6 @@ textarea.form-control:focus {
 }
 
 .btn-primary:disabled {
-  background-color: #b0d8ff;
   border-color: #b0d8ff;
   cursor: not-allowed;
   transform: none;

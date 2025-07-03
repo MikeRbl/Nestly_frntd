@@ -58,7 +58,6 @@ input[type="checkbox"]:checked + div {
   position: sticky; /* La magia para que sea "pegajoso" */
   top: 0; /* Se pegará en la parte superior de la ventana */
   z-index: 40; /* Se asegura de que esté por encima de otro contenido */
-  background-color: rgba(255, 255, 255, 0.9); /* Blanco con un poco de transparencia */
   backdrop-filter: blur(8px); /* Efecto de desenfoque para navegadores modernos */
   -webkit-backdrop-filter: blur(8px);
   width: 100%;

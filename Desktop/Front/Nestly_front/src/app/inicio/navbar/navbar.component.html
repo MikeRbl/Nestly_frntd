@@ -1,4 +1,4 @@
-<div class="background bg-gray-50 dark:bg-gray-800">
+<div class="bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white">
   <nav class="fresh-navbar background bg-gray-50 dark:bg-gray-800">
     <div class="fresh-nav-container background bg-gray-50 dark:bg-gray-800">
       
@@ -66,23 +66,62 @@
             </div>
           </div>
           
+
           <!-- Menú desplegable del usuario -->
-          <div class="user-dropdown-menu" [class.active]="userMenuOpen">
-            <a routerLink="/principal/perfil" class="dropdown-item" (click)="closeMenus()">Mi Perfil</a>
-            <a class="dropdown-item" (click)="handleFavoritosClick()">Favoritos</a>
-            <a routerLink="/principal/configuracion" class="dropdown-item" (click)="closeMenus()">Configuracion</a>
+<div id="user-dropdown-menu" class="bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white rounded-md shadow-lg py-1" [class.active]="userMenuOpen">
+  <!-- Elementos del menú -->
+  <a routerLink="/principal/perfil" 
+     class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200" 
+     (click)="closeMenus()">
+    Mi Perfil
+  </a>
+  
+  <a class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200" 
+     (click)="handleFavoritosClick()">
+    Favoritos
+  </a>
+  
+  <a routerLink="/principal/configuracion" 
+     class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200" 
+     (click)="closeMenus()">
+    Configuración
+  </a>
 
-            <!-- Mostrar enlaces de navegación solo en móvil -->
-            <div class="mobile-nav-links" *ngIf="isMobileView()">
-              <a class="dropdown-item" routerLink="dashboard" (click)="closeMenus()">Inicio</a>
-              <a class="dropdown-item" routerLink="buscarCasa" (click)="closeMenus()">Buscar</a>
-              <a class="dropdown-item" routerLink="publicarCasa" (click)="closeMenus()" *ngIf="userRole === 'propietario' || userRole === 'admin'">Publicar Propiedad</a>
-              <a class="dropdown-item" routerLink="verPropiedades" (click)="closeMenus()" *ngIf="userRole === 'propietario' || userRole === 'admin'">Mis Propiedades</a>
-              <a class="dropdown-item" routerLink="qnSomos" (click)="closeMenus()">¿Quiénes somos?</a>
-            </div>
+  <!-- Mostrar enlaces de navegación solo en móvil -->
+  <div *ngIf="isMobileView()" class="border-t border-gray-200 dark:border-gray-700 mt-1 pt-1">
+    <a class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200" 
+       routerLink="dashboard" (click)="closeMenus()">
+      Inicio
+    </a>
+    <a class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200" 
+       routerLink="buscarCasa" (click)="closeMenus()">
+      Buscar
+    </a>
+    <a class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200" 
+       routerLink="publicarCasa" (click)="closeMenus()" 
+       *ngIf="userRole === 'propietario' || userRole === 'admin'">
+      Publicar Propiedad
+    </a>
+    <a class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200" 
+       routerLink="verPropiedades" (click)="closeMenus()" 
+       *ngIf="userRole === 'propietario' || userRole === 'admin'">
+      Mis Propiedades
+    </a>
+    <a class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200" 
+       routerLink="qnSomos" (click)="closeMenus()">
+      ¿Quiénes somos?
+    </a>
+  </div>
 
-            <a class="dropdown-item" (click)="logout()">Cerrar Sesión</a>
-          </div>
+  <!-- Separador visual -->
+  <div class="border-t border-gray-200 dark:border-gray-700 mt-1"></div>
+  
+  <a class="dropdown-item block px-4 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-gray-700 transition-colors duration-200" 
+     (click)="logout()">
+    Cerrar Sesión
+  </a>
+</div>
+
         </div>
       </div>
 

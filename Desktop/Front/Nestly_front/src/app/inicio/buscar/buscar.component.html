@@ -1,21 +1,25 @@
-<div class="bg-gray-50 min-h-screen">
+<div class="bg-gray-50 min-h-screen" class="bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white">
 
   <header class="top-filter-bar">
     <div class="container mx-auto flex flex-col md:flex-row items-center gap-4 p-4">
 
-      <div class="w-full md:w-1/2 lg:w-2/5">
-        <label for="direccion" class="block text-sm font-semibold text-gray-700 mb-1.5">Ubicación</label>
-        <div class="relative">
-          <input type="text" id="direccion" placeholder="Busca por dirección, ciudad o colonia..." 
-                 class="input-filtro-intermedio pl-10"
-                 [(ngModel)]="filtros.direccion" (input)="aplicarFiltrosYPaginacion()">
-          <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
-            </svg>
-          </div>
-        </div>
-      </div>
+     <div class="w-full md:w-1/2 lg:w-2/5">
+  <label for="direccion" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Ubicación</label>
+  <div class="relative">
+    <input type="text" id="direccion" placeholder="Busca por dirección, ciudad o colonia..." 
+           class="w-full px-4 py-2 pl-10 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm
+                  bg-white dark:bg-gray-700 text-gray-900 dark:text-white
+                  placeholder-gray-400 dark:placeholder-gray-400
+                  focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-600 dark:focus:border-blue-600
+                  transition-colors duration-200"
+           [(ngModel)]="filtros.direccion" (input)="aplicarFiltrosYPaginacion()">
+    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 dark:text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+      </svg>
+    </div>
+  </div>
+</div>
       
       <div class="w-full md:w-auto flex items-center justify-between gap-4">
         <div class="flex-1">
@@ -54,54 +58,79 @@
 
     <div class="lg:flex lg:space-x-8" *ngIf="!loading && !error">
       <aside class="lg:w-1/4 mb-8 lg:mb-0">
-        <div class="p-5 bg-white rounded-2xl shadow-lg sticky top-28">
-          <div class="flex justify-between items-center mb-4 border-b border-gray-200 pb-3">
-            <h3 class="text-xl font-bold text-gray-800">Filtros Avanzados</h3>
-            <button (click)="limpiarFiltros()" class="text-sm font-medium text-pink-600 hover:text-pink-800 transition-colors">
-                Limpiar
-            </button>
-          </div>
+  <div class="p-5 bg-white dark:bg-gray-800 rounded-2xl shadow-lg sticky top-28 border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+    <div class="flex justify-between items-center mb-4 border-b border-gray-200 dark:border-gray-700 pb-3">
+      <h3 class="text-xl font-bold text-gray-800 dark:text-white">Filtros Avanzados</h3>
+      <button (click)="limpiarFiltros()" class="text-sm font-medium text-pink-600 dark:text-pink-400 hover:text-pink-800 dark:hover:text-pink-300 transition-colors">
+        Limpiar
+      </button>
+    </div>
 
-          <div class="space-y-5">
-              <div class="space-y-4">
-                  <div>
-                      <label for="search" class="block text-sm font-semibold text-gray-700 mb-1.5">Buscar por título</label>
-                      <input type="text" id="search" placeholder="Ej: Villa con alberca" class="input-filtro-intermedio" [(ngModel)]="filtros.titulo" (input)="aplicarFiltrosYPaginacion()">
-                  </div>
-                  <div>
-                      <label for="tipo" class="block text-sm font-semibold text-gray-700 mb-1.5">Tipo de propiedad</label>
-                      <select id="tipo" class="input-filtro-intermedio" [(ngModel)]="filtros.tipoId" (change)="aplicarFiltrosYPaginacion()">
-                          <option value="">Todos los tipos</option>
-                          <option *ngFor="let tipo of tiposDePropiedad" [value]="tipo.id">{{ tipo.nombre }}</option>
-                      </select>
-                  </div>
-                 <div class="flex justify-between items-center pt-2">
-                    <label class="text-sm font-semibold text-gray-700">Calificación Mín.</label>
-                    <div class="flex items-center">
-                        <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
-                            <svg (click)="setRatingFilter(star)" [ngClass]="{'text-pink-500': filtros.puntuacionMin && star <= filtros.puntuacionMin, 'text-gray-300': !filtros.puntuacionMin || star > filtros.puntuacionMin}" class="w-7 h-7 cursor-pointer transition-transform duration-200 hover:scale-110" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557L3.04 10.385a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
-                            </svg>
-                        </ng-container>
-                    </div>
-                </div>
-              </div>
-
-              <div class="border-t border-gray-200 mt-5 pt-4 space-y-4">
-                <div>
-                    <div class="flex justify-between items-center mb-2">
-                        <label class="text-sm font-semibold text-gray-700">Rango de Precio</label>
-                        <span class="font-semibold text-gray-800 bg-gray-100 px-3 py-1 rounded-md text-sm">
-                           {{ filtros.precioMin | currency:'$':'symbol':'1.0-0' }} - {{ filtros.precioMax | currency:'$':'symbol':'1.0-0' }}
-                        </span>
-                    </div>
-                    <input type="range" [min]="0" [max]="precioMaximoDelSlider" [(ngModel)]="filtros.precioMax" (input)="handlePriceRangeChange()" (change)="aplicarFiltrosYPaginacion()" class="slider-control-intermedio">
-                </div>
-              </div>
-
-              </div>
+    <div class="space-y-5">
+      <div class="space-y-4">
+        <!-- Buscar por título -->
+        <div>
+          <label for="search" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Buscar por título</label>
+          <input type="text" id="search" placeholder="Ej: Villa con alberca" 
+                 class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm
+                        bg-white dark:bg-gray-700 text-gray-900 dark:text-white
+                        placeholder-gray-400 dark:placeholder-gray-400
+                        focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-600 dark:focus:border-blue-600
+                        transition-colors duration-200"
+                 [(ngModel)]="filtros.titulo" (input)="aplicarFiltrosYPaginacion()">
         </div>
-      </aside>
+
+        <!-- Tipo de propiedad -->
+        <div>
+          <label for="tipo" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Tipo de propiedad</label>
+          <select id="tipo" 
+                  class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm
+                         bg-white dark:bg-gray-700 text-gray-900 dark:text-white
+                         focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-600 dark:focus:border-blue-600
+                         transition-colors duration-200"
+                  [(ngModel)]="filtros.tipoId" (change)="aplicarFiltrosYPaginacion()">
+            <option value="">Todos los tipos</option>
+            <option *ngFor="let tipo of tiposDePropiedad" [value]="tipo.id">{{ tipo.nombre }}</option>
+          </select>
+        </div>
+
+        <!-- Calificación Mínima -->
+        <div class="flex justify-between items-center pt-2">
+          <label class="text-sm font-semibold text-gray-700 dark:text-gray-300">Calificación Mín.</label>
+          <div class="flex items-center">
+            <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+              <svg (click)="setRatingFilter(star)" 
+                   [ngClass]="{
+                     'text-pink-500 dark:text-pink-400': filtros.puntuacionMin && star <= filtros.puntuacionMin, 
+                     'text-gray-300 dark:text-gray-600': !filtros.puntuacionMin || star > filtros.puntuacionMin
+                   }" 
+                   class="w-7 h-7 cursor-pointer transition-transform duration-200 hover:scale-110" 
+                   viewBox="0 0 24 24" 
+                   fill="currentColor">
+                <path d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557L3.04 10.385a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
+              </svg>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rango de Precio -->
+      <div class="border-t border-gray-200 dark:border-gray-700 mt-5 pt-4 space-y-4">
+        <div>
+          <div class="flex justify-between items-center mb-2">
+            <label class="text-sm font-semibold text-gray-700 dark:text-gray-300">Rango de Precio</label>
+            <span class="font-semibold text-gray-800 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded-md text-sm">
+              {{ filtros.precioMin | currency:'$':'symbol':'1.0-0' }} - {{ filtros.precioMax | currency:'$':'symbol':'1.0-0' }}
+            </span>
+          </div>
+          <input type="range" [min]="0" [max]="precioMaximoDelSlider" [(ngModel)]="filtros.precioMax" 
+                 (input)="handlePriceRangeChange()" (change)="aplicarFiltrosYPaginacion()" 
+                 class="slider-control-intermedio w-full h-2 bg-gray-200 dark:bg-gray-600 rounded-lg appearance-none cursor-pointer">
+        </div>
+      </div>
+    </div>
+  </div>
+</aside>
 
       <main class="lg:w-3/4">
         <div *ngIf="!loading && propiedades.length === 0" class="text-center p-8 bg-gray-50 rounded-lg border border-gray-200">
@@ -111,56 +140,63 @@
         </div>
 
         <div *ngIf="!loading && propiedades.length > 0">
-            <div class="mb-4 flex justify-between items-center">
-                <h2 class="text-xl font-bold text-gray-800">{{ totalItems }} alojamiento{{ totalItems !== 1 ? 's' : '' }} disponible{{ totalItems !== 1 ? 's' : '' }}</h2>
-            </div>
+    <div class="mb-4 flex justify-between items-center">
+        <h2 class="text-xl font-bold text-gray-800 dark:text-gray-200">{{ totalItems }} alojamiento{{ totalItems !== 1 ? 's' : '' }} disponible{{ totalItems !== 1 ? 's' : '' }}</h2>
+    </div>
 
-            <div class="space-y-6">
-                <div *ngFor="let propiedad of propiedades" (click)="verDetallePropiedad(propiedad)" class="flex flex-col md:flex-row bg-white rounded-xl shadow-md overflow-hidden transition hover:shadow-lg cursor-pointer border border-gray-200">
-                    <div class="md:w-1/3 flex-shrink-0">
-                        <div class="relative h-48 md:h-full overflow-hidden">
-                            <img *ngIf="propiedad.fotos?.length > 0" [src]="getFullImageUrl(propiedad.fotos[0])" alt="Imagen de {{ propiedad.titulo }}" class="w-full h-full object-cover">
-                            <div *ngIf="!propiedad.fotos?.length" class="w-full h-full bg-gray-200 flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                            </div>
-                        </div>
+    <div class="space-y-6">
+        <div *ngFor="let propiedad of propiedades" (click)="verDetallePropiedad(propiedad)" 
+             class="flex flex-col md:flex-row bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden transition hover:shadow-lg cursor-pointer border border-gray-200 dark:border-gray-700">
+            <div class="md:w-1/3 flex-shrink-0">
+                <div class="relative h-48 md:h-full overflow-hidden">
+                    <img *ngIf="propiedad.fotos?.length > 0" [src]="getFullImageUrl(propiedad.fotos[0])" alt="Imagen de {{ propiedad.titulo }}" class="w-full h-full object-cover">
+                    <div *ngIf="!propiedad.fotos?.length" class="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
                     </div>
-                    <div class="p-6 flex flex-col flex-grow w-full md:w-2/3">
-                        <div class="flex items-center justify-between mb-4">
-                            <h3 class="text-xl font-bold text-gray-900">{{ propiedad.titulo }}</h3>
-                            <div class="flex items-center space-x-3">
-                                <img *ngIf="propiedad.propietario?.avatar_url" [src]="propiedad.propietario.avatar_url" alt="Avatar propietario" class="w-8 h-8 rounded-full object-cover"/>
-                                <div class="text-right">
-                                    <p class="text-xs text-gray-500 font-semibold leading-tight">Publicado por:</p>
-                                    <p class="text-sm text-gray-900 font-medium leading-tight">{{ propiedad.propietario?.first_name }} {{ propiedad.propietario?.last_name_paternal }}</p>
-                                </div>
-                            </div>
-                        </div>
-                        <p class="text-sm text-gray-500 flex items-center mb-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-gray-400" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" /></svg>
-                            <span *ngIf="propiedad.direccion">{{ propiedad.direccion }}, </span>
-                            <span *ngIf="propiedad.ciudad">{{ propiedad.ciudad }}</span>
-                        </p>
-                        <p class="text-sm text-gray-600 mb-4 line-clamp-2">{{ propiedad.descripcion }}</p>
-                        <p class="text-sm text-gray-600 mb-4"><span class="font-semibold">Tipo:</span> {{ propiedad.tipo_propiedad?.nombre || 'No especificado' }}</p>
-                        <hr class="my-4">
-                        <div class="flex flex-col sm:flex-row items-end justify-between">
-                            <div class="w-full sm:w-1/2 space-y-2 text-sm text-gray-600 mb-4 sm:mb-0">
-                                <div class="flex space-x-4">
-                                    <span>{{ propiedad.banos || '0' }} baños</span>
-                                    <span>{{ propiedad.habitaciones || '0' }} habs.</span>
-                                </div>
-                            </div>
-                            <div class="w-full sm:w-1/2 flex flex-col items-end">
-                                <p class="text-2xl font-bold text-gray-900 mb-2">${{ propiedad.precio | number:'1.0-0' }} <span class="text-sm font-normal text-gray-500">MXN</span></p>
-                                <div class="w-full sm:w-auto bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-200 text-center">Ver detalles</div>
-                            </div>
+                </div>
+            </div>
+            <div class="p-6 flex flex-col flex-grow w-full md:w-2/3">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ propiedad.titulo }}</h3>
+                    <div class="flex items-center space-x-3">
+                        <img *ngIf="propiedad.propietario?.avatar_url" [src]="propiedad.propietario.avatar_url" alt="Avatar propietario" class="w-8 h-8 rounded-full object-cover"/>
+                        <div class="text-right">
+                            <p class="text-xs text-gray-500 dark:text-gray-400 font-semibold leading-tight">Publicado por:</p>
+                            <p class="text-sm text-gray-900 dark:text-gray-300 font-medium leading-tight">{{ propiedad.propietario?.first_name }} {{ propiedad.propietario?.last_name_paternal }}</p>
                         </div>
                     </div>
                 </div>
-                <mat-paginator class="mt-8 bg-transparent" [length]="totalItems" [pageSize]="pageSize" [pageIndex]="pageIndex" [pageSizeOptions]="pageSizeOptions" (page)="onPageChange($event)"></mat-paginator>
+                <p class="text-sm text-gray-500 dark:text-gray-400 flex items-center mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1.5 text-gray-400 dark:text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd" />
+                    </svg>
+                    <span *ngIf="propiedad.direccion">{{ propiedad.direccion }}, </span>
+                    <span *ngIf="propiedad.ciudad">{{ propiedad.ciudad }}</span>
+                </p>
+                <p class="text-sm text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">{{ propiedad.descripcion }}</p>
+                <p class="text-sm text-gray-600 dark:text-gray-300 mb-4"><span class="font-semibold">Tipo:</span> {{ propiedad.tipo_propiedad?.nombre || 'No especificado' }}</p>
+                <hr class="my-4 border-gray-200 dark:border-gray-700">
+                <div class="flex flex-col sm:flex-row items-end justify-between">
+                    <div class="w-full sm:w-1/2 space-y-2 text-sm text-gray-600 dark:text-gray-400 mb-4 sm:mb-0">
+                        <div class="flex space-x-4">
+                            <span>{{ propiedad.banos || '0' }} baños</span>
+                            <span>{{ propiedad.habitaciones || '0' }} habs.</span>
+                        </div>
+                    </div>
+                    <div class="w-full sm:w-1/2 flex flex-col items-end">
+                        <p class="text-2xl font-bold text-gray-900 dark:text-white mb-2">${{ propiedad.precio | number:'1.0-0' }} <span class="text-sm font-normal text-gray-500 dark:text-gray-400">MXN</span></p>
+                        <div class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-200 text-center">
+                            Ver detalles
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div> <!-- Close main -->
+        </div>
+        <mat-paginator class="mt-8 bg-transparent" [length]="totalItems" [pageSize]="pageSize" [pageIndex]="pageIndex" [pageSizeOptions]="pageSizeOptions" (page)="onPageChange($event)"></mat-paginator>
+    </div>
+</div>
       </main>
     </div>
   </div>

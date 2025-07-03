@@ -1,18 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpLavavelService } from '../../http.service'; // Asegúrate de que esta ruta sea correcta
+import { HttpLavavelService } from '../../http.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
-// Interfaz para la estructura de datos del usuario
 interface User {
   id: number;
   first_name: string;
   last_name_paternal: string;
-  last_name_maternal: string;
+  last_name_maternal?: string | null;
   email: string;
-  phone: string;
+  phone?: string | null;
   role: string;
-  profile_picture?: string; // Campo para la URL completa del avatar
-  avatar_url?: string; // Posiblemente otra propiedad del backend para la URL del avatar
+  profile_picture?: string | null;
+  avatar_url?: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -27,8 +26,6 @@ export class ConfiguracionComponent implements OnInit {
   isLoading: boolean = true;
   errorMessage: string = '';
   successMessage: string = '';
-
-  // Variables para la configuración
   notificationsEnabled: boolean = true;
   darkModeEnabled: boolean = false;
 
@@ -36,100 +33,80 @@ export class ConfiguracionComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUserData();
-    this.loadSettings(); // Carga las configuraciones del usuario
+    this.loadSettings();
   }
 
-  /**
-   * Carga los datos actuales del usuario desde el backend.
-   * Muestra el estado de carga y maneja posibles errores.
-   */
   loadUserData(): void {
-    this.isLoading = true; // Activa el estado de carga
-    this.errorMessage = ''; // Limpia mensajes de error previos
-    this.successMessage = ''; // Limpia mensajes de éxito previos
+    this.isLoading = true;
+    this.errorMessage = '';
+    this.successMessage = '';
 
     this.Shttp.Service_Get('user').subscribe({
       next: (response: any) => {
-        if (response && response.user) {
-          this.userData = response.user; // Asigna los datos de usuario obtenidos
-
-          // Determina la URL correcta de la imagen del backend (avatar_url o profile_picture)
+        if (response?.user) {
+          this.userData = response.user;
+          
+          // Manejo seguro de la imagen de perfil
           const imageUrl = this.userData?.avatar_url || this.userData?.profile_picture;
-
-          if (this.userData && imageUrl) {
-            // Agrega un parámetro de marca de tiempo a la URL de la imagen para asegurar que siempre sea fresca
-            this.userData.profile_picture = `${imageUrl}?${new Date().getTime()}`;
-          } else if (this.userData) {
-            // Si el backend no proporciona una URL de imagen válida, asegúrate de que profile_picture sea undefined
-            this.userData.profile_picture = undefined;
+          if (this.userData) {
+            this.userData.profile_picture = imageUrl 
+              ? `${imageUrl}?${new Date().getTime()}`
+              : undefined;
           }
         } else {
-          this.errorMessage = 'Respuesta inesperada al cargar los datos del usuario.';
-          this.userData = null; // Limpia los datos del usuario si la respuesta es malformada
+          this.errorMessage = 'No se pudieron cargar los datos del usuario';
+          this.userData = null;
         }
-        this.isLoading = false; // Desactiva el estado de carga
+        this.isLoading = false;
       },
-      error: (err: HttpErrorResponse) => { // Especifica el tipo de error
-        console.error('Error al cargar los datos del usuario:', err);
-        this.errorMessage = err.error?.message || 'Error al cargar los datos del usuario. Por favor, inténtalo de nuevo más tarde.';
-        this.isLoading = false; // Desactiva el estado de carga
-        this.userData = null; // Limpia los datos del usuario en caso de error
+      error: (err: HttpErrorResponse) => {
+        console.error('Error al cargar datos:', err);
+        this.errorMessage = err.error?.message || 'Error en el servidor';
+        this.isLoading = false;
+        this.userData = null;
       }
     });
   }
 
-  /**
-   * Carga las configuraciones específicas del usuario (ej., modo oscuro, notificaciones) del almacenamiento local o valores predeterminados.
-   * En una aplicación real, estas se obtendrían típicamente de un backend.
-   */
   loadSettings(): void {
-    // Ejemplo: Carga desde el almacenamiento local
-    this.notificationsEnabled = localStorage.getItem('notificationsEnabled') === 'true';
+    // Cargar configuraciones con valores por defecto
     this.darkModeEnabled = localStorage.getItem('darkModeEnabled') === 'true';
-
-    this.applyTheme(); // Aplica el modo oscuro inmediatamente
+    this.notificationsEnabled = localStorage.getItem('notificationsEnabled') !== 'false'; // true por defecto
+    
+    this.applyTheme();
   }
 
-  /**
-   * Guarda las configuraciones actuales (notificaciones, modo oscuro) en el almacenamiento local.
-   * En una aplicación real, estas se enviarían típicamente a un backend.
-   */
   saveSettings(): void {
-    localStorage.setItem('notificationsEnabled', this.notificationsEnabled.toString());
-    localStorage.setItem('darkModeEnabled', this.darkModeEnabled.toString());
-
-    this.applyTheme(); // Aplica los cambios de modo oscuro inmediatamente
-
-    this.successMessage = '¡Configuración guardada exitosamente!';
-    setTimeout(() => this.successMessage = '', 3000); // Limpia el mensaje después de 3 segundos
+    localStorage.setItem('notificationsEnabled', String(this.notificationsEnabled));
+    localStorage.setItem('darkModeEnabled', String(this.darkModeEnabled));
+    this.showSuccessMessage('Configuración guardada correctamente');
   }
 
-  /**
-   * Alterna el modo oscuro y aplica el tema al cuerpo del documento.
-   */
   toggleDarkMode(): void {
     this.darkModeEnabled = !this.darkModeEnabled;
     this.applyTheme();
-    this.saveSettings(); // Guarda la nueva configuración
+    this.saveSettings();
   }
 
-  /**
-   * Aplica o remueve la clase 'dark' del cuerpo del documento basándose en `darkModeEnabled`.
-   */
-  applyTheme(): void {
-    if (this.darkModeEnabled) {
-      document.body.classList.add('dark');
-    } else {
-      document.body.classList.remove('dark');
-    }
-  }
+ applyTheme(): void {
+  const html = document.documentElement; // <html>
 
-  /**
-   * Maneja el proceso de cierre de sesión del usuario.
-   * Elimina el token de autenticación del almacenamiento local y redirige a la página de inicio de sesión.
-   */
+  if (this.darkModeEnabled) {
+    html.classList.add('dark');
+  } else {
+    html.classList.remove('dark');
+  }
+}
+
+
   logout(): void {
-    localStorage.removeItem('token'); // Elimina el token de autenticación
-    window.location.href = '/login'; // Redirige al usuario a la página de inicio de sesión
+    localStorage.removeItem('token');
+    localStorage.removeItem('darkModeEnabled'); // Opcional: limpiar preferencias
+    window.location.href = '/login';
+  }
+
+  private showSuccessMessage(message: string): void {
+    this.successMessage = message;
+    setTimeout(() => this.successMessage = '', 3000);
   }
 }

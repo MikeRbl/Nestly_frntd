@@ -43,7 +43,6 @@
 }
 
 .property-card {
-  background-color: white;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -152,7 +151,6 @@
 .property-title {
   font-size: 1.25rem; /* 20px */
   font-weight: 600;
-  color: #1a202c; /* gray-900 */
   margin: 4px 0;
   line-height: 1.3;
 }
@@ -197,7 +195,6 @@
 .property-owner-name {
   font-size: 0.875rem;
   font-weight: 500;
-  color: #2d3748;
 }
 
 .property-price {
