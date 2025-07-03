@@ -31,9 +31,41 @@ export class NavbarComponent implements OnInit {
   mobileMenuOpen: boolean = false;
   userMenuOpen: boolean = false;
   screenWidth: number = 0;
+  darkModeEnabled: boolean = false;
 
   constructor(private Shttp: HttpLavavelService, private router: Router) {
     this.screenWidth = window.innerWidth;
+  }
+
+
+
+  loadSettings(): void {
+    const savedMode = localStorage.getItem('darkModeEnabled');
+    this.darkModeEnabled = savedMode !== null ? savedMode === 'true' : false;
+    this.applyTheme();
+  }
+
+  toggleDarkMode(): void {
+    this.darkModeEnabled = !this.darkModeEnabled;
+    this.applyTheme();
+    this.saveSettings();
+  }
+
+  private saveSettings(): void {
+    localStorage.setItem('darkModeEnabled', String(this.darkModeEnabled));
+  }
+
+  private applyTheme(): void {
+    const html = document.documentElement;
+    if (this.darkModeEnabled) {
+      html.classList.add('dark');
+    } else {
+      html.classList.remove('dark');
+    }
+  }
+
+  isDarkMode(): boolean {
+    return this.darkModeEnabled;
   }
 
   ngOnInit() {
@@ -164,4 +196,8 @@ handleFavoritosClick() {
       }
     });
   }
+
+
+
+ 
 }

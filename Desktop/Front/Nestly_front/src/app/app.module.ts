@@ -36,6 +36,7 @@ import { PrimeraMayusculaPipe } from './inicio/pipes/primera-mayuscula.pipe';
     
   ],
   providers: [HttpLavavelService],
+  
   bootstrap: [AppComponent]
 })
 export class AppModule { }

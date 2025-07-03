@@ -1,3 +1,13 @@
+<script>
+  // Script bloqueante para evitar el "flash" del tema claro
+  (function() {
+    const savedMode = localStorage.getItem('darkModeEnabled');
+    if (savedMode === 'true') {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+</script>
+
 <div class="bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white">
   <nav class="fresh-navbar background bg-gray-50 dark:bg-gray-800">
     <div class="fresh-nav-container background bg-gray-50 dark:bg-gray-800">
@@ -111,10 +121,16 @@
        routerLink="qnSomos" (click)="closeMenus()">
       ¿Quiénes somos?
     </a>
+    
   </div>
 
   <!-- Separador visual -->
   <div class="border-t border-gray-200 dark:border-gray-700 mt-1"></div>
+ 
+  <a class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200" 
+     [(ngModel)]="darkModeEnabled" (click)="toggleDarkMode()">
+    DarkMode
+  </a>
   
   <a class="dropdown-item block px-4 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-gray-700 transition-colors duration-200" 
      (click)="logout()">
@@ -150,5 +166,7 @@
     </div>
   </nav>
 </div>
+
+
 
 <router-outlet></router-outlet>

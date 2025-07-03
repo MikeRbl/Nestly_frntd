@@ -77,9 +77,7 @@ export class ConfiguracionComponent implements OnInit {
   }
 
   saveSettings(): void {
-    localStorage.setItem('notificationsEnabled', String(this.notificationsEnabled));
     localStorage.setItem('darkModeEnabled', String(this.darkModeEnabled));
-    this.showSuccessMessage('Configuración guardada correctamente');
   }
 
   toggleDarkMode(): void {
