@@ -1,222 +1,444 @@
-/* Estilos generales */
-.property-form-container {
-  max-width: 900px;
-  margin: 0 auto;
-  background: white;
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+/* --- Fuentes y Variables Globales --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --primary-blue: #007bff;
+  --primary-blue-dark: #0056b3;
+  --text-dark: #343a40;
+  --text-medium: #495057;
+  --text-light: #6c757d;
+  --border-light: #e9ecef;
+  --background-light: #f8f9fa;
+  --warm-white: #fffdfa; /* Blanco con un matiz cálido muy sutil */
+  --error-red: #dc3545;
+  --success-green: #28a745;
 }
 
-.form-title {
-  color: #2c3e50;
-  font-weight: 600;
-  text-align: center;
+body {
+  font-family: 'Inter', sans-serif;
+  color: var(--text-dark);
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+  overflow-x: hidden;
+  background-color: var(--background-light); /* Fondo predeterminado más claro */
 }
 
-.form-section {
-  margin-bottom: 2rem;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid #eee;
-}
-
-.section-title {
-  color: #3498db;
-  font-size: 1.25rem;
-  margin-bottom: 1.25rem;
-  font-weight: 500;
-}
-
-.form-group {
-  margin-bottom: 1.25rem;
-}
-
-.form-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: #34495e;
-}
-
-.form-control {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  transition: border-color 0.3s;
-}
-
-.form-control:focus {
-  border-color: #3498db;
-  box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
-}
-
-/* Grid de detalles */
-.details-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin-top: 1rem;
-}
-
-.detail-group {
-  background: #f8f9fa;
-  padding: 1rem;
-  border-radius: 8px;
-}
-
-.detail-item {
-  margin-bottom: 1rem;
-}
-
-.detail-item:last-child {
-  margin-bottom: 0;
-}
-
-.input-group {
+/* --- Contenedor Principal y Degradado --- */
+.publicar-container {
+  min-height: 100vh;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #e0f2f7 0%, #e6e0f7 100%); /* Degradado suave */
 }
 
-.input-group-text {
-  background-color: #e9ecef;
-  border: 1px solid #ced4da;
-  padding: 0.75rem;
-  border-radius: 6px 0 0 6px;
+/* --- Estilos de la Tarjeta (Formulario Envolvente) --- */
+.card {
+  width: 100%;
+  max-width: 1200px;
+  height: 90vh; /* Ocupa el 90% del alto de la ventana */
+  display: flex;
+  flex-direction: column;
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.1); /* Sombra más suave y moderna */
+  background-color: #ffffff;
+  overflow: hidden; /* Asegura que el contenido interno se recorte */
 }
 
-/* Checkbox groups */
-.checkbox-group {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 0.5rem;
+.card-header {
+  background-color: #ffffff;
+  border-bottom: 1px solid var(--border-light);
+  padding: 30px 50px; /* Padding ajustado */
+  flex-shrink: 0; /* No permite que el header se encoja */
 }
 
-.form-check {
-  margin-bottom: 0.5rem;
+.card-title {
+  color: var(--text-dark);
+  font-weight: 700;
+  font-size: 2.2rem; /* Tamaño de fuente ligeramente más pequeño */
+  margin-bottom: 0;
+  letter-spacing: -0.6px;
 }
 
-/* Photo upload */
-.photo-upload {
-  margin-top: 1rem;
+.card-body {
+  padding: 0px 50px 30px 50px; /* Padding ajustado para balance */
+  flex-grow: 1; /* Permite que el body ocupe el espacio restante */
+  display: flex;
+  flex-direction: column;
+  min-height: 0; /* Importante para el flexbox interno con scroll */
 }
 
-.upload-label {
-  cursor: pointer;
+form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-.upload-area {
-  border: 2px dashed #ddd;
-  border-radius: 8px;
-  padding: 2rem;
-  text-align: center;
-  transition: all 0.3s;
-  margin-bottom: 1rem;
+/* --- Contenedor de Columnas del Formulario --- */
+.form-columns-container {
+  display: flex;
+  flex-grow: 1;
+  gap: 40px; /* Espacio entre columnas */
+  padding-top: 30px;
+  padding-bottom: 20px;
+  min-height: 0; /* Permite que las columnas tengan scroll */
 }
 
-.upload-area:hover {
-  border-color: #3498db;
-  background: #f8fafc;
+.form-column {
+  flex: 1; /* Ocupa el mismo espacio */
+  min-width: 0; /* Evita desbordamiento con contenido largo */
+  display: flex;
+  flex-direction: column;
 }
 
-.upload-area i {
-  font-size: 2rem;
-  color: #3498db;
-  margin-bottom: 0.5rem;
+.scrollable-content {
+  overflow-y: auto; /* Habilita el scroll vertical */
+  flex-grow: 1;
+  min-height: 0; /* Necesario para que overflow-y funcione en flex item */
+  padding-right: 25px; /* Espacio para la barra de scroll */
+  padding-left: 5px; /* Pequeño ajuste para simetría visual */
+  padding-bottom: 25px; /* Espacio al final del contenido desplazable */
 }
 
-.photo-preview {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 1rem;
-  margin-top: 1rem;
+/* Estilos de la barra de scroll (Webkit) */
+.scrollable-content::-webkit-scrollbar {
+  width: 8px; /* Barra más delgada */
+}
+.scrollable-content::-webkit-scrollbar-track {
+  background: #f1f3f5; /* Fondo más claro */
+  border-radius: 10px;
+}
+.scrollable-content::-webkit-scrollbar-thumb {
+  background: #c5ced7; /* Tono de gris medio */
+  border-radius: 10px;
+}
+.scrollable-content::-webkit-scrollbar-thumb:hover {
+  background: #9fa7b3; /* Más oscuro al pasar el mouse */
 }
 
-.photo-thumbnail {
+/* --- Secciones del Formulario --- */
+.form-section {
+  margin-bottom: 40px; /* Espaciado entre secciones */
+  padding-bottom: 30px; /* Espaciado interno al final de la sección */
+  border-bottom: 1px solid var(--border-light); /* Separador sutil */
+}
+
+.form-section:last-child {
+  border-bottom: none; /* Elimina el borde de la última sección */
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.form-section h3 {
+  color: var(--text-medium);
+  margin-bottom: 25px; /* Espacio bajo el título de sección */
+  font-weight: 600;
+  font-size: 1.6rem; /* Tamaño de título de sección */
+  border-left: 5px solid var(--primary-blue); /* Línea de acento azul */
+  padding-left: 18px;
+  line-height: 1.3;
+  letter-spacing: -0.4px;
+}
+
+/* --- Campos de Formulario (Inputs, Selects, Textareas) --- */
+.form-label {
+  font-weight: 500;
+  color: var(--text-medium);
+  margin-bottom: 8px; /* Espacio entre label e input estándar (Bootstrap mb-2 es 8px) */
+  font-size: 0.95rem; /* Fuente ligeramente más pequeña para labels */
+  display: block; /* Asegura que el label siempre ocupe su propia línea para control de margen */
+  padding-right: 5px; /* Un poco de espacio a la derecha del label */
+}
+
+/* AUMENTO DE ESPACIO PARA EL LABEL DE DESCRIPCIÓN */
+.form-label[for="descripcion"] {
+  margin-bottom: 15px; /* Aumento a 15px para una separación más clara */
+}
+
+.form-control,
+.form-select,
+textarea.form-control {
+  border-radius: 8px; /* Bordes más suaves */
+  padding: 12px 18px; /* Relleno ajustado */
+  border: 1px solid #dcdfe3; /* Borde más claro */
+  font-size: 1rem; /* Tamaño de fuente estándar */
+  color: var(--text-dark);
+  background-color: var(--warm-white); /* Color cálido apenas perceptible */
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out, background-color 0.2s ease;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.03); /* Sombra interna muy sutil */
+}
+
+.form-control:focus,
+.form-select:focus,
+textarea.form-control:focus {
+  border-color: var(--primary-blue);
+  box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.15); /* Sombra de enfoque más definida */
+  background-color: #ffffff; /* Blanco puro al enfocar */
+  outline: none;
+}
+
+.form-control.is-invalid,
+.form-select.is-invalid {
+  border-color: var(--error-red);
+  background-image: none; /* Eliminar icono de validación de Bootstrap */
+}
+
+.invalid-feedback {
+  font-size: 0.85em; /* Fuente más pequeña para mensajes de error */
+  color: var(--error-red);
+  margin-top: 5px; /* Espacio más cercano al campo */
+  display: block;
+}
+
+/* --- Mapa --- */
+#map {
+  height: 400px; /* Altura del mapa ajustada */
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08); /* Sombra más suave */
+  margin-bottom: 25px; /* Espaciado debajo del mapa */
+}
+
+/* --- Icono de Marcador Personalizado (el círculo) --- */
+.custom-circle-icon {
+  background-color: var(--primary-blue);
+  border: 4px solid #ffffff; /* Borde blanco más delgado */
+  border-radius: 50%;
+  opacity: 0.95; /* Ligeramente más opaco */
+  box-shadow: 0 3px 10px rgba(0,0,0,0.3); /* Sombra más sutil */
+  transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  width: 24px; /* Tamaño ligeramente más pequeño */
+  height: 24px;
+}
+.custom-circle-icon:hover {
+  background-color: var(--primary-blue-dark);
+  transform: scale(1.1);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+}
+
+/* --- Previsualización de Fotos --- */
+.photo-preview-container {
+  display: grid; /* Usamos Grid para mayor flexibilidad */
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); /* Columnas responsivas */
+  gap: 15px; /* Espacio entre las imágenes */
+  margin-top: 20px;
+}
+
+.photo-preview-item {
   position: relative;
-  height: 120px;
-  border-radius: 6px;
+  width: 100%;
+  padding-top: 100%; /* Para mantener una relación de aspecto 1:1 */
+  border: 1px solid var(--border-light);
+  border-radius: 10px; /* Bordes más suaves */
   overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05); /* Sombra muy ligera */
+  background-color: var(--background-light); /* Fondo para cuando no hay imagen */
+  display: flex; /* Para centrar imágenes si no cubren completamente */
+  justify-content: center;
+  align-items: center;
 }
 
-.photo-thumbnail img {
+.photo-preview-item img {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; /* Recorta la imagen para cubrir el contenedor */
+  border-radius: 10px;
 }
 
-.delete-photo {
+.btn-remove-photo {
   position: absolute;
-  top: 5px;
-  right: 5px;
-  width: 24px;
-  height: 24px;
-  background: rgba(255, 0, 0, 0.7);
+  top: 8px; /* Posición ajustada */
+  right: 8px; /* Posición ajustada */
+  background-color: rgba(220, 53, 69, 0.9); /* Rojo semi-transparente */
   color: white;
   border: none;
   border-radius: 50%;
+  width: 30px; /* Tamaño más pequeño */
+  height: 30px;
+  font-size: 1.1rem; /* Fuente ajustada */
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+  z-index: 10;
 }
 
-/* Botón de envío */
-.form-actions {
-  text-align: center;
-  margin-top: 2rem;
+.btn-remove-photo:hover {
+  background-color: var(--error-red);
+  transform: scale(1.15);
 }
 
-.submit-btn {
-  background-color: #2ecc71;
-  color: white;
-  border: none;
-  padding: 0.75rem 2rem;
-  font-size: 1rem;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+/* --- Botón de Publicar --- */
+.form-submit-section {
+  padding: 25px 0 0 0; /* Padding ajustado */
+  border-top: 1px solid var(--border-light);
+  margin-top: auto;
+  flex-shrink: 0;
 }
 
-.submit-btn:hover {
-  background-color: #27ae60;
+.btn-primary {
+  background-color: var(--primary-blue);
+  border-color: var(--primary-blue);
+  padding: 16px 35px; /* Relleno ajustado */
+  font-size: 1.15rem; /* Tamaño de fuente ajustado */
+  font-weight: 600;
+  border-radius: 10px;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.2);
 }
 
-.submit-btn:disabled {
-  background-color: #95a5a6;
+.btn-primary:hover {
+  background-color: var(--primary-blue-dark);
+  border-color: var(--primary-blue-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.3);
+}
+
+.btn-primary:disabled {
+  background-color: #b0d8ff;
+  border-color: #b0d8ff;
   cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
 }
 
-/* Estilos para el mapa de Leaflet */
-#map {
-  height: 400px; /* **CRUCIAL:** Define la altura del mapa */
-  width: 100%;
+/* --- Estilos para los Toggles "Sí/No" --- */
+.toggle-switch-container {
+  display: inline-flex;
+  border: 1px solid #d8dee3;
   border-radius: 8px;
-  margin-bottom: 1rem;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1); /* Opcional: para darle un mejor aspecto */
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.03);
 }
 
-/* Asegúrate de que los estilos de Bootstrap para .is-invalid estén presentes o importados */
-.is-invalid {
-  border-color: #dc3545;
-  padding-right: calc(1.5em + .75rem);
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right calc(.375em + .1875rem) center;
-  background-size: calc(.75em + .375rem) calc(.75em + .375rem);
+.toggle-button {
+  background-color: #ffffff;
+  border: none;
+  padding: 10px 22px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  flex: 1;
+  min-width: 75px;
 }
 
-.is-invalid:focus {
-  border-color: #dc3545;
-  box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+.toggle-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.08);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .details-grid {
-    grid-template-columns: 1fr;
+/* Estilos para el botón activo 'Sí' con MAYOR ESPECIFICIDAD */
+.toggle-switch-container .toggle-button.active.yes {
+  background-color: var(--success-green) !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para el botón activo 'No' con MAYOR ESPECIFICIDAD */
+.toggle-switch-container .toggle-button.active.no {
+  background-color: var(--error-red) !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Efecto hover para botones inactivos */
+.toggle-button.inactive:hover {
+  background-color: #edf1f5;
+  color: var(--text-medium);
+}
+
+/* --- Responsividad para pantallas pequeñas --- */
+@media (max-width: 992px) {
+  .publicar-container {
+    padding: 20px 15px;
   }
-  
-  .checkbox-group {
-    grid-template-columns: 1fr;
+  .card {
+    height: auto;
+    min-height: 85vh;
+    border-radius: 10px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  }
+  .card-header, .card-body {
+    padding: 20px;
+  }
+  .card-title {
+    font-size: 1.7rem;
+  }
+  .form-columns-container {
+    flex-direction: column;
+    gap: 0;
+    padding-top: 0;
+  }
+  .form-column {
+    padding: 0;
+    margin-bottom: 25px;
+  }
+  .form-column:last-child {
+    margin-bottom: 0;
+  }
+  .scrollable-content {
+    overflow-y: visible;
+    padding-right: 0;
+    padding-left: 0;
+    padding-bottom: 0;
+  }
+  .scrollable-content::-webkit-scrollbar {
+    width: 0px; /* Oculta la barra de scroll en móviles */
+  }
+  .form-section {
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+  }
+  .form-section h3 {
+    font-size: 1.3rem;
+    padding-left: 15px;
+    border-left-width: 4px;
+  }
+  #map {
+    height: 300px;
+    margin-bottom: 20px;
+  }
+  .photo-preview-container {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+  }
+  .photo-preview-item {
+    width: auto;
+    height: auto;
+    padding-top: 100%;
+  }
+  .btn-remove-photo {
+    width: 25px;
+    height: 25px;
+    font-size: 1rem;
+    top: 5px;
+    right: 5px;
+  }
+  .btn-primary {
+    padding: 14px 28px;
+    font-size: 1.05rem;
+  }
+  .form-submit-section {
+    padding: 20px 0 0 0;
+  }
+  .toggle-switch-container {
+    width: 100%;
+  }
+  .toggle-button {
+    padding: 9px 18px;
+    font-size: 0.9rem;
+    min-width: unset;
   }
 }
