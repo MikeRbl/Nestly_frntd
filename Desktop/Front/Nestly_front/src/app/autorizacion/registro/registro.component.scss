@@ -1,265 +1,218 @@
 :host {
   display: flex;
+  min-height: 100vh;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  background: linear-gradient(45deg, #7FA6FF, #D98EDF);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: #333; 
+}
+
+/* --- Animación de fondo --- */
+.background-slideshow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;
-  background-attachment: fixed;
-  padding: 20px;
-  font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  overflow: hidden;
+  opacity: 0;
+  animation: fadeEffect 24s infinite;
+}
 
-  .containerPrincipal {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.slide:nth-child(2) {
+  animation-delay: 6s;
+}
+.slide:nth-child(3) {
+  animation-delay: 12s;
+}
+.slide:nth-child(4) {
+  animation-delay: 18s;
+}
+
+@keyframes fadeEffect {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  25% { opacity: 1; }
+  35% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+.containerPrincipal {
+  width: 100%;
+ 
+  max-width: 570px;
+  padding: 0 20px;
+  background-color: white;
+  border-radius: 24px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
+}
+
+.login-form {
+  background: transparent;
+  padding: 40px;
+  border-radius: inherit;
+  box-shadow: none;
+}
+
+.containerUserSvg {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.logo {
+  width: 140px;
+  height: auto;
+}
+
+.login-form h1 {
+  text-align: center;
+  font-size: 24px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.form-field {
+  margin-bottom: 15px;
+}
+
+/* 2. NUEVA CLASE PARA LAS FILAS */
+.form-row {
+  display: flex;
+  gap: 15px; /* Espacio entre los campos de la fila */
+  margin-bottom: 15px;
+}
+.form-row .form-field {
+  flex: 1; /* Hace que los campos en la fila ocupen el mismo espacio */
+  margin-bottom: 0; /* El margen ya lo tiene el contenedor .form-row */
+}
+
+
+.input-group {
+  position: relative;
+}
+
+.error-message {
+  color: #e74c3c;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.input-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+}
+
+.input-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Estilos para input Y select */
+input, select {
+  width: 100%;
+  padding: 12px 12px 12px 40px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border 0.3s;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: white;
+}
+select {
+    cursor: pointer;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #666;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #999;
+}
+
+.password-toggle svg {
+  width: 20px;
+  height: 20px;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 12px;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-top: 10px;
+}
+
+.submit-btn:hover {
+  background: #222;
+}
+
+.submit-btn[disabled] {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.links {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.links a {
+  color: #333;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+@media (max-width: 680px) {
+  .form-row {
+    flex-direction: column;
+    gap: 0;
   }
-
-  .register-form {
-    background-color: white;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 450px;
-    margin: 2rem auto;
-    animation: formEntrance 0.6s cubic-bezier(0.23, 1, 0.32, 1) both;
-    transform-origin: center;
-    will-change: transform, opacity;
-
-    @keyframes formEntrance {
-      0% {
-        opacity: 0;
-        transform: translateY(40px) scale(0.98);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    > a {
-      display: block;
-      text-align: center;
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #1c1e21;
-      margin-bottom: 2rem;
-    }
-
-    .containerUserSvg {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 1.5rem;
-
-      .usersvg {
-        width: 80px;
-        height: 80px;
-        color: #1877f2;
-      }
-    }
-
-    // Common container styles for all input fields
-    .containerNombre,
-    .containerEmail,
-    .containerPassword,
-    .containerConfirmPassword,
-    .containerApellido,
-    .containerTelefono,
-    .containerRol {
-      margin-bottom: 1.5rem;
-      position: relative;
-      width: 100%;
-
-      .containerInput {
-        position: relative;
-
-        .containerSvg {
-          position: absolute;
-          left: 10px;
-          top: 50%;
-          transform: translateY(-50%);
-          z-index: 2;
-
-          svg {
-            width: 20px;
-            height: 20px;
-            color: #606770;
-          }
-        }
-
-        input, select {
-          width: 100%;
-          padding: 0.8rem 0.8rem 0.8rem 40px;
-          border: 1px solid #dddfe2;
-          border-radius: 10px;
-          font-size: 1rem;
-          color: #1c1e21;
-          box-sizing: border-box;
-          background-color: white;
-          transition: all 0.3s ease;
-
-          &:focus {
-            outline: none;
-            border-color: #da33e9;
-            box-shadow: 0 0 0 2px rgba(218, 51, 233, 0.2);
-          }
-        }
-
-        select {
-          appearance: none;
-          -webkit-appearance: none;
-          -moz-appearance: none;
-          cursor: pointer;
-        }
-
-        .password-toggle {
-          position: absolute;
-          right: 15px;
-          top: 50%;
-          transform: translateY(-50%);
-          cursor: pointer;
-          z-index: 3;
-          
-          svg {
-            width: 20px;
-            height: 20px;
-            color: #606770;
-            transition: all 0.2s ease;
-
-            &:hover {
-              color: #1877f2;
-              transform: scale(1.1);
-            }
-          }
-        }
-      }
-    }
-
-    .containerApellidos {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-
-      .containerApellido {
-        flex: 1;
-        margin-bottom: 0;
-      }
-    }
-
-    .containerTelRol {
-      display: flex;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-
-      .containerTelefono,
-      .containerRol {
-        flex: 1;
-        margin-bottom: 0;
-      }
-    }
-
-    .containerButton {
-      margin-top: 1.5rem;
-
-      button {
-        width: 100%;
-        padding: 0.8rem;
-        background-color: #1877f2;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        font-size: 1.1rem;
-        font-weight: bold;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-
-        &:hover {
-          background-color: #166fe5;
-        }
-
-        &:active {
-          transform: translateY(1px);
-        }
-      }
-    }
-
-    .containerRecuperar {
-      text-align: center;
-      margin-top: 1.5rem;
-
-      .YA {
-        color: #606770;
-        margin-right: 0.5rem;
-      }
-
-      .recuperarA {
-        color: #1877f2;
-        text-decoration: none;
-        font-weight: 500;
-        transition: color 0.2s ease;
-
-        &:hover {
-          text-decoration: underline;
-          color: #166fe5;
-        }
-      }
-    }
-
-    .text-danger {
-      color: #dc3545;
-      font-size: 0.875rem;
-      margin-top: 0.25rem;
-      display: block;
-    }
-
-    .alert-danger {
-      background-color: #dc3545;
-      color: white;
-      padding: 1rem;
-      border-radius: 5px;
-      margin-top: 1rem;
-      text-align: center;
-      font-size: 0.9rem;
-    }
+  .form-row .form-field {
+    margin-bottom: 15px; /* Restaura el margen cuando están en columna */
   }
+}
 
-  /* 📱 Responsive */
-  @media (max-width: 768px) {
-    .register-form {
-      width: 90%;
-      padding: 1.5rem;
-
-      .containerApellidos,
-      .containerTelRol {
-        flex-direction: column;
-        gap: 1rem;
-        
-        .containerApellido,
-        .containerTelefono,
-        .containerRol {
-          width: 100%;
-        }
-      }
-    }
+@media (max-width: 480px) {
+  .login-form {
+    padding: 30px 20px;
   }
-
-  @media (max-width: 480px) {
-    padding: 10px;
-
-    .register-form {
-      padding: 1.2rem;
-
-      > a {
-        font-size: 1.3rem;
-        margin-bottom: 1.5rem;
-      }
-
-      .containerUserSvg .usersvg {
-        width: 70px;
-        height: 70px;
-      }
-    }
+  .links {
+    flex-direction: column;
+    gap: 10px;
   }
 }
