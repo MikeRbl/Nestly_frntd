@@ -1,4 +1,4 @@
-<div >
+<div>
 <div class="publicar-container" class="bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white">
   <div class="card" class="bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white">
     <div class="card-header">
@@ -105,12 +105,12 @@
                   <label class="form-label d-block">Amueblado</label>
                   <div class="toggle-switch-container">
                     <button type="button" class="toggle-button"
-                      [ngClass]="{'active yes': f['amueblado'].value === true, 'inactive': f['amueblado'].value === false || f['amueblado'].value === null }"
+                      [ngClass]="{'active yes': f['amueblado'].value === true, 'inactive': f['amueblado'].value !== true }"
                       (click)="f['amueblado'].setValue(true)">
                       Sí
                     </button>
                     <button type="button" class="toggle-button"
-                      [ngClass]="{'active no': f['amueblado'].value === false, 'inactive': f['amueblado'].value === true || f['amueblado'].value === null }"
+                      [ngClass]="{'active no': f['amueblado'].value === false, 'inactive': f['amueblado'].value !== false }"
                       (click)="f['amueblado'].setValue(false)">
                       No
                     </button>
@@ -121,12 +121,12 @@
                   <label class="form-label d-block">Contrato Anualizado</label>
                   <div class="toggle-switch-container">
                     <button type="button" class="toggle-button"
-                      [ngClass]="{'active yes': f['anualizado'].value === true, 'inactive': f['anualizado'].value === false || f['anualizado'].value === null }"
+                      [ngClass]="{'active yes': f['anualizado'].value === true, 'inactive': f['anualizado'].value !== true }"
                       (click)="f['anualizado'].setValue(true)">
                       Sí
                     </button>
                     <button type="button" class="toggle-button"
-                      [ngClass]="{'active no': f['anualizado'].value === false, 'inactive': f['anualizado'].value === true || f['anualizado'].value === null }"
+                      [ngClass]="{'active no': f['anualizado'].value === false, 'inactive': f['anualizado'].value !== false }"
                       (click)="f['anualizado'].setValue(false)">
                       No
                     </button>
@@ -137,13 +137,13 @@
                   <label class="form-label d-block">Mascotas</label>
                   <div class="toggle-switch-container">
                     <button type="button" class="toggle-button"
-                      [ngClass]="{'active yes': f['mascotas'].value === '1', 'inactive': f['mascotas'].value === '0' || f['mascotas'].value === null }"
-                      (click)="f['mascotas'].setValue('1')">
+                      [ngClass]="{'active yes': f['mascotas'].value === 'si', 'inactive': f['mascotas'].value !== 'si' }"
+                      (click)="f['mascotas'].setValue('si')">
                       Sí
                     </button>
                     <button type="button" class="toggle-button"
-                      [ngClass]="{'active no': f['mascotas'].value === '0', 'inactive': f['mascotas'].value === '1' || f['mascotas'].value === null }"
-                      (click)="f['mascotas'].setValue('0')">
+                      [ngClass]="{'active no': f['mascotas'].value === 'no', 'inactive': f['mascotas'].value !== 'no' }"
+                      (click)="f['mascotas'].setValue('no')">
                       No
                     </button>
                   </div>
@@ -151,8 +151,7 @@
                     Por favor, selecciona si se aceptan mascotas.
                   </div>
                 </div>
-              </div>
-
+                </div>
             </div>
           </div>
 
