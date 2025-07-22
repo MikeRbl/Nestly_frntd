@@ -15,14 +15,12 @@ export class PagosComponent implements OnInit {
   isProcessing = false;
   error = '';
 
-  // Propiedades para el desglose de costos
   precioRenta = 0;
   tarifaServicio = 0;
-  iva = 0; // NUEVO: para almacenar el IVA
+  iva = 0;
   totalPagar = 0;
 
   pagoForm: FormGroup;
-  // NUEVO: Opciones para el selector de meses
   mesesOpciones: number[] = Array.from({length: 12}, (_, i) => i + 1);
 
   constructor(
@@ -37,9 +35,7 @@ export class PagosComponent implements OnInit {
       numeroTarjeta: ['', [Validators.required, Validators.pattern('^[0-9]{16}$')]],
       expiracion: ['', [Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])\/([0-9]{2})$/)]],
       cvc: ['', [Validators.required, Validators.pattern('^[0-9]{3,4}$')]],
-      terminos: [false, Validators.requiredTrue],
-      // NUEVO: Control para la cantidad de meses a pagar
-      mesesAPagar: [1, [Validators.required, Validators.min(1), Validators.max(12)]]
+      terminos: [false, Validators.requiredTrue]
     });
   }
 
@@ -51,10 +47,39 @@ export class PagosComponent implements OnInit {
       this.error = 'ID de propiedad no proporcionado';
       this.isLoading = false;
     }
+  }
 
-    // NUEVO: Escuchamos los cambios en la cantidad de meses para recalcular el total
-    this.pagoForm.get('mesesAPagar')?.valueChanges.subscribe(() => {
-      this.calcularCostos();
+  mostrarTerminos(event: MouseEvent) {
+    event.preventDefault(); // Evita que el checkbox se marque al hacer clic en el enlace
+    Swal.fire({
+      title: 'Términos y Condiciones de Alquiler',
+      html: `
+        <div style="text-align: left; max-height: 400px; overflow-y: auto; font-size: 14px; padding-right: 15px;">
+          <h4 style="font-weight: bold; margin-top: 10px;">1. Objeto del Contrato</h4>
+          <p>El presente contrato tiene por objeto regular el alquiler temporal de la propiedad para uso exclusivo de vivienda vacacional o temporal.</p>
+          
+          <h4 style="font-weight: bold; margin-top: 10px;">2. Duración y Precio</h4>
+          <p>La duración del alquiler será la estipulada en el resumen de la orden. El precio total incluye la renta base más las tarifas de servicio aplicables. El pago se realizará por adelantado.</p>
+
+          <h4 style="font-weight: bold; margin-top: 10px;">3. Obligaciones del Inquilino</h4>
+          <p>El inquilino se compromete a mantener la Propiedad en buen estado, respetar las normas de la comunidad y no subarrendar el inmueble a terceros.</p>
+
+          <h4 style="font-weight: bold; margin-top: 10px;">4. Cancelación</h4>
+          <p>Las políticas de cancelación están sujetas a los términos especificados en el anuncio de la propiedad.</p>
+
+          <br>
+          <p>Al aceptar estos términos, usted confirma que ha leído y está de acuerdo con todas las condiciones aquí expuestas.</p>
+          
+          <hr style="margin: 20px 0;">
+          
+          <a href="assets/pdf/terminos_y_condiciones.pdf" download="Terminos_y_Condiciones_Nestly.pdf" style="display: inline-block; padding: 8px 16px; background-color: #3b82f6; color: white; border-radius: 5px; text-decoration: none; font-weight: bold;">
+            Descargar como PDF
+          </a>
+        </div>
+      `,
+      width: '800px',
+      confirmButtonText: 'Cerrar',
+      confirmButtonColor: '#3B82F6'
     });
   }
 
@@ -63,18 +88,7 @@ export class PagosComponent implements OnInit {
     this.httpService.Service_Get(`propiedades/${id}`).subscribe({
       next: (res) => {
         this.property = res.data;
-        
-        // NUEVO: Lógica para ajustar el formulario según el tipo de renta
-        if (!this.property.anualizado) {
-          // Si no es anual, fijamos los meses en 1 y deshabilitamos el campo
-          this.pagoForm.get('mesesAPagar')?.setValue(1);
-          this.pagoForm.get('mesesAPagar')?.disable();
-        } else {
-          // Si es anual, nos aseguramos de que esté habilitado
-          this.pagoForm.get('mesesAPagar')?.enable();
-        }
-
-        this.calcularCostos(); // Calculamos el costo inicial
+        this.calcularCostos();
         this.isLoading = false;
       },
       error: () => {
@@ -86,15 +100,11 @@ export class PagosComponent implements OnInit {
 
   calcularCostos(): void {
     if (!this.property) return;
-
-    const meses = this.pagoForm.get('mesesAPagar')?.value || 1;
-    
-    // El precio base de la renta se multiplica por los meses seleccionados
+    const meses = 1; // Lógica de meses a implementar
     this.precioRenta = parseFloat(this.property.precio) * meses;
-    this.tarifaServicio = this.precioRenta * 0.10; // 10% de tarifa sobre el total de la renta
-
+    this.tarifaServicio = this.precioRenta * 0.10;
     const subtotal = this.precioRenta + this.tarifaServicio;
-    this.iva = subtotal * 0.16; // 16% de IVA sobre el subtotal
+    this.iva = subtotal * 0.16;
     this.totalPagar = subtotal + this.iva;
   }
 
