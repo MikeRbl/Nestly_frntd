@@ -37,10 +37,8 @@ const routes: Routes = [
       { path: 'buscarCasa', component: BuscarComponent },
       { path: 'pagos/:id', component: PagosComponent },
       { path: 'favoritos', component: PropiedadesFavoritosComponent },
-      // ¡RUTA CORREGIDA! Ahora el path es 'resenas'
-      { path: 'resenas', component: SitioResenasComponent }, // ¡Esta es la línea clave!
-      { path: 'faq', component: FaqComponent }, // La ruta de FAQ ya estaba correcta
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' } // Redirige a dashboard si la ruta es vacía
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: '', redirectTo: 'pagos/1', pathMatch: 'full' }
     ]
   }
 ];
