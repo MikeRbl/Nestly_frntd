@@ -33,7 +33,8 @@ const routes: Routes = [
       { path: 'buscarCasa', component: BuscarComponent },
       { path: 'pagos/:id', component: PagosComponent },
       { path: 'favoritos', component: PropiedadesFavoritosComponent },
-      { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: '', redirectTo: 'pagos/1', pathMatch: 'full' }
     ]
   }
 ];

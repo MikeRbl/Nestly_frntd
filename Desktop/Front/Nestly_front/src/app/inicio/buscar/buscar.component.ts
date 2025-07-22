@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router'; 
-import { PropiedadesService } from '../../../app/services/propiedad.service';
+import { Router, ActivatedRoute } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
+import Swal from 'sweetalert2';
+
+// --- Servicios ---
+import { PropiedadesService } from '../../../app/services/propiedad.service';
+import { AuthService } from '../../auth.service';
+import { NotyfService } from '../../services/notyf.service';
+import { Propiedad } from '../../interface/propiedades.interface';
 
 @Component({
   selector: 'app-buscar',
@@ -14,16 +20,20 @@ export class BuscarComponent implements OnInit {
   tiposDePropiedad: any[] = [];
   loading = false;
   error = '';
-  precioMaximoDelSlider: number = 100000; 
+  precioMaximoDelSlider: number = 100000;
+
+  // Propiedades para Favoritos
+  favoritoIds = new Set<number>();
+  isUserLoggedIn = false;
 
   filtros = {
     titulo: '',
-    direccion: '', // Filtro para la nueva barra superior
+    direccion: '',
     tipoId: '',
     precioMin: 0,
     precioMax: null as number | null,
-    habitaciones: 0, // Inicia en 0 para el stepper
-    banos: 0,      // Inicia en 0 para el stepper
+    habitaciones: 0,
+    banos: 0,
     puntuacionMin: null as number | null,
     mascotas: false,
     amueblado: false,
@@ -37,12 +47,74 @@ export class BuscarComponent implements OnInit {
   constructor(
     private propiedadesService: PropiedadesService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authService: AuthService,
+    private notyf: NotyfService
   ) {}
 
   ngOnInit(): void {
+    this.isUserLoggedIn = this.authService.isLoggedIn();
+    if (this.isUserLoggedIn) {
+      this.cargarIdsFavoritos();
+    }
+    
     this.cargarPropiedades();
     this.cargarTiposDePropiedad();
+  }
+
+  cargarIdsFavoritos(): void {
+    this.propiedadesService.getIdsFavoritos().subscribe({
+      next: (response) => {
+        this.favoritoIds = new Set(response.data);
+      },
+      error: (err) => console.error('Error al cargar IDs de favoritos:', err)
+    });
+  }
+
+  toggleFavorito(propiedad: Propiedad, event: MouseEvent): void {
+    event.stopPropagation();
+    if (!this.isUserLoggedIn) {
+      this.handleLoginRedirect();
+      return;
+    }
+
+    const propiedadId = propiedad.id_propiedad;
+    const esFavorito = this.favoritoIds.has(propiedadId);
+
+    if (esFavorito) {
+      this.propiedadesService.quitarFavorito(propiedadId).subscribe({
+        next: () => {
+          this.favoritoIds.delete(propiedadId);
+          this.notyf.success('Eliminado de favoritos');
+        },
+        error: () => this.notyf.error('Error al quitar favorito.')
+      });
+    } else {
+      this.propiedadesService.agregarFavorito(propiedadId).subscribe({
+        next: () => {
+          this.favoritoIds.add(propiedadId);
+          this.notyf.success('Agregado a favoritos');
+        },
+        error: () => this.notyf.error('Error al agregar favorito.')
+      });
+    }
+  }
+
+  handleLoginRedirect(): void {
+    Swal.fire({
+      title: '¡Inicia sesión para guardar!',
+      text: 'Necesitas una cuenta para añadir propiedades a tus favoritos.',
+      icon: 'info',
+      showDenyButton: true,
+      confirmButtonText: 'Iniciar Sesión',
+      denyButtonText: 'Crear Cuenta',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.router.navigate(['/login']);
+      } else if (result.isDenied) {
+        this.router.navigate(['/register']);
+      }
+    });
   }
 
   cargarPropiedades(): void {
@@ -97,16 +169,12 @@ export class BuscarComponent implements OnInit {
 
   aplicarFiltros(): void {
     let propiedadesFiltradas = [...this.todasLasPropiedades];
-
-    // Filtro base para mostrar solo propiedades disponibles
     propiedadesFiltradas = propiedadesFiltradas.filter(p => p.estado_propiedad === 'Disponible');
 
-    // Filtros del usuario
     if (this.filtros.titulo) {
       propiedadesFiltradas = propiedadesFiltradas.filter(p => p.titulo.toLowerCase().includes(this.filtros.titulo.toLowerCase()));
     }
     
-    // Nueva lógica de filtrado por dirección
     if (this.filtros.direccion) {
       const terminoBusqueda = this.filtros.direccion.toLowerCase();
       propiedadesFiltradas = propiedadesFiltradas.filter(p => 
@@ -157,7 +225,7 @@ export class BuscarComponent implements OnInit {
   limpiarFiltros(): void {
     this.filtros = {
       titulo: '',
-      direccion: '', // Limpiar el nuevo filtro
+      direccion: '',
       tipoId: '',
       precioMin: 0,
       precioMax: this.precioMaximoDelSlider,
