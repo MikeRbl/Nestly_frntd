@@ -6,7 +6,7 @@ import { InicioRoutingModule } from './inicio-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
-// Componentes
+// Componentes (¡NO TOCAMOS LOS EXISTENTES!)
 import { NavbarComponent } from './navbar/navbar.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PerfilComponent } from './perfil/perfil.component';
@@ -23,7 +23,11 @@ import { ResenasItemComponent } from './resenas/resenas-item/resena-item.compone
 import { PrimeraMayusculaPipe } from './pipes/primera-mayuscula.pipe';
 import { PagosComponent } from './pagos/pagos.component';
 import { PropiedadesFavoritosComponent } from './propiedades-favoritos/propiedades-favoritos.component';
-import { MisPropiedadesComponent } from './ver-propiedades/mis-propiedades.component';
+import { MisPropiedadesComponent } from './ver-propiedades/mis-propiedades.component'; // ¡Tu componente corregido!
+
+// ¡NUEVAS IMPORTACIONES! (para los componentes que acabamos de crear)
+import { SitioResenasComponent } from './sitio-resenas/sitio-resenas.component'; // Importa el nuevo componente de reseñas del sitio
+import { FaqComponent } from './faq/faq.component'; // Importa el nuevo componente FAQ
 
 @NgModule({
   declarations: [
@@ -36,14 +40,17 @@ import { MisPropiedadesComponent } from './ver-propiedades/mis-propiedades.compo
     PublicarComponent,
     AlquilarCasaComponent,
     BuscarComponent,
-    MisPropiedadesComponent,
+    MisPropiedadesComponent, // ¡Declarando tu componente corregido!
     EditarPropiedadComponent,
-    ResenaFormComponent,
-    ResenaListComponent,
-    ResenasItemComponent,
+    ResenaFormComponent, // Tus componentes de reseña de casas existentes
+    ResenaListComponent, // Tus componentes de reseña de casas existentes
+    ResenasItemComponent, // Tus componentes de reseña de casas existentes
     PrimeraMayusculaPipe,
     PagosComponent,
-    PropiedadesFavoritosComponent
+    PropiedadesFavoritosComponent,
+    // ¡NUEVAS DECLARACIONES! (para los componentes que acabamos de crear)
+    SitioResenasComponent, // Declara el nuevo componente de reseñas del sitio
+    FaqComponent // Declara el nuevo componente FAQ
   ],
   imports: [
     CommonModule,

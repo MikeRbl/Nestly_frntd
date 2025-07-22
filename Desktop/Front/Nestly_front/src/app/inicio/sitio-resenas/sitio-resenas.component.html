@@ -1,0 +1,127 @@
+<div class="container mx-auto px-4 py-12 max-w-7xl font-inter">
+    <!-- Hero Section -->
+    <div class="text-center mb-12 p-8 hero-gradient-bg rounded-2xl shadow-xl">
+        <h1 class="text-5xl font-extrabold mb-4 tracking-tight leading-tight text-soft-black">Opiniones y Reseñas</h1>
+        <div class="mt-6 flex justify-center items-center gap-4">
+            <div class="flex items-center">
+                <div class="flex text-2xl text-yellow-500 gap-0.5 mr-2">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+                <span class="font-bold text-gray-700">4.7/5</span>
+            </div>
+            <span class="text-gray-400">•</span>
+            <span class="text-gray-600">{{siteReviews().length}} reseñas</span>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+        <!-- Columna Izquierda: Formulario de Reseña -->
+        <div class="flex flex-col gap-8">
+            <div class="bg-white rounded-3xl shadow-lg p-8 lg:p-10 border border-gray-100 transition-all duration-300 hover:shadow-xl">
+                <div class="relative">
+                    <h2 class="text-3xl font-bold text-soft-black mb-6 flex items-center gap-3">
+                        <i class="fas fa-edit text-accent-purple text-3xl"></i> 
+                        <span class="text-gradient-purple-blue">Escribe tu Reseña</span>
+                    </h2>
+                    
+                    <form [formGroup]="siteReviewForm" (ngSubmit)="submitSiteReview()">
+                        <div class="mb-8">
+                            <label class="block text-gray-700 text-lg font-semibold mb-3" for="siteReviewComment">Comparte tu experiencia <span class="text-red-500">*</span></label>
+                            <textarea id="siteReviewComment" formControlName="comment" 
+                                      class="w-full p-4 border border-gray-300 rounded-xl text-gray-800 text-base focus:ring-2 focus:ring-accent-blue focus:border-accent-blue transition-all duration-200 min-h-[150px] resize-y custom-scrollbar" 
+                                      placeholder="¿Qué te gustó de nuestra plataforma? ¿Qué podríamos mejorar?"
+                                      [class.border-red-500]="fSiteReview['comment'].invalid && (fSiteReview['comment'].touched || formSubmitted)"></textarea>
+                            <div class="flex justify-between items-center mt-1">
+                                <div *ngIf="fSiteReview['comment'].invalid && (fSiteReview['comment'].touched || formSubmitted)" class="text-red-600 text-sm">
+                                    Mínimo 20 caracteres requeridos.
+                                </div>
+                                <div class="text-gray-500 text-sm" [class.text-red-500]="fSiteReview['comment'].value?.length < 20 && fSiteReview['comment'].touched">
+                                    {{fSiteReview['comment'].value?.length || 0}}/200
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-8">
+                            <label class="block text-gray-700 text-lg font-semibold mb-3" for="siteReviewerName">Tu nombre o alias</label>
+                            <input type="text" id="siteReviewerName" formControlName="reviewerName" 
+                                   class="w-full p-4 border border-gray-300 rounded-xl text-gray-800 text-base focus:ring-2 focus:ring-accent-blue focus:border-accent-blue transition-all duration-200" 
+                                   placeholder="Ej: Carlos M.">
+                        </div>
+
+                        <div class="text-center pt-6 border-t border-gray-100">
+                            <button type="submit" 
+                                    class="submit-button-style font-bold py-4 px-10 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
+                                    [disabled]="isLoading">
+                                <span class="relative z-10 flex items-center justify-center gap-2">
+                                    <span *ngIf="!isLoading">Publicar Reseña</span>
+                                    <span *ngIf="isLoading">Publicando...</span>
+                                    <i *ngIf="isLoading" class="fas fa-spinner fa-spin"></i>
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Columna Derecha: Listado de Reseñas -->
+        <div class="flex flex-col gap-8">
+            <div class="bg-white rounded-3xl shadow-lg p-8 lg:p-10 border border-gray-100 transition-all duration-300 hover:shadow-xl">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-3xl font-bold text-soft-black flex items-center gap-3">
+                        <i class="fas fa-comment-dots text-accent-pink text-3xl"></i> 
+                        <span class="text-gradient-purple-blue">Opiniones Recientes</span>
+                    </h2>
+                    <div class="relative">
+                        <button (click)="toggleSort()" class="flex items-center gap-2 text-gray-600 hover:text-accent-blue transition-colors">
+                            <span>{{sortDesc() ? 'Más recientes' : 'Más antiguas'}}</span>
+                            <i class="fas" [class.fa-sort-down]="sortDesc()" [class.fa-sort-up]="!sortDesc()"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="space-y-6 max-h-[600px] overflow-y-auto pr-4 custom-scrollbar">
+                    <div *ngIf="siteReviews().length === 0" class="text-center text-gray-500 italic p-8 border-2 border-dashed border-gray-300 rounded-xl">
+                        <i class="fas fa-comment-slash text-4xl mb-4 text-gray-300"></i>
+                        <p class="text-lg">Aún no hay reseñas. ¡Sé el primero en compartir tu experiencia!</p>
+                    </div>
+                    
+                    <div class="bg-gray-50 rounded-xl p-6 shadow-sm border border-gray-100 transition-all duration-200 hover:shadow-md group"
+                         *ngFor="let review of sortedReviews()">
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 gap-2">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-700 font-bold">
+                                    {{getInitials(review.reviewerName || 'Anónimo')}}
+                                </div>
+                                <span class="font-semibold text-gray-800">{{ review.reviewerName || 'Anónimo' }}</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="flex text-lg text-yellow-500 gap-0.5">
+                                    <i *ngFor="let star of [1,2,3,4,5]" 
+                                       class="fas fa-star" 
+                                       [class.text-yellow-500]="star <= review.rating"
+                                       [class.text-gray-300]="star > review.rating"></i>
+                                </div>
+                                <span class="text-sm text-gray-500">{{ review.date | date:'mediumDate' }}</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 text-base mb-2 mt-3">{{ review.comment }}</p>
+                        
+                        <div class="flex justify-end gap-2 mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button class="text-gray-600 hover:text-accent-blue p-1" (click)="likeReview(review)">
+                                <i class="fas fa-thumbs-up" [class.text-green-500]="review.likes > 0"></i> {{review.likes}}
+                            </button>
+                            <button class="text-gray-600 hover:text-gray-800 p-1" (click)="reportReview(review)">
+                                <i class="far fa-flag"></i> Reportar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

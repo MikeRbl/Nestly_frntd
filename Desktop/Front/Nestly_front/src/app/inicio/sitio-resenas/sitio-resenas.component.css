@@ -1,0 +1,215 @@
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f0f0f0; /* Lighter track */
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #c5c5c5; /* Muted thumb */
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #9e9e9e; /* Darker on hover */
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Custom Color Variables */
+:root {
+    --soft-blue: #CFE2F3; /* Very soft blue for background */
+    --soft-purple: #E0BBE4; /* Very soft purple for background */
+    --accent-blue: #80B3FF; /* Lighter, more visible blue for accents/gradients */
+    --accent-purple: #B380FF; /* Lighter, more visible purple for accents/gradients */
+    --accent-pink: #F4BFD8; /* Soft pink for comment icon */
+    --soft-black: #343a40; /* Dark charcoal gray for titles */
+    --yellow-star: #FFD700; /* Gold for stars */
+    --success-green: #28a745; /* Vibrant green for liked icon */
+}
+
+/* Base styles for the host component */
+:host {
+    display: block;
+    min-height: 100vh;
+    background: linear-gradient(135deg, var(--soft-blue) 0%, var(--soft-purple) 100%);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--soft-black); /* Default text color, ensuring visibility */
+    line-height: 1.6;
+    padding: 2rem 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Container */
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/* Hero Section Background */
+.hero-gradient-bg {
+    background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%); /* Adjusted gradient for better contrast */
+    color: var(--soft-black); /* Ensure text is soft black for visibility */
+    padding: 3rem;
+   background: linear-gradient(135deg, #A9D9F7 0%, #D1C4E9 100%);
+    border-radius: 1.5rem;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* Hero Section Title Color */
+.text-soft-black {
+    color: var(--soft-black); /* Apply soft black to titles */
+}
+
+/* Gradient for text within card titles */
+.text-gradient-purple-blue {
+    background: linear-gradient(to right, var(--accent-blue), var(--accent-purple));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent; /* Makes the text color transparent to show the gradient */
+}
+
+/* Submit Button Style */
+.submit-button-style {
+    background: linear-gradient(135deg, var(--accent-blue) 0%, var(--accent-purple) 100%); /* Button gradient */
+    color: var(--soft-black); /* Explicitly set text to soft black for visibility */
+    font-weight: 700;
+    padding: 1rem 2.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, #A9D9F7 0%, #D1C4E9 100%);
+}
+
+.submit-button-style:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    /* Slightly darker gradient on hover for visual feedback */
+    background: linear-gradient(135deg, #608ecf 0%, #8c60cf 100%); /* Adjusted hover gradient */
+}
+
+/* Ensure the submit button text is always visible */
+.submit-button-style span {
+    color: var(--soft-black); /* Explicitly set text color to soft black */
+    position: relative;
+    z-index: 1; /* Keep text above any hover effects */
+}
+
+/* General button styles for icons/actions */
+.text-accent-purple {
+    color: var(--accent-purple);
+}
+.text-accent-blue {
+    color: var(--accent-blue);
+}
+.text-accent-pink {
+    color: var(--accent-pink);
+}
+.text-yellow-500 {
+    color: var(--yellow-star);
+}
+
+/* Style for liked thumbs-up icon (turns green) */
+.text-green-500 {
+    color: var(--success-green) !important; /* Use !important to override other styles if necessary */
+}
+
+/* Card Titles and text colors */
+.card h2 {
+    color: var(--soft-black); /* Ensure card titles are soft black */
+}
+.text-gray-700 { /* Adjusting general text colors for better contrast */
+    color: var(--soft-black);
+}
+.text-gray-800 {
+    color: var(--soft-black);
+}
+.text-gray-600 {
+    color: var(--text-muted);
+}
+.text-gray-500 {
+    color: var(--text-muted);
+}
+.text-gray-400 {
+    color: var(--text-muted);
+}
+.text-gray-300 {
+    color: #ccc; /* Lighter gray for unselected stars */
+}
+.bg-gray-50 {
+    background-color: #f8f8f8; /* Slightly lighter background for review items */
+}
+.border-gray-100 {
+    border-color: #eee; /* Lighter border for cards */
+}
+.border-gray-300 {
+    border-color: #ddd; /* Lighter border for inputs */
+}
+
+/* Responsive Adjustments (kept from previous version) */
+@media (max-width: 768px) {
+    .text-center.mb-12.p-8 {
+        padding: 2rem;
+    }
+    .text-center.mb-12.p-8 h1 {
+        font-size: 2.5rem;
+    }
+    .text-center.mb-12.p-8 p {
+        font-size: 1rem;
+    }
+    .text-center.mb-12.p-8 .text-yellow-500 {
+        font-size: 1.8rem;
+    }
+    .card {
+        padding: 1.5rem;
+        border-radius: 1rem;
+    }
+    .card-title {
+        font-size: 1.5rem;
+    }
+    .card-title i {
+        font-size: 1.8rem;
+    }
+    .form-control {
+        padding: 0.75rem;
+        font-size: 0.95rem;
+    }
+    .submit-button-style {
+        padding: 0.8rem 2rem;
+        font-size: 0.95rem;
+    }
+    .review-item {
+        padding: 1rem;
+    }
+    .reviewer-initials {
+        width: 2rem;
+        height: 2rem;
+        font-size: 0.8rem;
+    }
+    .review-stars i {
+        font-size: 1rem;
+    }
+    .review-date {
+        font-size: 0.75rem;
+    }
+    .review-comment {
+        font-size: 0.9rem;
+    }
+}

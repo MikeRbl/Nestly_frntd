@@ -1,0 +1,33 @@
+<div class="container mx-auto px-4 py-12 max-w-4xl">
+    <div class="text-center mb-12">
+        <h1 class="text-5xl font-extrabold text-orange-600 mb-4 tracking-tight leading-tight">Preguntas Frecuentes</h1>
+        </div>
+
+    <div class="faq-layout">
+        <div class="card bg-white rounded-3xl shadow-2xl p-8 lg:p-10">
+            <h2 class="card-title text-3xl font-bold text-orange-600 mb-6 flex items-center gap-3 border-b pb-4 border-orange-200">
+                <i class="fas fa-question-circle text-orange-400 text-3xl"></i> Centro de Ayuda
+            </h2>
+            <div class="accordion space-y-4">
+                <div class="accordion-item bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition-all duration-300 hover:shadow-md hover:border-blue-300" 
+                     *ngFor="let item of faqItems; let i = index" [id]="'faq-' + i">
+                    <button class="accordion-header w-full text-left p-5 font-semibold text-xl text-gray-800 flex justify-between items-center cursor-pointer bg-white hover:bg-gray-50 transition-colors duration-200" 
+                            [class.active]="item.open" (click)="toggleAccordion(item)" [attr.aria-expanded]="item.open">
+                        <span class="question-text flex-grow mr-4">{{ item.question }}</span>
+                        <i class="fas text-gray-500 transform transition-transform duration-300" 
+                           [class.fa-chevron-down]="!item.open" 
+                           [class.fa-chevron-up]="item.open"></i>
+                    </button>
+                    <div class="accordion-content px-5 pb-5 text-gray-700 text-base overflow-hidden transition-all duration-300 ease-in-out" 
+                         [class.open]="item.open" [attr.aria-hidden]="!item.open">
+                        <p>{{ item.answer }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="no-results text-center p-8 text-gray-500 italic" *ngIf="faqItems.length === 0">
+                <i class="fas fa-search-minus text-4xl mb-4 text-gray-400"></i>
+                <p class="text-lg">No hay preguntas frecuentes disponibles en este momento.</p>
+            </div>
+        </div>
+    </div>
+</div>
