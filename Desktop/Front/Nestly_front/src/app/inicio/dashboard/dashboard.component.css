@@ -10,8 +10,31 @@
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   line-height: 1.6;
-  color: #2d3748;
+  color: #2d3748; /* Corresponds to text-gray-800 of Tailwind */
 }
+
+/* Custom Color Variables */
+:root {
+    --soft-blue: #CFE2F3; /* Very soft blue for background */
+    --soft-purple: #E0BBE4; /* Very soft purple for background */
+    --accent-blue: #80B3FF; /* Lighter, more visible blue for accents/gradients */
+    --accent-purple: #B380FF; /* Lighter, more visible purple for accents/gradients */
+    --accent-pink: #F4BFD8; /* Soft pink for comment icon */
+    --soft-black: #343a40; /* Dark charcoal gray for titles and button text */
+    --yellow-star: #FFD700; /* Gold for stars */
+    --success-green: #28a745; /* Vibrant green for liked icon */
+
+    /* New variables for secondary navigation buttons */
+    --secondary-btn-bg-start: #E0F2F7; /* Very light blue for secondary button background */
+    --secondary-btn-bg-end: #E6E0F7; /* Very light purple for secondary button background */
+    --secondary-btn-hover-bg-start: #C5E6F2; /* Slightly darker on hover */
+    --secondary-btn-hover-bg-end: #D0C5E6; /* Slightly darker on hover */
+
+    /* New variables for the warm, dark gradient title */
+    --warm-dark-gradient-start: #8B4513; /* SaddleBrown */
+    --warm-dark-gradient-end: #A0522D; /* Sienna */
+}
+
 
 /* ==========================================================================
    2. Layout Principal
@@ -21,6 +44,7 @@ body {
   margin: 0 auto;
   padding: 0 20px;
 }
+
 
 /* ==========================================================================
    3. Componentes Genéricos
@@ -58,7 +82,7 @@ body {
 }
 
 .secondary-button:hover {
-  background-color: #f7fafc;
+  background-color: #f7fafc; /* Corresponds to bg-gray-100 of Tailwind */
   transform: translateY(-2px);
 }
 
@@ -76,6 +100,7 @@ body {
 .section-header p {
   font-size: 1.1rem;
 }
+
 
 /* ==========================================================================
    4. Componentes Específicos
@@ -116,22 +141,37 @@ body {
   margin-bottom: 15px;
 }
 
-/* --- Componente: Tarjeta de Propiedad (ESTILOS ACTUALIZADOS) --- */
+.benefit-card p {}
+
+
+/* --- Componente: Tarjeta de Propiedad --- */
 .property-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
   gap: 30px;
   margin: 40px 0;
-  justify-items: center;
+  justify-items: center; /* Centra las tarjetas si no llenan toda la fila */
 }
 
 .property-card {
-  transition: all 0.3s ease;
+  border: 1px solid #e2e8f0; /* gray-200 */
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease; /* Transición general para hover */
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
 }
 
 .property-card:hover {
   transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  border-color: #cbd5e0; /* gray-300 */
 }
+
+/* Specific styles for elements within property-card if needed, but Tailwind classes are preferred */
+/* .property-card-image-wrapper, .property-card-image, etc. are mostly handled by Tailwind classes in HTML */
 
 /* --- Componente: Tarjeta de Testimonios --- */
 .testimonials-section {
@@ -153,7 +193,7 @@ body {
 
 .quote-icon {
   font-size: 3rem;
-  color: #cbd5e0;
+  color: #cbd5e0; /* Corresponds to text-gray-300 of Tailwind */
   line-height: 0;
   margin-bottom: 20px;
 }
@@ -184,6 +224,7 @@ body {
   font-size: 0.9rem;
 }
 
+
 /* ==========================================================================
    5. Secciones de Página
    ========================================================================== */
@@ -199,10 +240,24 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: white;
+  color: white; /* Fallback color for text over hero background */
   border-radius: 8px;
   margin: 20px 0 40px;
 }
+
+/* Styles for the main title in the Hero Section */
+.hero-title-solid-black {
+    font-size: 3.5rem; /* Keeping the large size for prominence */
+    font-weight: 800;
+    margin-bottom: 1rem; /* Adjusted margin */
+    line-height: 1.2;
+    color: #000000; /* Solid black text color */
+    text-align: center;
+    width: 100%; /* Ensure it takes full width if needed */
+    display: block; /* Ensure it's a block element */
+    /* Removed background-clip and color: transparent as requested for solid color */
+}
+
 
 .hero-content h1 {
   font-size: 3rem;
@@ -214,6 +269,35 @@ body {
   font-size: 1.5rem;
   margin-bottom: 30px;
   font-weight: 300;
+}
+
+/* --- Sección: Final CTA --- */
+/* This section was duplicated in the provided HTML, keeping only one instance */
+.final-cta {
+  text-align: center;
+  padding: 80px 20px;
+  background: linear-gradient(135deg, #4a6bff 0%, #6b46ff 100%);
+  color: white;
+  border-radius: 8px;
+  margin: 60px 0;
+}
+
+.final-cta h2 {
+  font-size: 2.2rem;
+  margin-bottom: 15px;
+}
+
+.final-cta p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  opacity: 0.9;
+}
+
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
 /* --- Sección: Footer --- */
@@ -417,7 +501,7 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-  margin: 40px 0;
+  margin: 40px 0; /* Added margin for spacing */
 }
 
 .btn-gradient {
@@ -439,8 +523,9 @@ body {
 
 .btn-gradient:hover {
   box-shadow: 0 12px 20px rgba(79, 70, 229, 0.6);
-  background: linear-gradient(to right, #1e40af, #4338ca);
+  background: linear-gradient(to right, #1e40af, #4338ca); /* darker */
 }
+
 
 /* ==========================================================================
    6. Estilos Responsivos
@@ -455,7 +540,7 @@ body {
     font-size: 1.2rem;
   }
 
-  .section-header h2 {
+  .section-header h2 { /* Removed .final-cta h2 as it was duplicated */
     font-size: 1.8rem;
   }
 
@@ -467,24 +552,24 @@ body {
 
   /* --- Estilos del Footer --- */
   .footer-container {
-    grid-template-columns: 1fr;
-    text-align: center;
+      grid-template-columns: 1fr;
+      text-align: center;
   }
 
   .footer-title::after {
-    left: 50%;
-    transform: translateX(-50%);
+      left: 50%;
+      transform: translateX(-50%);
   }
 
   .footer-social,
   .footer-contact li,
   .footer-links li {
-    justify-content: center;
+      justify-content: center;
   }
 
   .legal-links {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
   }
 }
