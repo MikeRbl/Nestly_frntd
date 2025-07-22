@@ -22,6 +22,7 @@
 .titulo-favoritos {
   font-size: 2rem;
   font-weight: 700;
+  color: #D98EDF;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -30,7 +31,7 @@
 }
 
 .dark-mode .titulo-favoritos {
-  color: #ffffff;
+  color: #e5a8ea;
 }
 
 .heart-icon {

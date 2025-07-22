@@ -10,9 +10,8 @@
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   line-height: 1.6;
-  color: #2d3748; /* Corresponde a text-gray-800 de Tailwind */
+  color: #2d3748;
 }
-
 
 /* ==========================================================================
    2. Layout Principal
@@ -22,7 +21,6 @@ body {
   margin: 0 auto;
   padding: 0 20px;
 }
-
 
 /* ==========================================================================
    3. Componentes Genéricos
@@ -60,7 +58,7 @@ body {
 }
 
 .secondary-button:hover {
-  background-color: #f7fafc; /* Corresponde a bg-gray-100 de Tailwind */
+  background-color: #f7fafc;
   transform: translateY(-2px);
 }
 
@@ -78,7 +76,6 @@ body {
 .section-header p {
   font-size: 1.1rem;
 }
-
 
 /* ==========================================================================
    4. Componentes Específicos
@@ -119,180 +116,21 @@ body {
   margin-bottom: 15px;
 }
 
-.benefit-card p {}
-
-
-/* --- Componente: Tarjeta de Propiedad --- */
+/* --- Componente: Tarjeta de Propiedad (ESTILOS ACTUALIZADOS) --- */
 .property-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 25px;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 30px;
   margin: 40px 0;
+  justify-items: center;
 }
 
 .property-card {
-  border: 1px solid #e2e8f0; /* gray-200 */
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .property-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
-  border-color: #cbd5e0; /* gray-300 */
-}
-
-.property-card-image-wrapper {
-  position: relative;
-}
-
-.property-card-image {
-  width: 100%;
-  height: 220px;
-  object-fit: cover;
-  display: block;
-}
-
-.property-card-favorite-btn {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  background-color: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(4px);
-  border-radius: 50%;
-  padding: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: transform 0.2s ease;
-}
-
-.property-card-favorite-btn:hover {
-  transform: scale(1.1);
-}
-
-.property-card-favorite-btn svg {
-  width: 20px;
-  height: 20px;
-}
-
-.property-card-rating-badge {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  background-color: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(4px);
-  border-radius: 9999px; /* Píldora */
-  padding: 5px 10px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.875rem; /* 14px */
-  font-weight: 600;
-  color: #2d3748;
-}
-
-.property-card-rating-badge .star-icon {
-  width: 16px;
-  height: 16px;
-  color: #f6ad55; /* orange-400 */
-}
-
-.property-card-rating-badge .reviews-count {
-  font-weight: 400;
-  font-size: 0.8rem;
-  color: #718096; /* gray-600 */
-}
-
-.property-card-content {
-  padding: 16px;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.property-type {
-  background-color: #2c4ecb; 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 120px;
-  border-radius: 40px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #ffffff; 
-  letter-spacing: 0.5px;
-  user-select: none;
-  padding: 4px 10px;
-}
-
-.property-title {
-  font-size: 1.25rem; /* 20px */
-  font-weight: 600;
-  margin: 4px 0;
-  line-height: 1.3;
-}
-
-.property-location {
-  margin-top: 12px;
-  font-size: 0.875rem; /* 14px */
-  color: #718096; /* gray-600 */
-}
-
-.property-features {
-  display: flex;
-  gap: 12px; /* espacio entre badges */
-  margin-top: 16px; /* opcional */
-}
-
-.property-features span {
-  background-color: #d9429f;
-  color: #fff;           
-  padding: 6px 12px;        
-  border-radius: 20px;      
-  font-size: 0.875rem;
-  display: flex;
-  align-items: center;
-  gap: 6px;               
-  white-space: nowrap;   
-}
-
-.property-card-footer {
-  padding: 12px 16px;
-  border-top: 1px solid #edf2f7; /* gray-200 */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: auto; /* Empuja el footer al final */
-}
-
-.property-owner {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.property-owner-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.property-owner-name {
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-
-.property-price {
-  font-size: 1.125rem; 
-  font-weight: 600; 
-  color: #3b6efc;
 }
 
 /* --- Componente: Tarjeta de Testimonios --- */
@@ -315,7 +153,7 @@ body {
 
 .quote-icon {
   font-size: 3rem;
-  color: #cbd5e0; /* Corresponde a text-gray-300 de Tailwind */
+  color: #cbd5e0;
   line-height: 0;
   margin-bottom: 20px;
 }
@@ -345,7 +183,6 @@ body {
 .testimonial-author p {
   font-size: 0.9rem;
 }
-
 
 /* ==========================================================================
    5. Secciones de Página
@@ -377,34 +214,6 @@ body {
   font-size: 1.5rem;
   margin-bottom: 30px;
   font-weight: 300;
-}
-
-/* --- Sección: Final CTA --- */
-.final-cta {
-  text-align: center;
-  padding: 80px 20px;
-  background: linear-gradient(135deg, #4a6bff 0%, #6b46ff 100%);
-  color: white;
-  border-radius: 8px;
-  margin: 60px 0;
-}
-
-.final-cta h2 {
-  font-size: 2.2rem;
-  margin-bottom: 15px;
-}
-
-.final-cta p {
-  font-size: 1.2rem;
-  margin-bottom: 30px;
-  opacity: 0.9;
-}
-
-.cta-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
 }
 
 /* --- Sección: Footer --- */
@@ -596,10 +405,11 @@ body {
 .legal-links a:hover {
   color: #007bff;
 }
+
 .padding-container {
-  padding: 4rem 1.5rem; /* py-16 = 4rem, px-6 = 1.5rem */
+  padding: 4rem 1.5rem;
   text-align: center;
-  margin-top: 3rem; /* mt-12 = 3rem */
+  margin-top: 3rem;
 }
 
 .botonContainer{
@@ -607,18 +417,20 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
+  margin: 40px 0;
 }
+
 .btn-gradient {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem; /* 12px */
-  padding: 1rem 2rem; /* py-4 px-8 */
-  background: linear-gradient(to right, #2563eb, #4f46e5); /* from-blue-600 to-indigo-600 */
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  background: linear-gradient(to right, #2563eb, #4f46e5);
   color: white;
   font-weight: 600;
-  font-size: 1.125rem; /* text-lg */
-  border-radius: 9999px; /* rounded-full */
+  font-size: 1.125rem;
+  border-radius: 9999px;
   box-shadow: 0 10px 15px rgba(59, 130, 246, 0.4);
   transition: all 0.3s ease;
   cursor: pointer;
@@ -627,9 +439,8 @@ body {
 
 .btn-gradient:hover {
   box-shadow: 0 12px 20px rgba(79, 70, 229, 0.6);
-  background: linear-gradient(to right, #1e40af, #4338ca); /* darker */
+  background: linear-gradient(to right, #1e40af, #4338ca);
 }
-
 
 /* ==========================================================================
    6. Estilos Responsivos
@@ -644,41 +455,36 @@ body {
     font-size: 1.2rem;
   }
 
-  .section-header h2,
-  .final-cta h2 {
+  .section-header h2 {
     font-size: 1.8rem;
   }
 
-  .cta-buttons {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .cta-buttons button {
-    width: 100%;
-    max-width: 300px;
+  /* --- Ajustes para las cards en móvil --- */
+  .property-grid {
+    grid-template-columns: 1fr;
+    padding: 0 15px;
   }
 
   /* --- Estilos del Footer --- */
   .footer-container {
-      grid-template-columns: 1fr;
-      text-align: center;
+    grid-template-columns: 1fr;
+    text-align: center;
   }
 
   .footer-title::after {
-      left: 50%;
-      transform: translateX(-50%);
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .footer-social,
   .footer-contact li,
   .footer-links li {
-      justify-content: center;
+    justify-content: center;
   }
 
   .legal-links {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
   }
 }
