@@ -16,7 +16,6 @@ import { ConfiguracionComponent } from './configuracion/configuracion.component'
 import { PublicarComponent } from './Publicar/publicar.component';
 import { AlquilarCasaComponent } from './alquilar-casa/alquilar-casa.component';
 import { BuscarComponent } from './buscar/buscar.component';
-import { VerPropiedadesComponent } from './ver-propiedades/ver-propiedades.component';
 import { EditarPropiedadComponent } from './editar-propiedad/editar-propiedad.component';
 import { ResenaFormComponent } from './resenas/resenas-form/resena-form.component';
 import { ResenaListComponent } from './resenas/resenas-list/resena-list.component';
@@ -24,6 +23,7 @@ import { ResenasItemComponent } from './resenas/resenas-item/resena-item.compone
 import { PrimeraMayusculaPipe } from './pipes/primera-mayuscula.pipe';
 import { PagosComponent } from './pagos/pagos.component';
 import { PropiedadesFavoritosComponent } from './propiedades-favoritos/propiedades-favoritos.component';
+import { MisPropiedadesComponent } from './ver-propiedades/mis-propiedades.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +36,7 @@ import { PropiedadesFavoritosComponent } from './propiedades-favoritos/propiedad
     PublicarComponent,
     AlquilarCasaComponent,
     BuscarComponent,
-    VerPropiedadesComponent,
+    MisPropiedadesComponent,
     EditarPropiedadComponent,
     ResenaFormComponent,
     ResenaListComponent,

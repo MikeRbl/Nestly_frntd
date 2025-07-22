@@ -1,3 +1,4 @@
+import { MisPropiedadesComponent } from './ver-propiedades/mis-propiedades.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -11,7 +12,6 @@ import { ConfiguracionComponent } from './configuracion/configuracion.component'
 import { PublicarComponent } from './Publicar/publicar.component';
 import { AlquilarCasaComponent } from './alquilar-casa/alquilar-casa.component';
 import { BuscarComponent } from './buscar/buscar.component';
-import { VerPropiedadesComponent } from './ver-propiedades/ver-propiedades.component';
 import { EditarPropiedadComponent } from './editar-propiedad/editar-propiedad.component';
 import { PagosComponent } from './pagos/pagos.component';
 import { PropiedadesFavoritosComponent } from './propiedades-favoritos/propiedades-favoritos.component';
@@ -28,7 +28,7 @@ const routes: Routes = [
       { path: 'qnSomos', component: QnSomosComponent },
       { path: 'publicarCasa', component: PublicarComponent },
       { path: 'propiedad/:id', component: AlquilarCasaComponent },
-      { path: 'verPropiedades', component: VerPropiedadesComponent },
+      { path: 'verPropiedades', component: MisPropiedadesComponent },
       { path: 'editar-propiedad/:id', component: EditarPropiedadComponent },
       { path: 'buscarCasa', component: BuscarComponent },
       { path: 'pagos/:id', component: PagosComponent },
