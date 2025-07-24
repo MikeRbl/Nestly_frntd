@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpLavavelService } from '../../http.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -12,15 +12,17 @@ import { NotyfService } from '../../services/notyf.service';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   
-  // Se usa Propiedad en lugar de Property
   properties: Propiedad[] = [];
   featuredProperties: Propiedad[] = [];
   isLoading: boolean = true;
   errorMessage: string = '';
   favoritoIds = new Set<number>();
   isUserLoggedIn = false;
+
+  photoIndexes: Map<number, number> = new Map(); // índice de foto actual por propiedad
+  photoIntervalId: any;
 
   constructor(
     private Shttp: HttpLavavelService,
@@ -37,106 +39,45 @@ export class DashboardComponent implements OnInit {
     if (this.isUserLoggedIn) {
       this.cargarIdsFavoritos();
     }
-  }
- handlePropertyClick(id: number): void {
-  if (this.authService.isLoggedIn()) {
-    this.navigateToProperty(id);
-  } else {
-    Swal.fire({
-      title: '¡Inicia sesión o crea una cuenta!',
-      text: 'Necesitas una cuenta para ver los detalles de la propiedad y contactar al propietario.',
-      icon: 'info',
-      showDenyButton: true,
-      showCancelButton: true,
-      confirmButtonText: 'Iniciar Sesión',
-      denyButtonText: 'Crear Cuenta',
-      cancelButtonText: 'Más tarde',
-      confirmButtonColor: '#3B82F6',
-      denyButtonColor: '#10B981',
-      cancelButtonColor: '#6B7280',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.router.navigate(['/login']);
-      } else if (result.isDenied) {
-        this.router.navigate(['/register']); 
-        } 
-    });
-  }
-}
-  cargarIdsFavoritos(): void {
-    this.propiedadesService.getIdsFavoritos().subscribe({
-      next: (response) => {
-        // Creamos un Set con los IDs para una comprobación muy rápida
-        this.favoritoIds = new Set(response.data);
-      },
-      error: (err) => console.error('Error al cargar IDs de favoritos en Dashboard:', err)
-    });
+    this.startPhotoCarousel();
   }
 
- toggleFavorito(propiedad: Propiedad, event: MouseEvent): void {
-  event.stopPropagation(); 
-  if (!this.isUserLoggedIn) {
-    this.handlePropertyClick(propiedad.id_propiedad); 
-    return;
+  ngOnDestroy(): void {
+    if (this.photoIntervalId) {
+      clearInterval(this.photoIntervalId);
+    }
   }
-
-  const propiedadId = propiedad.id_propiedad;
-  const esFavorito = this.favoritoIds.has(propiedadId);
-
-  if (esFavorito) {
-    this.propiedadesService.quitarFavorito(propiedadId).subscribe({
-      next: () => {
-        this.favoritoIds.delete(propiedadId);
-        this.notyf.success('Eliminado de favoritos');
-      },
-      error: () => {
-        this.notyf.error('Error al quitar favorito. Intenta de nuevo.');
-      }
-    });
-  } else {
-    this.propiedadesService.agregarFavorito(propiedadId).subscribe({
-      next: () => {
-        this.favoritoIds.add(propiedadId);
-        this.notyf.success('Agregado a favoritos   ');
-      },
-      error: () => {
-        this.notyf.error('Error al agregar favorito. Intenta de nuevo.');
-      }
-    });
-  }
-}
-
-
 
   loadProperties(): void {
-  this.isLoading = true;
-  this.errorMessage = '';
+    this.isLoading = true;
+    this.errorMessage = '';
 
-  this.Shttp.Service_Get('propiedades').subscribe({
-    next: (response: any) => {
-      if (response?.data?.data) {
-        this.properties = this.processProperties(response.data.data);
-        this.featuredProperties = this.getRandomProperties(this.properties, 4);
-      } else if (response?.data) {
-        this.properties = this.processProperties(Array.isArray(response.data) ? response.data : [response.data]);
-        this.featuredProperties = this.getRandomProperties(this.properties, 4);
-      } else {
-        this.errorMessage = 'No se encontraron propiedades disponibles';
-        this.notyf.warning('No hay propiedades disponibles');
+    this.Shttp.Service_Get('propiedades').subscribe({
+      next: (response: any) => {
+        if (response?.data?.data) {
+          this.properties = this.processProperties(response.data.data);
+          this.featuredProperties = this.getRandomProperties(this.properties, 4);
+          this.featuredProperties.forEach(p => this.photoIndexes.set(p.id_propiedad, 0));
+        } else if (response?.data) {
+          this.properties = this.processProperties(Array.isArray(response.data) ? response.data : [response.data]);
+          this.featuredProperties = this.getRandomProperties(this.properties, 4);
+          this.featuredProperties.forEach(p => this.photoIndexes.set(p.id_propiedad, 0));
+        } else {
+          this.errorMessage = 'No se encontraron propiedades disponibles';
+          this.notyf.warning('No hay propiedades disponibles');
+        }
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error al cargar propiedades:', err);
+        this.errorMessage = 'Error al cargar las propiedades. Intenta nuevamente.';
+        this.isLoading = false;
+        this.notyf.error('Error al cargar propiedades');
       }
-      this.isLoading = false;
-    },
-    error: (err) => {
-      console.error('Error al cargar propiedades:', err);
-      this.errorMessage = 'Error al cargar las propiedades. Intenta nuevamente.';
-      this.isLoading = false;
-      this.notyf.error('Error al cargar propiedades');
-    }
-  });
-}
-  
-  // El tipo de retorno ahora es Propiedad[]
-  private processProperties(properties: any[]): Propiedad[] {
+    });
+  }
+
+  processProperties(properties: any[]): Propiedad[] {
     return properties.map(prop => {
       let fotos: string[] = [];
       if (prop.fotos) {
@@ -166,57 +107,148 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  // Los tipos en los parámetros y el retorno ahora son Propiedad
-  private getRandomProperties(properties: Propiedad[], count: number): Propiedad[] {
-  const available = properties.filter(prop =>
-    // Usamos el campo 'estado_propiedad' que SÍ existe en tu interface
-    prop.estado_propiedad !== 'inactivo' &&
+  getRandomProperties(properties: Propiedad[], count: number): Propiedad[] {
+    const available = properties.filter(prop =>
+      prop.estado_propiedad !== 'inactivo' &&
+      (prop.imagen_principal || (Array.isArray(prop.fotos) && prop.fotos.length > 0))
+    );
+    return [...available]
+      .sort(() => 0.5 - Math.random())
+      .slice(0, count);
+  }
 
-    // Y aquí comprobamos si tiene imagen con los nombres 
-    (prop.imagen_principal || (Array.isArray(prop.fotos) && prop.fotos.length > 0))
-  );
-
-  return [...available]
-    .sort(() => 0.5 - Math.random())
-    .slice(0, count);
-}
-
-  // El tipo del parámetro es Propiedad
-  // Pega esta función corregida en tu dashboard.component.ts,
-// reemplazando la versión anterior de getFirstPhoto.
-
-getFirstPhoto(property: Propiedad): string {
+  getFirstPhoto(property: Propiedad): string {
     const baseUrl = 'http://localhost:8000';
 
     const buildUrl = (path: string | undefined): string => {
-        if (!path) {
-            return 'assets/default-property.jpg'; // Imagen por defecto
-        }
-        // Si ya es una URL completa
-        if (path.startsWith('http')) {
-            return path;
-        }
-        // Si es una ruta de storage, pero sin el http
-        if (path.startsWith('/storage')) {
-            return `${baseUrl}${path}`;
-        }
-        // Para rutas relativas como "propiedades/imagen.jpg"
-        return `${baseUrl}/storage/${path}`;
+      if (!path) return 'assets/default-property.jpg';
+      if (path.startsWith('http')) return path;
+      if (path.startsWith('/storage')) return `${baseUrl}${path}`;
+      return `${baseUrl}/storage/${path}`;
     };
 
-    // 1. Busca 'imagen_principal', que SÍ existe en tu interface.
     if (property.imagen_principal) {
-        return buildUrl(property.imagen_principal);
+      return buildUrl(property.imagen_principal);
     }
 
-    // 2. Si no la encuentra, busca en el arreglo 'fotos'.
     if (property.fotos && Array.isArray(property.fotos) && property.fotos.length > 0) {
-        return buildUrl(property.fotos[0]);
+      return buildUrl(property.fotos[0]);
     }
 
-    // 3. Si no hay ninguna imagen, usa la de por defecto.
     return 'assets/default-property.jpg';
-}
+  }
+
+  // Nuevo método para carrusel fotos
+  startPhotoCarousel() {
+    this.photoIntervalId = setInterval(() => {
+      this.featuredProperties.forEach(prop => {
+        const currentIndex = this.photoIndexes.get(prop.id_propiedad) || 0;
+        const photosCount = (prop.fotos && prop.fotos.length > 0) ? prop.fotos.length : 1;
+        const nextIndex = (currentIndex + 1) % photosCount;
+        this.photoIndexes.set(prop.id_propiedad, nextIndex);
+      });
+    }, 5000);
+  }
+
+  getCurrentPhoto(property: Propiedad): string {
+    const index = this.photoIndexes.get(property.id_propiedad) || 0;
+    if (property.fotos && property.fotos.length > 0) {
+      return this.buildUrl(property.fotos[index]);
+    }
+    return this.getFirstPhoto(property);
+  }
+
+  buildUrl(path: string | undefined): string {
+    const baseUrl = 'http://localhost:8000';
+    if (!path) return 'assets/default-property.jpg';
+    if (path.startsWith('http')) return path;
+    if (path.startsWith('/storage')) return `${baseUrl}${path}`;
+    return `${baseUrl}/storage/${path}`;
+  }
+
+  prevPhoto(property: Propiedad, event: MouseEvent) {
+    event.stopPropagation();
+    const currentIndex = this.photoIndexes.get(property.id_propiedad) || 0;
+    const photosCount = (property.fotos && property.fotos.length > 0) ? property.fotos.length : 1;
+    const prevIndex = (currentIndex - 1 + photosCount) % photosCount;
+    this.photoIndexes.set(property.id_propiedad, prevIndex);
+  }
+
+  nextPhoto(property: Propiedad, event: MouseEvent) {
+    event.stopPropagation();
+    const currentIndex = this.photoIndexes.get(property.id_propiedad) || 0;
+    const photosCount = (property.fotos && property.fotos.length > 0) ? property.fotos.length : 1;
+    const nextIndex = (currentIndex + 1) % photosCount;
+    this.photoIndexes.set(property.id_propiedad, nextIndex);
+  }
+
+  // Los demás métodos existentes sin cambio:
+  handlePropertyClick(id: number): void {
+    if (this.authService.isLoggedIn()) {
+      this.navigateToProperty(id);
+    } else {
+      Swal.fire({
+        title: '¡Inicia sesión o crea una cuenta!',
+        text: 'Necesitas una cuenta para ver los detalles de la propiedad y contactar al propietario.',
+        icon: 'info',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Iniciar Sesión',
+        denyButtonText: 'Crear Cuenta',
+        cancelButtonText: 'Más tarde',
+        confirmButtonColor: '#3B82F6',
+        denyButtonColor: '#10B981',
+        cancelButtonColor: '#6B7280',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.router.navigate(['/login']);
+        } else if (result.isDenied) {
+          this.router.navigate(['/register']);
+        }
+      });
+    }
+  }
+
+  cargarIdsFavoritos(): void {
+    this.propiedadesService.getIdsFavoritos().subscribe({
+      next: (response) => {
+        this.favoritoIds = new Set(response.data);
+      },
+      error: (err) => console.error('Error al cargar IDs de favoritos en Dashboard:', err)
+    });
+  }
+
+  toggleFavorito(propiedad: Propiedad, event: MouseEvent): void {
+    event.stopPropagation();
+    if (!this.isUserLoggedIn) {
+      this.handlePropertyClick(propiedad.id_propiedad);
+      return;
+    }
+    const propiedadId = propiedad.id_propiedad;
+    const esFavorito = this.favoritoIds.has(propiedadId);
+
+    if (esFavorito) {
+      this.propiedadesService.quitarFavorito(propiedadId).subscribe({
+        next: () => {
+          this.favoritoIds.delete(propiedadId);
+          this.notyf.success('Eliminado de favoritos');
+        },
+        error: () => {
+          this.notyf.error('Error al quitar favorito. Intenta de nuevo.');
+        }
+      });
+    } else {
+      this.propiedadesService.agregarFavorito(propiedadId).subscribe({
+        next: () => {
+          this.favoritoIds.add(propiedadId);
+          this.notyf.success('Agregado a favoritos');
+        },
+        error: () => {
+          this.notyf.error('Error al agregar favorito. Intenta de nuevo.');
+        }
+      });
+    }
+  }
 
   formatPrice(price: number | undefined, anualizado: boolean | undefined = false): string {
     const precio = price || 0;
