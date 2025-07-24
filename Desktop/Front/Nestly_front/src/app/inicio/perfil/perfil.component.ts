@@ -106,6 +106,7 @@ export class PerfilComponent implements OnInit {
       return; // Exit if no file is selected
     }
 
+<<<<<<< HEAD
     this.isLoading = true; // Activate loading state
     this.uploadProgress = 0; // Reset upload progress
     this.errorMessage = ''; // Clear previous error messages
@@ -134,9 +135,36 @@ export class PerfilComponent implements OnInit {
         this.errorMessage = err.error?.message || 'Error al actualizar la foto de perfil. Inténtalo de nuevo.';
         this.isLoading = false; // Deactivate loading state
         this.resetUpload(); // Reset upload state even on error
+=======
+  this.isLoading = true;
+  this.uploadProgress = 0;
+  this.errorMessage = ''; 
+
+  const formData = new FormData();
+  formData.append('avatar', this.selectedFile); // ojo, que aquí el backend espera 'avatar' no 'profile_picture'
+
+  this.Shttp.Service_Post('user/avatar', formData).subscribe({
+    next: (response: any) => {
+      console.log('Foto de perfil actualizada:', response);
+      if (this.userData && response.avatar_url) {
+        this.userData.profile_picture = `${response.avatar_url}?${new Date().getTime()}`;
+        window.location.reload();
+      } else if (this.userData) {
+        this.loadUserData();
+>>>>>>> 15cfc6413a89886cd2bbd463b799e1c2230a7858
       }
-    });
-  }
+      this.resetUpload();
+      this.isLoading = false;
+    },
+    error: (err) => {
+      console.error('Error al actualizar foto de perfil:', err);
+      this.errorMessage = err.error?.message || 'Error al actualizar la foto de perfil';
+      this.isLoading = false;
+      this.resetUpload();
+    }
+  });
+}
+
 
   /**
    * Resets all state variables related to image upload (preview, file, progress, errors).

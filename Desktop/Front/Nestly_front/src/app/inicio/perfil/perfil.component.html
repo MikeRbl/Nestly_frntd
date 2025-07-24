@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!-- Contenedor principal de la página de perfil, aplicando colores básicos de fondo y texto -->
 <div class="profile-container">
   <!-- Panel Izquierdo: Barra Lateral del Perfil -->
@@ -195,10 +196,196 @@
               <button class="property-action">
                 Ver Detalles
               </button>
+=======
+<div class="profile-main-wrapper">
+  <!-- Contenedor Principal del Perfil -->
+  <div class="profile-container">
+
+    <!-- Panel Lateral Izquierdo: Menú de Navegación (movido aquí para mejor flujo) -->
+    <div class="profile-sidebar-left">
+      <nav class="profile-nav-menu">
+        <div class="sidebar-header">
+          <button class="back-btn" routerLink="/principal/dashboard">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M15.41 16.59L10.83 12l4.58-4.59L14 6l-6 6 6 6z"/>
+            </svg>
+            <span>Volver</span>
+          </button>
+        </div>
+
+        <div class="user-details-section">
+          <div class="user-avatar-placeholder">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>
+          </div>
+          <h3 class="user-name-display">
+            <ng-container *ngIf="isLoading">Cargando...</ng-container>
+            <ng-container *ngIf="!isLoading && userData">
+              {{userData.first_name}} {{userData.last_name_paternal}}
+            </ng-container>
+            <ng-container *ngIf="!isLoading && !userData">
+              Usuario
+            </ng-container>
+          </h3>
+          <div class="user-role-badge">{{userData?.role || 'Usuario'}}</div>
+        </div>
+
+        <div class="nav-items-container">
+          <a class="nav-item active" routerLink="/principal/perfil">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            <span>Perfil</span>
+          </a>
+          <a class="nav-item" routerLink="/principal/editarPerfil">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+            <span>Editar Perfil</span>
+          </a>
+          <a class="nav-item" routerLink="/principal/configuracion">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69.98l-2.49-1c-.23-.09-.49 0-.61.22l2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19.15-.24.42-.12.64l2 3.46c.12.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l-.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.12 3.5 3.5-1.57 3.5-3.5 3.5z"/></svg>
+            <span>Configuración</span>
+          </a>
+          <a class="nav-item logout-item" (click)="logout()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+            <span>Cerrar Sesión</span>
+          </a>
+        </div>
+      </nav>
+    </div>
+
+    <!-- Panel Central: Contenido Principal -->
+    <div class="profile-content-main">
+      <!-- Sección de Información del Usuario -->
+      <div *ngIf="isLoading && !userData" class="loading-message-full">
+        <div class="spinner"></div>
+        <p>Cargando datos del usuario...</p>
+      </div>
+
+      <div *ngIf="userData && !isLoading" class="user-info-section">
+        <div class="section-header">
+          <h1 class="section-title">Información Personal</h1>
+        </div>
+
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+            <div class="info-content">
+              <label>Nombre completo</label>
+              <div class="info-value">{{userData.first_name}} {{userData.last_name_paternal}} {{userData.last_name_maternal}}</div>
+            </div>
+          </div>
+          
+          <div class="info-item">
+            <div class="info-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></div>
+            <div class="info-content">
+              <label>Correo electrónico</label>
+              <div class="info-value">{{userData.email}}</div>
+            </div>
+          </div>
+          
+          <div class="info-item">
+            <div class="info-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.47.57 3.57.11.35.03.74-.24 1.02l-2.2 2.2z"/></svg></div>
+            <div class="info-content">
+              <label>Teléfono</label>
+              <div class="info-value">{{userData.phone || 'No proporcionado'}}</div>
+            </div>
+          </div>
+          
+          <div class="info-item">
+            <div class="info-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19 4H4c-1.11 0-1.99.9-1.99 2L2 20c0 1.1.89 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H4V8h14v12z"/></svg></div>
+            <div class="info-content">
+              <label>Miembro desde</label>
+              <div class="info-value">{{userData.created_at | date:'longDate'}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección de Propiedades Publicadas -->
+      <div class="properties-section-main">
+        <div class="section-header">
+          <h2 class="section-title">Mis Propiedades</h2>
+          <span class="properties-count-badge">3 Publicadas</span>
+        </div>
+
+        <div class="properties-grid">
+          <!-- Tarjeta de Propiedad 1 (Rentada) -->
+          <div class="property-card">
+            <div class="property-image-wrapper">
+              <div class="property-badge rentada">Rentada</div>
+              <img src="https://plus.unsplash.com/premium_photo-1661915661139-5b6a4e4a6fcc?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y2FzYSUyMG1vZGVybmF8ZW58MHx8MHx8fDA%3D" alt="Casa Moderna" class="property-image">
+            </div>
+            <div class="property-details">
+              <h3 class="property-title">Casa moderna en El Nigromante</h3>
+              <div class="property-price">$20,000/mes</div>
+              <div class="property-location">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                <span>El Nigromante</span>
+              </div>
+              <div class="property-footer">
+                <div class="property-stats">
+                  <div class="property-views">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                    <span>210 visitas</span>
+                  </div>
+                </div>
+                <button class="property-action-btn">Ver Detalles</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta de Propiedad 2 (Rentada) -->
+          <div class="property-card">
+            <div class="property-image-wrapper">
+              <div class="property-badge rentada">Rentada</div>
+              <img src="https://i0.wp.com/casactualdiseno.com/wp-content/uploads/2021/06/HU_1-Photo.jpg" alt="Casa Moderna" class="property-image">
+            </div>
+            <div class="property-details">
+              <h3 class="property-title">Departamento en La Talega</h3>
+              <div class="property-price">$23,500/mes</div>
+              <div class="property-location">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                <span>La Talega</span>
+              </div>
+              <div class="property-footer">
+                <div class="property-stats">
+                  <div class="property-views">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                    <span>3,210 visitas</span>
+                  </div>
+                </div>
+                <button class="property-action-btn">Ver Detalles</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta de Propiedad 3 (Disponible) -->
+          <div class="property-card">
+            <div class="property-image-wrapper">
+              <div class="property-badge disponible">Disponible</div>
+              <img src="https://i.pinimg.com/736x/02/17/e8/0217e8ba2cda0577e7a490566a47f49e.jpg" alt="Casa con alberca" class="property-image">
+            </div>
+            <div class="property-details">
+              <h3 class="property-title">Casa con alberca en San Antonio</h3>
+              <div class="property-price">$35,000/mes</div>
+              <div class="property-location">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                <span>San Antonio</span>
+              </div>
+              <div class="property-footer">
+                <div class="property-stats">
+                  <div class="property-views">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                    <span>880 visitas</span>
+                  </div>
+                </div>
+                <button class="property-action-btn">Ver Detalles</button>
+              </div>
+>>>>>>> 15cfc6413a89886cd2bbd463b799e1c2230a7858
             </div>
           </div>
         </div>
 
+<<<<<<< HEAD
         <!-- Tarjeta de Propiedad 2 (Rentada) -->
         <div class="property-card">
           <div class="property-badge rentada">Rentada</div>
@@ -294,6 +481,15 @@
         <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" />
       </svg>
       <span>Cerrar Sesión</span>
+=======
+        <button class="view-more-properties-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+          Ver Más Propiedades
+        </button>
+      </div>
+>>>>>>> 15cfc6413a89886cd2bbd463b799e1c2230a7858
     </div>
   </div>
 </div>

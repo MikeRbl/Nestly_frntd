@@ -1,3 +1,6 @@
+import { TipoPropiedad } from './tipopropiedad.interface';
+import { User } from './usuario.interface';
+
 export interface Propiedad {
   id_propiedad: number;
   id_propietario: number;
@@ -7,6 +10,7 @@ export interface Propiedad {
   direccion: string;
   pais: string;
   estado_ubicacion: string;
+  estado_propiedad: string;
   ciudad: string;
   colonia?: string | null;
   precio: number;
@@ -24,4 +28,9 @@ export interface Propiedad {
   fotos_archivos?: File[]; 
   fecha_creacion?: string;
   fecha_actualizacion?: string;
+  propietario?: User; 
+  tipo_propiedad?: TipoPropiedad; 
+
+  resenas_count?: number;
+  resenas_avg_puntuacion?: string | null;
 }
