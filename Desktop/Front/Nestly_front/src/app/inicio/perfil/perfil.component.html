@@ -2,7 +2,7 @@
   <!-- Contenedor Principal del Perfil -->
   <div class="profile-container">
 
-    <!-- Panel Lateral Izquierdo: Menú de Navegación (movido aquí para mejor flujo) -->
+    <!-- Panel Lateral Izquierdo: Menú de Navegación -->
     <div class="profile-sidebar-left">
       <nav class="profile-nav-menu">
         <div class="sidebar-header">
@@ -105,87 +105,85 @@
       <div class="properties-section-main">
         <div class="section-header">
           <h2 class="section-title">Mis Propiedades</h2>
-          <span class="properties-count-badge">3 Publicadas</span>
+          <span class="properties-count-badge">{{propiedades.length}} Publicada(s)</span>
         </div>
 
-        <div class="properties-grid">
-          <!-- Tarjeta de Propiedad 1 (Rentada) -->
-          <div class="property-card">
-            <div class="property-image-wrapper">
-              <div class="property-badge rentada">Rentada</div>
-              <img src="https://plus.unsplash.com/premium_photo-1661915661139-5b6a4e4a6fcc?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Y2FzYSUyMG1vZGVybmF8ZW58MHx8MHx8fDA%3D" alt="Casa Moderna" class="property-image">
-            </div>
-            <div class="property-details">
-              <h3 class="property-title">Casa moderna en El Nigromante</h3>
-              <div class="property-price">$20,000/mes</div>
-              <div class="property-location">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                <span>El Nigromante</span>
+        <!-- Skeleton Loader mientras se cargan las propiedades -->
+        <div *ngIf="loadingPropiedades" class="grid grid-cols-1 md:grid-cols-3 gap-4 animate-pulse">
+          <div *ngFor="let n of [1,2,3]" class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-sm">
+            <!-- Imagen falsa -->
+            <div class="h-48 bg-gray-300 dark:bg-gray-700 w-full"></div>
+            <!-- Contenido -->
+            <div class="p-4 space-y-3">
+              <div class="flex justify-between items-start">
+                <div class="h-4 bg-gray-300 dark:bg-gray-600 rounded w-2/3"></div>
+                <div class="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/5"></div>
               </div>
-              <div class="property-footer">
-                <div class="property-stats">
-                  <div class="property-views">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
-                    <span>210 visitas</span>
-                  </div>
-                </div>
-                <button class="property-action-btn">Ver Detalles</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Tarjeta de Propiedad 2 (Rentada) -->
-          <div class="property-card">
-            <div class="property-image-wrapper">
-              <div class="property-badge rentada">Rentada</div>
-              <img src="https://i0.wp.com/casactualdiseno.com/wp-content/uploads/2021/06/HU_1-Photo.jpg" alt="Casa Moderna" class="property-image">
-            </div>
-            <div class="property-details">
-              <h3 class="property-title">Departamento en La Talega</h3>
-              <div class="property-price">$23,500/mes</div>
-              <div class="property-location">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                <span>La Talega</span>
-              </div>
-              <div class="property-footer">
-                <div class="property-stats">
-                  <div class="property-views">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
-                    <span>3,210 visitas</span>
-                  </div>
-                </div>
-                <button class="property-action-btn">Ver Detalles</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Tarjeta de Propiedad 3 (Disponible) -->
-          <div class="property-card">
-            <div class="property-image-wrapper">
-              <div class="property-badge disponible">Disponible</div>
-              <img src="https://i.pinimg.com/736x/02/17/e8/0217e8ba2cda0577e7a490566a47f49e.jpg" alt="Casa con alberca" class="property-image">
-            </div>
-            <div class="property-details">
-              <h3 class="property-title">Casa con alberca en San Antonio</h3>
-              <div class="property-price">$35,000/mes</div>
-              <div class="property-location">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                <span>San Antonio</span>
-              </div>
-              <div class="property-footer">
-                <div class="property-stats">
-                  <div class="property-views">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
-                    <span>880 visitas</span>
-                  </div>
-                </div>
-                <button class="property-action-btn">Ver Detalles</button>
-              </div>
+              <div class="h-3 bg-gray-300 dark:bg-gray-600 rounded w-3/4"></div>
+              <div class="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/4"></div>
+              <div class="h-5 bg-gray-300 dark:bg-gray-600 rounded w-1/3 mt-4"></div>
             </div>
           </div>
         </div>
 
-        <button class="view-more-properties-btn">
+        <!-- Sin propiedades -->
+        <div *ngIf="!loadingPropiedades && propiedades.length === 0"
+          class="text-center text-gray-500 dark:text-gray-400 p-8 border border-dashed border-gray-300 rounded-md bg-white dark:bg-gray-800">
+          <p class="font-semibold mb-2">No has publicado propiedades aún</p>
+          <p class="text-sm mb-4">Publica tu primera propiedad para comenzar.</p>
+          <button (click)="publicarNuevaPropiedad()"
+            class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-sm font-medium">
+            <svg class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd"
+                d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                clip-rule="evenodd" />
+            </svg>
+            Publicar
+          </button>
+        </div>
+
+        <!-- Lista de propiedades (3 aleatorias) -->
+        <div *ngIf="!loadingPropiedades && propiedades.length > 0" class="properties-grid">
+          <div *ngFor="let propiedad of propiedadesMostradas" 
+               class="property-card">
+            <div class="property-image-wrapper">
+              <div class="property-badge" 
+                   [class.rentada]="propiedad.estado_propiedad === 'Rentada'"
+                   [class.disponible]="propiedad.estado_propiedad === 'Disponible'"
+                   [class.inactiva]="propiedad.estado_propiedad === 'Inactiva'">
+                {{propiedad.estado_propiedad}}
+              </div>
+              <img *ngIf="propiedad.fotos?.length > 0" 
+                   [src]="getFullImageUrl(propiedad.fotos[0])" 
+                   alt="Imagen de la propiedad" 
+                   class="property-image">
+              <div *ngIf="!propiedad.fotos?.length" class="property-image-placeholder">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5-7l-3 3.72L9 13l-3 4h12l-4-5z"/>
+                </svg>
+              </div>
+            </div>
+            <div class="property-details">
+              <h3 class="property-title">{{ propiedad.titulo }}</h3>
+              <div class="property-price">${{ propiedad.precio | number:'1.0-2' }}<span *ngIf="propiedad.tipo_operacion === 'Renta'">/mes</span></div>
+              <div class="property-location">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                <span>{{ propiedad.direccion }}</span>
+              </div>
+              <div class="property-footer">
+                <div class="property-stats">
+                  <div class="property-views">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                    <span>{{ propiedad.visitas || 0 }} visitas</span>
+                  </div>
+                </div>
+                <button class="property-action-btn" (click)="verDetallesPropiedad(propiedad.id)">Ver Detalles</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button *ngIf="propiedades.length > 3" class="view-more-properties-btn" routerLink="/principal/verPropiedades">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
             <path d="M12 5v14M5 12h14"/>
           </svg>
