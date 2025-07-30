@@ -5,7 +5,7 @@ import Swal from 'sweetalert2';
 import { Propiedad } from '../../interface/propiedades.interface';
 import { AuthService } from '../../auth.service';
 import { PropiedadesService } from '../../services/propiedad.service';
-import { NotyfService } from '../../services/notyf.service';  
+import { NotyfService } from '../../services/notyf.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,15 +13,16 @@ import { NotyfService } from '../../services/notyf.service';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-  
+
   properties: Propiedad[] = [];
   featuredProperties: Propiedad[] = [];
   isLoading: boolean = true;
   errorMessage: string = '';
   favoritoIds = new Set<number>();
   isUserLoggedIn = false;
+  imageOpacity = 1;
 
-  photoIndexes: Map<number, number> = new Map(); // índice de foto actual por propiedad
+  photoIndexes: Map<number, number> = new Map();
   photoIntervalId: any;
 
   constructor(
@@ -31,7 +32,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private propiedadesService: PropiedadesService,
     private notyf: NotyfService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.isUserLoggedIn = this.authService.isLoggedIn();
@@ -138,17 +139,26 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return 'assets/default-property.jpg';
   }
 
-  // Nuevo método para carrusel fotos
   startPhotoCarousel() {
     this.photoIntervalId = setInterval(() => {
-      this.featuredProperties.forEach(prop => {
-        const currentIndex = this.photoIndexes.get(prop.id_propiedad) || 0;
-        const photosCount = (prop.fotos && prop.fotos.length > 0) ? prop.fotos.length : 1;
-        const nextIndex = (currentIndex + 1) % photosCount;
-        this.photoIndexes.set(prop.id_propiedad, nextIndex);
-      });
+      // Empieza el fade out
+      this.imageOpacity = 0;
+
+      // Espera que se desvanezca antes de cambiar
+      setTimeout(() => {
+        this.featuredProperties.forEach(prop => {
+          const currentIndex = this.photoIndexes.get(prop.id_propiedad) || 0;
+          const photosCount = (prop.fotos && prop.fotos.length > 0) ? prop.fotos.length : 1;
+          const nextIndex = (currentIndex + 1) % photosCount;
+          this.photoIndexes.set(prop.id_propiedad, nextIndex);
+        });
+
+        // Luego, fade in
+        this.imageOpacity = 1;
+      }, 400); // tiempo de fade-out 
     }, 5000);
   }
+
 
   getCurrentPhoto(property: Propiedad): string {
     const index = this.photoIndexes.get(property.id_propiedad) || 0;
@@ -182,7 +192,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.photoIndexes.set(property.id_propiedad, nextIndex);
   }
 
-  // Los demás métodos existentes sin cambio:
   handlePropertyClick(id: number): void {
     if (this.authService.isLoggedIn()) {
       this.navigateToProperty(id);
@@ -270,29 +279,33 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }
       });
   }
-  
+  pausePhotoCarousel(): void {
+    if (this.photoIntervalId) {
+      clearInterval(this.photoIntervalId);
+    }
+  }
   public getStarArray(rating: string | null | undefined): string[] {
     const stars: string[] = [];
     if (!rating) {
-        return Array(5).fill('empty');
+      return Array(5).fill('empty');
     }
     const numericRating = parseFloat(rating);
     if (isNaN(numericRating)) {
-        return Array(5).fill('empty');
+      return Array(5).fill('empty');
     }
     const roundedRating = Math.round(numericRating * 2) / 2;
     for (let i = 1; i <= 5; i++) {
-        if (roundedRating >= i) {
-            stars.push('full');
-        } else if (roundedRating >= i - 0.5) {
-            stars.push('half');
-        } else {
-            stars.push('empty');
-        }
+      if (roundedRating >= i) {
+        stars.push('full');
+      } else if (roundedRating >= i - 0.5) {
+        stars.push('half');
+      } else {
+        stars.push('empty');
+      }
     }
     return stars;
   }
-  
+
   handleNavigation(route: string): void {
     this.router.navigate([route]);
   }
