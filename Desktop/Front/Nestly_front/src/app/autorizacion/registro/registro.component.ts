@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpLavavelService } from '../../http.service';
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-registro',
   templateUrl: './registro.component.html',
@@ -29,7 +30,9 @@ export class RegistroComponent {
       telefono: ['', [Validators.required, Validators.pattern('[0-9]{10}')]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       password_confirmation: ['', Validators.required],
-      rol: ['', Validators.required]
+      rol: ['', Validators.required],
+      // --- CAMBIO: Se añade el control para los términos ---
+      terminos: [false, Validators.requiredTrue]
     }, {
       validator: this.passwordMatchValidator
     });
@@ -53,18 +56,55 @@ export class RegistroComponent {
     this.showConfirmPassword = !this.showConfirmPassword;
   }
 
+  // --- CAMBIO: Se añaden los métodos para los popups ---
+  mostrarTerminos(event: MouseEvent) {
+    event.preventDefault();
+    Swal.fire({
+      title: 'Términos y Condiciones',
+      html: `
+        <div style="text-align: left; max-height: 400px; overflow-y: auto; font-size: 14px; padding-right: 15px;">
+          <h4>1. Definición del Servicio</h4>
+          <p>Nestly es una plataforma en línea que permite a los propietarios ("Anfitriones") publicar propiedades ("Anuncios") para alquilar, y a los usuarios ("Huéspedes") buscar y reservar dichas propiedades...</p>
+          </div>
+      `,
+      width: '800px',
+      confirmButtonText: 'Cerrar'
+    });
+  }
+
+  mostrarPrivacidad(event: MouseEvent) {
+    event.preventDefault();
+    Swal.fire({
+      title: 'Política de Privacidad',
+      html: `
+        <div style="text-align: left; max-height: 400px; overflow-y: auto; font-size: 14px; padding-right: 15px;">
+          <h4>1. Información que Recopilamos</h4>
+          <p>Recopilamos tres categorías principales de información: Información que tú nos proporcionas (datos de cuenta, perfil, propiedades, pago), Información recopilada automáticamente (datos de uso, geolocalización, cookies) e Información de Terceros (reseñas, verificaciones)...</p>
+          </div>
+      `,
+      width: '800px',
+      confirmButtonText: 'Cerrar'
+    });
+  }
+
   onSubmit() {
     this.submitted = true;
     this.errorMessage = '';
 
     if (this.registroForm.invalid) {
+      // --- CAMBIO: Mensaje de error más específico ---
+      const terminosAceptados = this.registroForm.get('terminos')?.value;
+      let errorText = "Completa todos los campos requeridos.";
+      if (!terminosAceptados) {
+        errorText = "Por favor, completa todos los campos y acepta los términos y condiciones.";
+      }
+      
       Swal.fire({
         icon: "error",
         title: "Upsi",
-        text: "Completa todos los campos requeridos",
+        text: errorText,
       });
       return;
-  
     }
     
     this.loading = true;
@@ -84,7 +124,6 @@ export class RegistroComponent {
       title: 'Registrando...',
       allowOutsideClick: false,
       timer: 2000,
-      
       didOpen: () => {
         Swal.showLoading();
       }
@@ -108,13 +147,12 @@ export class RegistroComponent {
           title: "Error en registro",
           text: error.error?.message || 
                 error.error?.errors?.email?.[0] || 
-                'Ocurrio un error al registra. Intenta de nuevo',
+                'Ocurrio un error al registrar. Intenta de nuevo',
         });
       },
       complete: () => {
         this.loading = false;
       }
     });
-    
   }
 }

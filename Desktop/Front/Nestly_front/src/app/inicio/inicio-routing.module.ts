@@ -19,6 +19,8 @@ import { MisPropiedadesComponent } from './ver-propiedades/mis-propiedades.compo
 // ¡NUEVAS IMPORTACIONES!
 import { SitioResenasComponent } from './sitio-resenas/sitio-resenas.component';
 import { FaqComponent } from './faq/faq.component';
+import { TerminosComponent } from './terminos/terminos.component';
+import { PrivacidadComponent } from './privacidad/privacidad.component';
 
 const routes: Routes = [
   {
@@ -37,6 +39,8 @@ const routes: Routes = [
       { path: 'buscarCasa', component: BuscarComponent },
       { path: 'pagos/:id', component: PagosComponent },
       { path: 'favoritos', component: PropiedadesFavoritosComponent },
+      { path: 'terminos-y-condiciones', component: TerminosComponent },
+      { path: 'politica-de-privacidad', component: PrivacidadComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: '', redirectTo: 'pagos/1', pathMatch: 'full' }
     ]

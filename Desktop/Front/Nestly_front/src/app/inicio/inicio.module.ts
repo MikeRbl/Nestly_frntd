@@ -27,7 +27,9 @@ import { MisPropiedadesComponent } from './ver-propiedades/mis-propiedades.compo
 
 // ¡NUEVAS IMPORTACIONES! (para los componentes que acabamos de crear)
 import { SitioResenasComponent } from './sitio-resenas/sitio-resenas.component'; // Importa el nuevo componente de reseñas del sitio
-import { FaqComponent } from './faq/faq.component'; // Importa el nuevo componente FAQ
+import { FaqComponent } from './faq/faq.component';
+import { TerminosComponent } from './terminos/terminos.component';
+import { PrivacidadComponent } from './privacidad/privacidad.component'; // Importa el nuevo componente FAQ
 
 @NgModule({
   declarations: [
@@ -50,7 +52,7 @@ import { FaqComponent } from './faq/faq.component'; // Importa el nuevo componen
     PropiedadesFavoritosComponent,
     // ¡NUEVAS DECLARACIONES! (para los componentes que acabamos de crear)
     SitioResenasComponent, // Declara el nuevo componente de reseñas del sitio
-    FaqComponent // Declara el nuevo componente FAQ
+    FaqComponent, TerminosComponent, PrivacidadComponent // Declara el nuevo componente FAQ
   ],
   imports: [
     CommonModule,
