@@ -1,9 +1,9 @@
 <script>
   // Script bloqueante para evitar el "flash" del tema claro
-  (function() {
-    const savedMode = localStorage.getItem('darkModeEnabled');
-    if (savedMode === 'true') {
-      document.documentElement.classList.add('dark');
+  (function () {
+    const savedMode = localStorage.getItem("darkModeEnabled");
+    if (savedMode === "true") {
+      document.documentElement.classList.add("dark");
     }
   })();
 </script>
@@ -11,162 +11,206 @@
 <div class="bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white">
   <nav class="fresh-navbar background bg-gray-50 dark:bg-gray-800">
     <div class="fresh-nav-container background bg-gray-50 dark:bg-gray-800">
-      
       <!-- Logo centrado en móvil -->
       <div class="fresh-logo" routerLink="/principal/dashboard">
-        <img src="assets/navbar/LogoN.png" alt="Westly">
+        <img src="assets/navbar/LogoN.png" alt="Nestly" />
       </div>
 
       <!-- Menú de navegación principal -->
       <div class="fresh-nav-links" [class.active]="mobileMenuOpen">
-        <a class="nav-main-link"
-           routerLink="dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
-           (click)="closeMenus()">
+        <a
+          class="nav-main-link"
+          routerLink="dashboard"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="closeMenus()"
+        >
           <span class="textoBtn">Inicio</span>
         </a>
 
-        <a class="nav-main-link"
-           routerLink="buscarCasa" routerLinkActive="active"
-           (click)="closeMenus()">
+        <a
+          class="nav-main-link"
+          routerLink="buscarCasa"
+          routerLinkActive="active"
+          (click)="closeMenus()"
+        >
           <span class="textoBtn">Buscar</span>
         </a>
 
-        <a class="nav-main-link"
-           routerLink="publicarCasa" routerLinkActive="active"
-           *ngIf="userRole === 'propietario' || userRole === 'admin'"
-           (click)="closeMenus()">
+        <a
+          class="nav-main-link"
+          routerLink="publicarCasa"
+          routerLinkActive="active"
+          *ngIf="userRole === 'propietario' || userRole === 'admin'"
+          (click)="closeMenus()"
+        >
           <span class="textoBtn">Publicar Propiedad</span>
         </a>
 
-        <a class="nav-main-link"
-           routerLink="verPropiedades" routerLinkActive="active"
-           *ngIf="userRole === 'propietario' || userRole === 'admin'"
-           (click)="closeMenus()">
+        <a
+          class="nav-main-link"
+          routerLink="verPropiedades"
+          routerLinkActive="active"
+          *ngIf="userRole === 'propietario' || userRole === 'admin'"
+          (click)="closeMenus()"
+        >
           <span class="textoBtn">Mis Propiedades</span>
         </a>
+        
 
-        <a class="nav-main-link"
-           routerLink="qnSomos" routerLinkActive="active"
-           (click)="closeMenus()">
+        <a
+          class="nav-main-link"
+          routerLink="qnSomos"
+          routerLinkActive="active"
+          (click)="closeMenus()"
+        >
           <span class="textoBtn">¿Quiénes somos?</span>
         </a>
       </div>
 
       <!-- Botón de perfil y acciones a la derecha -->
       <div class="right-elements">
-        <a class="signup-btn"
-           routerLink="/register" *ngIf="!isLoggedIn()">
+        <a class="signup-btn" routerLink="/register" *ngIf="!isLoggedIn()">
           <span>Registrarse</span>
         </a>
-        <a class="login-btn"
-           routerLink="/login" *ngIf="!isLoggedIn()">
+        <a class="login-btn" routerLink="/login" *ngIf="!isLoggedIn()">
           <span>Iniciar Sesión</span>
         </a>
 
         <div class="user-info-container" *ngIf="isLoggedIn()">
           <div class="user-info" (click)="toggleUserMenu()">
             <div class="nombreUsuario">
-              <span class="user-name">{{ userData?.first_name }} {{ userData?.last_name_paternal }}</span>
+              <span class="user-name"
+                >{{ userData?.first_name }}
+                {{ userData?.last_name_paternal }}</span
+              >
             </div>
             <div class="user-profile">
-              <img 
-                [src]="userData?.profile_picture || 'assets/navbar/usuario.png'" 
+              <img
+                [src]="userData?.profile_picture || 'assets/navbar/usuario.png'"
                 alt="Foto de perfil de {{ userData?.first_name }}"
-                class="avatar-image"> 
+                class="avatar-image"
+              />
             </div>
           </div>
-          
 
           <!-- Menú desplegable del usuario -->
-<div id="user-dropdown-menu" class="bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white rounded-md shadow-lg py-1" [class.active]="userMenuOpen">
-  <!-- Elementos del menú -->
-  <a routerLink="/principal/perfil" 
-     class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200" 
-     (click)="closeMenus()">
-    Mi Perfil
-  </a>
-  
-  <a class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200" 
-     (click)="handleFavoritosClick()">
-    Favoritos
-  </a>
-  
-  <a routerLink="/principal/configuracion" 
-     class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200" 
-     (click)="closeMenus()">
-    Configuración
-  </a>
+          <div
+            id="user-dropdown-menu"
+            class="bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white rounded-md shadow-lg py-1"
+            [class.active]="userMenuOpen"
+          >
+            <!-- Elementos del menú -->
+            <a
+              routerLink="/principal/perfil"
+              class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+              (click)="closeMenus()"
+            >
+              Mi Perfil
+            </a>
 
-  <!-- Mostrar enlaces de navegación solo en móvil -->
-  <div *ngIf="isMobileView()" class="border-t border-gray-200 dark:border-gray-700 mt-1 pt-1">
-    <a class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200" 
-       routerLink="dashboard" (click)="closeMenus()">
-      Inicio
-    </a>
-    <a class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200" 
-       routerLink="buscarCasa" (click)="closeMenus()">
-      Buscar
-    </a>
-    <a class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200" 
-       routerLink="publicarCasa" (click)="closeMenus()" 
-       *ngIf="userRole === 'propietario' || userRole === 'admin'">
-      Publicar Propiedad
-    </a>
-    <a class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200" 
-       routerLink="verPropiedades" (click)="closeMenus()" 
-       *ngIf="userRole === 'propietario' || userRole === 'admin'">
-      Mis Propiedades
-    </a>
-    <a class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200" 
-       routerLink="qnSomos" (click)="closeMenus()">
-      ¿Quiénes somos?
-    </a>
-    
-  </div>
+            <a
+              class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+              (click)="handleFavoritosClick()"
+            >
+              Favoritos
+            </a>
 
-  <!-- Separador visual -->
-  <div class="border-t border-gray-200 dark:border-gray-700 mt-1"></div>
- 
-  <a class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200" 
-     [(ngModel)]="darkModeEnabled" (click)="toggleDarkMode()">
-    Modo Oscuro
-  </a>
-  
-  <a class="dropdown-item block px-4 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-gray-700 transition-colors duration-200" 
-     (click)="logout()">
-    Cerrar Sesión
-  </a>
-</div>
+            <a
+              routerLink="/principal/configuracion"
+              class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+              (click)="closeMenus()"
+            >
+              Configuración
+            </a>
+            <a
+              routerLink="/principal/mis-rentas"
+              class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+              *ngIf="userRole === 'propietario' || userRole === 'inquilino' || userRole === 'admin'"
+              (click)="closeMenus()"
+            >
+              Mis Rentas
+            </a>
 
+            <!-- Mostrar enlaces de navegación solo en móvil -->
+            <div
+              *ngIf="isMobileView()"
+              class="border-t border-gray-200 dark:border-gray-700 mt-1 pt-1"
+            >
+              <a
+                class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+                routerLink="dashboard"
+                (click)="closeMenus()"
+              >
+                Inicio
+              </a>
+              <a
+                class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+                routerLink="buscarCasa"
+                (click)="closeMenus()"
+              >
+                Buscar
+              </a>
+              <a
+                class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+                routerLink="publicarCasa"
+                (click)="closeMenus()"
+                *ngIf="userRole === 'propietario' || userRole === 'admin'"
+              >
+                Publicar Propiedad
+              </a>
+              <a
+                class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+                routerLink="verPropiedades"
+                (click)="closeMenus()"
+                *ngIf="userRole === 'propietario' || userRole === 'admin'"
+              >
+                Mis Propiedades
+              </a>
+
+              <a
+                class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+                routerLink="qnSomos"
+                (click)="closeMenus()"
+              >
+                ¿Quiénes somos?
+              </a>
+            </div>
+
+            <!-- Separador visual -->
+            <div
+              class="border-t border-gray-200 dark:border-gray-700 mt-1"
+            ></div>
+
+            <div class="flex items-center justify-between px-4 py-2">
+              <span class="text-sm text-gray-900 dark:text-gray-100">Modo Oscuro</span>
+              
+              <button
+                (click)="toggleDarkMode()"
+                class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300"
+                [ngClass]="darkModeEnabled ? 'bg-blue-600' : 'bg-gray-300'"
+              >
+                <span
+                  class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300"
+                  [ngClass]="darkModeEnabled ? 'translate-x-6' : 'translate-x-1'"
+                ></span>
+              </button>
+            </div>
+
+
+            <a
+              class="dropdown-item block px-4 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-gray-700 transition-colors duration-200"
+              (click)="logout()"
+            >
+              Cerrar Sesión
+            </a>
+          </div>
         </div>
       </div>
 
-
-
-
-
-
-
-
-
-
-
-      <!-- 
       
-      
-      
-      AHHHHHHH
-      
-      
-      PREBAAA COMENTARIO JIRA
-      
-      
-      -->
-
     </div>
   </nav>
 </div>
-
-
 
 <router-outlet></router-outlet>

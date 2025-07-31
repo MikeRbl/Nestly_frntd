@@ -16,14 +16,14 @@ import { PagosComponent } from './pagos/pagos.component';
 import { PropiedadesFavoritosComponent } from './propiedades-favoritos/propiedades-favoritos.component';
 import { MisPropiedadesComponent } from './ver-propiedades/mis-propiedades.component';
 
-// ¡NUEVAS IMPORTACIONES!
 import { SitioResenasComponent } from './sitio-resenas/sitio-resenas.component';
 import { FaqComponent } from './faq/faq.component';
+import { MisRentasComponent } from './mis-rentas/mis-rentas.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: NavbarComponent, // Este componente actúa como un layout para las rutas hijas
+    component: NavbarComponent,
     children: [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'perfil', component: PerfilComponent },
@@ -37,8 +37,9 @@ const routes: Routes = [
       { path: 'buscarCasa', component: BuscarComponent },
       { path: 'pagos/:id', component: PagosComponent },
       { path: 'favoritos', component: PropiedadesFavoritosComponent },
+      { path: 'mis-rentas', component: MisRentasComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-      { path: '', redirectTo: 'pagos/1', pathMatch: 'full' }
+      
     ]
   }
 ];

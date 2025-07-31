@@ -25,9 +25,9 @@ import { PagosComponent } from './pagos/pagos.component';
 import { PropiedadesFavoritosComponent } from './propiedades-favoritos/propiedades-favoritos.component';
 import { MisPropiedadesComponent } from './ver-propiedades/mis-propiedades.component'; // ¡Tu componente corregido!
 
-// ¡NUEVAS IMPORTACIONES! (para los componentes que acabamos de crear)
 import { SitioResenasComponent } from './sitio-resenas/sitio-resenas.component'; // Importa el nuevo componente de reseñas del sitio
 import { FaqComponent } from './faq/faq.component'; // Importa el nuevo componente FAQ
+import { MisRentasComponent } from './mis-rentas/mis-rentas.component';
 
 @NgModule({
   declarations: [
@@ -40,17 +40,17 @@ import { FaqComponent } from './faq/faq.component'; // Importa el nuevo componen
     PublicarComponent,
     AlquilarCasaComponent,
     BuscarComponent,
-    MisPropiedadesComponent, // ¡Declarando tu componente corregido!
+    MisPropiedadesComponent, 
     EditarPropiedadComponent,
-    ResenaFormComponent, // Tus componentes de reseña de casas existentes
-    ResenaListComponent, // Tus componentes de reseña de casas existentes
-    ResenasItemComponent, // Tus componentes de reseña de casas existentes
+    ResenaFormComponent, 
+    ResenaListComponent, 
+    ResenasItemComponent, 
     PrimeraMayusculaPipe,
     PagosComponent,
     PropiedadesFavoritosComponent,
-    // ¡NUEVAS DECLARACIONES! (para los componentes que acabamos de crear)
-    SitioResenasComponent, // Declara el nuevo componente de reseñas del sitio
-    FaqComponent // Declara el nuevo componente FAQ
+    MisRentasComponent,
+    SitioResenasComponent,
+    FaqComponent 
   ],
   imports: [
     CommonModule,
