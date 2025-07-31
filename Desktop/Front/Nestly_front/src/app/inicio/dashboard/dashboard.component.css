@@ -408,8 +408,6 @@
     }
   }
 
-
-
   /* Estilos del Footer.......................................... */
 .site-footer {
   background-color: #2c3e50;
@@ -428,7 +426,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
-  align-items: start; /* Añadido para alinear todas las secciones desde la parte superior */
+  align-items: start;
 }
 
 .footer-section {
@@ -478,17 +476,17 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  flex-grow: 1; /* Añadido para mantener consistencia en la altura */
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-around; /* Distribuye el espacio uniformemente */
+  justify-content: space-around;
 }
 
 .footer-links li, .footer-contact li {
   margin-bottom: 10px;
   gap: 1px;
   display: flex;
-  align-items: center; /* Centra verticalmente el contenido */
+  align-items: center;
 }
 
 .footer-links a {
