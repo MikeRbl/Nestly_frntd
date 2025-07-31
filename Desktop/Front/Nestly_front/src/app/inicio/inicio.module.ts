@@ -29,6 +29,9 @@ import { SitioResenasComponent } from './sitio-resenas/sitio-resenas.component';
 import { FaqComponent } from './faq/faq.component'; // Importa el nuevo componente FAQ
 import { MisRentasComponent } from './mis-rentas/mis-rentas.component';
 
+import { TerminosComponent } from './terminos/terminos.component';
+import { PrivacidadComponent } from './privacidad/privacidad.component'; // Importa el nuevo componente FAQ
+
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -48,9 +51,12 @@ import { MisRentasComponent } from './mis-rentas/mis-rentas.component';
     PrimeraMayusculaPipe,
     PagosComponent,
     PropiedadesFavoritosComponent,
+
     MisRentasComponent,
     SitioResenasComponent,
-    FaqComponent 
+    FaqComponent,
+    SitioResenasComponent,
+    FaqComponent, TerminosComponent, PrivacidadComponent // Declara el nuevo componente FAQ
   ],
   imports: [
     CommonModule,

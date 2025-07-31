@@ -19,7 +19,8 @@ import { MisPropiedadesComponent } from './ver-propiedades/mis-propiedades.compo
 import { SitioResenasComponent } from './sitio-resenas/sitio-resenas.component';
 import { FaqComponent } from './faq/faq.component';
 import { MisRentasComponent } from './mis-rentas/mis-rentas.component';
-
+import { TerminosComponent } from './terminos/terminos.component';
+import { PrivacidadComponent } from './privacidad/privacidad.component';
 const routes: Routes = [
   {
     path: '',
@@ -38,6 +39,9 @@ const routes: Routes = [
       { path: 'pagos/:id', component: PagosComponent },
       { path: 'favoritos', component: PropiedadesFavoritosComponent },
       { path: 'mis-rentas', component: MisRentasComponent },
+      { path: 'terminos-y-condiciones', component: TerminosComponent },
+      { path: 'politica-de-privacidad', component: PrivacidadComponent },
+
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       
     ]

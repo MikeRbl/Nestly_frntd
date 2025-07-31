@@ -216,3 +216,37 @@ input:focus, select:focus {
     gap: 10px;
   }
 }
+
+// --- CAMBIO: Nuevos estilos para la sección de términos ---
+.form-field-terms {
+  display: flex;
+  align-items: flex-start; // Alinea el checkbox con la primera línea del texto
+  margin-bottom: 5px; // Espacio reducido antes del mensaje de error
+  
+  input[type="checkbox"] {
+    width: auto; // El checkbox no necesita ancho completo
+    margin-top: 4px; // Ajuste vertical
+    margin-right: 10px;
+  }
+
+  label {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.5;
+  }
+  
+  a {
+    color: #333; // Usa el color principal de los enlaces
+    font-weight: 600;
+    text-decoration: underline;
+
+    &:hover {
+      color: #000;
+    }
+  }
+}
+
+.error-message.terms-error {
+  padding-left: 28px; // Alinea el mensaje de error con el texto, no con el checkbox
+  margin-bottom: 15px;
+}
