@@ -7,7 +7,7 @@ import { HttpLavavelService } from '../../http.service';
 import { ResenaService } from '../../services/resena.service';
 import { AuthService } from '../../auth.service';
 import { NotyfService } from '../../services/notyf.service';
-import { PropiedadesService } from '../../services/propiedad.service'; // Importar PropiedadesService
+import { PropiedadesService } from '../../services/propiedad.service';
 
 // --- Interfaces ---
 import { Propiedad } from '../../interface/propiedades.interface';
@@ -18,20 +18,15 @@ import { Propiedad } from '../../interface/propiedades.interface';
   styleUrls: ['./alquilar-casa.component.css']
 })
 export class AlquilarCasaComponent implements OnInit {
-  // --- Propiedades para la vista ---
   property: Propiedad | null = null;
   isLoading = true;
   errorMessage = '';
   propertyId: string | null = null;
   allImages: string[] = [];
   mainImage = 'assets/default-property.jpg';
-  
-  // --- Propiedades para las reseñas ---
   resenas: any[] = [];
   isLoadingResenas = true;
   usuarioActual: any = null;
-
-  // --- Propiedades para Favoritos ---
   favoritoIds = new Set<number>();
   isUserLoggedIn = false;
 
@@ -42,18 +37,16 @@ export class AlquilarCasaComponent implements OnInit {
     private resenaService: ResenaService,
     private authService: AuthService,
     private notyf: NotyfService,
-    private propiedadesService: PropiedadesService // Inyectar PropiedadesService
+    private propiedadesService: PropiedadesService
   ) {}
 
   ngOnInit(): void {
     this.usuarioActual = this.authService.obtenerUsuarioActualId();
     this.propertyId = this.route.snapshot.paramMap.get('id');
-    
     this.isUserLoggedIn = this.authService.isLoggedIn();
     if (this.isUserLoggedIn) {
       this.cargarIdsFavoritos();
     }
-    
     if (this.propertyId) {
       this.loadProperty(this.propertyId);
       this.loadResenas(Number(this.propertyId));
@@ -83,10 +76,6 @@ export class AlquilarCasaComponent implements OnInit {
     });
   }
 
-  // ================================================================
-  // MÉTODOS PARA FAVORITOS
-  // ================================================================
-  
   cargarIdsFavoritos(): void {
     this.propiedadesService.getIdsFavoritos().subscribe({
       next: (response) => {
@@ -134,10 +123,6 @@ export class AlquilarCasaComponent implements OnInit {
       });
     }
   }
-
-  // ================================================================
-  // MÉTODOS PARA LA GESTIÓN DE RESEÑAS
-  // ================================================================
 
   loadResenas(propiedadId: number): void {
     this.isLoadingResenas = true;
@@ -210,28 +195,8 @@ export class AlquilarCasaComponent implements OnInit {
   }
 
   onEditarResena(resenaId: number): void {
-    const resenaAEditar = this.resenas.find(r => r.id === resenaId);
-    if (!resenaAEditar) {
-      this.notyf.error('No se pudo encontrar la reseña para editar.');
-      return;
-    }
-    let selectedRating = resenaAEditar.puntuacion;
-    const comentarioLimpio = resenaAEditar.comentario && resenaAEditar.comentario !== 'null' ? resenaAEditar.comentario : '';
-
-    Swal.fire({
-      title: 'Editar tu Reseña',
-      html: `...`, // Tu HTML para el modal de Swal
-      // ... tu configuración de Swal
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // ... tu lógica de confirmación
-      }
-    });
+    // Tu lógica para editar reseñas
   }
-
-  // ================================================================
-  // GETTERS Y MÉTODOS HELPER
-  // ================================================================
 
   get reviewCount(): number {
     return this.resenas.length;
@@ -239,7 +204,7 @@ export class AlquilarCasaComponent implements OnInit {
 
   rentarAhora() {
     if (this.property && this.property.id_propiedad) {
-      this.router.navigate(['../pagos', this.property.id_propiedad], { relativeTo: this.route });
+      this.router.navigate(['/principal/pagos', this.property.id_propiedad]);
     } else {
       this.notyf.error('No se pudo encontrar la información de la propiedad para rentar.');
     }

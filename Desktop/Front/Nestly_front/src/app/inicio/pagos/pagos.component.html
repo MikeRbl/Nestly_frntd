@@ -12,18 +12,52 @@
 
       <form [formGroup]="pagoForm" (ngSubmit)="procesarPago()" novalidate>
         
-        <div *ngIf="property.anualizado" class="mb-8">
+        <div class="mb-8">
           <h2 class="text-lg font-semibold border-b border-gray-200 pb-3 mb-4">Duración del Alquiler</h2>
+          
+          <div *ngIf="property.anualizado" class="mb-4">
+            <label class="form-label">Tipo de Renta</label>
+            <div class="flex space-x-2 rounded-lg bg-gray-200 p-1">
+              <button type="button" (click)="pagoForm.get('tipoDeRenta')?.setValue('meses')"
+                      [ngClass]="{'bg-white shadow': pagoForm.get('tipoDeRenta')?.value === 'meses', 'text-gray-500': pagoForm.get('tipoDeRenta')?.value !== 'meses'}"
+                      class="w-full font-semibold p-2 rounded-md transition-all">
+                Por Meses
+              </button>
+              <button type="button" (click)="pagoForm.get('tipoDeRenta')?.setValue('anios')"
+                      [ngClass]="{'bg-white shadow': pagoForm.get('tipoDeRenta')?.value === 'anios', 'text-gray-500': pagoForm.get('tipoDeRenta')?.value !== 'anios'}"
+                      class="w-full font-semibold p-2 rounded-md transition-all">
+                Por Años
+              </button>
+            </div>
+          </div>
+          
           <div>
-            <label for="mesesAPagar" class="form-label">¿Por cuántos meses quieres realizar el pago?</label>
-            <select id="mesesAPagar" formControlName="mesesAPagar" class="form-input">
-              <option *ngFor="let mes of mesesOpciones" [value]="mes">
-                {{ mes }} mes{{ mes > 1 ? 'es' : '' }}
+            <label for="duracion" class="form-label">
+              ¿Por cuántos {{ pagoForm.get('tipoDeRenta')?.value === 'meses' ? 'meses' : 'años' }} quieres rentar?
+            </label>
+            <select id="duracion" formControlName="duracion" class="form-input">
+              <option *ngFor="let opcion of (pagoForm.get('tipoDeRenta')?.value === 'meses' ? mesesOpciones : aniosOpciones)" 
+                      [value]="opcion">
+                {{ opcion }} {{ pagoForm.get('tipoDeRenta')?.value === 'meses' ? (opcion > 1 ? 'meses' : 'mes') : (opcion > 1 ? 'años' : 'año') }}
               </option>
             </select>
           </div>
         </div>
 
+        <div *ngIf="pagoForm.get('checkin')?.enabled" class="calendar-container mb-8">
+          <h2 class="text-lg font-semibold border-b border-gray-200 pb-3 mb-4">Fechas de Estancia</h2>
+          <div class="flex space-x-4">
+            <div class="w-1/2">
+              <label for="checkin" class="form-label">Check-in</label>
+              <input type="date" id="checkin" formControlName="checkin" [min]="minDateCheckin" class="form-input">
+            </div>
+            <div class="w-1/2">
+              <label for="checkout" class="form-label">Check-out</label>
+              <input type="date" id="checkout" formControlName="checkout" class="form-input bg-gray-200 cursor-not-allowed">
+            </div>
+          </div>
+        </div>
+        
         <div class="mb-8">
           <h2 class="text-lg font-semibold border-b border-gray-200 pb-3 mb-4">Información de Contacto</h2>
           <div>
@@ -35,9 +69,29 @@
             </div>
           </div>
         </div>
+        
+        <div class="mb-8" *ngIf="pagoForm.get('duracion')?.value > 1 && pagoForm.get('tipoDeRenta')?.value === 'meses'">
+          <h2 class="text-lg font-semibold border-b border-gray-200 pb-3 mb-4">Tipo de Pago</h2>
+          <div class="space-y-3">
+            <div class="flex items-center p-3 border rounded-lg">
+              <input type="radio" id="pagoUnico" value="unico" formControlName="tipoPago" class="h-4 w-4 text-pink-500 border-gray-300">
+              <label for="pagoUnico" class="ml-3 block text-sm font-medium text-gray-700">
+                Pago único por adelantado
+                <span class="block text-xs text-gray-500">Paga el total de los {{ pagoForm.get('duracion')?.value }} {{ pagoForm.get('tipoDeRenta')?.value === 'meses' ? 'meses' : 'años' }} ahora.</span>
+              </label>
+            </div>
+            <div class="flex items-center p-3 border rounded-lg">
+              <input type="radio" id="pagoMensual" value="mensual" formControlName="tipoPago" class="h-4 w-4 text-pink-500 border-gray-300">
+              <label for="pagoMensual" class="ml-3 block text-sm font-medium text-gray-700">
+                Cobro automático mensual
+                <span class="block text-xs text-gray-500">Se te cobrará automáticamente cada mes.</span>
+              </label>
+            </div>
+          </div>
+        </div>
 
         <div>
-          <h2 class="text-lg font-semibold border-b border-gray-200 pb-3 mb-4">Detalles del Pago</h2>
+          <h2 class="text-lg font-semibold border-b border-gray-200 pb-3 mb-4">Detalles del Pago con Tarjeta</h2>
           <div class="space-y-4">
             <div>
               <label for="nombreTarjeta" class="form-label">Nombre en la tarjeta</label>
@@ -78,8 +132,7 @@
 
         <div class="mt-8 border-t pt-6">
           <div class="flex items-start">
-            <input id="terminos" type="checkbox" formControlName="terminos" 
-                   class="h-5 w-5 text-pink-500 border-gray-300 rounded focus:ring-pink-400 mt-0.5">
+            <input id="terminos" type="checkbox" formControlName="terminos" class="h-5 w-5 text-pink-500 border-gray-300 rounded focus:ring-pink-400 mt-0.5">
             <div class="ml-3 text-sm">
               <label for="terminos" class="font-medium text-gray-700">
                 He leído y estoy de acuerdo con los 
@@ -97,8 +150,28 @@
         <div class="mt-8">
           <button type="submit" [disabled]="pagoForm.invalid || isProcessing" class="w-full bg-pink-500 text-white font-bold py-3 rounded-lg hover:bg-pink-600 transition disabled:bg-pink-300 disabled:cursor-not-allowed">
             <span *ngIf="isProcessing" class="inline-block animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white mr-2"></span>
-            {{ isProcessing ? 'Procesando...' : 'Pagar ' + (totalPagar | currency:'MXN':'symbol':'1.2-2') }}
+            {{ isProcessing ? 'Procesando...' : 
+               (pagoForm.get('tipoPago')?.value === 'mensual' ? 
+                 'Pagar ' + (pagoMensual | currency:'MXN':'symbol':'1.2-2') + ' mensuales' : 
+                 'Pagar ' + (totalPagar | currency:'MXN':'symbol':'1.2-2')) 
+            }}
           </button>
+          <div *ngIf="pagoForm.get('tipoPago')?.value === 'mensual'" class="mt-2 text-sm text-gray-500 text-center">
+            Total por {{ pagoForm.get('duracion')?.value }} 
+            {{ pagoForm.get('tipoDeRenta')?.value === 'meses' ? 
+               (pagoForm.get('duracion')?.value > 1 ? 'meses' : 'mes') : 
+               (pagoForm.get('duracion')?.value > 1 ? 'años' : 'año') }}: 
+            <span class="font-medium">{{ totalPagar | currency:'MXN':'symbol':'1.2-2' }}</span>
+          </div>
+        </div>
+        
+        <div class="mt-6 text-center">
+            <p class="text-sm text-gray-500 mb-4 separator">o paga con</p>
+            <div class="flex justify-center space-x-3">
+                <button type="button" (click)="pagarCon('paypal')" class="payment-btn paypal"></button>
+                <button type="button" (click)="pagarCon('oxxo')" class="payment-btn oxxo"></button>
+                <button type="button" (click)="pagarCon('mercadopago')" class="payment-btn mercadopago"></button>
+            </div>
         </div>
       </form>
     </main>
@@ -115,23 +188,46 @@
       <div class="space-y-2 text-sm border-t border-gray-100 pt-4">
         <div class="flex justify-between">
           <span class="text-gray-600">
-            Renta ({{ pagoForm.get('mesesAPagar')?.value }} mes{{ pagoForm.get('mesesAPagar')?.value > 1 ? 'es' : '' }})
+            Renta ({{ pagoForm.get('duracion')?.value }} {{ pagoForm.get('tipoDeRenta')?.value === 'meses' ? (pagoForm.get('duracion')?.value > 1 ? 'meses' : 'mes') : (pagoForm.get('duracion')?.value > 1 ? 'años' : 'año') }})
           </span>
           <span class="font-medium">{{ precioRenta | currency:'MXN':'symbol':'1.2-2' }}</span>
+        </div>
+        <div *ngIf="pagoForm.get('tipoPago')?.value === 'mensual'" class="flex justify-between text-xs text-gray-500 pl-2">
+          <span>Renta por mes:</span>
+          <span>{{ rentaMensual | currency:'MXN':'symbol':'1.2-2' }}</span>
         </div>
         <div class="flex justify-between">
           <span class="text-gray-600">Tarifa de servicio (10%)</span>
           <span class="font-medium">{{ tarifaServicio | currency:'MXN':'symbol':'1.2-2' }}</span>
         </div>
+        <div *ngIf="pagoForm.get('tipoPago')?.value === 'mensual'" class="flex justify-between text-xs text-gray-500 pl-2">
+          <span>Tarifa por mes:</span>
+          <span>{{ tarifaMensual | currency:'MXN':'symbol':'1.2-2' }}</span>
+        </div>
         <div class="flex justify-between">
           <span class="text-gray-600">IVA (16%)</span>
           <span class="font-medium">{{ iva | currency:'MXN':'symbol':'1.2-2' }}</span>
         </div>
+        <div *ngIf="pagoForm.get('tipoPago')?.value === 'mensual'" class="flex justify-between text-xs text-gray-500 pl-2">
+          <span>IVA por mes:</span>
+          <span>{{ ivaMensual | currency:'MXN':'symbol':'1.2-2' }}</span>
+        </div>
       </div>
       <hr class="my-4">
       <div class="flex justify-between items-center font-bold text-lg">
-        <span>Total a Pagar</span>
-        <span>{{ totalPagar | currency:'MXN':'symbol':'1.2-2' }}</span>
+        <span>
+          {{ pagoForm.get('tipoPago')?.value === 'mensual' ? 'Pago de este mes' : 'Total a Pagar' }}
+        </span>
+        <span>
+            {{ pagoForm.get('tipoPago')?.value === 'mensual' ? (pagoMensual | currency:'MXN':'symbol':'1.2-2') : (totalPagar | currency:'MXN':'symbol':'1.2-2') }}
+        </span>
+      </div>
+      <div *ngIf="pagoForm.get('tipoPago')?.value === 'mensual'" class="mt-2 text-sm text-gray-500 text-right">
+        Total por {{ pagoForm.get('duracion')?.value }} 
+        {{ pagoForm.get('tipoDeRenta')?.value === 'meses' ? 
+           (pagoForm.get('duracion')?.value > 1 ? 'meses' : 'mes') : 
+           (pagoForm.get('duracion')?.value > 1 ? 'años' : 'año') }}: 
+        <span class="font-medium">{{ totalPagar | currency:'MXN':'symbol':'1.2-2' }}</span>
       </div>
     </aside>
   </div>

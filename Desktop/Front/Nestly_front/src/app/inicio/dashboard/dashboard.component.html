@@ -1,45 +1,44 @@
 <div class="main-scroll-container dark:bg-gray-900">
   <section
-  id="hero-section"
-  class="min-h-[450px] flex flex-col justify-center items-center text-center relative px-6"
->
-  <div
-    class="relative w-full rounded-3xl overflow-hidden shadow-xl mt-10"
-    style="height: 550px; max-width: 1300px; width: 100%"
-    *ngIf="featuredProperties.length"
+    id="hero-section"
+    class="min-h-[450px] flex flex-col justify-center items-center text-center relative px-6"
   >
-    <!-- Imagen de fondo -->
-    <img
-      [src]="getCurrentPhoto(featuredProperties[0])"
-      alt="Casa"
-      class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
-      [style.opacity]="imageOpacity"
-    />
-
-    <!-- Overlay oscuro -->
-    <div class="absolute inset-0 bg-black/40"></div>
-
-    <!-- Contenido centrado -->
     <div
-      class="relative z-10 text-white flex flex-col justify-center items-center h-full p-8 text-center"
+      class="relative w-full rounded-3xl overflow-hidden shadow-xl mt-10"
+      style="height: 550px; max-width: 1300px; width: 100%"
+      *ngIf="featuredProperties.length"
     >
-      <h1 class="text-6xl font-extrabold mb-6 leading-tight tracking-tight drop-shadow-lg">
-        Encuentra tu hogar temporal perfecto
-      </h1>
-      <p class="text-2xl font-light mb-10 text-slate-100 max-w-2xl mx-auto drop-shadow-lg">
-        Rentas mensuales con todas las comodidades, verificadas y listas para ti.
-      </p>
+      <img
+        [src]="getCurrentPhoto(featuredProperties[0])"
+        alt="Casa"
+        class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+        [style.opacity]="imageOpacity"
+      />
 
-      <button
-        routerLink="/principal/buscarCasa"
-        class="inline-block bg-white text-[#7FA6FF] font-semibold px-10 py-4 rounded-full shadow-md hover:bg-slate-100 hover:scale-105 transform transition-all duration-300 ease-in-out"
-      >
-        Explorar propiedades
-      </button>
+      <!-- Overlay oscuro -->
+      <div class="absolute inset-0 bg-black/40"></div>
+
+      <!-- Contenido encima -->
+      <div class="relative z-10 flex flex-col justify-center items-center h-full px-8 text-center bg-[#1E1E2F]">
+  <h1 class="text-white text-2xl md:text-4xl font-semibold">
+    Encuentra tu hogar temporal perfecto
+  </h1>
+
+        <p
+          class="text-2xl font-light mb-10 text-slate-100 max-w-2xl mx-auto drop-shadow-lg"
+        >
+          Rentas mensuales con todas las comodidades, verificadas y listas para
+          ti.
+        </p>
+        <button
+          routerLink="/principal/buscarCasa"
+          class="inline-block bg-white text-[#7FA6FF] font-semibold px-10 py-4 rounded-full shadow-md hover:bg-slate-100 hover:scale-105 transform transition-all duration-300 ease-in-out"
+        >
+          Explorar propiedades
+        </button>
+      </div>
     </div>
-  </div>
-</section>
-
+  </section>
 
   <section
     class="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900 py-24 px-6"
@@ -738,12 +737,16 @@
         </h4>
         <ul class="space-y-3 text-slate-400">
           <li>
-            <a href="#" class="hover:text-[#7FA6FF] transition"
+            <a 
+            routerLink="/principal/terminos-y-condiciones"
+            href="#" class="hover:text-[#7FA6FF] transition"
               >Términos y Condiciones</a
             >
           </li>
           <li>
-            <a href="#" class="hover:text-[#7FA6FF] transition"
+            <a 
+            routerLink="/principal/politica-de-privacidad"
+            href="#" class="hover:text-[#7FA6FF] transition"
               >Política de Privacidad</a
             >
           </li>

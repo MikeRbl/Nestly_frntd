@@ -33,3 +33,84 @@
   color: #ef4444; /* red-500 */
   margin-top: 0.25rem;
 }
+
+/* Separador para "o paga con" */
+.separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+.separator::before,
+.separator::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #d1d5db; /* gray-300 */
+}
+.separator:not(:empty)::before {
+  margin-right: .5em;
+}
+.separator:not(:empty)::after {
+  margin-left: .5em;
+}
+
+/* Separador para "o paga con" */
+.separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+.separator::before,
+.separator::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #d1d5db; /* gray-300 */
+}
+.separator:not(:empty)::before {
+  margin-right: .5em;
+}
+.separator:not(:empty)::after {
+  margin-left: .5em;
+}
+
+/* Estilos para botones de pago alternativos */
+.payment-btn {
+  height: 48px;
+  width: 100px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+.payment-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.payment-btn.paypal {
+  background-image: url('/assets/pagos/paypal.svg');
+}
+.payment-btn.oxxo {
+  background-image: url('/assets/pagos/oxxo.svg');
+}
+.payment-btn.mercadopago {
+  background-image: url('/assets/pagos/mercadopago.svg');
+}
+
+/* --- NUEVO: Animación para la aparición del calendario --- */
+.calendar-container {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

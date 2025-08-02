@@ -1,0 +1,38 @@
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0.5rem; /* Bordes redondeados para cada item */
+    font-weight: 500;
+    color: #374151; /* Texto gris oscuro para contraste en fondo blanco */
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.nav-link:hover {
+    background-color: #F3F4F6; /* Fondo gris claro en hover */
+    color: #111827; /* Texto más oscuro en hover */
+}
+
+/* Estilo para el enlace activo (fondo azul, texto blanco) */
+.nav-link.active {
+    background-color: #3B82F6; /* bg-blue-500 */
+    color: #FFFFFF; /* text-white */
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+/* Estilos para modo oscuro (si los necesitas) */
+.dark .nav-link {
+    color: #D1D5DB; /* text-gray-300 */
+}
+
+.dark .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #FFFFFF;
+}
+
+.dark .nav-link.active {
+    background-color: #3B82F6; /* Mismo azul para consistencia */
+    color: #FFFFFF;
+}

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpLavavelService } from '../../http.service'; // Asumo que HttpLaravelService es el nombre correcto
+import { HttpLavavelService } from '../../http.service';
+import { Router } from '@angular/router';
 
 // Interfaz para el usuario
 interface User {
@@ -10,8 +11,8 @@ interface User {
   email: string;
   phone: string;
   role: string;
-  profile_picture?: string; // Usaremos este campo en el frontend para la URL completa
-  avatar_url?: string; // Potencialmente viene del backend con este nombre
+  profile_picture?: string;
+  avatar_url?: string;
   created_at: string;
   updated_at: string;
 }
@@ -22,54 +23,63 @@ interface User {
   styleUrls: ['./perfil.component.css']
 })
 export class PerfilComponent implements OnInit {
-  userData: User | null = null; // Guarda los datos del usuario
-  isLoading: boolean = true; // Controla el estado de carga
-  errorMessage: string = ''; // Mensaje de error en caso de fallos
-  selectedImage: string | ArrayBuffer | null = null; // Imagen cargada en formato base64 para previsualización
-  selectedFile: File | null = null; // Archivo seleccionado para enviar
-  uploadProgress: number = 0; // Progreso de carga (no usado visualmente aún)
-  maxFileSize: number = 5 * 1024 * 1024; // Tamaño máximo del archivo (5MB)
-  validExtensions: string[] = ['image/jpeg', 'image/png', 'image/gif']; // Tipos de archivo válidos
+  userData: User | null = null;
+  isLoading: boolean = true;
+  errorMessage: string = '';
+  selectedImage: string | ArrayBuffer | null = null;
+  selectedFile: File | null = null;
+  uploadProgress: number = 0;
+  maxFileSize: number = 5 * 1024 * 1024;
+  validExtensions: string[] = ['image/jpeg', 'image/png', 'image/gif'];
+  
+  // Propiedades para las cards
+  propiedades: any[] = [];
+  propiedadesMostradas: any[] = [];
+  loadingPropiedades: boolean = false;
 
-  constructor(private Shttp: HttpLavavelService) {} // Inyecta el servicio HTTP personalizado
+  constructor(
+    private Shttp: HttpLavavelService,
+    private router: Router
+  ) {}
 
-  ngOnInit(): void {
-    this.loadUserData(); // Carga los datos del usuario al iniciar
-  }
-removeSelectedImage(): void {
-  this.selectedImage = null;
-  this.selectedFile = null;
-  const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
-  if (fileInput) fileInput.value = '';
+ ngOnInit(): void {
+  this.loadUserData().then(() => {
+    this.loadPropiedadesUsuario(); // Solo se ejecuta después de tener userData
+  });
 }
 
+  removeSelectedImage(): void {
+    this.selectedImage = null;
+    this.selectedFile = null;
+    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+    if (fileInput) fileInput.value = '';
+  }
+
   onFileChange(event: any): void {
-    const file = event.target.files[0]; // Obtiene el archivo
+    const file = event.target.files[0];
 
     if (!file) return;
 
-    // Validar tamaño
     if (file.size > this.maxFileSize) {
       this.errorMessage = 'La imagen es demasiado grande (máximo 5MB)';
       this.selectedFile = null;
-      this.selectedImage = null; // Limpiar previsualización
+      this.selectedImage = null;
       return;
     }
 
-    // Validar formato
     if (!this.validExtensions.includes(file.type)) {
       this.errorMessage = 'Formato no válido. Use JPEG, PNG o GIF';
       this.selectedFile = null;
-      this.selectedImage = null; // Limpiar previsualización
+      this.selectedImage = null;
       return;
     }
 
     this.selectedFile = file;
-    this.errorMessage = ''; // Limpiar errores previos
+    this.errorMessage = '';
 
-    const reader = new FileReader(); // Crear lector de archivos
+    const reader = new FileReader();
     reader.onload = () => {
-      this.selectedImage = reader.result; // Guardar base64 para previsualizar
+      this.selectedImage = reader.result;
     };
     reader.readAsDataURL(file);
   }
@@ -77,34 +87,33 @@ removeSelectedImage(): void {
   uploadProfilePicture(): void {
     if (!this.selectedFile) return;
 
-  this.isLoading = true;
-  this.uploadProgress = 0;
-  this.errorMessage = ''; 
+    this.isLoading = true;
+    this.uploadProgress = 0;
+    this.errorMessage = '';
 
-  const formData = new FormData();
-  formData.append('avatar', this.selectedFile); // ojo, que aquí el backend espera 'avatar' no 'profile_picture'
+    const formData = new FormData();
+    formData.append('avatar', this.selectedFile);
 
-  this.Shttp.Service_Post('user/avatar', formData).subscribe({
-    next: (response: any) => {
-      console.log('Foto de perfil actualizada:', response);
-      if (this.userData && response.avatar_url) {
-        this.userData.profile_picture = `${response.avatar_url}?${new Date().getTime()}`;
-        window.location.reload();
-      } else if (this.userData) {
-        this.loadUserData();
+    this.Shttp.Service_Post('user/avatar', formData).subscribe({
+      next: (response: any) => {
+        console.log('Foto de perfil actualizada:', response);
+        if (this.userData && response.avatar_url) {
+          this.userData.profile_picture = `${response.avatar_url}?${new Date().getTime()}`;
+          window.location.reload();
+        } else if (this.userData) {
+          this.loadUserData();
+        }
+        this.resetUpload();
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error al actualizar foto de perfil:', err);
+        this.errorMessage = err.error?.message || 'Error al actualizar la foto de perfil';
+        this.isLoading = false;
+        this.resetUpload();
       }
-      this.resetUpload();
-      this.isLoading = false;
-    },
-    error: (err) => {
-      console.error('Error al actualizar foto de perfil:', err);
-      this.errorMessage = err.error?.message || 'Error al actualizar la foto de perfil';
-      this.isLoading = false;
-      this.resetUpload();
-    }
-  });
-}
-
+    });
+  }
 
   private resetUpload(): void {
     this.selectedImage = null;
@@ -114,45 +123,80 @@ removeSelectedImage(): void {
     if (fileInput) fileInput.value = '';
   }
 
-  loadUserData(): void {
+  loadUserData(): Promise<void> {
+  return new Promise((resolve, reject) => {
     this.isLoading = true;
-    this.errorMessage = ''; // Limpiar mensajes de error previos
     this.Shttp.Service_Get('user').subscribe({
       next: (response: any) => {
-        if (response && response.user) {
-          this.userData = response.user;
-          // CORRECCIÓN/MEJORA AQUÍ:
-          // Asumimos que el backend devuelve 'avatar_url' con la URL completa.
-          // Si no, y devuelve 'profile_picture' con la URL, usa eso.
-          // Lo importante es que this.userData.profile_picture obtenga la URL correcta.
-          const imageUrl = response.user.avatar_url || response.user.profile_picture; 
-
-          if (this.userData && imageUrl) {
-            this.userData.profile_picture = `${imageUrl}?${new Date().getTime()}`;
-          } else if (this.userData) {
-            // Si no hay URL de imagen, puedes dejar profile_picture como undefined o null
-            // para que el template muestre un avatar por defecto.
-            this.userData.profile_picture = undefined; 
-          }
-        } else {
-          this.errorMessage = 'Respuesta inesperada al cargar datos del usuario.';
-          this.userData = null;
-        }
+        this.userData = response.user;
         this.isLoading = false;
+        resolve(); // Resuelve la Promise cuando se completa
       },
       error: (err) => {
-        console.error('Error al cargar datos del usuario:', err);
-        this.errorMessage = err.error?.message || 'Error al cargar los datos del usuario';
         this.isLoading = false;
-        this.userData = null;
+        console.error('Error al cargar datos del usuario:', err);
+        reject(err);
       }
     });
+  });
+}
+loadPropiedadesUsuario(): void {
+  // 1. Obtén el ID del usuario desde userData o donde lo tengas almacenado
+  const userId = this.userData?.id; // Asegúrate de que userData tenga el ID
+  
+  if (!userId) {
+    console.error('No se pudo obtener el ID del usuario');
+    return;
+  }
+
+  this.loadingPropiedades = true;
+  
+  // 2. Usa la ruta correcta (api/users/{user}/propiedades)
+  this.Shttp.Service_Get(`users/${userId}/propiedades?limit=100`).subscribe({
+    next: (response: any) => {
+      this.propiedades = response.data || [];
+      this.seleccionarPropiedadesAleatorias();
+      this.loadingPropiedades = false;
+    },
+    error: (err) => {
+      console.error('Error completo:', err);
+      this.propiedades = [];
+      this.propiedadesMostradas = [];
+      this.loadingPropiedades = false;
+      this.errorMessage = 'Error al cargar propiedades. Verifica la consola para más detalles.';
+    }
+  });
+}
+
+  seleccionarPropiedadesAleatorias(): void {
+    if (this.propiedades.length <= 3) {
+      this.propiedadesMostradas = [...this.propiedades];
+    } else {
+      const copiaPropiedades = [...this.propiedades];
+      this.propiedadesMostradas = [];
+      
+      for (let i = 0; i < 3; i++) {
+        const randomIndex = Math.floor(Math.random() * copiaPropiedades.length);
+        this.propiedadesMostradas.push(copiaPropiedades[randomIndex]);
+        copiaPropiedades.splice(randomIndex, 1);
+      }
+    }
+  }
+
+  getFullImageUrl(path: string): string {
+    return `http://127.0.0.1:8000/storage/${path}`;
+  }
+
+  verDetallesPropiedad(id: number): void {
+    
+  }
+
+  publicarNuevaPropiedad(): void {
+    this.router.navigate(['/principal/publicarCasa']);
   }
 
   logout() {
-    // Considera llamar a un endpoint de logout en el backend también si es necesario
-    // this.Shttp.Service_Post('logout', {}).subscribe(...);
     localStorage.removeItem('token'); 
-    window.location.href = '/login'; // O usa Angular Router para navegar
+    window.location.href = '/login';
   }
 }
