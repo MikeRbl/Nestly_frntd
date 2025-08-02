@@ -3,7 +3,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import Swal from 'sweetalert2';
 import { HttpLavavelService } from '../../http.service';
 import { AuthService } from '../../auth.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-mis-propiedades',
@@ -20,6 +20,7 @@ export class MisPropiedadesComponent implements OnInit {
   tiposDePropiedad: any[] = [];
   loading = false;
   error = '';
+  modoEdicion: boolean = false;
   menuAbiertoId: number | null = null;
   propiedadSeleccionada: any | null = null;
   
@@ -33,9 +34,9 @@ export class MisPropiedadesComponent implements OnInit {
 
   // Paginación
   totalItems = 0;
-  pageSize = 6;
+  pageSize = 3;
   pageIndex = 0;
-  pageSizeOptions = [6, 9, 12];
+  pageSizeOptions = [3, 6, 9];
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -47,12 +48,17 @@ export class MisPropiedadesComponent implements OnInit {
   constructor(
     private httpService: HttpLavavelService, 
     private authService: AuthService, 
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.cargarDatosIniciales();
-  }
+  this.activatedRoute.url.subscribe(url => {
+    this.modoEdicion = url.some(segment => segment.path === 'editar');
+  });
+
+  this.cargarDatosIniciales();
+}
 
   cargarDatosIniciales(): void {
     this.loading = true;
@@ -151,7 +157,6 @@ export class MisPropiedadesComponent implements OnInit {
     this.aplicarFiltrosYPaginacion();
   }
 
-  // ... (tus otros métodos como abrirModal, eliminarPropiedad, etc. se quedan igual)
   toggleMenu(event: MouseEvent, propiedadId: number): void {
     event.stopPropagation();
     this.menuAbiertoId = this.menuAbiertoId === propiedadId ? null : propiedadId;
@@ -197,14 +202,11 @@ export class MisPropiedadesComponent implements OnInit {
   }
 
   editarPropiedad(id: number): void {
-    this.router.navigate(['/principal/editar-propiedad', id]);
-  }
-
-  publicarNuevaPropiedad() {
-    // Navegar a la página de creación o abrir un modal
-    this.router.navigate(['/principal/publicarCasa']);
-    
+  this.modoEdicion = true;
+  this.router.navigate(['/principal/gestion-propiedades/editar', id]);
 }
+
+  
   getFullImageUrl(path: string): string {
     return `http://127.0.0.1:8000/storage/${path}`;
   }

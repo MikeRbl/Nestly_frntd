@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { PropiedadesService } from '../../services/propiedad.service';
+import { NotyfService } from '../../services/notyf.service';
 
 @Component({
   selector: 'app-editar-propiedad',
@@ -17,17 +18,14 @@ export class EditarPropiedadComponent implements OnInit {
   tiposDePropiedad: any[] = [];
   propiedadId!: number;
 
-  // Estados para manejar las imágenes de forma avanzada
-  // Guarda las imágenes que ya venían del servidor { path, url }
   existingImages: { path: string, url: string }[] = [];
-  // Guarda los archivos nuevos que el usuario selecciona
   newImageFiles: File[] = [];
-  // Guarda las previsualizaciones de los archivos nuevos
   newImagePreviews: string[] = [];
 
   constructor(
     private fb: FormBuilder,
     private propiedadesService: PropiedadesService,
+     private notyf: NotyfService,
     private route: ActivatedRoute,
     private router: Router
   ) {
@@ -39,7 +37,7 @@ export class EditarPropiedadComponent implements OnInit {
       estado_ubicacion: ['', [Validators.required, Validators.maxLength(100)]],
       ciudad: ['', [Validators.required, Validators.maxLength(100)]],
       colonia: [''],
-      email: ['', [Validators.required, Validators.email, Validators.maxLength(255)]],
+      email: [{ value: '', disabled: true }, [Validators.required, Validators.email, Validators.maxLength(255)]],
       telefono: ['', [Validators.required, Validators.maxLength(15)]],
       tipo_propiedad_id: ['', Validators.required],
       precio: [null, [Validators.required, Validators.min(0)]],
@@ -51,8 +49,6 @@ export class EditarPropiedadComponent implements OnInit {
       anualizado: [false, Validators.required],
       mascotas: ['', Validators.required],
       estado_propiedad: ['', Validators.required],
-
-      // El control 'fotos' ya no es necesario para la lógica de archivos, pero lo dejamos para no romper el formGroup
       fotos: [null]
     });
   }
@@ -65,7 +61,7 @@ export class EditarPropiedadComponent implements OnInit {
       this.cargarDatosPropiedad();
     } else {
       console.error('No se encontró ID de propiedad en la ruta');
-      this.router.navigate(['/mis-propiedades']);
+      this.router.navigate(['/principal/gestion-propiedades/mis-propiedades']);
     }
   }
 
@@ -106,7 +102,6 @@ export class EditarPropiedadComponent implements OnInit {
           estado_propiedad: data.estado_propiedad,
         });
 
-        // Llenamos la lista de imágenes existentes desde el servidor
         if (data.fotos && Array.isArray(data.fotos)) {
           const storageUrl = 'http://127.0.0.1:8000/storage/';
           this.existingImages = data.fotos.map((path: string) => ({
@@ -120,7 +115,7 @@ export class EditarPropiedadComponent implements OnInit {
         this.isLoading = false;
         console.error('Error cargando la propiedad', error);
         Swal.fire('Error', `No se pudo cargar la información de la propiedad. ${error.error?.message || ''}`, 'error');
-        this.router.navigate(['/verPropiedades']);
+        this.router.navigate(['/principal/gestion-propiedades/mis-propiedades']);
       }
     });
   }
@@ -133,11 +128,8 @@ export class EditarPropiedadComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     if (!input.files) return;
 
-    // Añade los nuevos archivos a nuestra lista de archivos
     Array.from(input.files).forEach(file => {
       this.newImageFiles.push(file);
-
-      // Crea las previsualizaciones para los nuevos archivos
       const reader = new FileReader();
       reader.onload = () => {
         if (reader.result) {
@@ -147,7 +139,6 @@ export class EditarPropiedadComponent implements OnInit {
       reader.readAsDataURL(file);
     });
 
-    // Limpiamos el valor del input para permitir seleccionar el mismo archivo otra vez si se borra
     input.value = '';
   }
 
@@ -168,50 +159,46 @@ export class EditarPropiedadComponent implements OnInit {
     }
 
     this.isLoading = true;
+    this.formulario.get('email')?.enable();
     const formData = new FormData();
 
-    // 1. Añade los datos del formulario (título, descripción, etc.)
     Object.entries(this.formulario.value).forEach(([key, value]) => {
-  if (key !== 'fotos') {
-    if (value !== null && value !== undefined) {
-      if (typeof value === 'boolean') {
-        formData.append(key, value ? '1' : '0');
-      } else {
-        formData.append(key, value as string);
+      if (key !== 'fotos') {
+        if (value !== null && value !== undefined) {
+          if (typeof value === 'boolean') {
+            formData.append(key, value ? '1' : '0');
+          } else {
+            formData.append(key, value as string);
+          }
+        }
       }
-    }
-  }
-});
+    });
 
-
-    // 2. Añade las FOTOS NUEVAS al FormData
     this.newImageFiles.forEach(file => {
       formData.append('fotos[]', file);
     });
 
-    // 3. Añade la LISTA DE FOTOS EXISTENTES QUE QUEREMOS CONSERVAR
     const keptImagePaths = this.existingImages.map(img => img.path);
     formData.append('existing_fotos', JSON.stringify(keptImagePaths));
 
-    // 4. Llama al servicio para actualizar
     this.propiedadesService.actualizarPropiedad(this.propiedadId, formData).subscribe({
-      next: (response) => {
-        this.isLoading = false;
-        Swal.fire('¡Propiedad Actualizada!', 'Los cambios se han guardado exitosamente.', 'success');
-        this.router.navigate(['/principal/verPropiedades']);
-      },
-      error: (error) => {
-        this.isLoading = false;
-        console.error('Error al actualizar la propiedad', error);
-        const mensajeError = error.error?.message || 'Ocurrió un error inesperado al guardar los cambios.';
-        Swal.fire('Error', mensajeError, 'error');
-      }
-    });
+  next: (response) => {
+    this.isLoading = false;
+    this.notyf.success('Propiedad actualizada exitosamente ');
+    this.router.navigate(['/principal/gestion-propiedades/mis-propiedades']);
+  },
+  error: (error) => {
+    this.isLoading = false;
+    console.error('Error al actualizar la propiedad', error);
+    const mensajeError = error.error?.message || 'Error inesperado al guardar los cambios.';
+    this.notyf.error(mensajeError);
+  }
+});
+   
   }
 
   cancelarEdicion() {
-this.router.navigate(['/principal/verPropiedades']);
-}
-
+    this.router.navigate(['/principal/gestion-propiedades/mis-propiedades']);
+  }
 
 }

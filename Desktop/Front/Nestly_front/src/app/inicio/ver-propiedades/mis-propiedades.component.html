@@ -1,219 +1,229 @@
-<div class="container mx-auto px-4 py-6 text-gray-900 dark:text-white">
-  <h2 class="text-2xl font-bold text-center mb-8">Mis Propiedades</h2>
 
-  <div class="lg:flex lg:gap-6">
-    <!-- Aside de filtros -->
-    <aside class="lg:w-1/4 mb-6 lg:mb-0">
-      <div class="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700">
-        <h3 class="text-base font-semibold mb-4 border-b pb-2">Filtros</h3>
 
-        <!-- Input Título -->
-        <label class="block text-sm mb-1">Título</label>
-        <input type="text" [(ngModel)]="filtros.titulo"
-          class="w-full p-2 mb-4 rounded-md border dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          placeholder="Ej: Casa en la playa" (input)="aplicarFiltrosYPaginacion()" />
+<div class="space-y-8">
+  <!-- Encabezado -->
+<div class="flex items-center justify-between w-full">
+  <!-- Título + GIF -->
+  <div class="flex items-center">
+    <h3
+  class="text-2xl md:text-3xl font-bold transition-colors"
+  [ngClass]="{
+    'text-gray-800 dark:text-white': !modoEdicion,
+    'text-yellow-500 bg-black': modoEdicion
+  }"
+>
+  {{ modoEdicion ? 'Editando Propiedad' : 'Mis Propiedades' }}
+</h3>
 
-        <!-- Select Tipo -->
-        <label class="block text-sm mb-1">Tipo</label>
-        <select [(ngModel)]="filtros.tipoId"
-          class="w-full p-2 mb-4 rounded-md border dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          (change)="aplicarFiltrosYPaginacion()">
-          <option value="">Todos</option>
-          <option *ngFor="let tipo of tiposDePropiedad" [value]="tipo.id">{{ tipo.nombre }}</option>
-        </select>
 
-        <!-- Precio -->
-        <label class="block text-sm mb-1">Precio</label>
-        <div class="flex items-center gap-2 mb-4">
-          <input type="number" [(ngModel)]="filtros.precioMin" class="w-full p-2 rounded-md border"
-            placeholder="Mín" (input)="aplicarFiltrosYPaginacion()" />
-          <input type="number" [(ngModel)]="filtros.precioMax" class="w-full p-2 rounded-md border"
-            placeholder="Máx" (input)="aplicarFiltrosYPaginacion()" />
+
+    <div *ngIf="loading" class="ml-4">
+      <img src="https://i.pinimg.com/originals/2d/16/75/2d16752412daa809899e7711aa44dadb.gif" alt="Cargando..." class="w-20 h-20" />
+    </div>
+    
+    
+  </div>
+
+  <button
+    routerLink="/principal/gestion-propiedades/publicar"
+    class="px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition"
+  >
+    Publicar Nueva
+  </button>
+</div>
+
+
+  <!-- Contenido principal con filtros y resultados -->
+  <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+    
+    <!-- Columna de Filtros -->
+    <aside class="lg:col-span-1">
+      <div class="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg h-full">
+        <h3 class="text-lg font-semibold mb-4 text-gray-700 dark:text-gray-200 border-b border-gray-200 dark:border-gray-700 pb-3">Filtros</h3>
+        <div class="space-y-4">
+          <div>
+            <label class="form-label">Título</label>
+            <input type="text" [(ngModel)]="filtros.titulo" class="form-control" placeholder="Ej: Casa en la playa" (input)="aplicarFiltrosYPaginacion()" />
+          </div>
+          <div>
+            <label class="form-label">Tipo</label>
+            <select [(ngModel)]="filtros.tipoId" class="form-control" (change)="aplicarFiltrosYPaginacion()">
+              <option value="">Todos</option>
+              <option *ngFor="let tipo of tiposDePropiedad" [value]="tipo.id">{{ tipo.nombre }}</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">Precio</label>
+            <div class="flex items-center gap-2">
+              <input type="number" [(ngModel)]="filtros.precioMin" class="form-control" placeholder="Mín" (input)="aplicarFiltrosYPaginacion()" />
+              <input type="number" [(ngModel)]="filtros.precioMax" class="form-control" placeholder="Máx" (input)="aplicarFiltrosYPaginacion()" />
+            </div>
+          </div>
+          <button (click)="limpiarFiltros()" class="w-full py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-lg text-sm font-medium transition">
+            Limpiar Filtros
+          </button>
         </div>
-
-        <button (click)="limpiarFiltros()"
-          class="w-full py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-md text-sm font-medium">
-          Limpiar
-        </button>
       </div>
     </aside>
 
-    <!-- Propiedades -->
-    <main class="lg:w-3/4">
-            <!-- Skeleton Loader mientras se cargan las propiedades -->
-      <div *ngIf="loading" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 animate-pulse">
-        <div *ngFor="let n of [1]" class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-sm">
-
-          <!-- Imagen falsa -->
-          <div class="h-48 bg-gray-300 dark:bg-gray-700 w-full"></div>
-
-          <!-- Contenido -->
-          <div class="p-4 space-y-3">
-            <!-- Título y estado -->
-            <div class="flex justify-between items-start">
-              <div class="h-4 bg-gray-300 dark:bg-gray-600 rounded w-2/3"></div>
-              <div class="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/5"></div>
+    <!-- Columna de Resultados -->
+    <main class="lg:col-span-3">
+      <div class="p-6 bg-white dark:bg-gray-800 rounded-2xl shadow-lg min-h-[60vh]">
+        <!-- Skeleton Loader (idéntico al del dashboard) -->
+        <div *ngIf="loading" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 animate-pulse">
+          <div *ngFor="let _ of [1, 2, 3]" class="bg-white dark:bg-gray-800/50 rounded-2xl border border-[#7FA6FF40] flex flex-col">
+            <div class="aspect-[16/10] w-full bg-gray-200 dark:bg-gray-700 rounded-t-2xl"></div>
+            <div class="p-4 flex flex-col justify-between flex-1">
+              <div class="space-y-2">
+                <div class="h-5 w-3/4 rounded bg-gray-300 dark:bg-gray-600"></div>
+                <div class="h-4 w-20 rounded-full bg-gray-300 dark:bg-gray-600"></div>
+                <div class="h-3 w-1/2 mb-3 rounded bg-gray-200 dark:bg-gray-700"></div>
+              </div>
+              <div class="flex items-center justify-between mt-4 pt-3 border-t border-[#7FA6FF40]">
+                <div class="h-5 w-14 bg-gray-300 dark:bg-gray-600 rounded"></div>
+              </div>
             </div>
-
-            <!-- Dirección -->
-            <div class="h-3 bg-gray-300 dark:bg-gray-600 rounded w-3/4"></div>
-
-            <!-- Tipo de propiedad -->
-            <div class="h-4 bg-gray-300 dark:bg-gray-600 rounded w-1/4"></div>
-
-            <!-- Precio -->
-            <div class="h-5 bg-gray-300 dark:bg-gray-600 rounded w-1/3 mt-4"></div>
           </div>
         </div>
+
+        <!-- Sin propiedades -->
+        <div *ngIf="!loading && propiedades.length === 0" class="flex flex-col items-center justify-center h-full text-center text-gray-500 dark:text-gray-400">
+          <p class="font-semibold text-lg mb-2">No tienes propiedades publicadas</p>
+          <p class="text-sm">¡Publica tu primera propiedad para empezar a recibir solicitudes!</p>
+        </div>
+
+        <!-- Lista de propiedades con el nuevo diseño de tarjeta -->
+        <div *ngIf="!loading && propiedades.length > 0" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div *ngFor="let propiedad of propiedades" (click)="abrirModal(propiedad)" class="bg-white dark:bg-gray-800/50 rounded-2xl border border-[#7FA6FF40] shadow-[0_4px_6px_rgba(127,166,255,0.15)] hover:shadow-[0_6px_12px_rgba(127,166,255,0.3)] transition-all duration-300 hover:-translate-y-1 cursor-pointer flex flex-col group">
+            
+            <!-- Imagen -->
+            <div class="relative aspect-[16/10] w-full overflow-hidden rounded-t-2xl">
+              <img *ngIf="propiedad.fotos?.length > 0" [src]="getFullImageUrl(propiedad.fotos[0])" [alt]="propiedad.titulo" class="object-cover w-full h-full">
+              <div *ngIf="!propiedad.fotos?.length" class="flex items-center justify-center h-full bg-gray-100 dark:bg-gray-700 text-xs text-gray-400">Sin foto</div>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
+              
+              <!-- Estado de la propiedad -->
+              <span class="absolute top-2 left-2 text-xs font-semibold px-2 py-1 rounded-full text-white" [ngClass]="{ 'bg-green-500': propiedad.estado_propiedad === 'Disponible', 'bg-blue-500': propiedad.estado_propiedad === 'Rentada', 'bg-red-500': propiedad.estado_propiedad === 'Inactiva' }">
+                {{ propiedad.estado_propiedad }}
+              </span>
+
+              <!-- Acciones de Editar y Eliminar -->
+              <div class="absolute top-2 right-2 z-10 flex gap-3">
+                <button
+                  (click)="$event.stopPropagation(); editarPropiedad(propiedad.id_propiedad)"
+                  class="p-3 bg-white/80 dark:bg-gray-900/60 backdrop-blur-sm rounded-full text-blue-500 hover:bg-white hover:text-blue-600 transition"
+                  aria-label="Editar"
+                  title="Editar"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.5L15.232 5.232z" />
+                  </svg>
+                </button>
+
+                <button
+                  (click)="$event.stopPropagation(); eliminarPropiedad(propiedad.id_propiedad)"
+                  class="p-3 bg-white/80 dark:bg-gray-900/60 backdrop-blur-sm rounded-full text-red-500 hover:bg-white hover:text-red-600 transition"
+                  aria-label="Eliminar"
+                  title="Eliminar"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                </button>
+              </div>
+
+            </div>
+
+            <!-- Contenido -->
+            <div class="p-4 flex flex-col justify-between flex-1">
+              <div>
+                <h4 class="text-base font-bold text-slate-800 dark:text-slate-100 mb-1 line-clamp-2" [title]="propiedad.titulo">
+                  {{ propiedad.titulo }}
+                </h4>
+                <span class="inline-flex items-center justify-center text-xs font-medium text-white rounded-full px-3 h-6 mb-2" style="background-color: #7fa6ff">
+                  {{ propiedad.tipo_propiedad?.nombre || "Propiedad" }}
+                </span>
+                <p class="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1 mb-3">
+                  📍{{ propiedad.ciudad }}, {{ propiedad.estado_ubicacion }}
+                </p>
+              </div>
+              <div class="flex items-center justify-end mt-6 pt-4 border-t border-[#7FA6FF40]">
+                <div class="text-right">
+                  <p class="font-bold text-lg text-[#7FA6FF] dark:text-[#D98EDF]">
+                    ${{ propiedad.precio | number:'1.2-2' }}
+                    <span class="text-sm text-gray-500 dark:text-gray-400 ml-1">
+                      /{{ propiedad.anualizado ? 'año' : 'mes' }}
+                    </span>
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        
+        <!-- Paginador -->
+        <mat-paginator *ngIf="!loading && propiedades.length > 0" class="mt-8 bg-transparent" [length]="totalItems" [pageSize]="pageSize" [pageIndex]="pageIndex" [pageSizeOptions]="pageSizeOptions" (page)="onPageChange($event)"></mat-paginator>
       </div>
-
-      <!-- Sin propiedades -->
-      <div *ngIf="!loading && propiedades.length === 0"
-        class="text-center text-gray-500 dark:text-gray-400 p-8 border border-dashed border-gray-300 rounded-md bg-white dark:bg-gray-800">
-        <p class="font-semibold mb-2">No se encontraron propiedades</p>
-        <p class="text-sm mb-4">Ajusta los filtros o publica una nueva propiedad.</p>
-        <button (click)="publicarNuevaPropiedad()"
-          class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md text-sm font-medium">
-          <svg class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd"
-              d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
-              clip-rule="evenodd" />
-          </svg>
-          Publicar
-        </button>
-      </div>
-
-      <!-- Lista de propiedades -->
-      <div *ngIf="!loading && propiedades.length > 0" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        <div *ngFor="let propiedad of propiedades" 
-     (click)="abrirModal(propiedad)"
-     class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition cursor-pointer">
-
-  <!-- Imagen -->
-  <img *ngIf="propiedad.fotos?.length > 0" 
-       [src]="getFullImageUrl(propiedad.fotos[0])" 
-       alt="Imagen de la propiedad" 
-       class="w-full h-48 object-cover">
-
-  <!-- Contenido -->
-  <div class="p-4 flex flex-col gap-2">
-
-    <!-- Título + Estado -->
-    <div class="flex justify-between items-start">
-      <h5 class="text-sm font-semibold line-clamp-2 text-gray-900 dark:text-white">{{ propiedad.titulo }}</h5>
-      <span class="text-xs font-medium px-2 py-0.5 rounded-full border"
-        [ngClass]="{
-          'bg-green-50 text-green-700 border-green-200': propiedad.estado_propiedad === 'Disponible',
-          'bg-blue-50 text-blue-700 border-blue-200': propiedad.estado_propiedad === 'Rentada',
-          'bg-red-50 text-red-700 border-red-200': propiedad.estado_propiedad === 'Inactiva'
-        }">
-        {{ propiedad.estado_propiedad }}
-      </span>
-    </div>
-
-    <!-- Dirección -->
-    <p class="text-xs text-gray-600 dark:text-gray-400 flex items-center gap-1">
-      📍 {{ propiedad.direccion }}
-    </p>
-
-    <!-- Tipo de propiedad con fondo -->
-    <div 
-      class="inline-block text-xs font-medium px-3 py-1 rounded-full w-fit"
-      [ngClass]="{
-        'bg-pink-100 text-pink-800 dark:bg-pink-900 dark:text-pink-200': propiedad.tipo_propiedad?.nombre === 'Casa',
-        'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200': propiedad.tipo_propiedad?.nombre !== 'Casa'
-      }">
-      {{ propiedad.tipo_propiedad?.nombre }}
-    </div>
-
-    <!-- Precio -->
-    <p class="text-green-600 dark:text-green-400 font-bold text-base mt-2">
-      ${{ propiedad.precio | number:'1.0-2' }} <span class="text-sm">MXN</span>
-    </p>
-  </div>
-</div>
-
-
-      </div>
-
-      <!-- Paginador -->
-      <mat-paginator class="mt-6" [length]="totalItems" [pageSize]="pageSize" [pageIndex]="pageIndex"
-        [pageSizeOptions]="pageSizeOptions" (page)="onPageChange($event)">
-      </mat-paginator>
     </main>
   </div>
 </div>
-<!-- Modal transparente con blur -->
-<div *ngIf="propiedadSeleccionada" class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-  <!-- Contenedor principal -->
-  <div class="relative w-full max-w-4xl bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden max-h-[90vh] flex flex-col transition-all duration-300">
-    
-    <!-- Botón cerrar -->
-    <button (click)="cerrarModal()"
-      class="absolute top-3 right-3 p-2 rounded-full bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition text-gray-600 dark:text-gray-300">
-      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-        <path fill-rule="evenodd" d="M10 8.586l4.95-4.95a1 1 0 111.414 1.414L11.414 10l4.95 4.95a1 1 0 01-1.414 1.414L10 11.414l-4.95 4.95a1 1 0 01-1.414-1.414L8.586 10 3.636 5.05a1 1 0 011.414-1.414L10 8.586z" clip-rule="evenodd" />
-      </svg>
-    </button>
 
-    <!-- Imagen -->
-    <div class="h-64 bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-      <img *ngIf="propiedadSeleccionada.fotos?.length > 0" [src]="getFullImageUrl(propiedadSeleccionada.fotos[0])"
-           class="w-full h-full object-cover" alt="Imagen de la propiedad">
-      <div *ngIf="!propiedadSeleccionada.fotos?.length" class="text-gray-400 dark:text-gray-500 text-sm">Sin imagen disponible</div>
+<!-- Modal con nuevo diseño -->
+<div *ngIf="propiedadSeleccionada" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4" (click)="cerrarModal()">
+  <div class="relative w-full max-w-4xl bg-white dark:bg-gray-800 rounded-2xl shadow-2xl max-h-[90vh] flex flex-col md:flex-row overflow-hidden" (click)="$event.stopPropagation()">
+    
+    <!-- Columna de Imagen -->
+    <div class="w-full md:w-1/2 h-64 md:h-auto bg-gray-100 dark:bg-gray-900">
+      <img *ngIf="propiedadSeleccionada.fotos?.length > 0" [src]="getFullImageUrl(propiedadSeleccionada.fotos[0])" class="w-full h-full object-cover" alt="Imagen de la propiedad">
+      <div *ngIf="!propiedadSeleccionada.fotos?.length" class="flex items-center justify-center h-full text-gray-400 dark:text-gray-500 text-sm">Sin imagen disponible</div>
     </div>
 
-    <!-- Contenido -->
-    <div class="flex-1 p-6 md:p-8 overflow-y-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Columna de Contenido -->
+    <div class="w-full md:w-1/2 p-6 md:p-8 flex flex-col overflow-y-auto">
       
-      <!-- Columna izquierda -->
+      <!-- Encabezado del Modal -->
       <div>
-        <span class="text-xs px-3 py-1 rounded-full border font-semibold mb-2 inline-block"
-          [ngClass]="{
-            'bg-green-50 text-green-700 border-green-200': propiedadSeleccionada.estado_propiedad === 'Disponible',
-            'bg-blue-50 text-blue-700 border-blue-200': propiedadSeleccionada.estado_propiedad === 'Rentada',
-            'bg-red-50 text-red-700 border-red-200': propiedadSeleccionada.estado_propiedad === 'Inactiva'
-          }">
+        <span class="text-xs px-3 py-1 rounded-full border font-semibold mb-3 inline-block" [ngClass]="{ 'bg-green-50 text-green-700 border-green-200': propiedadSeleccionada.estado_propiedad === 'Disponible', 'bg-blue-50 text-blue-700 border-blue-200': propiedadSeleccionada.estado_propiedad === 'Rentada', 'bg-red-50 text-red-700 border-red-200': propiedadSeleccionada.estado_propiedad === 'Inactiva' }">
           {{ propiedadSeleccionada.estado_propiedad }}
         </span>
+        <h3 class="text-2xl font-bold text-gray-900 dark:text-white">{{ propiedadSeleccionada.titulo }}</h3>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">📍 {{ propiedadSeleccionada.direccion }}, {{ propiedadSeleccionada.ciudad }}</p>
+      </div>
 
-        <h3 class="text-2xl font-bold mb-2">{{ propiedadSeleccionada.titulo }}</h3>
-        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
-          📍 {{ propiedadSeleccionada.direccion }}, {{ propiedadSeleccionada.ciudad }}
-        </p>
-
-        <h4 class="font-semibold text-base mb-1">Descripción</h4>
+      <!-- Descripción -->
+      <div class="my-6 border-y dark:border-gray-700 py-4">
+        <h4 class="font-semibold text-base mb-2">Descripción</h4>
         <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">{{ propiedadSeleccionada.descripcion }}</p>
       </div>
 
-      <!-- Columna derecha -->
-      <div class="flex flex-col justify-between">
-        <!-- Precio -->
-        <div>
-          <p class="text-sm text-gray-500 dark:text-gray-400">Precio</p>
-          <p class="text-3xl font-extrabold text-green-600 dark:text-green-400">${{ propiedadSeleccionada.precio | number:'1.2-2' }} MXN</p>
-        </div>
-
-        <!-- Características -->
-        <div class="grid grid-cols-2 gap-y-3 text-sm text-gray-700 dark:text-gray-300 mt-6">
+      <!-- Características -->
+      <div>
+        <h4 class="font-semibold text-base mb-3">Características</h4>
+        <div class="grid grid-cols-2 gap-y-3 text-sm text-gray-700 dark:text-gray-300">
           <p>🛏️ Habitaciones: <span class="font-semibold">{{ propiedadSeleccionada.habitaciones }}</span></p>
           <p>🚿 Baños: <span class="font-semibold">{{ propiedadSeleccionada.banos }}</span></p>
           <p>📐 Tamaño: <span class="font-semibold">{{ propiedadSeleccionada.metros_cuadrados }} m²</span></p>
           <p>🪑 Amueblado: <span class="font-semibold">{{ propiedadSeleccionada.amueblado ? 'Sí' : 'No' }}</span></p>
         </div>
-
-        <!-- Acciones -->
-        <div class="mt-6 flex flex-col sm:flex-row gap-2">
-          <button (click)="editarPropiedad(propiedadSeleccionada.id_propiedad)"
-            class="w-full sm:w-auto px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm font-medium">
-            Editar
-          </button>
-          <button (click)="eliminarPropiedad(propiedadSeleccionada.id_propiedad)"
-            class="w-full sm:w-auto px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-md text-sm font-medium">
-            Eliminar
-          </button>
+      </div>
+      
+      <!-- Footer del Modal -->
+      <div class="mt-auto pt-6 space-y-4">
+        <div class="text-right">
+          <p class="text-sm text-gray-500 dark:text-gray-400">Precio de Renta</p>
+          <p class="text-3xl font-extrabold text-green-600 dark:text-green-400">${{ propiedadSeleccionada.precio | number:'1.2-2' }} MXN</p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-3">
+          <button (click)="editarPropiedad(propiedadSeleccionada.id_propiedad)" class="flex-1 px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold transition">Editar</button>
+          <button (click)="eliminarPropiedad(propiedadSeleccionada.id_propiedad)" class="flex-1 px-4 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm font-bold transition">Eliminar</button>
         </div>
       </div>
     </div>
+    
+    <!-- Botón de Cerrar -->
+    <button (click)="cerrarModal()" class="absolute top-3 right-3 p-2 rounded-full bg-white/50 dark:bg-gray-900/50 backdrop-blur-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+      <svg class="w-5 h-5 text-gray-600 dark:text-gray-300" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 8.586l4.95-4.95a1 1 0 111.414 1.414L11.414 10l4.95 4.95a1 1 0 01-1.414 1.414L10 11.414l-4.95 4.95a1 1 0 01-1.414-1.414L8.586 10 3.636 5.05a1 1 0 011.414-1.414L10 8.586z" clip-rule="evenodd" /></svg>
+    </button>
   </div>
 </div>

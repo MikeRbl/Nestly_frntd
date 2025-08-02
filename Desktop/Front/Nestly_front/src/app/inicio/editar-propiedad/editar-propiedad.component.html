@@ -1,178 +1,152 @@
-<div class="max-w-6xl mx-auto p-6">
-  <h2 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Editar Propiedad</h2>
 
-  <div *ngIf="isLoading && !formulario.dirty" class="flex flex-col items-center justify-center py-10">
-    <div class="animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500"></div>
-    <p class="mt-4 text-gray-500">Cargando datos de la propiedad...</p>
+
+<div *ngIf="isLoading && !formulario.dirty" class="flex flex-col items-center justify-center py-20">
+  <img
+    src="https://i.pinimg.com/originals/2d/16/75/2d16752412daa809899e7711aa44dadb.gif"
+    alt="Cargando..."
+    class="w-24 h-24 object-contain"
+  />
+  <p class="mt-4 text-gray-500 dark:text-gray-400 text-center">
+    Cargando datos de la propiedad...
+  </p>
+</div>
+
+
+<form *ngIf="!isLoading || formulario.dirty" [formGroup]="formulario" (ngSubmit)="actualizarPropiedad()" novalidate>
+  <!-- Encabezado -->
+  <div class="flex items-center justify-between mb-8">
+    <h3 class="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">Editar Propiedad</h3>
+    <div class="flex gap-3">
+       <button type="button" (click)="cancelarEdicion()" [disabled]="isLoading" class="px-6 py-3 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-semibold rounded-lg transition">Cancelar</button>
+      <button type="submit" [disabled]="isLoading" class="px-10 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition">
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+        {{ isLoading ? 'Actualizando...' : 'Actualizar' }}
+      </button>
+    </div>
   </div>
 
-  <form *ngIf="!isLoading || formulario.dirty" [formGroup]="formulario" (ngSubmit)="actualizarPropiedad()" novalidate class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    
-    <!-- Columna Izquierda -->
+  <!-- Contenedor principal del formulario en tres columnas -->
+  <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+
+    <!-- Columna 1 -->
     <div class="space-y-6">
-      <!-- Información Principal -->
-      <div>
-        <h3 class="text-lg font-medium text-gray-700">Información Principal</h3>
-        <div class="mt-4 space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-600">Título de la Publicación *</label>
-            <input type="text" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="titulo" />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-600">Descripción *</label>
-            <textarea rows="4" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="descripcion"></textarea>
-          </div>
+      <div class="p-6 dark:bg-gray-800/20 rounded-xl h-full">
+        <h3 class="form-section-title">Información Principal</h3>
+        <div>
+          <label for="titulo" class="form-label">Título de la Propiedad</label>
+          <input type="text" id="titulo" formControlName="titulo" class="form-control">
         </div>
-      </div>
+        <div class="mt-4">
+          <label for="descripcion" class="form-label">Descripción</label>
+          <textarea id="descripcion" formControlName="descripcion" class="form-control" rows="10"></textarea>
+        </div>
 
-      <!-- Ubicación -->
-      <div>
-        <h3 class="text-lg font-medium text-gray-700">Ubicación</h3>
-        <div class="mt-4 space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-600">Dirección Completa *</label>
-            <input type="text" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="direccion" />
-          </div>
-          <div class="grid grid-cols-2 gap-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-600">País *</label>
-              <input type="text" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="pais" />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-600">Estado *</label>
-              <input type="text" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="estado_ubicacion" />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-600">Ciudad *</label>
-              <input type="text" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="ciudad" />
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-gray-600">Colonia</label>
-              <input type="text" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="colonia" />
-            </div>
-          </div>
-        </div>
-      </div>
+        <div class="col-span-2">
 
-      <!-- Contacto -->
-      <div>
-        <h3 class="text-lg font-medium text-gray-700">Información de Contacto</h3>
-        <div class="mt-4 grid grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-600">Correo electrónico *</label>
-            <input type="email" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="email" />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-600">Teléfono *</label>
-            <input type="text" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="telefono" />
-          </div>
+          <h3 class="form-section-title">Información de Contacto</h3>
+          <label for="email" class="form-label">Correo Electrónico</label>
+          <input type="email" id="email" formControlName="email" class="form-control">
         </div>
+
+
       </div>
     </div>
 
-    <!-- Columna Derecha -->
-    <div class="space-y-6">
-      <!-- Características -->
+    <!-- Columna 2 -->
+<div class="space-y-6">
+  <div class="p-6 dark:bg-gray-800/20 rounded-xl">
+    <h3 class="form-section-title">Características</h3>
+    <div class="grid grid-cols-2 gap-4">
       <div>
-        <h3 class="text-lg font-medium text-gray-700">Características y Detalles</h3>
-
-        <div *ngIf="tiposDePropiedad.length === 0" class="text-sm text-gray-500">Cargando tipos de propiedad...</div>
-
-        <div *ngIf="tiposDePropiedad.length > 0" class="mt-4 grid grid-cols-2 gap-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-600">Tipo de Propiedad *</label>
-            <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="tipo_propiedad_id">
-              <option value="" disabled>Selecciona una opción</option>
-              <option *ngFor="let tipo of tiposDePropiedad" [value]="tipo.id">{{ tipo.nombre }}</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-600">Estado de la Propiedad *</label>
-            <select class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="estado_propiedad">
-              <option value="" disabled>Selecciona un estado</option>
-              <option value="Disponible">Disponible</option>
-              <option value="Rentada">Rentada</option>
-              <option value="Inactiva">Inactiva</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-600">Precio (MXN) *</label>
-            <input type="number" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="precio" />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-600">Habitaciones *</label>
-            <input type="number" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="habitaciones" />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-600">Baños *</label>
-            <input type="number" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="banos" />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-600">Metros Cuadrados *</label>
-            <input type="number" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="metros_cuadrados" />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-600">Depósito</label>
-            <input type="number" class="w-full border border-gray-300 rounded px-3 py-2 text-sm" formControlName="deposito" />
-          </div>
-        </div>
+        <label for="precio" class="form-label">Precio (MXN)</label>
+        <input type="number" id="precio" formControlName="precio" class="form-control" min="0" step="any" />
       </div>
-
-      <!-- Opciones -->
-      <div class="grid grid-cols-3 gap-4">
-        <div>
-          <label class="block text-sm font-medium text-gray-600 mb-1">¿Amueblado?</label>
-          <div class="flex space-x-2">
-            <button type="button" class="px-3 py-1 rounded border text-sm" [class.bg-green-500]="f['amueblado'].value === true" (click)="f['amueblado'].setValue(true)">Sí</button>
-            <button type="button" class="px-3 py-1 rounded border text-sm" [class.bg-red-500]="f['amueblado'].value === false" (click)="f['amueblado'].setValue(false)">No</button>
-          </div>
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-600 mb-1">¿Renta anual?</label>
-          <div class="flex space-x-2">
-            <button type="button" class="px-3 py-1 rounded border text-sm" [class.bg-green-500]="f['anualizado'].value === true" (click)="f['anualizado'].setValue(true)">Sí</button>
-            <button type="button" class="px-3 py-1 rounded border text-sm" [class.bg-red-500]="f['anualizado'].value === false" (click)="f['anualizado'].setValue(false)">No</button>
-          </div>
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-600 mb-1">¿Mascotas?</label>
-          <div class="flex space-x-2">
-            <button type="button" class="px-3 py-1 rounded border text-sm" [class.bg-green-500]="f['mascotas'].value === 'si'" (click)="f['mascotas'].setValue('si')">Sí</button>
-            <button type="button" class="px-3 py-1 rounded border text-sm" [class.bg-red-500]="f['mascotas'].value === 'no'" (click)="f['mascotas'].setValue('no')">No</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Fotos -->
       <div>
-        <h3 class="text-lg font-medium text-gray-700 mt-4">Fotos de la Propiedad</h3>
-        <input type="file" (change)="onFileChange($event)" multiple accept="image/*" class="w-full mt-2 text-sm" />
-
-        <!-- Imágenes actuales -->
-        <div class="mt-4 grid grid-cols-3 gap-2">
-          <div *ngFor="let foto of existingImages; let i = index" class="relative">
-            <img [src]="foto.url" alt="imagen" class="w-full h-24 object-cover rounded" />
-            <button type="button" (click)="removeExistingImage(i)" class="absolute top-1 right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">&times;</button>
-          </div>
-        </div>
-
-        <!-- Previews nuevas -->
-        <div class="mt-4 grid grid-cols-3 gap-2">
-          <div *ngFor="let foto of newImagePreviews; let i = index" class="relative">
-            <img [src]="foto" alt="preview" class="w-full h-24 object-cover rounded" />
-            <button type="button" (click)="removeNewImage(i)" class="absolute top-1 right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">&times;</button>
-          </div>
-        </div>
+        <label for="habitaciones" class="form-label">Habitaciones</label>
+        <input type="number" id="habitaciones" formControlName="habitaciones" class="form-control" min="1" />
       </div>
-
-      <!-- Botones -->
-      <div class="flex justify-end space-x-3 mt-6">
-        <button type="button" (click)="cancelarEdicion()" [disabled]="isLoading" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition">Cancelar</button>
-        <button type="submit" [disabled]="isLoading" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
-          <span *ngIf="isLoading" class="loader mr-2"></span>
-          {{ isLoading ? 'Actualizando...' : 'Actualizar Propiedad' }}
-        </button>
+      <div>
+        <label for="banos" class="form-label">Baños</label>
+        <input type="number" id="banos" formControlName="banos" class="form-control" min="1" />
+      </div>
+      <div>
+        <label for="metros_cuadrados" class="form-label">Metros Cuadrados</label>
+        <input type="number" id="metros_cuadrados" formControlName="metros_cuadrados" class="form-control" min="0" step="any" />
+      </div>
+      <div class="col-span-2">
+        <label for="tipo_propiedad_id" class="form-label">Tipo de Propiedad</label>
+        <select id="tipo_propiedad_id" formControlName="tipo_propiedad_id" class="form-control">
+          <option value="" disabled>Selecciona</option>
+          <option *ngFor="let tipo of tiposDePropiedad" [value]="tipo.id">{{ tipo.nombre }}</option>
+        </select>
+      </div>
+      <div class="col-span-2">
+        <label for="estado_propiedad" class="form-label">Estado de la Propiedad</label>
+        <select id="estado_propiedad" formControlName="estado_propiedad" class="form-control">
+          <option value="Disponible">Disponible</option>
+          <option value="Rentada">Rentada</option>
+          <option value="Inactiva">Inactiva</option>
+        </select>
       </div>
     </div>
-  </form>
+  </div>
+
+  <div class="p-6 dark:bg-gray-800/20 rounded-xl">
+    <h3 class="form-section-title">Opciones Adicionales</h3>
+    <div class="grid grid-cols-1 gap-y-4">
+      <div class="flex items-center justify-between">
+        <label class="form-label !mb-0">Amueblado</label>
+        <div class="toggle-switch w-28">
+          <button type="button" (click)="f['amueblado'].setValue(true)" [class.active]="f['amueblado'].value === true">Sí</button>
+          <button type="button" (click)="f['amueblado'].setValue(false)" [class.active]="f['amueblado'].value === false">No</button>
+        </div>
+      </div>
+      <div class="flex items-center justify-between">
+        <label class="form-label !mb-0">Mascotas</label>
+        <div class="toggle-switch w-28">
+          <button type="button" (click)="f['mascotas'].setValue('si')" [class.active]="f['mascotas'].value === 'si'">Sí</button>
+          <button type="button" (click)="f['mascotas'].setValue('no')" [class.active]="f['mascotas'].value === 'no'">No</button>
+        </div>
+      </div>
+      <div class="flex items-center justify-between">
+        <label class="form-label !mb-0">Contrato Anual</label>
+        <div class="toggle-switch w-28">
+          <button type="button" (click)="f['anualizado'].setValue(true)" [class.active]="f['anualizado'].value === true">Sí</button>
+          <button type="button" (click)="f['anualizado'].setValue(false)" [class.active]="f['anualizado'].value === false">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+    
+    <!-- Columna 3 -->
+    <div class="space-y-6">
+      <div class="p-6 dark:bg-gray-800/20 rounded-xl">
+        <h3 class="form-section-title">Ubicación y Contacto</h3>
+        <div class="grid grid-cols-2 gap-4">
+          <div><label for="pais" class="form-label">País</label><input type="text" id="pais" formControlName="pais" class="form-control"></div>
+          <div><label for="estado_ubicacion" class="form-label">Estado</label><input type="text" id="estado_ubicacion" formControlName="estado_ubicacion" class="form-control"></div>
+          <div><label for="ciudad" class="form-label">Ciudad</label><input type="text" id="ciudad" formControlName="ciudad" class="form-control"></div>
+          <div><label for="colonia" class="form-label">Colonia</label><input type="text" id="colonia" formControlName="colonia" class="form-control"></div>
+          <div class="col-span-2"><label for="direccion" class="form-label">Dirección Completa</label><input type="text" id="direccion" formControlName="direccion" class="form-control"></div>
+          <div class="col-span-2"><label for="telefono" class="form-label">Teléfono</label><input type="text" id="telefono" formControlName="telefono" class="form-control" maxlength="10"></div>
+        </div>
+      </div>
+      <div class="p-6 dark:bg-gray-800/20 rounded-xl">
+        <h3 class="form-section-title">Fotos de la Propiedad</h3>
+        <input type="file" (change)="onFileChange($event)" multiple accept="image/*" class="form-control">
+        <div class="mt-4 grid grid-cols-3 sm:grid-cols-4 gap-4">
+          <div *ngFor="let foto of existingImages; let i = index" class="relative">
+            <img [src]="foto.url" alt="imagen" class="w-full h-24 object-cover rounded-md">
+            <button type="button" (click)="removeExistingImage(i)" class="absolute top-0 right-0 -mt-2 -mr-2 bg-red-500 text-white rounded-full h-6 w-6 flex items-center justify-center text-xs shadow">&times;</button>
+          </div>
+          <div *ngFor="let foto of newImagePreviews; let i = index" class="relative">
+            <img [src]="foto" alt="preview" class="w-full h-24 object-cover rounded-md">
+            <button type="button" (click)="removeNewImage(i)" class="absolute top-0 right-0 -mt-2 -mr-2 bg-red-500 text-white rounded-full h-6 w-6 flex items-center justify-center text-xs shadow">&times;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

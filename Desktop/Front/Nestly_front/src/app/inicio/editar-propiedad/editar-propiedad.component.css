@@ -1,20 +1,26 @@
-/* --- Estilos para el contenedor principal que enmarca el GIF --- */
-.container-principal {
-    background-color: #ffffff;
-    display: flex;    
-    flex-direction: column; /* Alinea los elementos en una columna */
-    justify-content: center; /* Centra horizontalmente el contenido */
-    align-items: center; /* Centra verticalmente el contenido */
-    width: 100%;   
-    height: 100vh;
 
+.form-section-title {
+    @apply text-lg font-semibold mb-4 text-gray-700 dark:text-gray-200 border-b border-gray-200 dark:border-gray-700 pb-3;
 }
-
-.container-principal img {
-    width: 100%; /* Ancho completo del contenedor */
-    height: auto; /* Mantiene la proporción de aspecto */
-    max-width: 300px; /* Ancho máximo para evitar que se estire demasiado */
-    border-radius: 10px; /* Bordes redondeados para un mejor estilo */
+.form-label {
+  @apply block text-sm font-medium text-gray-600 dark:text-gray-300 mb-1;
 }
-
-
+.form-label.\!mb-0 {
+    @apply mb-0;
+}
+.form-control {
+  @apply w-full px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition;
+}
+.toggle-switch {
+  @apply flex border border-gray-300 dark:border-gray-600 rounded-lg p-0.5;
+}
+.toggle-switch button {
+  @apply flex-1 text-center py-1.5 text-sm font-semibold rounded-md transition-colors duration-200;
+  color: #4B5563;
+}
+.dark .toggle-switch button {
+    color: #D1D5DB;
+}
+.toggle-switch button.active {
+  @apply bg-blue-500 text-white shadow;
+}

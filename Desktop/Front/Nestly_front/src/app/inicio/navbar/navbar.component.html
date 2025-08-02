@@ -39,25 +39,23 @@
 
         <a
           class="nav-main-link"
-          routerLink="publicarCasa"
+          routerLink="/principal/gestion-propiedades"
           routerLinkActive="active"
           *ngIf="userRole === 'propietario' || userRole === 'admin'"
           (click)="closeMenus()"
         >
-          <span class="textoBtn">Publicar Propiedad</span>
+          <span class="textoBtn">Propiedades</span>
         </a>
 
-        <a
-          class="nav-main-link"
-          routerLink="verPropiedades"
-          routerLinkActive="active"
-          *ngIf="userRole === 'propietario' || userRole === 'admin'"
-          (click)="closeMenus()"
-        >
-          <span class="textoBtn">Mis Propiedades</span>
-        </a>
         
-
+              <a
+                routerLink="/principal/mis-rentas"
+                class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+                *ngIf="userRole === 'inquilino'"
+                (click)="closeMenus()"
+              >
+                Mis Rentas
+              </a>
         <a
           class="nav-main-link"
           routerLink="qnSomos"
@@ -76,139 +74,147 @@
         <a class="login-btn" routerLink="/login" *ngIf="!isLoggedIn()">
           <span>Iniciar Sesión</span>
         </a>
-
+       
         <div class="user-info-container" *ngIf="isLoggedIn()">
           <div class="user-info" (click)="toggleUserMenu()">
-            <div class="nombreUsuario">
-              <span class="user-name"
-                >{{ userData?.first_name }}
-                {{ userData?.last_name_paternal }}</span
-              >
-            </div>
-            <div class="user-profile">
-              <img
-                [src]="userData?.profile_picture || 'assets/navbar/usuario.png'"
-                alt="Foto de perfil de {{ userData?.first_name }}"
-                class="avatar-image"
-              />
-            </div>
-          </div>
+            <div class="flex items-center gap-3">
+  <!-- Imagen de perfil -->
+  <img
+    [src]="userData?.profile_picture || 'assets/navbar/usuario.png'"
+    alt="Foto de perfil de {{ userData?.first_name }}"
+    class="w-10 h-10 rounded-full object-cover ring-2 ring-blue-500 dark:ring-blue-400"
+    loading="lazy"
+  />
 
-          <!-- Menú desplegable del usuario -->
-          <div
-            id="user-dropdown-menu"
-            class="bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white rounded-md shadow-lg py-1"
-            [class.active]="userMenuOpen"
-          >
-            <!-- Elementos del menú -->
-            <a
-              routerLink="/principal/perfil"
-              class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
-              (click)="closeMenus()"
-            >
-              Mi Perfil
-            </a>
+  <!-- Nombre y rol -->
+  <div class="flex flex-col">
+    <span
+      class="text-sm font-medium text-gray-900 dark:text-white leading-tight truncate max-w-[150px]"
+      title="{{ userData?.first_name }} {{ userData?.last_name_paternal }}"
+    >
+      {{ userData?.first_name }} {{ userData?.last_name_paternal }}
+    </span>
+    <span
+        class="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wide"
+      >
+        {{ userData?.role | titlecase }}
+      </span>
 
-            <a
-              class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
-              (click)="handleFavoritosClick()"
-            >
-              Favoritos
-            </a>
+  </div>
+</div>
 
-            <a
-              routerLink="/principal/configuracion"
-              class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
-              (click)="closeMenus()"
-            >
-              Configuración
-            </a>
-            <a
-              routerLink="/principal/mis-rentas"
-              class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
-              *ngIf="userRole === 'propietario' || userRole === 'inquilino' || userRole === 'admin'"
-              (click)="closeMenus()"
-            >
-              Mis Rentas
-            </a>
 
-            <!-- Mostrar enlaces de navegación solo en móvil -->
+            <!-- Menú desplegable del usuario -->
             <div
-              *ngIf="isMobileView()"
-              class="border-t border-gray-200 dark:border-gray-700 mt-1 pt-1"
+              id="user-dropdown-menu"
+              class="bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white rounded-md shadow-lg py-1"
+              [class.active]="userMenuOpen"
             >
+              <!-- Elementos del menú -->
               <a
+                routerLink="/principal/perfil"
                 class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
-                routerLink="dashboard"
                 (click)="closeMenus()"
               >
-                Inicio
-              </a>
-              <a
-                class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
-                routerLink="buscarCasa"
-                (click)="closeMenus()"
-              >
-                Buscar
-              </a>
-              <a
-                class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
-                routerLink="publicarCasa"
-                (click)="closeMenus()"
-                *ngIf="userRole === 'propietario' || userRole === 'admin'"
-              >
-                Publicar Propiedad
-              </a>
-              <a
-                class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
-                routerLink="verPropiedades"
-                (click)="closeMenus()"
-                *ngIf="userRole === 'propietario' || userRole === 'admin'"
-              >
-                Mis Propiedades
+                Mi Perfil
               </a>
 
               <a
                 class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
-                routerLink="qnSomos"
+                (click)="handleFavoritosClick()"
+              >
+                Favoritos
+              </a>
+
+              <a
+                routerLink="/principal/configuracion"
+                class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
                 (click)="closeMenus()"
               >
-                ¿Quiénes somos?
+                Configuración
+              </a>
+
+
+
+              <!-- Mostrar enlaces de navegación solo en móvil -->
+              <div
+                *ngIf="isMobileView()"
+                class="border-t border-gray-200 dark:border-gray-700 mt-1 pt-1"
+              >
+                <a
+                  class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+                  routerLink="dashboard"
+                  (click)="closeMenus()"
+                >
+                  Inicio
+                </a>
+                <a
+                  class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+                  routerLink="buscarCasa"
+                  (click)="closeMenus()"
+                >
+                  Buscar
+                </a>
+                <a
+                  class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+                  routerLink="publicarCasa"
+                  (click)="closeMenus()"
+                  *ngIf="userRole === 'propietario' || userRole === 'admin'"
+                >
+                  Publicar Propiedad
+                </a>
+                <a
+                  class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+                  routerLink="verPropiedades"
+                  (click)="closeMenus()"
+                  *ngIf="userRole === 'propietario' || userRole === 'admin'"
+                >
+                  Mis Propiedades
+                </a>
+
+                <a
+                  class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+                  routerLink="qnSomos"
+                  (click)="closeMenus()"
+                >
+                  ¿Quiénes somos?
+                </a>
+              </div>
+
+              <!-- Separador visual -->
+              <div
+                class="border-t border-gray-200 dark:border-gray-700 mt-1"
+              ></div>
+
+              <div class="flex items-center justify-between px-4 py-2">
+                <span class="text-sm text-gray-900 dark:text-gray-100">
+                  Modo Oscuro
+                </span>
+
+                <button
+                  (click)="toggleDarkMode()"
+                  class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300"
+                  [ngClass]="darkModeEnabled ? 'bg-blue-600' : 'bg-gray-300'"
+                >
+                  <span
+                    class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300"
+                    [ngClass]="
+                      darkModeEnabled ? 'translate-x-6' : 'translate-x-1'
+                    "
+                  ></span>
+                </button>
+              </div>
+
+              <a
+                class="dropdown-item block px-4 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-gray-700 transition-colors duration-200"
+                (click)="logout()"
+              >
+                Cerrar Sesión
               </a>
             </div>
-
-            <!-- Separador visual -->
-            <div
-              class="border-t border-gray-200 dark:border-gray-700 mt-1"
-            ></div>
-
-            <div class="flex items-center justify-between px-4 py-2">
-              <span class="text-sm text-gray-900 dark:text-gray-100">Modo Oscuro</span>
-              
-              <button
-                (click)="toggleDarkMode()"
-                class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300"
-                [ngClass]="darkModeEnabled ? 'bg-blue-600' : 'bg-gray-300'"
-              >
-                <span
-                  class="inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-300"
-                  [ngClass]="darkModeEnabled ? 'translate-x-6' : 'translate-x-1'"
-                ></span>
-              </button>
-            </div>
-
-
-            <a
-              class="dropdown-item block px-4 py-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-gray-700 transition-colors duration-200"
-              (click)="logout()"
-            >
-              Cerrar Sesión
-            </a>
           </div>
         </div>
       </div>
-
-      
     </div>
   </nav>
 </div>
