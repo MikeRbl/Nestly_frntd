@@ -31,6 +31,7 @@ import { MisRentasComponent } from './mis-rentas/mis-rentas.component';
 
 import { TerminosComponent } from './terminos/terminos.component';
 import { PrivacidadComponent } from './privacidad/privacidad.component'; // Importa el nuevo componente FAQ
+import { GestionPropiedadesComponent } from './gestion-propiedades/gestion-propiedades.component';
 
 @NgModule({
   declarations: [
@@ -51,11 +52,12 @@ import { PrivacidadComponent } from './privacidad/privacidad.component'; // Impo
     PrimeraMayusculaPipe,
     PagosComponent,
     PropiedadesFavoritosComponent,
-
+    GestionPropiedadesComponent,
     MisRentasComponent,
     SitioResenasComponent,
     FaqComponent,
     SitioResenasComponent,
+    PublicarComponent,
     FaqComponent, TerminosComponent, PrivacidadComponent // Declara el nuevo componente FAQ
   ],
   imports: [

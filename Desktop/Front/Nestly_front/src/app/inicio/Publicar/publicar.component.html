@@ -1,270 +1,486 @@
-<div>
-<div class="publicar-container" class="bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white">
-  <div class="card" class="bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white">
-    <div class="card-header">
-      <h2 class="card-title">Publicar Nueva Propiedad</h2>
+<form [formGroup]="formulario" (ngSubmit)="publicarPropiedad()" novalidate>
+  <!-- Encabezado -->
+  <div class="flex items-center justify-between mb-8">
+     <div class="flex items-center gap-3">
+      <h3 class="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">Publicar Nueva Propiedad</h3>
+      
     </div>
-    <div class="card-body">
-      <form [formGroup]="formulario" (ngSubmit)="publicarPropiedad()" novalidate>
+    
+    <button
+        type="submit"
+        class="flex items-center gap-2 px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition"
+        [disabled]="isLoading"
+      >
+        <span *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        {{ isLoading ? "Publicando..." : "Publicar Propiedad" }}
 
-        <div class="form-columns-container">
-          <div class="form-column left-column">
-            <div class="scrollable-content">
+         <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+  </svg>
+      </button>
 
-              <div class="form-section">
-                <h3>Información Principal</h3>
-                <div class="mb-4">
-                  <label for="titulo" class="form-label">Título de la Propiedad</label>
-                  <input type="text" id="titulo" formControlName="titulo" class="form-control"
-                    [class.is-invalid]="f['titulo'].invalid && (f['titulo'].touched || formSubmitted)">
-                  <div *ngIf="f['titulo'].invalid && (f['titulo'].touched || formSubmitted)" class="invalid-feedback">
-                    <div *ngIf="f['titulo'].errors?.['required']">El título es obligatorio.</div>
-                    <div *ngIf="f['titulo'].errors?.['maxlength']">El título no puede exceder los 255 caracteres.</div>
-                  </div>
-                </div>
+  </div>
 
-                <div class="mb-4">
-                  <label for="descripcion" class="form-label mb-3">Descripción</label>
-                  <textarea id="descripcion" formControlName="descripcion" class="form-control" rows="5"
-                    [class.is-invalid]="f['descripcion'].invalid && (f['descripcion'].touched || formSubmitted)"></textarea>
-                  <div *ngIf="f['descripcion'].invalid && (f['descripcion'].touched || formSubmitted)"
-                    class="invalid-feedback">
-                    <div *ngIf="f['descripcion'].errors?.['required']">La descripción es obligatoria.</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="form-section">
-                <h3>Características y Especificaciones</h3>
-                <div class="row">
-                  <div class="col-md-4 mb-4">
-                    <label for="precio" class="form-label">Precio</label>
-                    <input type="number" id="precio" formControlName="precio" class="form-control"
-                      [class.is-invalid]="f['precio'].invalid && (f['precio'].touched || formSubmitted)">
-                    <div *ngIf="f['precio'].invalid && (f['precio'].touched || formSubmitted)" class="invalid-feedback">
-                      <div *ngIf="f['precio'].errors?.['required']">El precio es obligatorio.</div>
-                      <div *ngIf="f['precio'].errors?.['min']">El precio no puede ser negativo.</div>
-                    </div>
-                  </div>
-                  <div class="col-md-4 mb-4">
-                    <label for="habitaciones" class="form-label">Habitaciones</label>
-                    <input type="number" id="habitaciones" formControlName="habitaciones" class="form-control"
-                      [class.is-invalid]="f['habitaciones'].invalid && (f['habitaciones'].touched || formSubmitted)">
-                    <div *ngIf="f['habitaciones'].invalid && (f['habitaciones'].touched || formSubmitted)"
-                      class="invalid-feedback">
-                      <div *ngIf="f['habitaciones'].errors?.['required']">El número de habitaciones es obligatorio.</div>
-                      <div *ngIf="f['habitaciones'].errors?.['min']">Debe haber al menos 0 habitaciones.</div>
-                    </div>
-                  </div>
-                  <div class="col-md-4 mb-4">
-                    <label for="banos" class="form-label">Baños</label>
-                    <input type="number" id="banos" formControlName="banos" class="form-control"
-                      [class.is-invalid]="f['banos'].invalid && (f['banos'].touched || formSubmitted)">
-                    <div *ngIf="f['banos'].invalid && (f['banos'].touched || formSubmitted)" class="invalid-feedback">
-                      <div *ngIf="f['banos'].errors?.['required']">El número de baños es obligatorio.</div>
-                      <div *ngIf="f['banos'].errors?.['min']">Debe haber al menos 0 baños.</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-md-6 mb-4">
-                    <label for="metros_cuadrados" class="form-label">Metros Cuadrados</label>
-                    <input type="number" id="metros_cuadrados" formControlName="metros_cuadrados" class="form-control"
-                      [class.is-invalid]="f['metros_cuadrados'].invalid && (f['metros_cuadrados'].touched || formSubmitted)">
-                    <div *ngIf="f['metros_cuadrados'].invalid && (f['metros_cuadrados'].touched || formSubmitted)"
-                      class="invalid-feedback">
-                      <div *ngIf="f['metros_cuadrados'].errors?.['required']">Los metros cuadrados son obligatorios.</div>
-                      <div *ngIf="f['metros_cuadrados'].errors?.['min']">Los metros cuadrados no pueden ser negativos.</div>
-                    </div>
-                  </div>
-                  <div class="col-md-6 mb-4">
-                    <label for="deposito" class="form-label">Depósito (Opcional)</label>
-                    <input type="number" id="deposito" formControlName="deposito" class="form-control">
-                  </div>
-                </div>
-
-                <div class="mb-4">
-                  <label for="tipo_propiedad_id" class="form-label">Tipo de Propiedad</label>
-                  <select id="tipo_propiedad_id" formControlName="tipo_propiedad_id" class="form-select"
-                    [class.is-invalid]="f['tipo_propiedad_id'].invalid && (f['tipo_propiedad_id'].touched || formSubmitted)">
-                    <option value="" disabled selected>Selecciona un tipo</option>
-                    <option *ngFor="let tipo of tiposDePropiedad" [value]="tipo.id">{{ tipo.nombre }}</option>
-                  </select>
-                  <div *ngIf="f['tipo_propiedad_id'].invalid && (f['tipo_propiedad_id'].touched || formSubmitted)"
-                    class="invalid-feedback">
-                    <div *ngIf="f['tipo_propiedad_id'].errors?.['required']">El tipo de propiedad es obligatorio.</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="form-section">
-                <h3>Opciones Adicionales</h3>
-
-                <div class="mb-4">
-                  <label class="form-label d-block">Amueblado</label>
-                  <div class="toggle-switch-container">
-                    <button type="button" class="toggle-button"
-                      [ngClass]="{'active yes': f['amueblado'].value === true, 'inactive': f['amueblado'].value !== true }"
-                      (click)="f['amueblado'].setValue(true)">
-                      Sí
-                    </button>
-                    <button type="button" class="toggle-button"
-                      [ngClass]="{'active no': f['amueblado'].value === false, 'inactive': f['amueblado'].value !== false }"
-                      (click)="f['amueblado'].setValue(false)">
-                      No
-                    </button>
-                  </div>
-                </div>
-
-                <div class="mb-4">
-                  <label class="form-label d-block">Contrato Anualizado</label>
-                  <div class="toggle-switch-container">
-                    <button type="button" class="toggle-button"
-                      [ngClass]="{'active yes': f['anualizado'].value === true, 'inactive': f['anualizado'].value !== true }"
-                      (click)="f['anualizado'].setValue(true)">
-                      Sí
-                    </button>
-                    <button type="button" class="toggle-button"
-                      [ngClass]="{'active no': f['anualizado'].value === false, 'inactive': f['anualizado'].value !== false }"
-                      (click)="f['anualizado'].setValue(false)">
-                      No
-                    </button>
-                  </div>
-                </div>
-
-                <div class="mb-4">
-                  <label class="form-label d-block">Mascotas</label>
-                  <div class="toggle-switch-container">
-                    <button type="button" class="toggle-button"
-                      [ngClass]="{'active yes': f['mascotas'].value === 'si', 'inactive': f['mascotas'].value !== 'si' }"
-                      (click)="f['mascotas'].setValue('si')">
-                      Sí
-                    </button>
-                    <button type="button" class="toggle-button"
-                      [ngClass]="{'active no': f['mascotas'].value === 'no', 'inactive': f['mascotas'].value !== 'no' }"
-                      (click)="f['mascotas'].setValue('no')">
-                      No
-                    </button>
-                  </div>
-                  <div *ngIf="mascotasInvalid" class="invalid-feedback d-block">
-                    Por favor, selecciona si se aceptan mascotas.
-                  </div>
-                </div>
-                </div>
+  <!-- Contenedor principal del formulario en tres columnas -->
+  <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+    <!-- ======================================================= -->
+    <!-- Columna 1 -->
+    <!-- ======================================================= -->
+    <div class="space-y-6">
+      <!-- Sección: Información Principal -->
+      <div class="p-6 dark:bg-gray-800/20 rounded-xl h-full">
+        <h3 class="form-section-title">Información Principal</h3>
+        <div>
+          <label for="titulo" class="form-label">Título de la Propiedad</label>
+          <input
+            type="text"
+            id="titulo"
+            formControlName="titulo"
+            class="form-control"
+            [class.is-invalid]="
+              f['titulo'].invalid && (f['titulo'].touched || formSubmitted)
+            "
+          />
+          <div
+            *ngIf="
+              f['titulo'].invalid && (f['titulo'].touched || formSubmitted)
+            "
+            class="invalid-feedback"
+          >
+            <div *ngIf="f['titulo'].errors?.['required']">
+              El título es obligatorio.
             </div>
-          </div>
-
-          <div class="form-column right-column">
-            <div class="scrollable-content">
-
-              <div class="form-section">
-                <h3>Ubicación</h3>
-                <div class="row">
-                  <div class="col-md-6 mb-4">
-                    <label for="pais" class="form-label">País</label>
-                    <input type="text" id="pais" formControlName="pais" class="form-control"
-                      [class.is-invalid]="f['pais'].invalid && (f['pais'].touched || formSubmitted)">
-                    <div *ngIf="f['pais'].invalid && (f['pais'].touched || formSubmitted)" class="invalid-feedback">
-                      <div *ngIf="f['pais'].errors?.['required']">El país es obligatorio.</div>
-                    </div>
-                  </div>
-                  <div class="col-md-6 mb-4">
-                    <label for="estado_ubicacion" class="form-label">Estado</label>
-                    <input type="text" id="estado_ubicacion" formControlName="estado_ubicacion" class="form-control"
-                      [class.is-invalid]="f['estado_ubicacion'].invalid && (f['estado_ubicacion'].touched || formSubmitted)">
-                    <div *ngIf="f['estado_ubicacion'].invalid && (f['estado_ubicacion'].touched || formSubmitted)"
-                      class="invalid-feedback">
-                      <div *ngIf="f['estado_ubicacion'].errors?.['required']">El estado es obligatorio.</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-md-6 mb-4">
-                    <label for="ciudad" class="form-label">Ciudad</label>
-                    <input type="text" id="ciudad" formControlName="ciudad" class="form-control"
-                      [class.is-invalid]="f['ciudad'].invalid && (f['ciudad'].touched || formSubmitted)">
-                    <div *ngIf="f['ciudad'].invalid && (f['ciudad'].touched || formSubmitted)" class="invalid-feedback">
-                      <div *ngIf="f['ciudad'].errors?.['required']">La ciudad es obligatoria.</div>
-                    </div>
-                  </div>
-                  <div class="col-md-6 mb-4">
-                    <label for="colonia" class="form-label">Colonia</label>
-                    <input type="text" id="colonia" formControlName="colonia" class="form-control">
-                  </div>
-                </div>
-
-                <div class="mb-4">
-                  <label for="direccion" class="form-label">Dirección Completa (Calle, Número, etc.)</label>
-                  <input type="text" id="direccion" formControlName="direccion" class="form-control"
-                    [class.is-invalid]="f['direccion'].invalid && (f['direccion'].touched || formSubmitted)">
-                  <div *ngIf="f['direccion'].invalid && (f['direccion'].touched || formSubmitted)" class="invalid-feedback">
-                    <div *ngIf="f['direccion'].errors?.['required']">La dirección es obligatoria.</div>
-                  </div>
-                </div>
-
-                <div class="mb-4">
-                  <label class="form-label">Ubicación en el Mapa (El mapa se ajustará automáticamente)</label>
-                  <div id="map"></div>
-                  </div>
-              </div>
-
-              <div class="form-section">
-                <h3>Fotos de la Propiedad</h3>
-                <div class="mb-4">
-                  <label for="fotos" class="form-label">Seleccionar Fotos</label>
-                  <input type="file" id="fotos" class="form-control" multiple (change)="onFileChange($event)"
-                    accept="image/*" [class.is-invalid]="fotosInvalid">
-                  <div *ngIf="fotosInvalid" class="invalid-feedback">
-                    Por favor, sube al menos una foto de la propiedad.
-                  </div>
-                </div>
-                <div class="photo-preview-container" *ngIf="previewUrls.length > 0">
-                  <div class="photo-preview-item" *ngFor="let url of previewUrls; let i = index">
-                    <img [src]="url" alt="Preview de foto" class="img-thumbnail">
-                    <button type="button" class="btn-remove-photo" (click)="removePhoto(i)">
-                      &times;
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div class="form-section">
-                <h3>Información de Contacto</h3>
-                <div class="mb-4">
-                  <label for="email" class="form-label">Email de Contacto</label>
-                  <input type="email" id="email" formControlName="email" class="form-control"
-                    [class.is-invalid]="f['email'].invalid && (f['email'].touched || formSubmitted)">
-                  <div *ngIf="f['email'].invalid && (f['email'].touched || formSubmitted)" class="invalid-feedback">
-                    <div *ngIf="f['email'].errors?.['required']">El email es obligatorio.</div>
-                    <div *ngIf="f['email'].errors?.['email']">Por favor, introduce un email válido.</div>
-                    <div *ngIf="f['email'].errors?.['maxlength']">El email no puede exceder los 255 caracteres.</div>
-                  </div>
-                </div>
-                <div class="mb-4">
-                  <label for="telefono" class="form-label">Teléfono de Contacto</label>
-                  <input type="tel" id="telefono" formControlName="telefono" class="form-control"
-                    [class.is-invalid]="f['telefono'].invalid && (f['telefono'].touched || formSubmitted)">
-                  <div *ngIf="f['telefono'].invalid && (f['telefono'].touched || formSubmitted)" class="invalid-feedback">
-                    <div *ngIf="f['telefono'].errors?.['required']">El teléfono es obligatorio.</div>
-                    <div *ngIf="f['telefono'].errors?.['maxlength']">El teléfono no puede exceder los 15 caracteres.</div>
-                  </div>
-                </div>
-              </div>
-
+            <div *ngIf="f['titulo'].errors?.['maxlength']">
+              Máximo 255 caracteres.
             </div>
           </div>
         </div>
-
-        <div class="d-grid form-submit-section">
-          <button type="submit" class="btn btn-primary" [disabled]="isLoading">
-            <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-            {{ isLoading ? 'Publicando...' : 'Publicar Propiedad' }}
-          </button>
+        <div class="mt-4">
+          <label for="descripcion" class="form-label">Descripción</label>
+          <textarea
+            id="descripcion"
+            formControlName="descripcion"
+            class="form-control"
+            rows="10"
+            [class.is-invalid]="
+              f['descripcion'].invalid &&
+              (f['descripcion'].touched || formSubmitted)
+            "
+          ></textarea>
+          <div
+            *ngIf="
+              f['descripcion'].invalid &&
+              (f['descripcion'].touched || formSubmitted)
+            "
+            class="invalid-feedback"
+          >
+            <div *ngIf="f['descripcion'].errors?.['required']">
+              La descripción es obligatoria.
+            </div>
+          </div>
         </div>
-      </form>
+        <!-- Sección: Contacto -->
+        <div class="p-6 dark:bg-gray-800/20 rounded-xl">
+          <h3 class="form-section-title">Información de Contacto</h3>
+          <div class="grid grid-cols-1 gap-4">
+            <div>
+              <label for="email" class="form-label">Email de Contacto</label>
+              <input
+                type="email"
+                formControlName="email"
+                class="form-control"
+                readonly
+              />
+
+              <div
+                *ngIf="
+                  f['email'].invalid && (f['email'].touched || formSubmitted)
+                "
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['email'].errors?.['required']">Requerido.</div>
+                <div *ngIf="f['email'].errors?.['email']">Email inválido.</div>
+              </div>
+            </div>
+            <div>
+              <label for="telefono" class="form-label"
+                >Teléfono de Contacto</label
+              ><input
+                type="tel"
+                id="telefono"
+                formControlName="telefono"
+                class="form-control"
+                [class.is-invalid]="
+                  f['telefono'].invalid &&
+                  (f['telefono'].touched || formSubmitted)
+                "
+                maxlength="10"
+                pattern="\d{10}"
+                inputmode="numeric"
+              />
+              <div
+                *ngIf="
+                  f['telefono'].invalid &&
+                  (f['telefono'].touched || formSubmitted)
+                "
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['telefono'].errors?.['required']">Requerido.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- Columna 2 -->
+    <!-- ======================================================= -->
+    <div class="space-y-6">
+      <!-- Sección: Características -->
+      <div class="p-6 dark:bg-gray-800/20 rounded-xl">
+        <h3 class="form-section-title">Características y Especificaciones</h3>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label for="precio" class="form-label">Precio (MXN)</label>
+            <input
+              type="number"
+              id="precio"
+              formControlName="precio"
+              class="form-control"
+              [class.is-invalid]="
+                f['precio'].invalid && (f['precio'].touched || formSubmitted)
+              "
+              min="0"
+            />
+            <div
+              *ngIf="
+                f['precio'].invalid && (f['precio'].touched || formSubmitted)
+              "
+              class="invalid-feedback"
+            >
+              <div *ngIf="f['precio'].errors?.['required']">Requerido.</div>
+            </div>
+          </div>
+          <div>
+            <label for="habitaciones" class="form-label">Habitaciones</label>
+            <input
+              type="number"
+              id="habitaciones"
+              formControlName="habitaciones"
+              class="form-control"
+              [class.is-invalid]="
+                f['habitaciones'].invalid &&
+                (f['habitaciones'].touched || formSubmitted)
+              "
+              min="1"
+            />
+            <div
+              *ngIf="
+                f['habitaciones'].invalid &&
+                (f['habitaciones'].touched || formSubmitted)
+              "
+              class="invalid-feedback"
+            >
+              <div *ngIf="f['habitaciones'].errors?.['required']">
+                Requerido.
+              </div>
+            </div>
+          </div>
+          <div>
+            <label for="banos" class="form-label">Baños</label>
+            <input
+              type="number"
+              id="banos"
+              formControlName="banos"
+              class="form-control"
+              [class.is-invalid]="
+                f['banos'].invalid && (f['banos'].touched || formSubmitted)
+              "
+              min="1"
+            />
+            <div
+              *ngIf="
+                f['banos'].invalid && (f['banos'].touched || formSubmitted)
+              "
+              class="invalid-feedback"
+            >
+              <div *ngIf="f['banos'].errors?.['required']">Requerido.</div>
+            </div>
+          </div>
+          <div>
+            <label for="metros_cuadrados" class="form-label"
+              >Metros Cuadrados</label
+            >
+            <input
+              type="number"
+              id="metros_cuadrados"
+              formControlName="metros_cuadrados"
+              class="form-control"
+              [class.is-invalid]="
+                f['metros_cuadrados'].invalid &&
+                (f['metros_cuadrados'].touched || formSubmitted)
+              "
+              min="1"
+            />
+            <div
+              *ngIf="
+                f['metros_cuadrados'].invalid &&
+                (f['metros_cuadrados'].touched || formSubmitted)
+              "
+              class="invalid-feedback"
+            >
+              <div *ngIf="f['metros_cuadrados'].errors?.['required']">
+                Requerido.
+              </div>
+            </div>
+          </div>
+          <div class="col-span-2">
+            <label for="tipo_propiedad_id" class="form-label"
+              >Tipo de Propiedad</label
+            >
+            <select
+              id="tipo_propiedad_id"
+              formControlName="tipo_propiedad_id"
+              class="form-control"
+              [class.is-invalid]="
+                f['tipo_propiedad_id'].invalid &&
+                (f['tipo_propiedad_id'].touched || formSubmitted)
+              "
+            >
+              <option value="" disabled selected>Selecciona</option>
+              <option *ngFor="let tipo of tiposDePropiedad" [value]="tipo.id">
+                {{ tipo.nombre }}
+              </option>
+            </select>
+            <div
+              *ngIf="
+                f['tipo_propiedad_id'].invalid &&
+                (f['tipo_propiedad_id'].touched || formSubmitted)
+              "
+              class="invalid-feedback"
+            >
+              <div *ngIf="f['tipo_propiedad_id'].errors?.['required']">
+                Requerido.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección: Opciones Adicionales -->
+      <div class="p-6 dark:bg-gray-800/20 rounded-xl">
+        <h3 class="form-section-title">Opciones Adicionales</h3>
+        <div class="grid grid-cols-1 gap-y-4">
+          <div class="flex items-center justify-between">
+            <label class="form-label !mb-0">Amueblado</label>
+            <div class="toggle-switch w-28">
+              <button
+                type="button"
+                (click)="f['amueblado'].setValue(true)"
+                [class.active]="f['amueblado'].value === true"
+              >
+                Sí</button
+              ><button
+                type="button"
+                (click)="f['amueblado'].setValue(false)"
+                [class.active]="f['amueblado'].value === false"
+              >
+                No
+              </button>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <label class="form-label !mb-0">Mascotas</label>
+            <div class="toggle-switch w-28">
+              <button
+                type="button"
+                (click)="f['mascotas'].setValue('si')"
+                [class.active]="f['mascotas'].value === 'si'"
+              >
+                Sí</button
+              ><button
+                type="button"
+                (click)="f['mascotas'].setValue('no')"
+                [class.active]="f['mascotas'].value === 'no'"
+              >
+                No
+              </button>
+            </div>
+          </div>
+          <div class="flex items-center justify-between">
+            <label class="form-label !mb-0">Contrato Anual</label>
+            <div class="toggle-switch w-28">
+              <button
+                type="button"
+                (click)="f['anualizado'].setValue(true)"
+                [class.active]="f['anualizado'].value === true"
+              >
+                Sí</button
+              ><button
+                type="button"
+                (click)="f['anualizado'].setValue(false)"
+                [class.active]="f['anualizado'].value === false"
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- Columna 3 -->
+    <!-- ======================================================= -->
+    <div class="space-y-6">
+      <!-- Sección: Ubicación -->
+      <div class="p-6 dark:bg-gray-800/20 rounded-xl">
+        <h3 class="form-section-title">Ubicación</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label for="pais" class="form-label">País</label
+            ><input
+              type="text"
+              id="pais"
+              formControlName="pais"
+              class="form-control"
+              [class.is-invalid]="
+                f['pais'].invalid && (f['pais'].touched || formSubmitted)
+              "
+            />
+            <div
+              *ngIf="f['pais'].invalid && (f['pais'].touched || formSubmitted)"
+              class="invalid-feedback"
+            >
+              <div *ngIf="f['pais'].errors?.['required']">Requerido.</div>
+            </div>
+          </div>
+          <div>
+            <label for="estado_ubicacion" class="form-label">Estado</label
+            ><input
+              type="text"
+              id="estado_ubicacion"
+              formControlName="estado_ubicacion"
+              class="form-control"
+              [class.is-invalid]="
+                f['estado_ubicacion'].invalid &&
+                (f['estado_ubicacion'].touched || formSubmitted)
+              "
+            />
+            <div
+              *ngIf="
+                f['estado_ubicacion'].invalid &&
+                (f['estado_ubicacion'].touched || formSubmitted)
+              "
+              class="invalid-feedback"
+            >
+              <div *ngIf="f['estado_ubicacion'].errors?.['required']">
+                Requerido.
+              </div>
+            </div>
+          </div>
+          <div>
+            <label for="ciudad" class="form-label">Ciudad</label
+            ><input
+              type="text"
+              id="ciudad"
+              formControlName="ciudad"
+              class="form-control"
+              [class.is-invalid]="
+                f['ciudad'].invalid && (f['ciudad'].touched || formSubmitted)
+              "
+            />
+            <div
+              *ngIf="
+                f['ciudad'].invalid && (f['ciudad'].touched || formSubmitted)
+              "
+              class="invalid-feedback"
+            >
+              <div *ngIf="f['ciudad'].errors?.['required']">Requerido.</div>
+            </div>
+          </div>
+          <div>
+            <label for="colonia" class="form-label">Colonia</label
+            ><input
+              type="text"
+              id="colonia"
+              formControlName="colonia"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="mt-4">
+          <label for="direccion" class="form-label">Dirección Completa</label
+          ><input
+            type="text"
+            id="direccion"
+            formControlName="direccion"
+            class="form-control"
+            [class.is-invalid]="
+              f['direccion'].invalid &&
+              (f['direccion'].touched || formSubmitted)
+            "
+          />
+          <div
+            *ngIf="
+              f['direccion'].invalid &&
+              (f['direccion'].touched || formSubmitted)
+            "
+            class="invalid-feedback"
+          >
+            <div *ngIf="f['direccion'].errors?.['required']">Requerido.</div>
+          </div>
+        </div>
+        <div class="mt-4">
+          <label class="form-label">Ubicación en el Mapa</label>
+          <div
+            id="map"
+            class="w-full h-40 bg-gray-200 dark:bg-gray-600 rounded-lg mt-2"
+          ></div>
+        </div>
+      </div>
+
+      <!-- Sección: Fotos -->
+      <div class="p-6 dark:bg-gray-800/20 rounded-xl">
+        <h3 class="form-section-title">Fotos de la Propiedad</h3>
+        
+        <input
+          type="file"
+          id="fotos"
+          class="form-control"
+          multiple
+          (change)="onFileChange($event)"
+          accept="image/*"
+          [class.is-invalid]="fotosInvalid"
+        />
+        <div *ngIf="fotosInvalid" class="invalid-feedback">
+          Sube al menos cinco fotos.
+        </div>
+        <div
+          class="mt-4 grid grid-cols-3 sm:grid-cols-4 gap-4"
+          *ngIf="previewUrls.length > 0"
+        >
+          <div class="relative" *ngFor="let url of previewUrls; let i = index">
+            <img
+              [src]="url"
+              alt="Preview"
+              class="w-full h-24 object-cover rounded-md"
+            />
+            <button
+              type="button"
+              class="absolute top-0 right-0 -mt-2 -mr-2 bg-red-500 text-white rounded-full h-6 w-6 flex items-center justify-center text-xs shadow"
+              (click)="removePhoto(i)"
+            >
+              &times;
+            </button>
+          </div>
+          <div *ngIf="(formSubmitted || f['fotos'].touched) && fotosErrorMessage" class="error-message">
+  {{ fotosErrorMessage }}
+</div>
+
+        </div>
+      </div>
     </div>
   </div>
-</div>
-</div>
+</form>
