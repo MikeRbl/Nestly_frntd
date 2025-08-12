@@ -7,13 +7,13 @@ import { AuthService } from '../../auth.service';
 import { PropiedadesService } from '../../services/propiedad.service';
 import { NotyfService } from '../../services/notyf.service';
 
-// Interfaz para el testimonio
 export interface Testimonio {
+  id?: number;
   nombre: string;
-  rol: string;
   comentario: string;
   puntuacion: number;
   avatar: string;
+  fecha?: string;
 }
 
 @Component({
@@ -22,62 +22,39 @@ export interface Testimonio {
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-
-  // --- INICIA CÓDIGO PARA RESEÑAS ---
-  
   public mostrarFormularioResena = false;
   
   public nuevaResena = {
-    nombre: '',
-    rol: 'Inquilino',
     comentario: '',
     puntuacion: 0
   };
 
   public testimonios: Testimonio[] = [
     {
+      id: 1,
       nombre: 'Ana Sofía Vargas',
-      rol: 'Inquilino',
       comentario: '"¡El proceso fue increíblemente fácil! Encontré la casa de mis sueños en San Miguel en menos de una semana."',
       puntuacion: 5,
-      avatar: 'https://placehold.co/100x100/E2E8F0/4A5568?text=AV'
+      avatar: 'https://placehold.co/100x100/E2E8F0/4A5568?text=AV',
+      fecha: '15/05/2024'
     },
     {
+      id: 2,
       nombre: 'Ricardo Morales',
-      rol: 'Propietario',
       comentario: '"Publicar mi casa fue sencillo. Recibí solicitudes reales y el sistema de gestión fue excelente."',
       puntuacion: 5,
-      avatar: 'https://placehold.co/100x100/A0AEC0/2D3748?text=RM'
+      avatar: 'https://placehold.co/100x100/A0AEC0/2D3748?text=RM',
+      fecha: '22/04/2024'
     },
     {
+      id: 3,
       nombre: 'Laura Jiménez',
-      rol: 'Inquilina',
       comentario: '"La atención al cliente es top. Me ayudaron a encontrar una renta que se ajustaba perfecto a mi presupuesto."',
       puntuacion: 4,
-      avatar: 'https://placehold.co/100x100/CBD5E0/4A5568?text=LJ'
+      avatar: 'https://placehold.co/100x100/CBD5E0/4A5568?text=LJ',
+      fecha: '10/04/2024'
     }
   ];
-
-  publicarResena(): void {
-    if (!this.nuevaResena.nombre || !this.nuevaResena.comentario || this.nuevaResena.puntuacion === 0) {
-      this.notyf.error('Por favor, completa todos los campos y elige una calificación.');
-      return;
-    }
-    
-    const testimonioPublicar: Testimonio = {
-      ...this.nuevaResena,
-      avatar: `https://placehold.co/100x100?text=${this.nuevaResena.nombre.substring(0, 2).toUpperCase()}`
-    };
-
-    this.testimonios.unshift(testimonioPublicar);
-
-    this.nuevaResena = { nombre: '', rol: 'Inquilino', comentario: '', puntuacion: 0 };
-    this.mostrarFormularioResena = false;
-    
-    this.notyf.success('¡Gracias! Tu reseña ha sido publicada.');
-  }
-
-  // --- TERMINA CÓDIGO PARA RESEÑAS ---
 
   properties: Propiedad[] = [];
   featuredProperties: Propiedad[] = [];
@@ -111,6 +88,56 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (this.photoIntervalId) {
       clearInterval(this.photoIntervalId);
     }
+  }
+
+  publicarResena(): void {
+    if (!this.nuevaResena.comentario || this.nuevaResena.puntuacion === 0) {
+      this.notyf.error('Por favor, escribe tu comentario y selecciona una calificación.');
+      return;
+    }
+    
+    this.authService.currentUser$.subscribe(user => {
+      const userName = user ? `${user.first_name} ${user.last_name_paternal}` : 'Anónimo';
+
+      const testimonioPublicar: Testimonio = {
+        nombre: userName,
+        comentario: this.nuevaResena.comentario,
+        puntuacion: this.nuevaResena.puntuacion,
+        avatar: `https://placehold.co/100x100?text=${userName.substring(0, 2).toUpperCase()}`,
+        fecha: new Date().toLocaleDateString()
+      };
+
+      this.testimonios.unshift(testimonioPublicar);
+      this.resetFormularioResena();
+      this.notyf.success('¡Gracias! Tu reseña ha sido publicada.');
+    });
+  }
+
+  resetFormularioResena(): void {
+    this.nuevaResena = { 
+      comentario: '', 
+      puntuacion: 0 
+    };
+    this.mostrarFormularioResena = false;
+  }
+
+  eliminarResena(index: number, event: Event): void {
+    event.stopPropagation();
+    Swal.fire({
+      title: '¿Eliminar reseña?',
+      text: '¿Estás seguro de que quieres eliminar esta reseña?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.testimonios.splice(index, 1);
+        this.notyf.success('Reseña eliminada correctamente');
+      }
+    });
   }
 
   loadProperties(): void {

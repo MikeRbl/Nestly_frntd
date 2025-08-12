@@ -3,14 +3,6 @@
     <div class="relative w-full rounded-3xl overflow-hidden shadow-xl mt-10" style="height: 550px; max-width: 1300px; width: 100%" *ngIf="featuredProperties.length">
       <img [src]="getCurrentPhoto(featuredProperties[0])" alt="Casa" class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out" [style.opacity]="imageOpacity" />
       <div class="absolute inset-0 bg-black/40"></div>
-<<<<<<< HEAD
-      <div class="relative z-10 flex flex-col justify-center items-center h-full px-8 text-center">
-        <h1 class="text-6xl font-extrabold mb-6 text-white leading-tight tracking-tight drop-shadow-lg">
-          Encuentra tu hogar temporal perfecto
-        </h1>
-        <p class="text-2xl font-light mb-10 text-slate-100 max-w-2xl mx-auto drop-shadow-lg">
-          Rentas mensuales con todas las comodidades, verificadas y listas para ti.
-=======
 
       <!-- Contenido encima -->
       <div class="relative z-10 flex flex-col justify-center items-center h-full px-8 text-center bg-[#1E1E2F]">
@@ -23,7 +15,6 @@
         >
           Rentas mensuales con todas las comodidades, verificadas y listas para
           ti.
->>>>>>> f02901362f00ba6f0c87d31e804c518d13564cf2
         </p>
         <button routerLink="/principal/buscarCasa" class="inline-block bg-white text-[#7FA6FF] font-semibold px-10 py-4 rounded-full shadow-md hover:bg-slate-100 hover:scale-105 transform transition-all duration-300 ease-in-out">
           Explorar propiedades
@@ -208,7 +199,8 @@
           Descubre por qué cientos de usuarios confían en Nestly para encontrar su hogar ideal.
         </p>
         <div class="mt-6">
-          <button (click)="mostrarFormularioResena = !mostrarFormularioResena" class="bg-[#7FA6FF] text-white font-semibold px-6 py-3 rounded-lg shadow-md hover:bg-[#6b8eef] transition-all duration-300">
+          <button (click)="mostrarFormularioResena = !mostrarFormularioResena" 
+                  class="bg-[#7FA6FF] text-white font-semibold px-6 py-3 rounded-lg shadow-md hover:bg-[#6b8eef] transition-all duration-300">
             {{ mostrarFormularioResena ? 'Cerrar Formulario' : 'Escribe tu Reseña' }}
           </button>
         </div>
@@ -218,39 +210,47 @@
         <h3 class="text-2xl font-bold text-center mb-6 text-slate-800 dark:text-white">Comparte tu Experiencia</h3>
         
         <div class="mb-4">
-          <label class="block text-sm font-medium text-slate-600 dark:text-slate-300 mb-1">Tu Nombre</label>
-          <input [(ngModel)]="nuevaResena.nombre" type="text" class="w-full px-4 py-2 rounded-md bg-slate-100 dark:bg-gray-700 border-transparent focus:ring-2 focus:ring-[#7FA6FF] focus:border-transparent" placeholder="Ej: Juan Pérez">
-        </div>
-
-        <div class="mb-4">
-          <label class="block text-sm font-medium text-slate-600 dark:text-slate-300 mb-1">Tu Rol</label>
-          <select [(ngModel)]="nuevaResena.rol" class="w-full px-4 py-2 rounded-md bg-slate-100 dark:bg-gray-700 border-transparent focus:ring-2 focus:ring-[#7FA6FF] focus:border-transparent">
-            <option value="Inquilino">Inquilino</option>
-            <option value="Propietario">Propietario</option>
-          </select>
-        </div>
-
-        <div class="mb-4">
           <label class="block text-sm font-medium text-slate-600 dark:text-slate-300 mb-1">Tu Comentario</label>
-          <textarea [(ngModel)]="nuevaResena.comentario" rows="4" class="w-full px-4 py-2 rounded-md bg-slate-100 dark:bg-gray-700 border-transparent focus:ring-2 focus:ring-[#7FA6FF] focus:border-transparent" placeholder="Describe tu experiencia..."></textarea>
+          <textarea [(ngModel)]="nuevaResena.comentario" rows="4" 
+                    class="w-full px-4 py-2 rounded-md bg-slate-100 dark:bg-gray-700 border-transparent focus:ring-2 focus:ring-[#7FA6FF] focus:border-transparent" 
+                    placeholder="Describe tu experiencia..."></textarea>
         </div>
 
         <div class="mb-6">
           <label class="block text-sm font-medium text-slate-600 dark:text-slate-300 mb-2">Calificación</label>
           <div class="flex items-center gap-2 text-3xl cursor-pointer">
-            <span *ngFor="let i of [1,2,3,4,5]" (click)="nuevaResena.puntuacion = i" [ngClass]="i <= nuevaResena.puntuacion ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600 hover:text-yellow-300'">
+            <span *ngFor="let i of [1,2,3,4,5]" 
+                  (click)="nuevaResena.puntuacion = i" 
+                  [ngClass]="i <= nuevaResena.puntuacion ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600 hover:text-yellow-300'">
               ★
             </span>
           </div>
         </div>
 
-        <button (click)="publicarResena()" class="w-full bg-green-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-600 transition-colors duration-300">
-          Publicar Reseña
-        </button>
+        <div class="flex gap-3">
+          <button (click)="publicarResena()" 
+                  class="flex-1 bg-green-500 text-white font-bold py-3 px-4 rounded-lg hover:bg-green-600 transition-colors duration-300">
+            Publicar Reseña
+          </button>
+          <button (click)="resetFormularioResena()" 
+                  class="flex-1 bg-gray-300 text-gray-700 font-bold py-3 px-4 rounded-lg hover:bg-gray-400 transition-colors duration-300">
+            Cancelar
+          </button>
+        </div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
-        <div *ngFor="let testimonio of testimonios" class="bg-white/60 dark:bg-gray-800/50 backdrop-blur-md rounded-3xl p-8 shadow-lg border border-slate-200 dark:border-slate-700 hover:shadow-2xl transition-all duration-300">
+        <div *ngFor="let testimonio of testimonios; let i = index" 
+             class="bg-white/60 dark:bg-gray-800/50 backdrop-blur-md rounded-3xl p-8 shadow-lg border border-slate-200 dark:border-slate-700 hover:shadow-2xl transition-all duration-300 relative">
+          
+          <button *ngIf="isUserLoggedIn" 
+                  (click)="eliminarResena(i, $event)"
+                  class="absolute top-3 right-3 p-1 text-gray-400 hover:text-red-500 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+            </svg>
+          </button>
+          
           <div class="flex flex-col gap-4 h-full justify-between">
             <div class="text-5xl text-[#7FA6FF] dark:text-[#D98EDF] font-serif leading-none"> &ldquo; </div>
             <p class="text-slate-700 dark:text-slate-200 text-base italic leading-relaxed"> {{ testimonio.comentario }} </p>
@@ -258,12 +258,12 @@
               <img [src]="testimonio.avatar" [alt]="testimonio.nombre" class="w-14 h-14 rounded-full object-cover border-2 border-[#7FA6FF]" />
               <div>
                 <p class="font-semibold text-slate-800 dark:text-slate-100"> {{ testimonio.nombre }} </p>
-                <p class="text-sm text-slate-500 dark:text-slate-400"> {{ testimonio.rol }} </p>
                 <div class="flex gap-1 mt-1">
-                  <ng-container *ngFor="let i of [1, 2, 3, 4, 5]">
-                    <span class="text-lg" [ngClass]="{'text-yellow-400': i <= testimonio.puntuacion, 'text-gray-300 dark:text-gray-600': i > testimonio.puntuacion}">★</span>
+                  <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+                    <span class="text-lg" [ngClass]="{'text-yellow-400': star <= testimonio.puntuacion, 'text-gray-300 dark:text-gray-600': star > testimonio.puntuacion}">★</span>
                   </ng-container>
                 </div>
+                <p *ngIf="testimonio.fecha" class="text-xs text-slate-500 dark:text-slate-400 mt-1">{{ testimonio.fecha }}</p>
               </div>
             </div>
           </div>
@@ -271,8 +271,7 @@
       </div>
     </div>
   </section>
-</div>
-
+  
 <footer class="bg-gray-800 text-slate-300">
   <div class="max-w-7xl mx-auto px-6 py-16">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 text-center md:text-left">
