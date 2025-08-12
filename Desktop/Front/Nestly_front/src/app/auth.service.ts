@@ -8,6 +8,9 @@ import { User } from './interface/usuario.interface';
   providedIn: 'root'
 })
 export class AuthService {
+  getUser() {
+    throw new Error('Method not implemented.');
+  }
   //* 1. BehaviorSubject: El "corazón" reactivo del servicio.
   private currentUserSubject: BehaviorSubject<User | null>;
   
