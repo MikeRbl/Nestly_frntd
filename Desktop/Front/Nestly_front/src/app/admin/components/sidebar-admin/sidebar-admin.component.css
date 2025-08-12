@@ -1,0 +1,13 @@
+ .nav-link {
+    @apply flex items-center gap-3 px-3 py-2 text-gray-600 dark:text-gray-300 rounded-lg transition-colors duration-200 cursor-pointer;
+  }
+
+  /* Estilo para el hover en enlaces que NO están activos */
+  .nav-link:not(.active):hover {
+    @apply bg-gray-100 dark:bg-gray-700/50 text-gray-900 dark:text-white;
+  }
+
+  /* Estilo para el enlace ACTIVO */
+  .nav-link.active {
+    @apply bg-blue-500 text-white font-semibold shadow-lg;
+  }

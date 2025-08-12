@@ -2,6 +2,7 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpLavavelService } from '../../http.service';
 import Swal from 'sweetalert2';
+import { ElementRef, ViewChild } from '@angular/core';
 
 interface UserData {
   id: number;
@@ -32,6 +33,7 @@ export class NavbarComponent implements OnInit {
   userMenuOpen: boolean = false;
   screenWidth: number = 0;
   darkModeEnabled: boolean = false;
+@ViewChild('userDropdownMenu') userDropdownMenuRef!: ElementRef;
 
   constructor(private Shttp: HttpLavavelService, private router: Router) {
     this.screenWidth = window.innerWidth;
@@ -102,14 +104,17 @@ handleFavoritosClick() {
   }
 }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    this.screenWidth = window.innerWidth;
-    // Cerrar menús si se cambia a vista grande
-    if (this.screenWidth > 640) {
-      this.mobileMenuOpen = false;
-    }
+  @HostListener('document:click', ['$event'])
+onDocumentClick(event: MouseEvent): void {
+  const clickedInside = this.userDropdownMenuRef?.nativeElement.contains(event.target);
+  const clickedOnTrigger = (event.target as HTMLElement).closest('.user-info'); // clase del botón que abre el menú
+
+  if (!clickedInside && !clickedOnTrigger) {
+    this.userMenuOpen = false;
   }
+}
+
+
 
   isMobileView(): boolean {
     return this.screenWidth <= 640;

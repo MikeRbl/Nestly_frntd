@@ -1,0 +1,10 @@
+
+.report-card {
+    @apply p-5 rounded-xl shadow-sm border flex flex-col sm:flex-row items-start sm:items-center gap-4;
+  }
+  .report-icon {
+    @apply flex-shrink-0 h-12 w-12 rounded-full flex items-center justify-center;
+  }
+  .action-btn {
+    @apply px-3 py-1.5 text-xs font-semibold rounded-md transition-colors;
+  }

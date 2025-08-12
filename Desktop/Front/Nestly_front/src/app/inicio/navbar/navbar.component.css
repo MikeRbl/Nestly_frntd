@@ -347,3 +347,19 @@
     z-index: 1002;
   }
 }
+
+.nav-link {
+    @apply text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium px-3 py-2 rounded-md text-sm transition-colors;
+  }
+  .nav-link.active-link {
+    @apply text-blue-600 dark:text-blue-400;
+  }
+  .mobile-nav-link {
+    @apply block text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-700 font-medium px-3 py-2 rounded-md text-base transition-colors;
+  }
+  .mobile-nav-link.active-link {
+    @apply text-blue-600 dark:text-blue-400 bg-gray-100 dark:bg-gray-700;
+  }
+  .dropdown-item {
+    @apply block w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer;
+  }

@@ -66,4 +66,9 @@ export class AuthService {
       return null;
     }
   }
+  getUserRole(): string | null {
+    // Obtenemos el valor actual del usuario desde el BehaviorSubject
+    const currentUser = this.currentUserSubject.getValue();
+    return currentUser ? currentUser.role : null;
+  }
 }

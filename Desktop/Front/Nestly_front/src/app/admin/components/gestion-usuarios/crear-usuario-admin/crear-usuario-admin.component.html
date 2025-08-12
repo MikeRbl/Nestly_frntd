@@ -1,0 +1,89 @@
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="space-y-10 max-w-4xl mx-auto p-6 bg-white dark:bg-gray-900 rounded-3xl shadow-xl">
+  <!-- Encabezado -->
+  <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-gray-200 dark:border-gray-700 pb-4">
+    <div>
+      <h3 class="text-3xl font-extrabold text-gray-900 dark:text-white">Crear Usuario</h3>
+      <p class="mt-2 text-gray-500 dark:text-gray-400 max-w-md">
+        Completa los datos para registrar un nuevo usuario en el sistema.
+      </p>
+    </div>
+    <div class="flex gap-4 w-full sm:w-auto">
+      <button
+        type="button"
+        (click)="cancelar()"
+        class="w-full sm:w-auto px-6 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-200 font-semibold rounded-lg transition focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50"
+      >
+        Cancelar
+      </button>
+      <button
+        type="submit"
+        [disabled]="userForm.invalid || isLoading"
+        class="w-full sm:w-auto px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-60 transition disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        <span *ngIf="isLoading">Creando...</span>
+        <span *ngIf="!isLoading">Guardar Usuario</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Panel de Contenido Principal -->
+  <div class="rounded-2xl bg-gray-50 dark:bg-gray-800 shadow-inner p-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
+    
+    <!-- Sección: Información Personal -->
+    <div class="lg:col-span-2">
+      <h4 class="text-xl font-semibold text-gray-800 dark:text-gray-200 border-b border-gray-300 dark:border-gray-600 pb-2 mb-6">
+        Información Personal
+      </h4>
+    </div>
+
+    <div>
+      <label for="first_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nombre(s) *</label>
+      <input type="text" id="first_name" formControlName="first_name" class="form-control" />
+    </div>
+
+    <div>
+      <label for="last_name_paternal" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Apellido Paterno *</label>
+      <input type="text" id="last_name_paternal" formControlName="last_name_paternal" class="form-control" />
+    </div>
+
+    <div>
+      <label for="last_name_maternal" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Apellido Materno</label>
+      <input type="text" id="last_name_maternal" formControlName="last_name_maternal" class="form-control" />
+    </div>
+
+    <div>
+      <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Teléfono</label>
+      <input type="tel" id="phone" formControlName="phone" maxlength="10" class="form-control" />
+    </div>
+
+    <!-- Sección: Cuenta y Acceso -->
+    <div class="lg:col-span-2 pt-8 border-t border-gray-300 dark:border-gray-600">
+      <h4 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-6">Cuenta y Acceso</h4>
+    </div>
+
+    <div>
+      <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Correo Electrónico *</label>
+      <input type="email" id="email" formControlName="email" class="form-control" />
+    </div>
+
+    <div>
+      <label for="role" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Rol del Usuario *</label>
+      <select id="role" formControlName="role" class="form-control">
+        <option value="" disabled>Selecciona un rol</option>
+        <option value="admin">Admin</option>
+        <option value="propietario">Propietario</option>
+        <option value="inquilino">Inquilino</option>
+      </select>
+    </div>
+
+    <div>
+      <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Contraseña *</label>
+      <input type="password" id="password" formControlName="password" class="form-control" />
+    </div>
+
+    <div>
+      <label for="password_confirmation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Confirmar Contraseña *</label>
+      <input type="password" id="password_confirmation" formControlName="password_confirmation" class="form-control" />
+    </div>
+  </div>
+</form>

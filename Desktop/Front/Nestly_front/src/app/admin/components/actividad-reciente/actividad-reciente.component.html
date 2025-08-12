@@ -1,0 +1,49 @@
+<!-- 
+  INSTRUCCIONES:
+  Este es el contenido para el archivo HTML de tu nuevo componente de actividad.
+  Se encarga únicamente de renderizar la lista de actividades que recibe.
+-->
+<div class="flow-root">
+  <ul class="-mb-8">
+    <li *ngFor="let activity of activities; let isLast = last">
+      <div class="relative pb-8">
+        <!-- Línea de tiempo (oculta en el último elemento) -->
+        <span *ngIf="!isLast" class="absolute top-4 left-4 -ml-px h-full w-0.5 bg-gray-200 dark:bg-gray-700" aria-hidden="true"></span>
+        
+        <div class="relative flex items-start space-x-3">
+          <!-- Icono -->
+          <div class="relative">
+            <div class="h-8 w-8 rounded-full flex items-center justify-center ring-8 ring-white dark:ring-gray-800" [ngClass]="{
+              'bg-blue-100 text-blue-600': activity.type === 'Nuevo Usuario',
+              'bg-green-100 text-green-600': activity.type === 'Nueva Propiedad'
+            }">
+              <ng-container [ngSwitch]="activity.type">
+                <!-- SVG para Nuevo Usuario -->
+                <svg *ngSwitchCase="'Nuevo Usuario'" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                </svg>
+                <!-- SVG para Nueva Propiedad -->
+                <svg *ngSwitchCase="'Nueva Propiedad'" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                </svg>
+                <!-- SVG por defecto -->
+                <svg *ngSwitchDefault class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                  <circle cx="12" cy="12" r="10" />
+                </svg>
+              </ng-container>
+            </div>
+          </div>
+          
+          <!-- Contenido del Mensaje -->
+          <div class="min-w-0 flex-1">
+            <p class="text-sm text-gray-700 dark:text-gray-300" [innerHTML]="activity.message"></p>
+            <p class="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
+              <!-- El pipe 'date' de Angular puede formatear esto. Ej: {{ activity.timestamp | date:'shortTime' }} -->
+              {{ activity.timestamp | date:'mediumDate' }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

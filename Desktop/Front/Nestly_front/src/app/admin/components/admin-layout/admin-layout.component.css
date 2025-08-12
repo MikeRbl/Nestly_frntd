@@ -1,0 +1,19 @@
+.nav-link {
+    @apply flex items-center gap-3 px-4 py-2 text-gray-600 dark:text-gray-300 rounded-lg transition-colors duration-200 cursor-pointer;
+  }
+
+  .nav-link:hover {
+    @apply bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white;
+  }
+
+  .nav-link.active {
+    @apply bg-blue-500 text-white shadow-md;
+  }
+
+  .nav-link.logout-link {
+    @apply text-red-600 dark:text-red-400;
+  }
+
+  .nav-link.logout-link:hover {
+    @apply bg-red-50 dark:bg-red-500/10 text-red-700 dark:text-red-300;
+  }

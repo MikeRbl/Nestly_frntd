@@ -48,14 +48,16 @@
         </a>
 
         
-              <a
-                routerLink="/principal/mis-rentas"
-                class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
-                *ngIf="userRole === 'inquilino'"
-                (click)="closeMenus()"
-              >
-                Mis Rentas
-              </a>
+             <a
+              class="nav-main-link"
+              routerLink="/principal/mis-rentas"
+              routerLinkActive="active"
+              *ngIf="userRole === 'inquilino'"
+              (click)="closeMenus()"
+            >
+              <span class="textoBtn">Mis Rentas</span>
+            </a>
+
         <a
           class="nav-main-link"
           routerLink="qnSomos"
@@ -106,10 +108,21 @@
 
             <!-- Menú desplegable del usuario -->
             <div
-              id="user-dropdown-menu"
-              class="bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white rounded-md shadow-lg py-1"
-              [class.active]="userMenuOpen"
-            >
+                id="user-dropdown-menu"
+                class="bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white rounded-md shadow-lg py-1"
+                [class.active]="userMenuOpen"
+                #userDropdownMenu
+              >
+                <a
+                  routerLink="/admin"
+                  *ngIf="userRole === 'admin'"
+                  class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 text-yellow-600 dark:text-yellow-400 font-semibold"
+                  (click)="closeMenus()"
+                >
+                  Panel de Administración
+                </a>
+
+
               <!-- Elementos del menú -->
               <a
                 routerLink="/principal/perfil"

@@ -1,0 +1,110 @@
+<div>
+  <div class="mb-6">
+    <app-admin-filtro-bar
+      [config]="{ showStatusFilter: true, showReasonFilter: true, showSearch: true }"
+      (filterChange)="onFilterChange($event)">
+    </app-admin-filtro-bar>
+  </div>
+
+  <!-- Lista de Reportes -->
+  <div class="space-y-6">
+
+    <!-- Estado de Carga (Skeleton) -->
+    <div *ngIf="isLoading" class="space-y-4 animate-pulse">
+      <div *ngFor="let _ of [1, 2]" class="p-5 border border-gray-200 dark:border-gray-700 rounded-xl flex items-start gap-5 bg-gray-50 dark:bg-gray-800/50">
+        <div class="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded-full"></div>
+        <div class="flex-1 space-y-3">
+          <div class="h-5 bg-gray-200 dark:bg-gray-700 rounded w-3/4"></div>
+          <div class="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full"></div>
+          <div class="h-3 bg-gray-200 dark:bg-gray-700 rounded w-1/2"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mensaje de "No hay reportes" -->
+   <div *ngIf="!isLoading && reportes.length === 0" class="text-center py-24">
+      <img 
+        src="https://media.tenor.com/h796J-dd0FUAAAAm/utya-utya-duck.webp" 
+        alt="Sin reseñas reportadas" 
+        class="mx-auto mb-4 w-32 h-32"
+      />
+      <p class="text-gray-500 dark:text-gray-400 font-semibold">
+        No hay reseñas reportadas pendientes.
+      </p>
+    </div>
+
+    <!-- Reportes Dinámicos -->
+    <div *ngFor="let reporte of reportes" 
+         [ngClass]="{
+           'report-card bg-yellow-50 dark:bg-yellow-900/20 border-yellow-300 dark:border-yellow-700': reporte.estado === 'pendiente',
+           'report-card bg-green-50 dark:bg-green-900/20 border-green-300 dark:border-green-700 opacity-70': reporte.estado !== 'pendiente'
+         }"
+         class="rounded-xl p-5 flex items-start gap-5">
+
+      <!-- Ícono según estado -->
+      <div [ngClass]="{
+            'report-icon bg-yellow-100 dark:bg-yellow-800/50 text-yellow-600 dark:text-yellow-300': reporte.estado === 'pendiente',
+            'report-icon bg-green-100 dark:bg-green-800/50 text-green-600 dark:text-green-300': reporte.estado !== 'pendiente'
+          }"
+          class="rounded-full w-12 h-12 flex items-center justify-center">
+
+        <svg *ngIf="reporte.estado === 'pendiente'" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+
+        <svg *ngIf="reporte.estado !== 'pendiente'" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+
+      <div class="flex-1">
+        <p [ngClass]="{
+              'font-semibold text-yellow-900 dark:text-yellow-200': reporte.estado === 'pendiente',
+              'font-semibold text-green-900 dark:text-green-200': reporte.estado !== 'pendiente'
+            }">
+          Reporte contra "<strong>{{ reporte.reportable_id || 'Usuario Desconocido' }}</strong>"
+        </p>
+
+        <blockquote [ngClass]="{
+                    'mt-1 text-sm italic border-l-4 pl-3': true,
+                    'text-yellow-800 dark:text-yellow-300 border-yellow-400': reporte.estado === 'pendiente',
+                    'text-green-800 dark:text-green-300 border-green-400': reporte.estado !== 'pendiente'
+                  }">
+          "{{ reporte.descripcion || reporte.motivo }}"
+        </blockquote>
+
+        <p [ngClass]="{
+              'text-xs mt-2': true,
+              'text-yellow-700 dark:text-yellow-500': reporte.estado === 'pendiente',
+              'text-green-700 dark:text-green-500': reporte.estado !== 'pendiente'
+            }">
+          Reportado por <span class="font-semibold">{{ reporte.reportador_id || 'Anónimo' }}</span> - 
+          {{ reporte.created_at  }}
+        </p>
+      </div>
+
+      <!-- Botones o estado -->
+      <div *ngIf="reporte.estado === 'pendiente'" class="flex flex-col sm:flex-row gap-2 self-start sm:self-center">
+        <button class="action-btn bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600"
+                (click)="descartarReporte(reporte)">Descartar</button>
+        <button class="action-btn bg-orange-500 hover:bg-orange-600 text-white"
+                (click)="suspenderUsuario(reporte)">Suspender</button>
+      </div>
+
+      <div *ngIf="reporte.estado !== 'pendiente'" class="text-sm font-semibold text-green-600 self-center">
+        Revisado
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Paginador Reutilizable -->
+  <div *ngIf="!isLoading && reportes.length > 0" class="mt-8">
+    <app-admin-paginador
+      [length]="totalItems"
+      [pageSize]="pageSize"
+      [pageIndex]="pageIndex"
+      (pageChange)="onPageChange($event)">
+    </app-admin-paginador>
+  </div>
+</div>

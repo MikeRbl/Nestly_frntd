@@ -1,0 +1,35 @@
+<!-- 
+  INSTRUCCIONES:
+  Este es el HTML actualizado para tu componente de paginación.
+-->
+<div class="flex items-center justify-between text-sm">
+  <!-- Información de Paginación -->
+  <div class="text-gray-600 dark:text-gray-400">
+    Mostrando
+    <span class="font-semibold text-gray-900 dark:text-white">{{ getStartItem() }}</span>
+    -
+    <span class="font-semibold text-gray-900 dark:text-white">{{ getEndItem() }}</span>
+    de
+    <span class="font-semibold text-gray-900 dark:text-white">{{ length }}</span>
+    resultados
+  </div>
+
+  <!-- Controles de Navegación -->
+  <div class="flex items-center gap-4">
+    <span class="text-gray-600 dark:text-gray-400">
+      Página <span class="font-semibold text-gray-900 dark:text-white">{{ pageIndex + 1 }}</span> de <span class="font-semibold text-gray-900 dark:text-white">{{ getTotalPages() }}</span>
+    </span>
+    <div class="flex items-center gap-2">
+      <button (click)="goToPreviousPage()" [disabled]="pageIndex === 0" class="paginator-btn">
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
+        <span>Anterior</span>
+      </button>
+      <button (click)="goToNextPage()" [disabled]="isLastPage()" class="paginator-btn">
+        <span>Siguiente</span>
+        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" /></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+
