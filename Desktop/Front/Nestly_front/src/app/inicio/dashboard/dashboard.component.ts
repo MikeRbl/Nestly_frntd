@@ -9,6 +9,7 @@ import { NotyfService } from '../../services/notyf.service';
 
 export interface Testimonio {
   id?: number;
+  id_usuario?: number; // agregado para identificar al dueño
   nombre: string;
   comentario: string;
   puntuacion: number;
@@ -29,6 +30,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     puntuacion: 0
   };
 
+  hoverRating = 0;
+  currentUser: any = null;
+  mostrarTodasResenas = false;
+
   public testimonios: Testimonio[] = [
     {
       id: 1,
@@ -36,7 +41,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       comentario: '"¡El proceso fue increíblemente fácil! Encontré la casa de mis sueños en San Miguel en menos de una semana."',
       puntuacion: 5,
       avatar: 'https://placehold.co/100x100/E2E8F0/4A5568?text=AV',
-      fecha: '15/05/2024'
+      fecha: '15/05/2024',
+      id_usuario: 1
     },
     {
       id: 2,
@@ -44,17 +50,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
       comentario: '"Publicar mi casa fue sencillo. Recibí solicitudes reales y el sistema de gestión fue excelente."',
       puntuacion: 5,
       avatar: 'https://placehold.co/100x100/A0AEC0/2D3748?text=RM',
-      fecha: '22/04/2024'
-    },
-    {
-      id: 3,
-      nombre: 'Laura Jiménez',
-      comentario: '"La atención al cliente es top. Me ayudaron a encontrar una renta que se ajustaba perfecto a mi presupuesto."',
-      puntuacion: 4,
-      avatar: 'https://placehold.co/100x100/CBD5E0/4A5568?text=LJ',
-      fecha: '10/04/2024'
+      fecha: '22/04/2024',
+      id_usuario: 2
     }
   ];
+
+  get testimoniosVisibles(): Testimonio[] {
+    return this.mostrarTodasResenas ? this.testimonios : this.testimonios.slice(0, 3);
+  }
 
   properties: Propiedad[] = [];
   featuredProperties: Propiedad[] = [];
@@ -77,12 +80,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.isUserLoggedIn = this.authService.isLoggedIn();
+    this.authService.currentUser$.subscribe(user => {
+      this.currentUser = user;
+    });
     this.loadProperties();
     if (this.isUserLoggedIn) {
       this.cargarIdsFavoritos();
     }
     this.startPhotoCarousel();
   }
+  yaDejoResena(): boolean {
+  if (!this.currentUser) return false;
+  return this.testimonios.some(t => t.id_usuario === this.currentUser.id);
+}
+
 
   ngOnDestroy(): void {
     if (this.photoIntervalId) {
@@ -95,22 +106,34 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.notyf.error('Por favor, escribe tu comentario y selecciona una calificación.');
       return;
     }
+
+    if (!this.currentUser) {
+      this.notyf.error('Debes iniciar sesión para dejar una reseña.');
+      return;
+    }
+
+  
+    const yaTieneResena = this.testimonios.some(t => t.id_usuario === this.currentUser.id);
+    if (yaTieneResena) {
+      this.notyf.error('Solo puedes dejar una reseña.');
+      return;
+    }
     
-    this.authService.currentUser$.subscribe(user => {
-      const userName = user ? `${user.first_name} ${user.last_name_paternal}` : 'Anónimo';
+    const userName = `${this.currentUser.first_name} ${this.currentUser.last_name_paternal}`;
+    const userId = this.currentUser.id;
 
-      const testimonioPublicar: Testimonio = {
-        nombre: userName,
-        comentario: this.nuevaResena.comentario,
-        puntuacion: this.nuevaResena.puntuacion,
-        avatar: `https://placehold.co/100x100?text=${userName.substring(0, 2).toUpperCase()}`,
-        fecha: new Date().toLocaleDateString()
-      };
+    const testimonioPublicar: Testimonio = {
+      id_usuario: userId,
+      nombre: userName,
+      comentario: this.nuevaResena.comentario,
+      puntuacion: this.nuevaResena.puntuacion,
+      avatar: `https://placehold.co/100x100?text=${userName.substring(0, 2).toUpperCase()}`,
+      fecha: new Date().toLocaleDateString()
+    };
 
-      this.testimonios.unshift(testimonioPublicar);
-      this.resetFormularioResena();
-      this.notyf.success('¡Gracias! Tu reseña ha sido publicada.');
-    });
+    this.testimonios.unshift(testimonioPublicar);
+    this.resetFormularioResena();
+    this.notyf.success('¡Gracias! Tu reseña ha sido publicada.');
   }
 
   resetFormularioResena(): void {
@@ -123,6 +146,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   eliminarResena(index: number, event: Event): void {
     event.stopPropagation();
+
+    const testimonio = this.testimonios[index];
+    if (!this.currentUser || testimonio.id_usuario !== this.currentUser.id) {
+      this.notyf.error('Solo puedes eliminar tus propias reseñas.');
+      return;
+    }
+
     Swal.fire({
       title: '¿Eliminar reseña?',
       text: '¿Estás seguro de que quieres eliminar esta reseña?',
