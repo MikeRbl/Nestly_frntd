@@ -96,4 +96,13 @@ actualizarPropiedad(id: number, formData: FormData) {
   // La petición se hace como POST, pero Laravel la enrutará al método update()
   return this.http.post(`https://tu-api.com/api/propiedades/${id}`, formData); 
 }
+
+getUserId(): number {
+  const userData = localStorage.getItem('user');
+  if (userData) {
+    const user = JSON.parse(userData);
+    return user.id;
+  }
+  return 0;
+}
 }
