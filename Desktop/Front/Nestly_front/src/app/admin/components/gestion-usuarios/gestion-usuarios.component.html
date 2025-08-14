@@ -99,27 +99,27 @@
     (click)="toggleSelect(user.id)"
     (blur)="cerrarSelect(user.id)"
     [ngClass]="{
-      'bg-green-500 text-white dark:bg-green-600 dark:text-white': user.status === 'activo',
-      'bg-red-500 text-white dark:bg-red-600 dark:text-white': user.status === 'baneado'
+      'bg-green-100 text-green-800 focus:ring-green-500/50 dark:bg-green-900/60 dark:text-green-300': user.status === 'activo',
+      'bg-red-100 text-red-800 focus:ring-red-500/50 dark:bg-red-900/60 dark:text-red-300': user.status === 'baneado'
     }"
-    class="appearance-none block w-full px-3 py-2 border border-transparent rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out cursor-pointer font-medium pr-10"
+    class="w-full appearance-none rounded-md px-3 py-1.5 pr-10 font-medium shadow-sm transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:ring-offset-slate-900 text-center"
   >
-    <option class="text-black bg-white" value="activo">Activo</option>
-    <option class="text-black bg-white" value="baneado">Baneado</option>
+    <option value="activo">Activo</option>
+    <option value="baneado">Baneado</option>
   </select>
 
-  <!-- SVG dinámico individual por usuario -->
-  <div class="pointer-events-none absolute inset-y-0 right-2 flex items-center">
+  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
       stroke-width="1.5"
       stroke="currentColor"
-      class="size-5 text-white dark:text-white transform transition-transform duration-300"
+      class="size-5 transform transition-transform duration-300"
       [ngClass]="{
         'rotate-180': selectAbierto[user.id],
-        'rotate-0': !selectAbierto[user.id]
+        'text-green-800 dark:text-green-300': user.status === 'activo',
+        'text-red-800 dark:text-red-300': user.status === 'baneado'
       }"
     >
       <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
