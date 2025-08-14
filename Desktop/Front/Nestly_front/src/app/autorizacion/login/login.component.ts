@@ -57,7 +57,7 @@ export class LoginComponent {
     });
     this.errorMessage = '';
 
-    this.httpService.publicPost('login', this.loginForm.value).subscribe({
+   this.httpService.publicPost('login', this.loginForm.value).subscribe({
       next: (response: any) => {
         Swal.close();
         Swal.fire({
@@ -67,32 +67,45 @@ export class LoginComponent {
           timer: 1500
         });
 
-        // Aquí viene la magia con AuthService para guardar todo bien
-        console.log('🐛 Usuario que vino del backend:', response.user);
+        // Guardamos la sesión del usuario a través del AuthService
         this.authService.login(response.user, response.access_token);
 
-        // Verificamos lo que se guarda en localStorage
-        const raw = localStorage.getItem('user');
-        console.log('📦 Usuario guardado en localStorage:', raw);
-
-        // Probamos obtener el ID usando AuthService
-        const userId = this.authService.obtenerUsuarioActualId();
-        console.log('🧠 ID obtenido desde AuthService:', userId);
-
-        // Navegamos al dashboard o donde quieras
-        this.router.navigate(['/principal/dashboard']);
+        if (response.user && response.user.role === 'admin') {
+          // Si el usuario es 'admin', se redirige al panel de administración.
+          this.router.navigate(['/admin/dashboard-admin']);
+        } else {
+          // Para cualquier otro rol, se redirige al dashboard principal.
+          this.router.navigate(['/principal/dashboard']);
+        }
+        
         this.loading = false;
       },
       error: (error: any) => {
-        Swal.fire({
-          icon: "error",
-          title: "Error en el inicio de sesión",
-          text: error.error?.message ||
-            error.error?.errors?.email?.[0] ||
-            'Ocurrio un error al iniciar sesion. Intenta de nuevo',
-        });
-        this.loading = false;
-      }
+  this.loading = false;
+  Swal.close();
+  console.log('ERROR:', error); // <--- esto
+
+  if (error.status === 403 && error.error?.message?.includes('baneada')) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Cuenta baneada',
+      text: 'Tu cuenta ha sido baneada. Contacta al administrador.',
+    });
+
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  } else {
+    Swal.fire({
+      icon: "error",
+      title: "Error en el inicio de sesión",
+      text: error.error?.message ||
+        error.error?.errors?.email?.[0] ||
+        'Ocurrió un error al iniciar sesión. Intenta de nuevo',
+    });
+  }
+}
+
+
     });
   }
 

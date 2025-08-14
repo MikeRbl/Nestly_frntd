@@ -6,6 +6,7 @@ export interface User {
   email: string;
   phone: string;
   role: string;
+  status: 'activo' | 'baneado';
   created_at: string;
   updated_at: string;
   full_name?: string;

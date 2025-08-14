@@ -1,0 +1,149 @@
+/* Animación de carga */
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Rentas Activas Card */
+.renta-card {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  align-items: stretch;
+}
+
+.renta-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* Imagen de propiedad */
+.property-image {
+  flex-shrink: 0;
+  width: 140px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 0.75rem;
+}
+
+/* Contenido */
+.renta-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.renta-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
+}
+
+.renta-detail {
+  font-size: 0.85rem;
+  color: #4b5563;
+  margin-bottom: 0.2rem;
+}
+
+.renta-price {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.renta-status {
+  font-size: 0.7rem;
+  padding: 0.25rem 0.5rem;
+  background-color: #d1fae5;
+  color: #065f46;
+  border-radius: 9999px;
+  font-weight: 500;
+}
+
+/* Días restantes */
+.renta-content .text-xs {
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 0.15rem 0.4rem;
+  background: #e0f2fe;
+  color: #0369a1;
+  border-radius: 0.4rem;
+  display: inline-block;
+}
+
+/* Botones */
+.renta-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.renta-btn {
+  flex: 1;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  transition: background-color 0.15s ease;
+  text-align: center;
+}
+
+.renta-btn.detalles {
+  background-color: #2563eb;
+  color: white;
+}
+.renta-btn.detalles:hover {
+  background-color: #1e40af;
+}
+
+.renta-btn.cancelar {
+  background-color: #ef4444;
+  color: white;
+}
+.renta-btn.cancelar:hover {
+  background-color: #b91c1c;
+}
+
+/* Modo oscuro */
+.dark .renta-card {
+  background-color: #1f2937;
+  border-color: #374151;
+}
+.dark .renta-title {
+  color: #f9fafb;
+}
+.dark .renta-detail {
+  color: #d1d5db;
+}
+.dark .renta-price {
+  color: #f3f4f6;
+}
+.dark .renta-status {
+  background-color: #065f46;
+  color: #d1fae5;
+}
+.dark .renta-content .text-xs {
+  background-color: #1e3a8a;
+  color: #bfdbfe;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .property-image {
+    width: 100px;
+    height: 90px;
+  }
+  .renta-title {
+    font-size: 0.9rem;
+  }
+}

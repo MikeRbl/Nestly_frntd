@@ -63,11 +63,24 @@ export class HttpLavavelService {
   }
 
   // ❌ DELETE con autenticación
-  Service_Delete(endpoint: string, id: string | number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${endpoint}/${id}`, {
-      headers: this.getHeaders()
-    });
+  Service_Delete(endpoint: string, idOrPath?: string | number): Observable<any> {
+  let url = `${this.apiUrl}/${endpoint}`;
+
+  if (idOrPath !== undefined && idOrPath !== null) {
+    url += `/${idOrPath}`;
   }
+
+  return this.http.delete(url, {
+    headers: this.getHeaders()
+  });
+}
+
+Service_Patch(endpoint: string, data: any): Observable<any> {
+  return this.http.patch(`${this.apiUrl}/${endpoint}`, data, {
+    headers: this.getHeaders()
+  });
+}
+
   public getTiposDePropiedad(): Observable<any> {
   return this.http.get(`${this.apiUrl}/tipos-propiedad`);
 }
@@ -82,5 +95,14 @@ actualizarPropiedad(id: number, formData: FormData) {
 
   // La petición se hace como POST, pero Laravel la enrutará al método update()
   return this.http.post(`https://tu-api.com/api/propiedades/${id}`, formData); 
+}
+
+getUserId(): number {
+  const userData = localStorage.getItem('user');
+  if (userData) {
+    const user = JSON.parse(userData);
+    return user.id;
+  }
+  return 0;
 }
 }

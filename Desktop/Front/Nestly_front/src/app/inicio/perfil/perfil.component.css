@@ -263,21 +263,25 @@
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.5rem;
   margin-bottom: 2rem;
+  
 }
 
 .property-card {
+  background-color: white;
   border-radius: var(--border-radius);
   overflow: hidden;
   box-shadow: var(--box-shadow);
   transition: var(--transition);
+  cursor: pointer;
+  border-radius: 10px;
 }
 
 .property-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
 }
 
-.property-image-wrapper {
+.property-image-container {
   position: relative;
   height: 200px;
   overflow: hidden;
@@ -287,102 +291,186 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: var(--transition);
+  transition: transform 0.5s ease;
 }
 
 .property-card:hover .property-image {
   transform: scale(1.05);
 }
 
+.property-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.3));
+}
+
 .property-badge {
   position: absolute;
   top: 1rem;
   left: 1rem;
+  background-color: rgba(255, 255, 255, 0.9);
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--white);
+  color: var(--text-color);
+  z-index: 2;
 }
 
 .property-badge.rentada {
-  background: #4cc9f0;
+  background-color: #4cc9f0;
+  color: white;
 }
 
 .property-badge.disponible {
-  background: #2ec4b6;
+  background-color: #2ec4b6;
+  color: white;
+}
+
+.property-badge.inactiva {
+  background-color: #adb5bd;
+  color: white;
+}
+
+.rating-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-color);
+  z-index: 2;
+}
+
+.rating-badge svg {
+  width: 1em;
+  height: 1em;
+  fill: #FFC107;
+  margin-right: 0.25rem;
 }
 
 .property-details {
   padding: 1.5rem;
 }
 
-.property-title {
-  font-size: 1.1rem;
+.property-type {
+  display: inline-block;
+  background-color: #7fa6ff;
+  color: #fafcff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
   font-weight: 600;
-  margin: 0 0 0.5rem;
+  margin-bottom: 0.75rem;
 }
 
-.property-price {
+.property-title {
   font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--primary-color);
-  margin-bottom: 0.75rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 0 0 0.75rem 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .property-location {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
   color: var(--text-light);
   font-size: 0.875rem;
   margin-bottom: 1.25rem;
 }
 
 .property-location svg {
-  width: 16px;
-  height: 16px;
+  width: 1em;
+  height: 1em;
+  fill: #7fa6ff;
+  margin-right: 0.5rem;
+}
+
+.property-features {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  color: var(--text-light);
+  font-size: 0.875rem;
+}
+
+.feature svg {
+  width: 1em;
+  height: 1em;
+  fill: #7fa6ff;
+  margin-right: 0.5rem;
 }
 
 .property-footer {
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
 }
 
-.property-stats {
+.property-owner {
   display: flex;
   align-items: center;
-  gap: 1rem;
 }
 
-.property-views {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
+.owner-avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 0.75rem;
+  border: 2px solid var(--primary-color);
+}
+
+.owner-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 0 0 0.25rem 0;
+}
+
+.owner-label {
   font-size: 0.75rem;
   color: var(--text-light);
+  margin: 0;
 }
 
-.property-views svg {
-  width: 16px;
-  height: 16px;
+.property-price {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--primary-color);
 }
 
-.property-action-btn {
-  background: var(--primary-color);
-  color: var(--white);
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: var(--transition);
+.property-image-placeholder {
+  width: 100%;
+  height: 100%;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.property-action-btn:hover {
-  background: var(--secondary-color);
+.property-image-placeholder svg {
+  width: 3rem;
+  height: 3rem;
+  fill: #ccc;
 }
 
 .view-more-properties-btn {

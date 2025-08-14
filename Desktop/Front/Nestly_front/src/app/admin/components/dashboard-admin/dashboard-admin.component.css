@@ -1,0 +1,18 @@
+.stat-card {
+    @apply p-6 rounded-2xl text-white flex items-center gap-4 shadow-lg transition-transform hover:-translate-y-1;
+  }
+  .stat-icon {
+    @apply h-12 w-12 rounded-full flex items-center justify-center flex-shrink-0;
+  }
+  .stat-title {
+    @apply text-sm font-medium opacity-80;
+  }
+  .stat-value {
+    @apply text-2xl font-bold;
+  }
+  .activity-item {
+    @apply flex items-start gap-3 text-gray-700 dark:text-gray-300;
+  }
+  .activity-icon {
+    @apply h-8 w-8 rounded-full flex items-center justify-center flex-shrink-0;
+  }

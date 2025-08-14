@@ -145,39 +145,67 @@
         <!-- Lista de propiedades (3 aleatorias) -->
         <div *ngIf="!loadingPropiedades && propiedades.length > 0" class="properties-grid">
           <div *ngFor="let propiedad of propiedadesMostradas" 
-               class="property-card">
-            <div class="property-image-wrapper">
+               class="property-card" (click)="verDetallesPropiedad(propiedad.id)">
+            <div class="property-image-container">
+              <img *ngIf="propiedad.fotos?.length > 0" 
+                   [src]="getFullImageUrl(propiedad.fotos[0])" 
+                   alt="Imagen de la propiedad" 
+                   class="property-image"/>
+              <div *ngIf="!propiedad.fotos?.length" class="property-image-placeholder">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5-7l-3 3.72L9 13l-3 4h12l-4-5z"/>
+                </svg>
+              </div>
+              <div class="property-overlay"></div>
               <div class="property-badge" 
                    [class.rentada]="propiedad.estado_propiedad === 'Rentada'"
                    [class.disponible]="propiedad.estado_propiedad === 'Disponible'"
                    [class.inactiva]="propiedad.estado_propiedad === 'Inactiva'">
                 {{propiedad.estado_propiedad}}
               </div>
-              <img *ngIf="propiedad.fotos?.length > 0" 
-                   [src]="getFullImageUrl(propiedad.fotos[0])" 
-                   alt="Imagen de la propiedad" 
-                   class="property-image">
-              <div *ngIf="!propiedad.fotos?.length" class="property-image-placeholder">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5-7l-3 3.72L9 13l-3 4h12l-4-5z"/>
+              <div *ngIf="propiedad.resenas_avg_puntuacion" class="rating-badge">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
                 </svg>
+                <span>{{ propiedad.resenas_avg_puntuacion | number:"1.1-1" }}</span>
               </div>
             </div>
+
             <div class="property-details">
               <h3 class="property-title">{{ propiedad.titulo }}</h3>
-              <div class="property-price">${{ propiedad.precio | number:'1.0-2' }}<span *ngIf="propiedad.tipo_operacion === 'Renta'">/mes</span></div>
+              <div class="property-type">{{ propiedad.tipo_propiedad?.nombre || "Propiedad" }}</div>
+              
               <div class="property-location">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                <span>{{ propiedad.direccion }}</span>
+                <!-- <svg viewBox="0 0 24 24">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                </svg> -->
+                📍 <span>{{ propiedad.direccion }}</span>
               </div>
+
+              <div class="property-features">
+                <div class="feature">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M18 10V5H6v5H4v7h1.33L6 19h1l.67-2h8.67l.66 2h1l.67-2H20v-7h-2zm-8 0H8V7h2v3zm6 0h-2V7h2v3z"/>
+                  </svg>
+                  <span>{{ propiedad.habitaciones }} hab</span>
+                </div>
+                <div class="feature">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M18 9h-1V4c0-1.1-.9-2-2-2H9c-1.1 0-2 .9-2 2v5H6c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-9c0-1.1-.9-2-2-2zM9 4h6v5H9V4zm9 15H6v-3h12v3zm0-5H6v-3h12v3z"/>
+                  </svg>
+                  <span>{{ propiedad.banos }} baños</span>
+                </div>
+              </div>
+
               <div class="property-footer">
-                <div class="property-stats">
-                  <div class="property-views">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
-                    <span>{{ propiedad.visitas || 0 }} visitas</span>
+                <div class="property-owner">
+                  <img [src]="propiedad.propietario?.avatar_url" alt="Propietario" class="owner-avatar"/>
+                  <div class="owner-info">
+                    <p class="owner-name">{{ propiedad.propietario?.first_name }} {{ propiedad.propietario?.last_name_maternal }}</p>
+                    <p class="owner-label">Propietario</p>
                   </div>
                 </div>
-                <button class="property-action-btn" (click)="verDetallesPropiedad(propiedad.id)">Ver Detalles</button>
+                <div class="property-price">${{ propiedad.precio | number:'1.0-2' }}<span *ngIf="propiedad.tipo_operacion === 'Renta'">/mes</span></div>
               </div>
             </div>
           </div>

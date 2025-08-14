@@ -8,6 +8,17 @@ import { User } from './interface/usuario.interface';
   providedIn: 'root'
 })
 export class AuthService {
+
+getToken(): string | null {
+  return localStorage.getItem('accessToken');
+}
+
+
+
+
+  getUser() {
+    throw new Error('Method not implemented.');
+  }
   //* 1. BehaviorSubject: El "corazón" reactivo del servicio.
   private currentUserSubject: BehaviorSubject<User | null>;
   
@@ -65,5 +76,25 @@ export class AuthService {
       console.error("Error al procesar usuario de localStorage:", e);
       return null;
     }
+  }
+  getUserRole(): string | null {
+    // Obtenemos el valor actual del usuario desde el BehaviorSubject
+    const currentUser = this.currentUserSubject.getValue();
+    return currentUser ? currentUser.role : null;
+  }
+
+
+
+
+  getAuthHeaders(): { headers: { Authorization: string } } {
+    const token = this.getToken();
+    if (!token) {
+      throw new Error('No authentication token available');
+    }
+    return {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    };
   }
 }

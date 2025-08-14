@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
+
 import { AuthService } from '../../auth.service';
 import { User } from '../../interface/usuario.interface';
 

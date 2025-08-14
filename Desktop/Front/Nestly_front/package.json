@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/router": "^18.2.13",
     "@ngneat/tailwind": "^7.0.3",
+    "chart.js": "^4.5.0",
     "leaflet": "^1.9.4",
     "notyf": "^3.10.0",
     "preline": "^3.0.1",

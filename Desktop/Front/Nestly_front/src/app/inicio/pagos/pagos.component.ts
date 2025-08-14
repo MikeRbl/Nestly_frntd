@@ -3,6 +3,19 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpLavavelService } from '../../http.service';
 import Swal from 'sweetalert2';
+import { NotyfService } from '../../services/notyf.service';
+
+interface RentaData {
+  propiedad_id: number;
+  user_id: number;
+  fecha_inicio: string;
+  fecha_fin: string;
+  precio: number;
+  tipo_pago: string;
+  duracion: number;
+  tipo_renta: string;
+  estado: string;
+}
 
 @Component({
   selector: 'app-pagos',
@@ -36,7 +49,8 @@ export class PagosComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private httpService: HttpLavavelService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+     private notyf: NotyfService
   ) {
     this.minDateCheckin = new Date().toISOString().split('T')[0];
 
@@ -156,33 +170,130 @@ export class PagosComponent implements OnInit {
   }
 
   procesarPago(): void {
-    if (this.pagoForm.invalid) {
-      this.pagoForm.markAllAsTouched();
-      return;
-    }
-    this.isProcessing = true;
-    setTimeout(() => {
-        const data = { estado_propiedad: 'Alquilada' };
-        this.httpService.Service_Put(`propiedades/${this.property.id_propiedad}/estado`, data).subscribe({
-            next: () => {
-                this.isProcessing = false;
-                Swal.fire({
-                    title: '¡Pago Exitoso!',
-                    text: `Has alquilado "${this.property.titulo}". ¡Felicidades!`,
-                    icon: 'success',
-                    confirmButtonText: '¡Entendido!',
-                }).then(() => {
-                    this.router.navigate(['/principal/mis-propiedades']);
-                });
-            },
-            error: (err) => {
-                this.isProcessing = false;
-                Swal.fire('Error', 'Hubo un problema al actualizar el estado de la propiedad.', 'error');
-                console.error("Error al actualizar estado:", err);
-            }
-        });
-    }, 2000);
+  if (this.pagoForm.invalid) {
+    
+    this.pagoForm.markAllAsTouched();
+    Swal.fire({
+      title: 'Formulario incompleto',
+      text: 'Por favor completa todos los campos requeridos correctamente',
+      icon: 'warning'
+    });
+    return;
   }
+
+  this.isProcessing = true;
+
+  // 1. Verificar estado actual de la propiedad desde el backend
+  this.httpService.Service_Get(`propiedades/${this.property.id_propiedad}`).subscribe({
+    next: (propiedadResponse) => {
+      // Verificar estructura de la respuesta
+      if (!propiedadResponse?.data) {
+        throw new Error('Respuesta del servidor inesperada');
+      }
+
+      const propiedad = propiedadResponse.data;
+      console.log('Propiedad actualizada:', propiedad);
+
+      if (propiedad.estado_propiedad !== 'Disponible') {
+        this.isProcessing = false;
+        Swal.fire({
+          title: 'Propiedad no disponible',
+          text: `La propiedad está actualmente ${propiedad.estado_propiedad}. Por favor elige otra propiedad.`,
+          icon: 'error'
+        });
+        return;
+      }
+
+      // 2. Preparar datos para la renta
+      const rentaData = {
+        propiedad_id: this.property.id_propiedad,
+        user_id: this.httpService.getUserId(),
+        fecha_inicio: this.pagoForm.get('checkin')?.value,
+        fecha_fin: this.pagoForm.get('checkout')?.value,
+        monto: this.totalPagar,
+        metodo_pago: this.pagoForm.get('tipoPago')?.value === 'unico' ? 'tarjeta' : 'tarjeta',
+        estado: 'activa',
+        deposito: this.property.deposito || 0
+      };
+
+      console.log('Enviando datos de renta:', rentaData);
+
+      // 3. Crear la renta
+      this.httpService.Service_Post('rentas', rentaData).subscribe({
+        
+        next: (rentaResponse) => {
+          this.isProcessing = false;
+          this.notyf.success('Propiedad rentada con éxito.');
+          Swal.fire({
+            title: '¡Renta creada con éxito!',
+            html: `
+              <div class="text-left">
+                <p><strong>Propiedad:</strong> ${this.property.titulo}</p>
+                <p><strong>Fecha inicio:</strong> ${rentaData.fecha_inicio}</p>
+                <p><strong>Fecha fin:</strong> ${rentaData.fecha_fin}</p>
+                <p><strong>Total pagado:</strong> $${this.totalPagar.toFixed(2)}</p>
+              </div>
+            `,
+            icon: 'success',
+            confirmButtonText: 'Ver mis rentas'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.router.navigate(['/principal/gestion-propiedades/mis-rentas']);
+            }
+          });
+        },
+        error: (rentaError) => {
+          this.handleRentaError(rentaError);
+        }
+      });
+    },
+    error: (err) => {
+      this.isProcessing = false;
+      console.error('Error al verificar propiedad:', err);
+      
+      let errorMessage = 'No se pudo verificar el estado de la propiedad';
+      if (err.status === 404) {
+        errorMessage = 'La propiedad no existe o fue eliminada';
+      } else if (err.error?.message) {
+        errorMessage = err.error.message;
+      }
+
+      Swal.fire({
+        title: 'Error',
+        text: errorMessage,
+        icon: 'error'
+      });
+    }
+  });
+}
+
+private handleRentaError(error: any): void {
+  this.isProcessing = false;
+  console.error('Error en renta:', error);
+  
+  let errorMessage = 'Error al procesar la renta';
+  let errorDetails = '';
+  
+  if (error.error) {
+    // Manejo de errores de validación de Laravel
+    if (error.error.errors) {
+      errorDetails = Object.values(error.error.errors)
+        .flat()
+        .join('<br>');
+      errorMessage = 'Errores de validación';
+    } else if (error.error.message) {
+      errorMessage = error.error.message;
+    }
+  }
+
+  Swal.fire({
+    title: errorMessage,
+    html: errorDetails ? `<div class="text-left">${errorDetails}</div>` : errorMessage,
+    icon: 'error',
+    confirmButtonText: 'Entendido'
+  });
+}
+
   
   pagarCon(metodo: 'paypal' | 'oxxo' | 'mercadopago'): void {
     let url = '';
