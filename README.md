@@ -14,8 +14,6 @@
 
 - **Angular** - Framework frontend
 - **TypeScript** - Lenguaje principal
-- **RxJS & Reactive Forms** - Manejo de formularios y datos
-- **Bootstrap**
 - **Docker**
 
 ## 📥 Instalación
