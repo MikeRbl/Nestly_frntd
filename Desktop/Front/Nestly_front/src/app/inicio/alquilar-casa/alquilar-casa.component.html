@@ -103,33 +103,41 @@
 
       <div class="lg:col-span-1">
         <div class="sticky top-10 border border-gray-200 rounded-xl p-6 shadow-lg">
-          <div class="flex items-baseline mb-5">
-            <span class="text-3xl font-bold text-gray-900">${{ property.precio | number }}</span>
-            <span class="text-gray-500 ml-1.5">/ {{ property.anualizado ? 'año' : 'mes' }}</span>
-          </div>
           
-          <div class="space-y-3 text-sm mb-5">
-            <div class="flex justify-between text-gray-600">
-              <span>Tarifa de servicio Nestly</span>
-              <span>10%</span>
+          <div *ngIf="!estaRentada; else rentadaBlock">
+            <div class="flex items-baseline mb-5">
+              <span class="text-3xl font-bold text-gray-900">${{ property.precio | number }}</span>
+              <span class="text-gray-500 ml-1.5">/ {{ property.anualizado ? 'año' : 'mes' }}</span>
             </div>
-            <div *ngIf="property.deposito" class="flex justify-between text-gray-600">
-              <span>Depósito de seguridad</span>
-              <span>${{ property.deposito | number }}</span>
+            <div class="space-y-3 text-sm mb-5">
+              <div class="flex justify-between text-gray-600"><span>Tarifa de servicio Nestly</span><span>10%</span></div>
+              <div *ngIf="property.deposito" class="flex justify-between text-gray-600"><span>Depósito de seguridad</span><span>${{ property.deposito | number }}</span></div>
             </div>
-          </div>
-          
-          <div class="my-5 border-t border-gray-200"></div>
-
-          <div class="flex justify-between font-semibold text-base">
-            <span>Total (antes de impuestos)</span>
-            <span>${{ getTotalPrice() | number }} MXN</span>
+            <div class="my-5 border-t border-gray-200"></div>
+            <div class="flex justify-between font-semibold text-base"><span>Total (antes de impuestos)</span><span>${{ getTotalPrice() | number }} MXN</span></div>
+            
+            <button (click)="navegarAPago()" class="mt-6 w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 rounded-lg text-base transition-colors duration-200">
+              Rentar ahora
+            </button>
+            <p class="text-xs text-gray-500 text-center mt-3">Aún no se te cobrará nada</p>
           </div>
 
-          <button (click)="rentarAhora()" class="mt-6 w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 rounded-lg text-base transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
-            Rentar ahora
-          </button>
-          <p class="text-xs text-gray-500 text-center mt-3">Aún no se te cobrará nada</p>
+          <ng-template #rentadaBlock>
+            <div class="text-center bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-4 rounded-md mb-5">
+              <p class="font-bold">Propiedad Ocupada</p>
+              <p class="text-sm">Disponible a partir del:</p>
+              <p class="text-lg font-semibold">{{ proximaFechaDisponible | date:'fullDate':'':'es-MX' }}</p>
+            </div>
+            <div class="flex items-baseline mb-5 opacity-60">
+              <span class="text-3xl font-bold text-gray-900">${{ property.precio | number }}</span>
+              <span class="text-gray-500 ml-1.5">/ {{ property.anualizado ? 'año' : 'mes' }}</span>
+            </div>
+             <button (click)="navegarAPago()" class="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg text-base transition-colors duration-200">
+              Reservar para esta fecha
+            </button>
+            <p class="text-xs text-gray-500 text-center mt-3">Asegura tu lugar para el futuro</p>
+          </ng-template>
+          
         </div>
       </div>
     </div>
