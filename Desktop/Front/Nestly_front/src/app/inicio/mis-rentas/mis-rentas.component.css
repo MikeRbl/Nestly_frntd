@@ -7,143 +7,600 @@
   50% { opacity: 0.5; }
 }
 
-/* Rentas Activas Card */
+/* ===== RENTAS ACTIVAS ===== */
 .renta-card {
   display: flex;
-  gap: 1rem;
-  padding: 1rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 1rem;
-  background-color: #ffffff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-  align-items: stretch;
+  gap: 2rem;
+  padding: 2rem;
+  border-radius: 1.5rem;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .renta-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 8px 35px rgba(0, 0, 0, 0.12);
 }
 
-/* Imagen de propiedad */
-.property-image {
+.renta-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #3b82f6, #10b981);
+  opacity: 0.8;
+}
+
+/* Sección de imagen e inquilino */
+.renta-image-section {
   flex-shrink: 0;
-  width: 140px;
-  height: 110px;
-  object-fit: cover;
-  border-radius: 0.75rem;
+  width: 280px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-/* Contenido */
+.renta-property-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 1rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* Sección del inquilino - MEJORADA */
+.renta-inquilino-section {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+.renta-inquilino-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.renta-inquilino-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.renta-inquilino-content {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+
+.renta-inquilino-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #3b82f6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  flex-shrink: 0;
+}
+
+.renta-inquilino-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.renta-inquilino-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.renta-inquilino-contact {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-bottom: 0.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.renta-inquilino-phone {
+  font-size: 0.8rem;
+  color: #059669;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Contenido principal */
 .renta-content {
   flex: 1;
   display: flex;
   flex-direction: column;
+  gap: 1.5rem;
+}
+
+.renta-header {
+  display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.renta-property-info {
+  flex: 1;
 }
 
 .renta-title {
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: 1.35rem;
+  font-weight: 800;
   color: #1f2937;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
 }
 
-.renta-detail {
-  font-size: 0.85rem;
-  color: #4b5563;
-  margin-bottom: 0.2rem;
-}
-
-.renta-price {
+.renta-location {
   font-size: 0.95rem;
-  font-weight: 600;
-  color: #111827;
+  color: #6b7280;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 .renta-status {
-  font-size: 0.7rem;
-  padding: 0.25rem 0.5rem;
-  background-color: #d1fae5;
-  color: #065f46;
-  border-radius: 9999px;
+  font-size: 0.8rem;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  border-radius: 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+/* Grid de fechas */
+.renta-dates-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.renta-date-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 0.875rem;
+  border: 1px solid #e2e8f0;
+}
+
+.renta-date-icon {
+  flex-shrink: 0;
+}
+
+.renta-date-label {
+  display: block;
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.2rem;
+}
+
+.renta-date-value {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+/* Información financiera */
+.renta-financial-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 2px solid #f1f5f9;
+}
+
+.renta-price-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.renta-price-main {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+}
+
+.renta-price-amount {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #059669;
+}
+
+.renta-price-period {
+  font-size: 0.9rem;
+  color: #6b7280;
   font-weight: 500;
 }
 
-/* Días restantes */
-.renta-content .text-xs {
-  font-size: 0.78rem;
-  font-weight: 500;
-  padding: 0.15rem 0.4rem;
-  background: #e0f2fe;
-  color: #0369a1;
-  border-radius: 0.4rem;
-  display: inline-block;
+.renta-days-remaining {
+  font-size: 0.85rem;
+  padding: 0.4rem 0.875rem;
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  color: #1e40af;
+  border-radius: 1rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
-/* Botones */
 .renta-actions {
   display: flex;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
+  gap: 0.875rem;
 }
 
 .renta-btn {
-  flex: 1;
-  padding: 0.4rem 0.6rem;
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: 0.875rem;
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.renta-btn-primary {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+}
+
+.renta-btn-primary:hover {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+.renta-btn-secondary {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+}
+
+.renta-btn-secondary:hover {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+}
+
+/* ===== HISTORIAL DE RENTAS ===== */
+.renta-history-card {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 1.25rem;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.renta-history-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+}
+
+.renta-history-image-section {
+  flex-shrink: 0;
+  width: 140px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.renta-history-image {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 0.875rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.renta-history-inquilino {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem;
+  background: white;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.renta-history-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #94a3b8;
+}
+
+.renta-history-inquilino-name {
   font-size: 0.8rem;
   font-weight: 600;
-  border-radius: 0.5rem;
-  transition: background-color 0.15s ease;
-  text-align: center;
+  color: #475569;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 80px;
 }
 
-.renta-btn.detalles {
-  background-color: #2563eb;
-  color: white;
-}
-.renta-btn.detalles:hover {
-  background-color: #1e40af;
-}
-
-.renta-btn.cancelar {
-  background-color: #ef4444;
-  color: white;
-}
-.renta-btn.cancelar:hover {
-  background-color: #b91c1c;
+.renta-history-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
 }
 
-/* Modo oscuro */
+.renta-history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.renta-history-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1f2937;
+  line-height: 1.3;
+  margin-bottom: 0.25rem;
+}
+
+.renta-history-location {
+  font-size: 0.85rem;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.renta-history-status-completed {
+  font-size: 0.75rem;
+  padding: 0.4rem 0.75rem;
+  background: linear-gradient(135deg, #d1fae5, #a7f3d0);
+  color: #065f46;
+  border-radius: 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.renta-history-status-cancelled {
+  font-size: 0.75rem;
+  padding: 0.4rem 0.75rem;
+  background: linear-gradient(135deg, #fee2e2, #fecaca);
+  color: #b91c1c;
+  border-radius: 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.renta-history-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.renta-history-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.renta-history-btn {
+  align-self: flex-start;
+  padding: 0.625rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #64748b;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.renta-history-btn:hover {
+  background: #f1f5f9;
+  color: #475569;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== MODO OSCURO ===== */
 .dark .renta-card {
-  background-color: #1f2937;
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
   border-color: #374151;
 }
+
+.dark .renta-inquilino-section {
+  background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+  border-color: #4b5563;
+}
+
+.dark .renta-inquilino-title {
+  color: #e5e7eb;
+}
+
+.dark .renta-inquilino-name {
+  color: #f9fafb;
+}
+
+.dark .renta-inquilino-contact {
+  color: #d1d5db;
+}
+
 .dark .renta-title {
   color: #f9fafb;
 }
-.dark .renta-detail {
-  color: #d1d5db;
+
+.dark .renta-location {
+  color: #9ca3af;
 }
-.dark .renta-price {
+
+.dark .renta-date-card {
+  background: #374151;
+  border-color: #4b5563;
+}
+
+.dark .renta-date-value {
   color: #f3f4f6;
 }
-.dark .renta-status {
-  background-color: #065f46;
-  color: #d1fae5;
+
+.dark .renta-financial-info {
+  border-color: #374151;
 }
-.dark .renta-content .text-xs {
-  background-color: #1e3a8a;
+
+.dark .renta-days-remaining {
+  background: linear-gradient(135deg, #1e3a8a, #1e40af);
   color: #bfdbfe;
 }
 
-/* Responsive */
-@media (max-width: 640px) {
-  .property-image {
-    width: 100px;
-    height: 90px;
+.dark .renta-history-card {
+  background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+  border-color: #374151;
+}
+
+.dark .renta-history-inquilino {
+  background: #374151;
+  border-color: #4b5563;
+}
+
+.dark .renta-history-inquilino-name {
+  color: #e5e7eb;
+}
+
+.dark .renta-history-title {
+  color: #f9fafb;
+}
+
+.dark .renta-history-location {
+  color: #d1d5db;
+}
+
+.dark .renta-history-item {
+  color: #d1d5db;
+}
+
+.dark .renta-history-btn {
+  background: #374151;
+  border-color: #4b5563;
+  color: #d1d5db;
+}
+
+.dark .renta-history-btn:hover {
+  background: #4b5563;
+  color: #f9fafb;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .renta-card {
+    flex-direction: column;
+    gap: 1.5rem;
   }
-  .renta-title {
-    font-size: 0.9rem;
+  
+  .renta-image-section {
+    width: 100%;
+  }
+  
+  .renta-property-image {
+    height: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .renta-card {
+    padding: 1.5rem;
+  }
+  
+  .renta-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .renta-dates-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .renta-financial-info {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+  
+  .renta-actions {
+    justify-content: center;
+  }
+  
+  .renta-history-card {
+    flex-direction: column;
+  }
+  
+  .renta-history-image-section {
+    width: 100%;
+  }
+  
+  .renta-history-image {
+    height: 150px;
+  }
+}
+
+@media (max-width: 480px) {
+  .renta-inquilino-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .renta-actions {
+    flex-direction: column;
+  }
+  
+  .renta-btn {
+    justify-content: center;
   }
 }
