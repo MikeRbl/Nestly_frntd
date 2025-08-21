@@ -41,7 +41,7 @@
           class="nav-main-link"
           routerLink="/principal/gestion-propiedades"
           routerLinkActive="active"
-          *ngIf="userRole === 'propietario' || userRole === 'admin'"
+          *ngIf="userRole === 'propietario'"
           (click)="closeMenus()"
         >
           <span class="textoBtn">Propiedades</span>
@@ -172,7 +172,7 @@
                   class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
                   routerLink="publicarCasa"
                   (click)="closeMenus()"
-                  *ngIf="userRole === 'propietario' || userRole === 'admin'"
+                  *ngIf="userRole === 'propietario' "
                 >
                   Publicar Propiedad
                 </a>
@@ -180,7 +180,7 @@
                   class="dropdown-item block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
                   routerLink="verPropiedades"
                   (click)="closeMenus()"
-                  *ngIf="userRole === 'propietario' || userRole === 'admin'"
+                  *ngIf="userRole === 'propietario' "
                 >
                   Mis Propiedades
                 </a>

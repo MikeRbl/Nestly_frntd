@@ -32,6 +32,7 @@ import { MisRentasComponent } from './mis-rentas/mis-rentas.component';
 import { TerminosComponent } from './terminos/terminos.component';
 import { PrivacidadComponent } from './privacidad/privacidad.component'; // Importa el nuevo componente FAQ
 import { GestionPropiedadesComponent } from './gestion-propiedades/gestion-propiedades.component';
+import { InvitacionPropietarioComponent } from './invitacion-propietario/invitacion-propietario.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { GestionPropiedadesComponent } from './gestion-propiedades/gestion-propi
     FaqComponent,
     SitioResenasComponent,
     PublicarComponent,
-    FaqComponent, TerminosComponent, PrivacidadComponent // Declara el nuevo componente FAQ
+    FaqComponent, TerminosComponent, PrivacidadComponent, 
+     
   ],
   imports: [
     CommonModule,

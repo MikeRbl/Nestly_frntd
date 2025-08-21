@@ -12,13 +12,14 @@ import { RegistroComponent } from './autorizacion/registro/registro.component';
 import { HttpLavavelService } from './http.service';
 import { PrimeraMayusculaPipe } from './inicio/pipes/primera-mayuscula.pipe';
 import { AuthInterceptor } from './auth.interceptor';
+import { InvitacionPropietarioComponent } from './inicio/invitacion-propietario/invitacion-propietario.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegistroComponent,
-    
+    InvitacionPropietarioComponent
   ],
   imports: [
     BrowserModule,

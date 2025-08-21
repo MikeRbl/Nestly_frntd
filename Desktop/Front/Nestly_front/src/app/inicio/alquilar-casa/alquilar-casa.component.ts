@@ -11,6 +11,7 @@ import { PropiedadesService } from '../../services/propiedad.service';
 
 // --- Interfaces ---
 import { Propiedad } from '../../interface/propiedades.interface';
+import { ReporteService } from '../../services/reporte.service';
 
 @Component({
   selector: 'app-alquilar-casa',
@@ -37,7 +38,8 @@ export class AlquilarCasaComponent implements OnInit {
     private resenaService: ResenaService,
     private authService: AuthService,
     private notyf: NotyfService,
-    private propiedadesService: PropiedadesService
+    private propiedadesService: PropiedadesService,
+    private reporteService: ReporteService
   ) {}
 
   ngOnInit(): void {
@@ -55,6 +57,114 @@ export class AlquilarCasaComponent implements OnInit {
       this.isLoading = false;
     }
   }
+
+   abrirModalReporte(): void {
+    if (!this.isUserLoggedIn) {
+        this.notyf.error('Debes iniciar sesión para reportar una propiedad.');
+        return;
+    }
+
+    Swal.fire({
+      title: 'Reportar esta propiedad',
+      html: `
+        <select id="motivo-reporte" class="swal2-select" placeholder="Selecciona un motivo">
+          <option value="" disabled selected>Selecciona un motivo</option>
+          <option value="Información Falsa">Información Falsa o Engañosa</option>
+          <option value="Estafa Potencial">Estafa Potencial</option>
+          <option value="Contenido Inapropiado">Contenido o Fotos Inapropiadas</option>
+          <option value="No responde">El propietario no responde</option>
+          <option value="Otro">Otro</option>
+        </select>
+        <textarea id="descripcion-reporte" class="swal2-textarea" placeholder="Describe el problema detalladamente (opcional)"></textarea>
+      `,
+      showCancelButton: true,
+      confirmButtonText: 'Enviar Reporte',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#ef4444',
+      preConfirm: () => {
+        const motivo = (document.getElementById('motivo-reporte') as HTMLSelectElement).value;
+        const descripcion = (document.getElementById('descripcion-reporte') as HTMLTextAreaElement).value;
+        if (!motivo) {
+          Swal.showValidationMessage('Por favor, selecciona un motivo para el reporte.');
+          return false;
+        }
+        return { motivo, descripcion };
+      }
+    }).then((result) => {
+      if (result.isConfirmed && this.property) {
+        const reporteData = {
+          reportable_id: this.property.id_propiedad,
+          reportable_type: 'App\\Models\\Propiedad',
+          motivo: result.value.motivo,
+          descripcion: result.value.descripcion
+        };
+
+        this.reporteService.crearReporte(reporteData).subscribe({
+          next: () => {
+            this.notyf.success('Reporte enviado. Gracias por tu ayuda.');
+          },
+          error: (err) => {
+            console.error('Error al crear el reporte:', err);
+            this.notyf.error(err.error.message || 'No se pudo enviar tu reporte.');
+          }
+        });
+      }
+    });
+  }
+  abrirModalReportePropietario(): void {
+  // Verifica que el usuario esté logueado y que no sea el mismo propietario
+  if (!this.isUserLoggedIn || this.usuarioActual?.id === this.property?.propietario?.id) {
+    this.notyf.error('No puedes reportar a este usuario.');
+    return;
+  }
+
+  Swal.fire({
+    title: `Reportar a ${this.property?.propietario?.first_name}`,
+    html: `
+      <select id="motivo-reporte-usuario" class="swal2-select" placeholder="Selecciona un motivo">
+        <option value="" disabled selected>Selecciona un motivo</option>
+        <option value="Comportamiento Ofensivo">Comportamiento Ofensivo o Acoso</option>
+        <option value="Spam">Spam o Publicidad no deseada</option>
+        <option value="Perfil Falso">Perfil Falso o Suplantación de Identidad</option>
+        <option value="Intento de Estafa">Intento de Estafa</option>
+        <option value="Otro">Otro</option>
+      </select>
+      <textarea id="descripcion-reporte-usuario" class="swal2-textarea" placeholder="Describe el problema (opcional)"></textarea>
+    `,
+    showCancelButton: true,
+    confirmButtonText: 'Enviar Reporte',
+    cancelButtonText: 'Cancelar',
+    confirmButtonColor: '#ef4444',
+    preConfirm: () => {
+      const motivo = (document.getElementById('motivo-reporte-usuario') as HTMLSelectElement).value;
+      if (!motivo) {
+        Swal.showValidationMessage('Por favor, selecciona un motivo para el reporte.');
+        return false;
+      }
+      const descripcion = (document.getElementById('descripcion-reporte-usuario') as HTMLTextAreaElement).value;
+      return { motivo, descripcion };
+    }
+  }).then((result) => {
+    if (result.isConfirmed && this.property?.propietario) {
+      const reporteData = {
+        reportable_id: this.property.propietario.id,
+        reportable_type: 'App\\Models\\User', // El tipo de modelo para un usuario
+        motivo: result.value.motivo,
+        descripcion: result.value.descripcion
+      };
+
+      this.reporteService.crearReporte(reporteData).subscribe({
+        next: () => {
+          this.notyf.success('Reporte enviado. Gracias por tu ayuda.');
+        },
+        error: (err) => {
+          console.error('Error al crear el reporte:', err);
+          this.notyf.error(err.error.message || 'No se pudo enviar tu reporte.');
+        }
+      });
+    }
+  });
+}
 
   loadProperty(id: string): void {
     this.isLoading = true;
@@ -195,7 +305,70 @@ export class AlquilarCasaComponent implements OnInit {
   }
 
   onEditarResena(resenaId: number): void {
-    // Tu lógica para editar reseñas
+    const resenaAEditar = this.resenas.find(r => r.id === resenaId);
+    if (!resenaAEditar) return;
+
+    Swal.fire({
+      title: 'Editar tu reseña',
+      html: `
+        <div class="flex justify-center my-4">
+          ${[1, 2, 3, 4, 5].map(star => `
+            <svg class="w-8 h-8 cursor-pointer star" data-rating="${star}" fill="${star <= resenaAEditar.puntuacion ? 'currentColor' : 'none'}" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+              <path class="text-yellow-400" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+            </svg>
+          `).join('')}
+        </div>
+        <textarea id="comentario-resena" class="swal2-textarea" placeholder="Escribe tu reseña aquí...">${resenaAEditar.comentario}</textarea>
+      `,
+      showCancelButton: true,
+      confirmButtonText: 'Guardar Cambios',
+      cancelButtonText: 'Cancelar',
+      didOpen: () => {
+        const stars = (Swal.getHtmlContainer() as HTMLElement).querySelectorAll('.star');
+        let currentRating = resenaAEditar.puntuacion;
+
+        stars.forEach(star => {
+          star.addEventListener('click', () => {
+            currentRating = parseInt(star.getAttribute('data-rating') || '0');
+            updateStars(currentRating);
+          });
+        });
+
+        function updateStars(rating: number) {
+          stars.forEach(s => {
+            const starRating = parseInt(s.getAttribute('data-rating') || '0');
+            s.setAttribute('fill', starRating <= rating ? 'currentColor' : 'none');
+          });
+        }
+      },
+      preConfirm: () => {
+        const stars = (Swal.getHtmlContainer() as HTMLElement).querySelectorAll('.star');
+        const puntuacion = Array.from(stars).filter(s => s.getAttribute('fill') === 'currentColor').length;
+        const comentario = (document.getElementById('comentario-resena') as HTMLTextAreaElement).value;
+        
+        if (puntuacion === 0) {
+          Swal.showValidationMessage('Por favor, selecciona una puntuación.');
+          return false;
+        }
+        return { puntuacion, comentario };
+      }
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const updatedData = result.value;
+        this.resenaService.updateResena(resenaId, updatedData).subscribe({
+          next: (resenaActualizada) => {
+            const index = this.resenas.findIndex(r => r.id === resenaId);
+            if (index !== -1) {
+              this.resenas[index] = resenaActualizada;
+            }
+            this.notyf.success('Reseña actualizada correctamente.');
+          },
+          error: (err) => {
+            this.notyf.error(err.error.message || 'No se pudo actualizar la reseña.');
+          }
+        });
+      }
+    });
   }
 
   get reviewCount(): number {

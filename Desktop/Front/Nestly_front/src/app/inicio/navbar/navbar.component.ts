@@ -165,7 +165,7 @@ onDocumentClick(event: MouseEvent): void {
     localStorage.removeItem('accessToken');
     this.userData = null;
     this.userRole = '';
-    this.router.navigate(['/login']);
+    this.router.navigate(['/dashboard']);
     this.closeMenus();
   }
 

@@ -13,7 +13,8 @@ export class CrearUsuarioAdminComponent implements OnInit {
 
   userForm!: FormGroup;
   isLoading = false;
-
+  showPassword = false;
+  showConfirmPassword = false;
   constructor(
     private fb: FormBuilder,
     private adminService: AdminService,
@@ -32,7 +33,7 @@ export class CrearUsuarioAdminComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(8)]],
       password_confirmation: ['', [Validators.required]]
     }, {
-      validators: this.passwordMatchValidator // Añadimos el validador personalizado al grupo
+      validators: this.passwordMatchValidator 
     });
   }
 
@@ -62,7 +63,7 @@ export class CrearUsuarioAdminComponent implements OnInit {
 
     this.isLoading = true;
     
-    // Asumimos que tienes un método 'createUser' en tu AdminService
+  
     this.adminService.createUser(this.userForm.value).subscribe({
       next: () => {
         this.isLoading = false;
@@ -72,7 +73,7 @@ export class CrearUsuarioAdminComponent implements OnInit {
       error: (error: any) => {
         this.isLoading = false;
         console.error('Error al crear el usuario:', error);
-        // Manejo de errores de la API (ej: email duplicado)
+       
         const errorMessage = error.error?.message || 'No se pudo crear el usuario.';
         this.notyfService.error(errorMessage);
       }

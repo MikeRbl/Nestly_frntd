@@ -87,11 +87,28 @@
           </div>
         </div>
 
-        <!-- Sin propiedades -->
-        <div *ngIf="!loading && propiedades.length === 0" class="flex flex-col items-center justify-center h-full text-center text-gray-500 dark:text-gray-400">
-          <p class="font-semibold text-lg mb-2">No tienes propiedades publicadas</p>
-          <p class="text-sm">¡Publica tu primera propiedad para empezar a recibir solicitudes!</p>
+       <!-- Sin propiedades publicadas -->
+        <div *ngIf="!loading && propiedades.length === 0" 
+            class="flex flex-col items-center justify-center py-24 text-center">
+          <img 
+            src="https://media.tenor.com/h796J-dd0FUAAAAm/utya-utya-duck.webp" 
+            alt="Sin propiedades" 
+            class="mx-auto mb-4 w-32 h-32"
+          />
+          <p class="text-gray-500 dark:text-gray-400 font-semibold text-lg mb-2">
+            No tienes propiedades publicadas
+          </p>
+          <p class="text-sm text-gray-400 dark:text-gray-500 mb-6">
+            ¡Publica tu primera propiedad para empezar a recibir solicitudes!
+          </p>
+          <button
+            routerLink="/principal/gestion-propiedades/publicar"
+            class="px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition"
+          >
+            Publicar Propiedad
+          </button>
         </div>
+
 
         <!-- Lista de propiedades con el nuevo diseño de tarjeta -->
         <div *ngIf="!loading && propiedades.length > 0" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
