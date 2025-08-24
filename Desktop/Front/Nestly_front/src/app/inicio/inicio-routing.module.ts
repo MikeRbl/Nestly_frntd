@@ -34,6 +34,7 @@ const routes: Routes = [
       { path: 'editarPerfil', component: EditarPerfilComponent },
       { path: 'configuracion', component: ConfiguracionComponent },
       { path: 'qnSomos', component: QnSomosComponent },
+      { path: 'faq', component: FaqComponent },
       {
         path: 'gestion-propiedades',
         component: GestionPropiedadesComponent,
