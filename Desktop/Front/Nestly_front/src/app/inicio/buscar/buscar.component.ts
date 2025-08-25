@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router'; 
 import { PageEvent } from '@angular/material/paginator';
 import Swal from 'sweetalert2';
 
@@ -20,9 +20,8 @@ export class BuscarComponent implements OnInit {
   tiposDePropiedad: any[] = [];
   loading = false;
   error = '';
-  precioMaximoDelSlider: number = 100000;
-
-  // Propiedades para Favoritos
+  precioMaximoDelSlider: number = 100000; 
+  
   favoritoIds = new Set<number>();
   isUserLoggedIn = false;
 
@@ -72,7 +71,7 @@ export class BuscarComponent implements OnInit {
   }
 
   toggleFavorito(propiedad: Propiedad, event: MouseEvent): void {
-    event.stopPropagation();
+    event.stopPropagation(); 
     if (!this.isUserLoggedIn) {
       this.handleLoginRedirect();
       return;
@@ -116,7 +115,7 @@ export class BuscarComponent implements OnInit {
       }
     });
   }
-
+  
   cargarPropiedades(): void {
     this.loading = true;
     this.error = '';
@@ -169,6 +168,9 @@ export class BuscarComponent implements OnInit {
 
   aplicarFiltros(): void {
     let propiedadesFiltradas = [...this.todasLasPropiedades];
+
+    // --- ¡CAMBIO IMPLEMENTADO AQUÍ! ---
+    // Antes de cualquier otro filtro, nos aseguramos de mostrar solo las propiedades disponibles.
     propiedadesFiltradas = propiedadesFiltradas.filter(p => p.estado_propiedad === 'Disponible');
 
     if (this.filtros.titulo) {

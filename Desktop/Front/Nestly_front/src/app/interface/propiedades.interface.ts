@@ -2,6 +2,7 @@ import { TipoPropiedad } from './tipopropiedad.interface';
 import { User } from './usuario.interface';
 
 export interface Propiedad {
+  rentas: Propiedad | null;
   id_propiedad: number;
   id_propietario: number;
   tipo_propiedad_id: number;

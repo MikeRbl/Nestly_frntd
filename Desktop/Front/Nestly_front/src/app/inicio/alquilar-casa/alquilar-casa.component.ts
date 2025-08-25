@@ -1,15 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
-
-// --- Servicios ---
 import { HttpLavavelService } from '../../http.service';
 import { ResenaService } from '../../services/resena.service';
 import { AuthService } from '../../auth.service';
 import { NotyfService } from '../../services/notyf.service';
 import { PropiedadesService } from '../../services/propiedad.service';
-
-// --- Interfaces ---
 import { Propiedad } from '../../interface/propiedades.interface';
 import { ReporteService } from '../../services/reporte.service';
 
@@ -30,6 +26,10 @@ export class AlquilarCasaComponent implements OnInit {
   usuarioActual: any = null;
   favoritoIds = new Set<number>();
   isUserLoggedIn = false;
+
+  // Propiedades para gestionar la reserva
+  estaRentada = false;
+  proximaFechaDisponible: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -174,6 +174,7 @@ export class AlquilarCasaComponent implements OnInit {
         if (response?.success && response?.data) {
           this.property = this.processProperty(response.data);
           this.setupImages();
+          this.verificarEstadoRenta();
         } else {
           this.errorMessage = 'Propiedad no encontrada.';
         }
@@ -186,6 +187,31 @@ export class AlquilarCasaComponent implements OnInit {
     });
   }
 
+  verificarEstadoRenta(): void {
+    // Usamos 'rentas', el nombre de la relación en el backend
+    if (this.property && Array.isArray(this.property.rentas) && this.property.rentas.length > 0) {
+      const ultimaRenta = this.property.rentas[this.property.rentas.length - 1];
+      const fechaFin = new Date(ultimaRenta.fecha_fin + 'T00:00:00');
+
+      if (fechaFin >= new Date()) { // Si la renta está activa hoy o en el futuro
+        this.estaRentada = true;
+        const proximaFecha = new Date(fechaFin);
+        proximaFecha.setDate(proximaFecha.getDate() + 1); // Disponible un día después
+        this.proximaFechaDisponible = proximaFecha.toISOString().split('T')[0];
+      }
+    }
+  }
+
+  navegarAPago(): void {
+    if (this.property) {
+      this.router.navigate(['/principal/pagos', this.property.id_propiedad], {
+        state: { proximaFecha: this.proximaFechaDisponible }
+      });
+    } else {
+      this.notyf.error('No se pudo encontrar la información de la propiedad para rentar.');
+    }
+  }
+  
   cargarIdsFavoritos(): void {
     this.propiedadesService.getIdsFavoritos().subscribe({
       next: (response) => {
@@ -373,14 +399,6 @@ export class AlquilarCasaComponent implements OnInit {
 
   get reviewCount(): number {
     return this.resenas.length;
-  }
-
-  rentarAhora() {
-    if (this.property && this.property.id_propiedad) {
-      this.router.navigate(['/principal/pagos', this.property.id_propiedad]);
-    } else {
-      this.notyf.error('No se pudo encontrar la información de la propiedad para rentar.');
-    }
   }
   
   get averageRating(): number {
