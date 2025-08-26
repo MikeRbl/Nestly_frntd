@@ -9,9 +9,9 @@
         class="p-6 flex items-center justify-center border-b border-gray-200 dark:border-gray-700"
       >
         <img
-          src="https://cdn-icons-gif.flaticon.com/13297/13297404.gif"
+          src="assets/gif/gifcasa.gif"
           alt=""
-          class="h-28 w-auto"
+          class="h-24 w-auto"
         />
       </div>
 
@@ -20,7 +20,7 @@
        <button
   routerLink="mis-propiedades"
   routerLinkActive="active"
-  *ngIf="userRole === 'propietario' || userRole === 'admin'"
+  *ngIf="userRole === 'propietario'"
   class="nav-link w-full flex justify-between items-center px-4 py-2 rounded hover:bg-blue-50 dark:hover:bg-gray-700 transition"
 >
   <span>Mis Propiedades</span>
@@ -44,7 +44,7 @@
         <button
   routerLink="mis-rentas"
   routerLinkActive="active"
-  *ngIf="userRole === 'inquilino' || userRole === 'propietario' || userRole === 'admin'"
+  *ngIf="userRole === 'inquilino' || userRole === 'propietario'"
   class="nav-link w-full flex justify-between items-center px-4 py-2 rounded hover:bg-blue-50 dark:hover:bg-gray-700 transition"
 >
   <span>Mis Rentas</span>

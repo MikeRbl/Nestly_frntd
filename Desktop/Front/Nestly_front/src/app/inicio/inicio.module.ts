@@ -33,6 +33,9 @@ import { TerminosComponent } from './terminos/terminos.component';
 import { PrivacidadComponent } from './privacidad/privacidad.component'; // Importa el nuevo componente FAQ
 import { GestionPropiedadesComponent } from './gestion-propiedades/gestion-propiedades.component';
 import { InvitacionPropietarioComponent } from './invitacion-propietario/invitacion-propietario.component';
+import { PropiedadesDestacadasComponent } from './propiedades-destacadas/propiedades-destacadas.component';
+import { FooterComponent } from '../footer/footer.component';
+import { ComentariosUsuariosComponent } from '../comentarios-usuarios/comentarios-usuarios.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +63,9 @@ import { InvitacionPropietarioComponent } from './invitacion-propietario/invitac
     SitioResenasComponent,
     PublicarComponent,
     FaqComponent, TerminosComponent, PrivacidadComponent, 
-     
+      PropiedadesDestacadasComponent,
+       FooterComponent,
+       ComentariosUsuariosComponent
   ],
   imports: [
     CommonModule,

@@ -13,13 +13,17 @@ import { HttpLavavelService } from './http.service';
 import { PrimeraMayusculaPipe } from './inicio/pipes/primera-mayuscula.pipe';
 import { AuthInterceptor } from './auth.interceptor';
 import { InvitacionPropietarioComponent } from './inicio/invitacion-propietario/invitacion-propietario.component';
+import { PropiedadesDestacadasComponent } from './inicio/propiedades-destacadas/propiedades-destacadas.component';
+import { FooterComponent } from './footer/footer.component';
+import { ComentariosUsuariosComponent } from './comentarios-usuarios/comentarios-usuarios.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegistroComponent,
-    InvitacionPropietarioComponent
+    InvitacionPropietarioComponent,
+   
   ],
   imports: [
     BrowserModule,
