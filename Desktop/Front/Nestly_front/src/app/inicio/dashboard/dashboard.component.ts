@@ -9,7 +9,7 @@ import { NotyfService } from '../../services/notyf.service';
 
 export interface Testimonio {
   id?: number;
-  id_usuario?: number; // agregado para identificar al dueño
+  id_usuario?: number;
   nombre: string;
   comentario: string;
   puntuacion: number;
@@ -24,7 +24,6 @@ export interface Testimonio {
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   public mostrarFormularioResena = false;
-  
   public nuevaResena = {
     comentario: '',
     puntuacion: 0
@@ -32,31 +31,25 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   hoverRating = 0;
   currentUser: any = null;
-  mostrarTodasResenas = false;
+  
+  // Variables para el carrusel de reseñas
+  grupoResenasActual = 0;
+  carruselOpacity = 1;
+  private carruselIntervalId: any;
 
-  public testimonios: Testimonio[] = [
-    {
-      id: 1,
-      nombre: 'Ana Sofía Vargas',
-      comentario: '"¡El proceso fue increíblemente fácil! Encontré la casa de mis sueños en San Miguel en menos de una semana."',
-      puntuacion: 5,
-      avatar: 'https://placehold.co/100x100/E2E8F0/4A5568?text=AV',
-      fecha: '15/05/2024',
-      id_usuario: 1
-    },
-    {
-      id: 2,
-      nombre: 'Ricardo Morales',
-      comentario: '"Publicar mi casa fue sencillo. Recibí solicitudes reales y el sistema de gestión fue excelente."',
-      puntuacion: 5,
-      avatar: 'https://placehold.co/100x100/A0AEC0/2D3748?text=RM',
-      fecha: '22/04/2024',
-      id_usuario: 2
-    }
-  ];
+  public testimonios: Testimonio[] = [];
+  private storageKey = 'dashboardResenas';
 
+  // Obtener las reseñas visibles según el grupo actual
   get testimoniosVisibles(): Testimonio[] {
-    return this.mostrarTodasResenas ? this.testimonios : this.testimonios.slice(0, 3);
+    const inicio = this.grupoResenasActual * 3;
+    const fin = inicio + 3;
+    return this.testimonios.slice(inicio, fin);
+  }
+
+  // Calcular el total de grupos de reseñas
+  get totalGruposResenas(): number {
+    return Math.ceil(this.testimonios.length / 3);
   }
 
   properties: Propiedad[] = [];
@@ -88,17 +81,119 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.cargarIdsFavoritos();
     }
     this.startPhotoCarousel();
-  }
-  yaDejoResena(): boolean {
-  if (!this.currentUser) return false;
-  return this.testimonios.some(t => t.id_usuario === this.currentUser.id);
-}
+    this.iniciarCarruselResenas();
 
+    // Cargar reseñas de localStorage o inicializar con ejemplos
+    const stored = localStorage.getItem(this.storageKey);
+    if (stored) {
+      this.testimonios = JSON.parse(stored);
+    } else {
+      this.testimonios = [
+        {
+          id: 1,
+          nombre: 'Ana Sofía Vargas',
+          comentario: '"¡El proceso fue increíblemente fácil! Encontré la casa de mis sueños en San Miguel en menos de una semana."',
+          puntuacion: 5,
+          avatar: 'https://placehold.co/100x100/E2E8F0/4A5568?text=AV',
+          fecha: '15/05/2024',
+          id_usuario: 1
+        },
+        {
+          id: 2,
+          nombre: 'Ricardo Morales',
+          comentario: '"Publicar mi casa fue sencillo. Recibí solicitudes reales y el sistema de gestión fue excelente."',
+          puntuacion: 5,
+          avatar: 'https://placehold.co/100x100/A0AEC0/2D3748?text=RM',
+          fecha: '22/04/2024',
+          id_usuario: 2
+        },
+        {
+          id: 3,
+          nombre: 'Valeria Montoya',
+          comentario: '"Muy intuitivo el sitio, encontré inquilinos responsables rápidamente."',
+          puntuacion: 4,
+          avatar: 'https://placehold.co/100x100/FDE68A/CA8A04?text=VM',
+          fecha: '10/06/2024',
+          id_usuario: 3
+        },
+        {
+          id: 4,
+          nombre: 'Carlos Mendoza',
+          comentario: '"Excelente servicio al cliente, me ayudaron en todo momento durante el proceso de renta."',
+          puntuacion: 5,
+          avatar: 'https://placehold.co/100x100/BEE3F8/3182CE?text=CM',
+          fecha: '05/07/2024',
+          id_usuario: 4
+        },
+        {
+          id: 5,
+          nombre: 'Laura González',
+          comentario: '"Las propiedades están bien descritas y las fotos son reales, no hay sorpresas desagradables."',
+          puntuacion: 4,
+          avatar: 'https://placehold.co/100x100/EDF2F7/4A5568?text=LG',
+          fecha: '18/06/2024',
+          id_usuario: 5
+        }
+      ];
+      localStorage.setItem(this.storageKey, JSON.stringify(this.testimonios));
+    }
+  }
 
   ngOnDestroy(): void {
     if (this.photoIntervalId) {
       clearInterval(this.photoIntervalId);
     }
+    if (this.carruselIntervalId) {
+      clearInterval(this.carruselIntervalId);
+    }
+  }
+
+  // Métodos para el carrusel de reseñas
+  iniciarCarruselResenas(): void {
+    if (this.totalGruposResenas > 1) {
+      this.carruselIntervalId = setInterval(() => {
+        this.grupoResenasSiguiente();
+      }, 8000); // Cambia cada 8 segundos
+    }
+  }
+
+  async grupoResenasSiguiente(): Promise<void> {
+    this.carruselOpacity = 0;
+    await this.delay(300);
+    this.grupoResenasActual = (this.grupoResenasActual + 1) % this.totalGruposResenas;
+    this.carruselOpacity = 1;
+  }
+
+  async grupoResenasAnterior(): Promise<void> {
+    this.carruselOpacity = 0;
+    await this.delay(300);
+    this.grupoResenasActual = (this.grupoResenasActual - 1 + this.totalGruposResenas) % this.totalGruposResenas;
+    this.carruselOpacity = 1;
+  }
+
+  async cambiarGrupoResenas(index: number): Promise<void> {
+    this.carruselOpacity = 0;
+    await this.delay(300);
+    this.grupoResenasActual = index;
+    this.carruselOpacity = 1;
+  }
+
+  private delay(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  // Funciones para mostrar el rango de reseñas en la plantilla
+  getInicioGrupoResenas(): number {
+    return this.grupoResenasActual * 3 + 1;
+  }
+
+  getFinGrupoResenas(): number {
+    return Math.min((this.grupoResenasActual + 1) * 3, this.testimonios.length);
+  }
+
+  yaDejoResena(): boolean {
+    if (!this.currentUser) return false;
+    return this.testimonios.some(t => t.id_usuario === this.currentUser.id);
   }
 
   publicarResena(): void {
@@ -112,7 +207,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       return;
     }
 
-  
     const yaTieneResena = this.testimonios.some(t => t.id_usuario === this.currentUser.id);
     if (yaTieneResena) {
       this.notyf.error('Solo puedes dejar una reseña.');
@@ -121,8 +215,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     
     const userName = `${this.currentUser.first_name} ${this.currentUser.last_name_paternal}`;
     const userId = this.currentUser.id;
+    const nuevoId = Math.max(...this.testimonios.map(t => t.id || 0), 0) + 1;
 
     const testimonioPublicar: Testimonio = {
+      id: nuevoId,
       id_usuario: userId,
       nombre: userName,
       comentario: this.nuevaResena.comentario,
@@ -132,23 +228,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
     };
 
     this.testimonios.unshift(testimonioPublicar);
+    localStorage.setItem(this.storageKey, JSON.stringify(this.testimonios));
+
+    // Si es la primera reseña, reiniciar el carrusel
+    if (this.testimonios.length <= 3) {
+      this.grupoResenasActual = 0;
+    }
+
     this.resetFormularioResena();
     this.notyf.success('¡Gracias! Tu reseña ha sido publicada.');
   }
 
-  resetFormularioResena(): void {
-    this.nuevaResena = { 
-      comentario: '', 
-      puntuacion: 0 
-    };
-    this.mostrarFormularioResena = false;
-  }
-
-  eliminarResena(index: number, event: Event): void {
+  eliminarResena(id: number, event: Event): void {
     event.stopPropagation();
 
-    const testimonio = this.testimonios[index];
-    if (!this.currentUser || testimonio.id_usuario !== this.currentUser.id) {
+    const testimonio = this.testimonios.find(t => t.id === id);
+    if (!testimonio || !this.currentUser || testimonio.id_usuario !== this.currentUser.id) {
       this.notyf.error('Solo puedes eliminar tus propias reseñas.');
       return;
     }
@@ -158,16 +253,35 @@ export class DashboardComponent implements OnInit, OnDestroy {
       text: '¿Estás seguro de que quieres eliminar esta reseña?',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
+      confirmButtonColor: '#dc3545',
+      cancelButtonColor: '#6c757d',
       confirmButtonText: 'Sí, eliminar',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.testimonios.splice(index, 1);
-        this.notyf.success('Reseña eliminada correctamente');
+        const index = this.testimonios.findIndex(t => t.id === id);
+        if (index !== -1) {
+          this.testimonios.splice(index, 1);
+          localStorage.setItem(this.storageKey, JSON.stringify(this.testimonios));
+          
+          // Ajustar el grupo actual si es necesario
+          if (this.grupoResenasActual >= this.totalGruposResenas) {
+            this.grupoResenasActual = Math.max(0, this.totalGruposResenas - 1);
+          }
+          
+          this.notyf.success('Reseña eliminada correctamente');
+        }
       }
     });
+  }
+
+  resetFormularioResena(): void {
+    this.nuevaResena = { 
+      comentario: '', 
+      puntuacion: 0 
+    };
+    this.mostrarFormularioResena = false;
+    this.hoverRating = 0;
   }
 
   loadProperties(): void {
@@ -306,7 +420,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   cargarIdsFavoritos(): void {
     this.propiedadesService.getIdsFavoritos().subscribe({
-      next: (response) => { this.favoritoIds = new Set(response.data); },
+      next: (response) => { 
+        if (response && response.data) {
+          this.favoritoIds = new Set(response.data); 
+        }
+      },
       error: (err) => console.error('Error al cargar IDs de favoritos:', err)
     });
   }
