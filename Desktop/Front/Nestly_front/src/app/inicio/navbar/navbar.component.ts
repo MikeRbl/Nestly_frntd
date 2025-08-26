@@ -90,13 +90,18 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   logout(): void {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('user');
-    this.userData = null;
-    this.userRole = '';
-    this.router.navigate(['/login']);
-    window.location.reload();
-  }
+  // Limpia los datos de la sesión
+  localStorage.removeItem('accessToken');
+  localStorage.removeItem('user');
+  this.userData = null;
+  this.userRole = '';
+
+  // Navega al dashboard público en lugar de al login
+  this.router.navigate(['/principal/dashboard']); 
+  
+  // Recarga para asegurar que el estado se limpie completamente
+  setTimeout(() => window.location.reload(), 100); 
+}
 
   toggleDarkMode(): void {
     this.darkModeEnabled = !this.darkModeEnabled;
