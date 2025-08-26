@@ -11,3 +11,10 @@
   .nav-link.active {
     @apply bg-blue-500 text-white font-semibold shadow-lg;
   }
+   a.active {
+    background-color: #FDF2F8; 
+    color: #DB2777; 
+  }
+  a.active svg {
+    color: #DB2777; 
+  }

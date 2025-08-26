@@ -1,89 +1,130 @@
-<form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="space-y-10 max-w-4xl mx-auto p-6 bg-white dark:bg-gray-900 rounded-3xl shadow-xl">
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()" 
+      class="max-w-5xl mx-auto p-8 bg-white dark:bg-gray-900 rounded-3xl shadow-xl space-y-12">
+
   <!-- Encabezado -->
-  <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-gray-200 dark:border-gray-700 pb-4">
+  <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 border-b border-gray-200 dark:border-gray-700 pb-6">
     <div>
-      <h3 class="text-3xl font-extrabold text-gray-900 dark:text-white">Crear Usuario</h3>
-      <p class="mt-2 text-gray-500 dark:text-gray-400 max-w-md">
-        Completa los datos para registrar un nuevo usuario en el sistema.
+      <h3 class="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white">Crear Usuario</h3>
+      <p class="mt-2 text-lg text-gray-500 dark:text-gray-400">
+        Ingresa la información para registrar un nuevo usuario en el sistema.
       </p>
     </div>
-    <div class="flex gap-4 w-full sm:w-auto">
-      <button
-        type="button"
+    <div class="flex flex-wrap gap-4">
+      <button type="button"
         (click)="cancelar()"
-        class="w-full sm:w-auto px-6 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-200 font-semibold rounded-lg transition focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50"
-      >
+        class="px-6 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 
+               text-gray-900 dark:text-gray-200 font-medium rounded-xl transition 
+               focus:outline-none focus:ring-2 focus:ring-gray-300">
         Cancelar
       </button>
-      <button
-        type="submit"
+      <button type="submit"
         [disabled]="userForm.invalid || isLoading"
-        class="w-full sm:w-auto px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-lg focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-60 transition disabled:opacity-50 disabled:cursor-not-allowed"
-      >
+        class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-md 
+               focus:outline-none focus:ring-4 focus:ring-blue-400 transition 
+               disabled:opacity-50 disabled:cursor-not-allowed">
         <span *ngIf="isLoading">Creando...</span>
         <span *ngIf="!isLoading">Guardar Usuario</span>
       </button>
     </div>
   </div>
 
-  <!-- Panel de Contenido Principal -->
-  <div class="rounded-2xl bg-gray-50 dark:bg-gray-800 shadow-inner p-8 grid grid-cols-1 lg:grid-cols-2 gap-8">
+  <!-- Panel -->
+  <div class="rounded-2xl bg-gray-50 dark:bg-gray-800 shadow-inner p-10 space-y-12">
+
+    <!-- Información Personal -->
+    <section>
+      <h4 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-6">Información Personal</h4>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+          <label for="first_name" class="label-form">Nombre(s) *</label>
+          <input id="first_name" type="text" formControlName="first_name" class="input-form" />
+        </div>
+        <div>
+          <label for="last_name_paternal" class="label-form">Apellido Paterno *</label>
+          <input id="last_name_paternal" type="text" formControlName="last_name_paternal" class="input-form" />
+        </div>
+        <div>
+          <label for="last_name_maternal" class="label-form">Apellido Materno</label>
+          <input id="last_name_maternal" type="text" formControlName="last_name_maternal" class="input-form" />
+        </div>
+        <div>
+          <label for="phone" class="label-form">Teléfono</label>
+          <input id="phone" type="tel" maxlength="10" formControlName="phone" class="input-form" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Cuenta y Acceso -->
+<section>
+  <h4 class="text-2xl font-semibold text-gray-800 dark:text-gray-200 mb-6">Cuenta y Acceso</h4>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
     
-    <!-- Sección: Información Personal -->
-    <div class="lg:col-span-2">
-      <h4 class="text-xl font-semibold text-gray-800 dark:text-gray-200 border-b border-gray-300 dark:border-gray-600 pb-2 mb-6">
-        Información Personal
-      </h4>
-    </div>
-
+    <!-- Correo Electrónico -->
     <div>
-      <label for="first_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Nombre(s) *</label>
-      <input type="text" id="first_name" formControlName="first_name" class="form-control" />
+      <label for="email" class="label-form">Correo Electrónico *</label>
+      <input id="email" type="email" formControlName="email" class="input-form" />
     </div>
-
+    
+    <!-- Rol del Usuario -->
     <div>
-      <label for="last_name_paternal" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Apellido Paterno *</label>
-      <input type="text" id="last_name_paternal" formControlName="last_name_paternal" class="form-control" />
-    </div>
-
-    <div>
-      <label for="last_name_maternal" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Apellido Materno</label>
-      <input type="text" id="last_name_maternal" formControlName="last_name_maternal" class="form-control" />
-    </div>
-
-    <div>
-      <label for="phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Teléfono</label>
-      <input type="tel" id="phone" formControlName="phone" maxlength="10" class="form-control" />
-    </div>
-
-    <!-- Sección: Cuenta y Acceso -->
-    <div class="lg:col-span-2 pt-8 border-t border-gray-300 dark:border-gray-600">
-      <h4 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-6">Cuenta y Acceso</h4>
-    </div>
-
-    <div>
-      <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Correo Electrónico *</label>
-      <input type="email" id="email" formControlName="email" class="form-control" />
-    </div>
-
-    <div>
-      <label for="role" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Rol del Usuario *</label>
-      <select id="role" formControlName="role" class="form-control">
+      <label for="role" class="label-form">Rol del Usuario *</label>
+      <select id="role" formControlName="role" class="input-form">
         <option value="" disabled>Selecciona un rol</option>
         <option value="admin">Admin</option>
         <option value="propietario">Propietario</option>
         <option value="inquilino">Inquilino</option>
       </select>
     </div>
-
+    
+    <!-- Contraseña con ícono para mostrar/ocultar -->
     <div>
-      <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Contraseña *</label>
-      <input type="password" id="password" formControlName="password" class="form-control" />
+      <label for="password" class="label-form">Contraseña *</label>
+      <div class="relative">
+        <input id="password" 
+               [type]="showPassword ? 'text' : 'password'" 
+               formControlName="password" 
+               class="input-form pr-10" />
+        <button type="button" (click)="showPassword = !showPassword" 
+                class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 focus:outline-none">
+          <!-- Ícono de Ojo Abierto -->
+          <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+          </svg>
+          <!-- Ícono de Ojo Cerrado -->
+          <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+          </svg>
+        </button>
+      </div>
     </div>
-
+    
+    <!-- Confirmar Contraseña con ícono para mostrar/ocultar -->
     <div>
-      <label for="password_confirmation" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Confirmar Contraseña *</label>
-      <input type="password" id="password_confirmation" formControlName="password_confirmation" class="form-control" />
+      <label for="password_confirmation" class="label-form">Confirmar Contraseña *</label>
+      <div class="relative">
+        <input id="password_confirmation" 
+               [type]="showConfirmPassword ? 'text' : 'password'" 
+               formControlName="password_confirmation" 
+               class="input-form pr-10" />
+        <button type="button" (click)="showConfirmPassword = !showConfirmPassword" 
+                class="absolute inset-y-0 right-0 px-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 focus:outline-none">
+          <!-- Ícono de Ojo Abierto -->
+          <svg *ngIf="!showConfirmPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+          </svg>
+          <!-- Ícono de Ojo Cerrado -->
+          <svg *ngIf="showConfirmPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+          </svg>
+        </button>
+      </div>
     </div>
+    
+  </div>
+</section>
+    
   </div>
 </form>
+ 

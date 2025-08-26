@@ -12,9 +12,10 @@ export class AdminLayoutComponent {
   userData: User | null = null;
   currentDate: Date = new Date();
   isDarkMode = false;
+  isLoading = false;
   constructor(
-    private authService: AuthService, // Inyectas el servicio de autenticación
-    private router: Router // Inyectas el Router para la navegación
+    private authService: AuthService, 
+    private router: Router 
   ) {}
 
   ngOnInit() {
@@ -28,7 +29,9 @@ export class AdminLayoutComponent {
     this.router.navigate(['/admin/ver-reportes']);
   }
   logout(): void {
-    this.authService.logout();
+    localStorage.removeItem('accessToken');
+    this.userData = null;
+    this.router.navigate(['/dashboard']);
   }
 toggleDarkMode() {
     this.isDarkMode = !this.isDarkMode;

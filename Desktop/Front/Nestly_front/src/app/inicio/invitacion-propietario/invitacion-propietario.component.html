@@ -1,0 +1,31 @@
+<div
+  *ngIf="mostrar"
+  class="fixed bottom-6 right-6 
+         bg-white dark:bg-gray-800 
+         text-gray-900 dark:text-gray-100 
+         shadow-lg rounded-xl p-6 w-80 z-50 animate-fade-in"
+>
+  <h3 class="font-bold text-lg mb-2">¡Publica tus propiedades!</h3>
+  <p class="text-sm mb-4">
+    Conviértete en propietario y empieza a rentar tus propiedades fácilmente.
+  </p>
+  <div class="flex justify-end gap-2">
+    <button
+      (click)="masTarde()"
+      class="px-3 py-1 rounded 
+             bg-gray-200 hover:bg-gray-300 
+             dark:bg-gray-700 dark:hover:bg-gray-600 
+             dark:text-gray-100"
+    >
+      Más tarde
+    </button>
+    <button
+      (click)="enviarSolicitud()"
+      class="px-3 py-1 rounded 
+             bg-blue-600 text-white hover:bg-blue-700 
+             dark:bg-blue-500 dark:hover:bg-blue-400"
+    >
+      ¡Sí, quiero!
+    </button>
+  </div>
+</div>
