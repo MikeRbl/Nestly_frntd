@@ -161,61 +161,65 @@ export class DashboardComponent implements OnInit {
     return this.mostrarTodasResenas ? this.testimonios : this.testimonios.slice(0, 3);
   }
 
-  publicarResena(): void {
-    if (!this.nuevaResena.comentario || this.nuevaResena.puntuacion === 0) {
-      this.notyf.error('Por favor, escribe tu comentario y selecciona una calificación.');
-      return;
-    }
-    if (!this.currentUser) {
-      this.notyf.error('Debes iniciar sesión para dejar una reseña.');
-      return;
-    }
-    const yaTieneResena = this.testimonios.some(t => t.id_usuario === this.currentUser.id);
-    if (yaTieneResena) {
-      this.notyf.error('Solo puedes dejar una reseña.');
-      return;
-    }
-    const userName = `${this.currentUser.first_name} ${this.currentUser.last_name_paternal}`;
-    const testimonioPublicar: Testimonio = {
-      id_usuario: this.currentUser.id,
-      nombre: userName,
-      comentario: this.nuevaResena.comentario,
-      puntuacion: this.nuevaResena.puntuacion,
-      avatar: `https://placehold.co/100x100?text=${userName.substring(0, 2).toUpperCase()}`,
-      fecha: new Date().toLocaleDateString()
-    };
-    this.testimonios.unshift(testimonioPublicar);
-    this.resetFormularioResena();
-    this.notyf.success('¡Gracias! Tu reseña ha sido publicada.');
+public publicarResena(event: { comentario: string; puntuacion: number }) {
+  if (!event.comentario || event.puntuacion === 0) {
+    this.notyf.error('Por favor, escribe tu comentario y selecciona una calificación.');
+    return;
   }
+  if (!this.currentUser) {
+    this.notyf.error('Debes iniciar sesión para dejar una reseña.');
+    return;
+  }
+
+  const yaTieneResena = this.testimonios.some(t => t.id_usuario === this.currentUser.id);
+  if (yaTieneResena) {
+    this.notyf.error('Solo puedes dejar una reseña.');
+    return;
+  }
+
+  const userName = `${this.currentUser.first_name} ${this.currentUser.last_name_paternal}`;
+  const testimonioPublicar: Testimonio = {
+    id_usuario: this.currentUser.id,
+    nombre: userName,
+    comentario: event.comentario,
+    puntuacion: event.puntuacion,
+    avatar: `https://placehold.co/100x100?text=${userName.substring(0, 2).toUpperCase()}`,
+    fecha: new Date().toLocaleDateString()
+  };
+
+  this.testimonios.unshift(testimonioPublicar);
+  this.notyf.success('¡Gracias! Tu reseña ha sido publicada.');
+}
+
 
   resetFormularioResena(): void {
     this.nuevaResena = { comentario: '', puntuacion: 0 };
     this.mostrarFormularioResena = false;
   }
 
-  eliminarResena(index: number, event: Event): void {
-    event.stopPropagation();
-    const testimonio = this.testimonios[index];
-    if (!this.currentUser || testimonio.id_usuario !== this.currentUser.id) {
-      this.notyf.error('Solo puedes eliminar tus propias reseñas.');
-      return;
-    }
-    Swal.fire({
-      title: '¿Eliminar reseña?',
-      text: '¿Estás seguro de que quieres eliminar esta reseña?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonText: 'Cancelar',
-      confirmButtonText: 'Sí, eliminar'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.testimonios.splice(index, 1);
-        this.notyf.success('Reseña eliminada correctamente');
-      }
-    });
+  public eliminarResena(index: number) {
+  const testimonio = this.testimonios[index];
+  if (!this.currentUser || testimonio.id_usuario !== this.currentUser.id) {
+    this.notyf.error('Solo puedes eliminar tus propias reseñas.');
+    return;
   }
+
+  Swal.fire({
+    title: '¿Eliminar reseña?',
+    text: '¿Estás seguro de que quieres eliminar esta reseña?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonText: 'Cancelar',
+    confirmButtonText: 'Sí, eliminar'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.testimonios.splice(index, 1);
+      this.notyf.success('Reseña eliminada correctamente');
+    }
+  });
+}
+
   
   subscrito() {
     Swal.fire({

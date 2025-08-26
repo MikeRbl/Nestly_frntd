@@ -93,7 +93,13 @@
     (toggleFavoritoEvent)="toggleFavorito($event)">
   </app-propiedades-destacadas>
 
-<app-comentarios-usuarios>  </app-comentarios-usuarios>
+    <app-comentarios-usuarios
+      [testimonios]="testimonios"
+      [currentUser]="currentUser"
+      [isUserLoggedIn]="isUserLoggedIn"
+      (publicarResenaEvent)="publicarResena($event)"
+      (eliminarResenaEvent)="eliminarResena($event)">
+    </app-comentarios-usuarios>
   
   <app-footer></app-footer>
 
