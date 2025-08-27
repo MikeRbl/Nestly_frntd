@@ -22,8 +22,8 @@ import { MisPropiedadesComponent } from './gestion-propiedades/ver-propiedades/m
 import { SitioResenasComponent } from './sitio-resenas/sitio-resenas.component';
 import { FaqComponent } from './dashboard-componentes/faq/faq.component';
 import { MisRentasComponent } from './gestion-propiedades/mis-rentas/mis-rentas.component';
-import { TerminosComponent } from './terminos/terminos.component';
-import { PrivacidadComponent } from './privacidad/privacidad.component';
+import { TerminosComponent } from '../footer/terminos/terminos.component';
+import { PrivacidadComponent } from '../footer/privacidad/privacidad.component';
 import { GestionPropiedadesComponent } from './gestion-propiedades/gestion-propiedades.component';
 
 const routes: Routes = [
@@ -40,14 +40,13 @@ const routes: Routes = [
       { path: 'terminos-y-condiciones', component: TerminosComponent },
       { path: 'politica-de-privacidad', component: PrivacidadComponent },
       { path: 'resenas', component: SitioResenasComponent },
-
+ 
       // --- Rutas Privadas (requieren inicio de sesión) ---
       { path: 'perfil', component: PerfilComponent, canActivate: [AuthGuard] },
       { path: 'editarPerfil', component: EditarPerfilComponent, canActivate: [AuthGuard] },
       { path: 'configuracion', component: ConfiguracionComponent, canActivate: [AuthGuard] },
       { path: 'pagos/:id', component: PagosComponent, canActivate: [AuthGuard] },
       { path: 'favoritos', component: PropiedadesFavoritosComponent, canActivate: [AuthGuard] },
-      { path: 'mis-rentas', component: MisRentasComponent, canActivate: [AuthGuard] },
       
       // --- Rutas de Gestión (protegidas por rol) ---
       {
@@ -71,6 +70,11 @@ const routes: Routes = [
             path: 'editar/:id', 
             component: EditarPropiedadComponent,
             data: { roles: ['propietario', 'admin'] }
+          },
+          {
+          path: 'mis-rentas', 
+            component: MisRentasComponent,
+            data: { roles: ['propietario', 'inquilino'] }
           },
         ]
       },

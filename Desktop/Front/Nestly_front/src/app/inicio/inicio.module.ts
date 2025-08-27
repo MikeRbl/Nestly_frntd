@@ -23,14 +23,14 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { PagosComponent } from './pagos/pagos.component';
 import { PerfilComponent } from './perfil/perfil.component';
 import { PrimeraMayusculaPipe } from './pipes/primera-mayuscula.pipe';
-import { PrivacidadComponent } from './privacidad/privacidad.component';
+import { PrivacidadComponent } from '../footer/privacidad/privacidad.component';
 import { PropiedadesFavoritosComponent } from './propiedades-favoritos/propiedades-favoritos.component';
 import { QnSomosComponent } from './qn-somos/qn-somos.component';
 import { ResenaFormComponent } from './resenas/resenas-form/resena-form.component';
 import { ResenasItemComponent } from './resenas/resenas-item/resena-item.component';
 import { ResenaListComponent } from './resenas/resenas-list/resena-list.component';
 import { SitioResenasComponent } from './sitio-resenas/sitio-resenas.component';
-import { TerminosComponent } from './terminos/terminos.component';
+import { TerminosComponent } from '../footer/terminos/terminos.component';
 
 
 @NgModule({

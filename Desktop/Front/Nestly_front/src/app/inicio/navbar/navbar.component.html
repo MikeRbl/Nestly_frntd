@@ -23,7 +23,7 @@
         <a class="nav-main-link" routerLink="/principal/gestion-propiedades" routerLinkActive="active" *ngIf="userRole === 'propietario'" (click)="closeMenus()">
           <span class="textoBtn">Propiedades</span>
         </a>
-        <a class="nav-main-link" routerLink="/principal/mis-rentas" routerLinkActive="active" *ngIf="userRole === 'inquilino'" (click)="closeMenus()">
+        <a class="nav-main-link" routerLink="/principal/gestion-propiedades/mis-rentas" routerLinkActive="active" *ngIf="userRole === 'inquilino'" (click)="closeMenus()">
           <span class="textoBtn">Mis Rentas</span>
         </a>
         <a class="nav-main-link" routerLink="qnSomos" routerLinkActive="active" (click)="closeMenus()">
