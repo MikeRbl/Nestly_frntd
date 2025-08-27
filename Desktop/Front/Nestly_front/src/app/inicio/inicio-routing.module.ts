@@ -6,22 +6,22 @@ import { RoleGuard } from './guards/role.guard';
 import { AuthGuard } from './guards/auth.guard';
 
 // --- Componentes ---
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardComponent } from './dashboard-componentes/dashboard/dashboard.component';
 import { PerfilComponent } from './perfil/perfil.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { QnSomosComponent } from './qn-somos/qn-somos.component';
 import { EditarPerfilComponent } from './editarPerfil/editarPerfil.component';
 import { ConfiguracionComponent } from './configuracion/configuracion.component';
-import { PublicarComponent } from './Publicar/publicar.component';
+import { PublicarComponent } from './gestion-propiedades/Publicar/publicar.component';
 import { AlquilarCasaComponent } from './alquilar-casa/alquilar-casa.component';
 import { BuscarComponent } from './buscar/buscar.component';
-import { EditarPropiedadComponent } from './editar-propiedad/editar-propiedad.component';
+import { EditarPropiedadComponent } from './gestion-propiedades/editar-propiedad/editar-propiedad.component';
 import { PagosComponent } from './pagos/pagos.component';
 import { PropiedadesFavoritosComponent } from './propiedades-favoritos/propiedades-favoritos.component';
-import { MisPropiedadesComponent } from './ver-propiedades/mis-propiedades.component';
+import { MisPropiedadesComponent } from './gestion-propiedades/ver-propiedades/mis-propiedades.component';
 import { SitioResenasComponent } from './sitio-resenas/sitio-resenas.component';
-import { FaqComponent } from './faq/faq.component';
-import { MisRentasComponent } from './mis-rentas/mis-rentas.component';
+import { FaqComponent } from './dashboard-componentes/faq/faq.component';
+import { MisRentasComponent } from './gestion-propiedades/mis-rentas/mis-rentas.component';
 import { TerminosComponent } from './terminos/terminos.component';
 import { PrivacidadComponent } from './privacidad/privacidad.component';
 import { GestionPropiedadesComponent } from './gestion-propiedades/gestion-propiedades.component';

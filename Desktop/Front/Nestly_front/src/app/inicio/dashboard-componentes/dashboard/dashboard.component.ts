@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpLavavelService } from '../../http.service';
+
+import { PropiedadesService } from '../../../services/propiedad.service';
+import { NotyfService } from '../../../services/notyf.service';
+import { Testimonio } from '../../../interface/testimonio.interface';
+import { TestimonioService } from '../../../services/testimonio.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { Propiedad } from '../../interface/propiedades.interface';
-import { AuthService } from '../../auth.service';
-import { PropiedadesService } from '../../services/propiedad.service';
-import { NotyfService } from '../../services/notyf.service';
-import { Testimonio } from '../../interface/testimonio.interface';
-import { TestimonioService } from '../../services/testimonio.service';
+import { Propiedad } from '../../../interface/propiedades.interface';
+import { AuthService } from '../../../services/auth.service';
+import { HttpLaravelService } from '../../../services/http.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -28,11 +29,12 @@ export class DashboardComponent implements OnInit {
   hoverRating = 0;
   currentUser: any = null;
   mostrarTodasResenas = false;
+  testimoniosLoading: boolean = true;
 
     testimonios: Testimonio[] = [];
 
   constructor(
-    private Shttp: HttpLavavelService,
+    private Shttp: HttpLaravelService,
     private router: Router,
     private authService: AuthService,
     private propiedadesService: PropiedadesService,
@@ -70,17 +72,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  cargarTestimonios(): void {
-    this.testimonioService.getTestimonios().subscribe({
-      next: (response) => {
-        this.testimonios = response.data;
-      },
-      error: (err) => {
-        console.error('Error al cargar testimonios:', err);
-        this.notyf.error('No se pudieron cargar los testimonios.');
-      }
-    });
-  }
+  
   
   processProperties(properties: any[]): Propiedad[] {
     return properties.map(prop => ({
@@ -139,6 +131,20 @@ export class DashboardComponent implements OnInit {
   }
 
   // --------------------- TESTIMONIOS ---------------------
+  cargarTestimonios(): void {
+    this.testimoniosLoading = true;  
+    this.testimonioService.getTestimonios().subscribe({
+      next: (response) => {
+        this.testimonios = response.data;
+        this.testimoniosLoading = false; 
+      },
+      error: (err) => {
+        console.error('Error al cargar testimonios:', err);
+        this.notyf.error('No se pudieron cargar los testimonios.');
+        this.testimoniosLoading = false; 
+      }
+    });
+  }
   get testimoniosVisibles(): Testimonio[] {
     return this.mostrarTodasResenas ? this.testimonios : this.testimonios.slice(0, 3);
   }

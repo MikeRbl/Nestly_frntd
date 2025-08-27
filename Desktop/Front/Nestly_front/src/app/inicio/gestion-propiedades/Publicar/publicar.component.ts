@@ -1,14 +1,12 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HttpLavavelService } from '../../http.service';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-import * as L from 'leaflet';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { combineLatest } from 'rxjs';
-
-import { AuthService } from '../../auth.service';
-import { NotyfService } from '../../services/notyf.service';
+import { NotyfService } from '../../../services/notyf.service';
+import { SafeUrl, DomSanitizer } from '@angular/platform-browser';
+import L from 'leaflet';
+import { combineLatest, debounceTime, distinctUntilChanged } from 'rxjs';
+import { AuthService } from '../../../services/auth.service';
+import { HttpLaravelService } from '../../../services/http.service';
 
 @Component({
   selector: 'app-publicar',
@@ -34,7 +32,7 @@ export class PublicarComponent implements OnInit, OnDestroy, AfterViewInit {
 
   constructor(
     private fb: FormBuilder,
-    private httpService: HttpLavavelService,
+    private httpService: HttpLaravelService,
     private authService: AuthService,
     private router: Router,
     private sanitizer: DomSanitizer,

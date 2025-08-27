@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpLavavelService } from '../http.service';
 import { User } from '../interface/usuario.interface';
+import { HttpLaravelService } from './http.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
 
-  constructor(private http: HttpLavavelService) {}
+  constructor(private http: HttpLaravelService) {}
 
   // Dashboard stats
   getDashboardStats(): Observable<any> {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { HttpLavavelService } from '../http.service';
+import { HttpLaravelService } from './http.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ export class ReporteService {
   private pendingReportsCountSubject = new BehaviorSubject<number>(0);
   public pendingReportsCount$ = this.pendingReportsCountSubject.asObservable();
 
-  constructor(private http: HttpLavavelService) { }
+  constructor(private http: HttpLaravelService) { }
 
   /**
    * (Usuario) Crea un nuevo reporte y luego actualiza el contador.

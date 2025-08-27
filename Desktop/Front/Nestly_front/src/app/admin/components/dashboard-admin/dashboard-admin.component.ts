@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpLavavelService } from '../../../http.service'; // Asegúrate que la ruta sea correcta
-import { NotyfService } from '../../../services/notyf.service'; // Asegúrate que la ruta sea correcta
+import { NotyfService } from '../../../services/notyf.service'; 
+import { HttpLaravelService } from '../../../services/http.service';
 
 @Component({
   selector: 'app-dashboard-admin',
@@ -26,7 +26,7 @@ export class DashboardAdminComponent implements OnInit {
   recentActivities: any[] = [];
 
   constructor(
-    private httpService: HttpLavavelService,
+    private httpService: HttpLaravelService,
     private notyfService: NotyfService
   ) {}
 

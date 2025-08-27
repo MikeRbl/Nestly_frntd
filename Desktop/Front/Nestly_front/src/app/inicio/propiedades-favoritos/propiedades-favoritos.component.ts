@@ -4,8 +4,8 @@ import { Propiedad } from './../../interface/propiedades.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotyfService } from '../../services/notyf.service';
 import Swal from 'sweetalert2';
-import { AuthService } from '../../auth.service';
-import { HttpLavavelService } from '../../http.service';
+import { AuthService } from '../../services/auth.service';
+import { HttpLaravelService } from '../../services/http.service';
 
 @Component({
   selector: 'app-propiedades-favoritos',
@@ -22,7 +22,7 @@ export class PropiedadesFavoritosComponent implements OnInit {
   isUserLoggedIn = false;
 
   constructor(
-    private Shttp: HttpLavavelService,
+    private Shttp: HttpLaravelService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private authService: AuthService,

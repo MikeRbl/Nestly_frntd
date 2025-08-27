@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../services/auth.service';
+import { HttpLaravelService } from '../../services/http.service';
 
-import { HttpLavavelService } from '../../http.service';
-import { AuthService } from '../../auth.service'; 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -20,7 +20,7 @@ export class LoginComponent {
 
   constructor(
     private fb: FormBuilder,
-    private httpService: HttpLavavelService,
+    private httpService: HttpLaravelService,
     private authService: AuthService,   
     private router: Router,
   ) {

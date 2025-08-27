@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpLavavelService } from '../../http.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import { AuthService } from '../../auth.service';
+
 import { NotyfService } from '../../services/notyf.service';
 import { RoleRequestService } from '../../services/roleRequest.service';
 import { User } from '../../interface/usuario.interface';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AuthService } from '../../services/auth.service';
+import { HttpLaravelService } from '../../services/http.service';
 
 
 
@@ -23,7 +24,7 @@ export class ConfiguracionComponent implements OnInit {
   solicitudEnviada = false;
 
   constructor(
-    private Shttp: HttpLavavelService,
+    private Shttp: HttpLaravelService,
     private roleRequestService: RoleRequestService,
     private authService: AuthService,
     private notyf: NotyfService,

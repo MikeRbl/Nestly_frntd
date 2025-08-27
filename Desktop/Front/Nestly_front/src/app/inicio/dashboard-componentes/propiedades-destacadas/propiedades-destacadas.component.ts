@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnDestroy, OnInit } from '@angular/core';
-import { Propiedad } from '../../interface/propiedades.interface';
+import { Propiedad } from '../../../interface/propiedades.interface';
+
 
 @Component({
   selector: 'app-propiedades-destacadas',

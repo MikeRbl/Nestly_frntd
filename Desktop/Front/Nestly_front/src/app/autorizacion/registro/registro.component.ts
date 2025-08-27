@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HttpLavavelService } from '../../http.service'; 
+
 import Swal from 'sweetalert2';
+import { HttpLaravelService } from '../../services/http.service';
 
 @Component({
   selector: 'app-registro',
@@ -17,7 +18,7 @@ export class RegistroComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private httpService: HttpLavavelService,
+    private httpService: HttpLaravelService,
     private router: Router
   ) { }
 

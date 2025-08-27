@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { RoleRequestService } from '../../services/roleRequest.service';
-import { NotyfService } from '../../services/notyf.service'; 
-import { AuthService } from '../../auth.service';
+import { RoleRequestService } from '../../../services/roleRequest.service';
+import { NotyfService } from '../../../services/notyf.service'; 
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-invitacion-propietario',

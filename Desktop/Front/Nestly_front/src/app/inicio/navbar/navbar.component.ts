@@ -1,12 +1,13 @@
 import { Component, OnInit, OnDestroy, HostListener, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpLavavelService } from '../../http.service';
+
 import Swal from 'sweetalert2';
 import { User } from '../../interface/usuario.interface';
 import { NotyfService } from '../../services/notyf.service';
 import { FavoritosService } from '../../services/favoritos.service';
 import { Subscription } from 'rxjs';
 import { PropiedadesService } from '../../services/propiedad.service';
+import { HttpLaravelService } from '../../services/http.service';
 
 @Component({
   selector: 'app-navbar',
@@ -27,7 +28,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   @ViewChild('userDropdownMenu') userDropdownMenuRef!: ElementRef;
 
   constructor(
-    private Shttp: HttpLavavelService,
+    private Shttp: HttpLaravelService,
     private router: Router,
     private notyf: NotyfService,
     private favoritosService: FavoritosService

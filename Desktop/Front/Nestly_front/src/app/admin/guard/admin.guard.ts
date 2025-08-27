@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { AuthService } from '../../auth.service';
+
 import { NotyfService } from '../../services/notyf.service';
+import { AuthService } from '../../services/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,9 +15,8 @@ export class AdminGuard implements CanActivate {
     private notyf: NotyfService
   ) {}
 
-  // En tu futuro archivo admin.guard.ts
+
 canActivate(): boolean {
-  // Esta línea ahora funcionará gracias al método que agregaste
   const userRole = this.authService.getUserRole(); 
 
   if (this.authService.isLoggedIn() && userRole === 'admin') {

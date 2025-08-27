@@ -1,24 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpLavavelService } from '../../http.service';
-import { Router } from '@angular/router';
-import { AuthService } from '../../auth.service';
+
 import { RoleRequestService } from '../../services/roleRequest.service';
 import { NotyfService } from '../../services/notyf.service';
-
-// Interfaz para el usuario
-interface User {
-  id: number;
-  first_name: string;
-  last_name_paternal: string;
-  last_name_maternal: string;
-  email: string;
-  phone: string;
-  role: string;
-  profile_picture?: string;
-  avatar_url?: string;
-  created_at: string;
-  updated_at: string;
-}
+import { Router } from '@angular/router';
+import { User } from '../../interface/usuario.interface';
+import { AuthService } from '../../services/auth.service';
+import { HttpLaravelService } from '../../services/http.service';
 
 @Component({
   selector: 'app-perfil',
@@ -42,7 +29,7 @@ export class PerfilComponent implements OnInit {
   solicitudEnviada = false;
 
   constructor(
-    private Shttp: HttpLavavelService,
+    private Shttp: HttpLaravelService,
     private roleRequestService: RoleRequestService,
     private authService: AuthService,
     private notyf: NotyfService,
@@ -125,7 +112,7 @@ enviarSolicitud(): void {
       next: (response: any) => {
         console.log('Foto de perfil actualizada:', response);
         if (this.userData && response.avatar_url) {
-          this.userData.profile_picture = `${response.avatar_url}?${new Date().getTime()}`;
+          this.userData.avatar_url = `${response.avatar_url}?${new Date().getTime()}`;
           window.location.reload();
         } else if (this.userData) {
           this.loadUserData();

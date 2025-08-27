@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Testimonio } from '../interface/testimonio.interface';
+import { Testimonio } from '../../../interface/testimonio.interface';
 
 @Component({
   selector: 'app-comentarios-usuarios',
@@ -15,6 +15,8 @@ export class ComentariosUsuariosComponent {
   @Output() publicarResenaEvent = new EventEmitter<{ comentario: string; puntuacion: number }>();
   @Output() actualizarResenaEvent = new EventEmitter<Testimonio>();
   @Output() eliminarResenaEvent = new EventEmitter<Testimonio>();
+
+  @Input() isLoading = false;
 
   // State for the modal
   showReviewModal = false;
@@ -90,11 +92,12 @@ export class ComentariosUsuariosComponent {
   // --- Métodos para la Lógica del Carrusel ---
 
   get totalGruposResenas(): number {
-    if (!this.testimonios || this.testimonios.length === 0) {
-      return 0;
-    }
-    return Math.ceil(this.testimonios.length / 3);
+  if (!this.testimonios || this.testimonios.length === 0) {
+    return 0;
   }
+  return Math.max(1, Math.ceil(this.testimonios.length / 3)); 
+}
+
 
   prevTestimonios(): void {
     if (this.totalGruposResenas === 0) return;

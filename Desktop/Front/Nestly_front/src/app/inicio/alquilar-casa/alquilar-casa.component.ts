@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { HttpLavavelService } from '../../http.service';
-import { ResenaService } from '../../services/resena.service';
-import { AuthService } from '../../auth.service';
+
 import { NotyfService } from '../../services/notyf.service';
 import { PropiedadesService } from '../../services/propiedad.service';
 import { Propiedad } from '../../interface/propiedades.interface';
 import { ReporteService } from '../../services/reporte.service';
+import { AuthService } from '../../services/auth.service';
+import { HttpLaravelService } from '../../services/http.service';
+import { ResenaService } from '../../services/resena.service';
 
 @Component({
   selector: 'app-alquilar-casa',
@@ -33,7 +34,7 @@ export class AlquilarCasaComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private httpService: HttpLavavelService,
+    private httpService: HttpLaravelService,
     private router: Router,
     private resenaService: ResenaService,
     private authService: AuthService,

@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class HttpLavavelService {
+export class HttpLaravelService {
   public apiUrl = 'http://127.0.0.1:8000/api';
 
   constructor(private http: HttpClient) { }

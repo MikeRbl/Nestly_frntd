@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { HttpLavavelService } from '../http.service';
+import { HttpLaravelService } from './http.service';
 
 
 @Injectable({
@@ -11,7 +11,7 @@ export class RoleRequestService {
   private pendingCountSubject = new BehaviorSubject<number>(0);
   public pendingCount$ = this.pendingCountSubject.asObservable();
 
-  constructor(private http: HttpLavavelService) { }
+  constructor(private http: HttpLaravelService) { }
 
   /** Un usuario envía una solicitud para ser propietario*/
   enviarSolicitud(): Observable<any> {

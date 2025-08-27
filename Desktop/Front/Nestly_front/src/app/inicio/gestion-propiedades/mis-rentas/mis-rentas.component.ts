@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { AuthService } from '../../auth.service';
+
 import Swal from 'sweetalert2';
 import { DatePipe } from '@angular/common';
+import { AuthService } from '../../../services/auth.service';
 
 // Define la URL base de tu API directamente aquí
 const API_BASE_URL = 'http://localhost:8000/api'; // Cambia esto por tu URL real
