@@ -15,24 +15,21 @@
         <div class="user-details-section">
           <div class="avatar-upload-container">
             <div class="avatar-wrapper">
-              <img *ngIf="selectedImage || userData?.profile_picture" [src]="selectedImage || userData?.profile_picture || 'assets/default-avatar.png'" alt="Avatar" class="user-avatar">
-              <svg *ngIf="!selectedImage && !userData?.profile_picture" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="user-avatar-placeholder-svg">
+              <img *ngIf="selectedImage || userData?.avatar_url" [src]="selectedImage || userData?.avatar_url || 'assets/default-avatar.png'" alt="Avatar" class="user-avatar">
+              <svg *ngIf="!selectedImage && !userData?.avatar_url" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="user-avatar-placeholder-svg">
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.29-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.93-3.5 3.22-6 3.22z"/>
               </svg>
             </div>
             <input type="file" #fileInput (change)="onFileChange($event)" accept="image/*" style="display: none;">
             
             <button class="simple-upload-btn" (click)="fileInput.click()">
-                {{ selectedFile || (userData?.profile_picture && !selectedImage) ? 'Cambiar foto' : 'Subir foto' }}
+                {{ selectedFile || (userData?.avatar_url && !selectedImage) ? 'Cambiar foto' : 'Subir foto' }}
             </button>
 
             <button *ngIf="selectedFile" class="save-photo-btn" (click)="uploadProfilePicture()" [disabled]="isLoading">
               <span *ngIf="!isLoading">Guardar foto</span>
               <span *ngIf="isLoading">Guardando...</span>
-              <svg *ngIf="isLoading" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" opacity=".3"/>
-                <path d="M12 4c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm0 15c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/>
-              </svg>
+              
             </button>
           </div>
 

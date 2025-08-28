@@ -134,7 +134,7 @@ $success-color-base: #2ec4b6;
 
 /* Estilo para el botón simple de Subir/Cambiar Foto */
 .simple-upload-btn {
-    background: none;
+    background: var(--primary-light);
     border: 1px solid var(--primary-color);
     color: var(--primary-color);
     padding: 0.5rem 1rem;
@@ -162,7 +162,7 @@ $success-color-base: #2ec4b6;
 }
 
 .save-photo-btn {
-  background: var(--success-color);
+  background: #6ce0be;
   color: var(--white);
   border: none;
   padding: 0.5rem 1rem;
