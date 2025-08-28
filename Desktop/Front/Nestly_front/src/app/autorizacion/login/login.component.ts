@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -10,14 +10,20 @@ import { HttpLaravelService } from '../../services/http.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   errorMessage: string = '';
   successMessage: string = '';
   showPassword: boolean = false;
   passwordFieldType: string = 'password';
   loading: boolean = false;
-
+  
+  private slideImages = [
+  '/assets/login/casa1.jpg',
+  '/assets/login/casa2.jpg',
+  '/assets/login/casa3.jpg',
+  '/assets/login/casa4.jpg'
+];
   constructor(
     private fb: FormBuilder,
     private httpService: HttpLaravelService,
@@ -30,103 +36,117 @@ export class LoginComponent {
     });
   }
 
+  ngOnInit(): void {
+    // Precargar imágenes para mejor rendimiento del slideshow
+    this.preloadImages();
+  }
+
+  /**
+   * Precarga las imágenes del slideshow para transiciones suaves
+   */
+  private preloadImages(): void {
+    this.slideImages.forEach(url => {
+      const img = new Image();
+      img.src = url;
+    });
+  }
+
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
     this.passwordFieldType = this.showPassword ? 'text' : 'password';
   }
 
- onSubmit(): void {
-  if (this.loginForm.invalid) {
-    Swal.fire({
-      icon: "error",
-      title: "Upsi",
-      text: "Completa todos los campos requeridos",
-    });
-    this.markFormAsTouched();
-    return;
-  }
-
-  this.loading = true;
-  Swal.fire({
-    title: 'Iniciando sesión...',
-    allowOutsideClick: false,
-    didOpen: () => {
-      Swal.showLoading();
-    }
-  });
-  this.errorMessage = '';
-
-  this.httpService.publicPost('login', this.loginForm.value).subscribe({
-    next: (response: any) => {
-      Swal.close();
+  onSubmit(): void {
+    if (this.loginForm.invalid) {
       Swal.fire({
-        icon: "success",
-        title: "Iniciaste sesión correctamente",
-        showConfirmButton: false,
-        timer: 1500
+        icon: "error",
+        title: "Upsi",
+        text: "Completa todos los campos requeridos",
       });
+      this.markFormAsTouched();
+      return;
+    }
 
-      this.authService.login(response.user, response.access_token);
-
-      if (response.user && response.user.role === 'admin') {
-        this.router.navigate(['/admin/dashboard-admin']);
-      } else {
-        this.router.navigate(['/principal/dashboard']);
+    this.loading = true;
+    Swal.fire({
+      title: 'Iniciando sesión...',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
       }
-      
-      this.loading = false;
-    },
-    error: (error: any) => {
-      this.loading = false;
-      Swal.close();
-      console.log('ERROR:', error);
+    });
+    this.errorMessage = '';
 
-      if (error.status === 403) {
-        const errorMessage = error.error?.message || '';
-        const suspensionEndDate = error.error?.suspension_ends_at;
+    this.httpService.publicPost('login', this.loginForm.value).subscribe({
+      next: (response: any) => {
+        Swal.close();
+        Swal.fire({
+          icon: "success",
+          title: "Iniciaste sesión correctamente",
+          showConfirmButton: false,
+          timer: 1500
+        });
 
-        if (errorMessage.includes('suspendida') && suspensionEndDate) {
-          const endDate = new Date(suspensionEndDate);
-          const now = new Date();
-          const diffTime = endDate.getTime() - now.getTime();
-          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        this.authService.login(response.user, response.access_token);
 
-          let messageText = `Tu cuenta está suspendida. Podrás volver a iniciar sesión en aproximadamente ${diffDays} día(s).`;
-          if (diffDays <= 0) {
-            messageText = "Tu suspensión ha terminado. Por favor, intenta iniciar sesión de nuevo."
-          }
-          
-          Swal.fire({
-            icon: 'warning',
-            title: 'Cuenta Suspendida',
-            text: messageText,
-            confirmButtonText: 'Entendido'
-          }).then(() => {
-            this.authService.logout();
-          });
-
-        } else if (errorMessage.includes('baneada')) {
-          Swal.fire({
-            icon: 'error',
-            title: 'Cuenta Baneada',
-            text: 'Tu cuenta ha sido baneada permanentemente. Contacta al soporte para más información.',
-            confirmButtonText: 'Entendido'
-          }).then(() => {
-            this.authService.logout();
-          });
+        if (response.user && response.user.role === 'admin') {
+          this.router.navigate(['/admin/dashboard-admin']);
+        } else {
+          this.router.navigate(['/principal/dashboard']);
         }
         
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Error en el inicio de sesión",
-          text: error.error?.message || 'Credenciales incorrectas. Intenta de nuevo.',
-        });
-      }
-    }
-  });
-}
+        this.loading = false;
+      },
+      error: (error: any) => {
+        this.loading = false;
+        Swal.close();
+        console.log('ERROR:', error);
 
+        if (error.status === 403) {
+          const errorMessage = error.error?.message || '';
+          const suspensionEndDate = error.error?.suspension_ends_at;
+
+          if (errorMessage.includes('suspendida') && suspensionEndDate) {
+            const endDate = new Date(suspensionEndDate);
+            const now = new Date();
+            const diffTime = endDate.getTime() - now.getTime();
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            let messageText = `Tu cuenta está suspendida. Podrás volver a iniciar sesión en aproximadamente ${diffDays} día(s).`;
+            if (diffDays <= 0) {
+              messageText = "Tu suspensión ha terminado. Por favor, intenta iniciar sesión de nuevo."
+            }
+            
+            Swal.fire({
+              icon: 'warning',
+              title: 'Cuenta Suspendida',
+              text: messageText,
+              confirmButtonText: 'Entendido'
+            }).then(() => {
+              this.authService.logout();
+            });
+
+          } else if (errorMessage.includes('baneada')) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Cuenta Baneada',
+              text: 'Tu cuenta ha sido baneada permanentemente. Contacta al soporte para más información.',
+              confirmButtonText: 'Entendido'
+            }).then(() => {
+              this.authService.logout();
+            });
+          }
+          
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Error en el inicio de sesión",
+            text: error.error?.message || 'Credenciales incorrectas. Intenta de nuevo.',
+          });
+        }
+      }
+    });
+  }
 
   private markFormAsTouched(): void {
     Object.values(this.loginForm.controls).forEach(control => {

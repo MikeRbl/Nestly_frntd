@@ -10,7 +10,6 @@ import { HttpLaravelService } from '../../services/http.service';
   styleUrls: ['./registro.component.scss']
 })
 export class RegistroComponent implements OnInit {
-  // ... (tu código existente: constructor, ngOnInit, onSubmit, etc., no cambian)
   registroForm!: FormGroup;
   loading = false;
   showPassword = false;

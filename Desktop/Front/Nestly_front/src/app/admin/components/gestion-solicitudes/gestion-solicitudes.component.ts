@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NotyfService } from '../../../services/notyf.service';
 import { RoleRequestService } from '../../../services/roleRequest.service';
 import Swal from 'sweetalert2';
+import { RoleRequest } from '../../../interface/role-request.interface';
 
 @Component({
   selector: 'app-gestion-solicitudes',
@@ -10,13 +11,17 @@ import Swal from 'sweetalert2';
 })
 export class GestionSolicitudesComponent implements OnInit {
 
-  solicitudes: any[] = [];
+  solicitudes: RoleRequest[] = []; 
   isLoading = true;
+  isProcessingId: number | null = null;
 
   // Paginación
   pageIndex = 0;
   pageSize = 10;
   totalItems = 0;
+  
+  // Para usar Math.min en el HTML
+  math = Math;
 
   constructor(
     private roleRequestService: RoleRequestService,
@@ -29,9 +34,11 @@ export class GestionSolicitudesComponent implements OnInit {
 
   cargarSolicitudes(): void {
     this.isLoading = true;
-    this.roleRequestService.obtenerSolicitudes().subscribe({
-      next: (data) => {
-        this.solicitudes = data;
+    this.roleRequestService.obtenerSolicitudes(this.pageIndex, this.pageSize).subscribe({
+      next: (response) => {
+        // Asegúrate de que tu backend devuelve un objeto con 'data' y 'total'
+        this.solicitudes = response.data || [];
+        this.totalItems = response.total || 0;
         this.isLoading = false;
       },
       error: (err) => {
@@ -48,30 +55,28 @@ export class GestionSolicitudesComponent implements OnInit {
   }
 
   procesarSolicitud(id: number, nuevoStatus: 'aprobado' | 'rechazado'): void {
+    const textoAccion = nuevoStatus === 'aprobado' ? 'aprobar' : 'rechazar';
+
     Swal.fire({
-      title: `¿Quieres ${nuevoStatus} esta solicitud?`,
+      title: `¿Confirmas ${textoAccion} esta solicitud?`,
       icon: 'question',
       showCancelButton: true,
       confirmButtonText: 'Sí, confirmar',
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        // Deshabilitar botones temporalmente
-        const solicitud = this.solicitudes.find(s => s.id === id);
-        if (solicitud) solicitud.procesando = true;
-
-        this.roleRequestService.actualizarSolicitud(id, nuevoStatus).subscribe({
-          next: (solicitudActualizada) => {
-            const index = this.solicitudes.findIndex(s => s.id === id);
-            if (index !== -1) {
-              this.solicitudes[index] = solicitudActualizada;
-            }
+        this.isProcessingId = id;
+        this.roleRequestService.actualizarSolicitud(id, { status: nuevoStatus }).subscribe({
+          next: () => {
             this.notyf.success(`Solicitud ${nuevoStatus} con éxito.`);
+            this.cargarSolicitudes(); 
           },
           error: (err) => {
-            if (solicitud) solicitud.procesando = false;
             this.notyf.error('Error al procesar la solicitud.');
             console.error(err);
+          },
+          complete: () => {
+            this.isProcessingId = null;
           }
         });
       }

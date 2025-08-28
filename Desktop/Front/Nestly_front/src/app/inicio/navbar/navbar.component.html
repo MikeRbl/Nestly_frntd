@@ -29,6 +29,9 @@
         <a class="nav-main-link" routerLink="qnSomos" routerLinkActive="active" (click)="closeMenus()">
           <span class="textoBtn">¿Quiénes somos?</span>
         </a>
+        <a class="nav-main-link" routerLink="ser-propietario"  routerLinkActive="active" *ngIf="userRole === 'inquilino'" (click)="closeMenus()">
+          <span class="textoBtn">Publica tu propiedad</span>
+        </a>
       </div>
       <div class="right-elements flex items-center gap-3">
         <a class="signup-btn" routerLink="/register" *ngIf="!isLoggedIn()">

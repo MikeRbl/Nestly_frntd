@@ -25,6 +25,7 @@ import { MisRentasComponent } from './gestion-propiedades/mis-rentas/mis-rentas.
 import { TerminosComponent } from '../footer/terminos/terminos.component';
 import { PrivacidadComponent } from '../footer/privacidad/privacidad.component';
 import { GestionPropiedadesComponent } from './gestion-propiedades/gestion-propiedades.component';
+import { SerPropietarioComponent } from './navbar/ser-propietario/ser-propietario.component';
 
 const routes: Routes = [
   {
@@ -47,7 +48,7 @@ const routes: Routes = [
       { path: 'configuracion', component: ConfiguracionComponent, canActivate: [AuthGuard] },
       { path: 'pagos/:id', component: PagosComponent, canActivate: [AuthGuard] },
       { path: 'favoritos', component: PropiedadesFavoritosComponent, canActivate: [AuthGuard] },
-      
+      { path: 'ser-propietario', component: SerPropietarioComponent, canActivate: [AuthGuard] },
       // --- Rutas de Gestión (protegidas por rol) ---
       {
         path: 'gestion-propiedades',

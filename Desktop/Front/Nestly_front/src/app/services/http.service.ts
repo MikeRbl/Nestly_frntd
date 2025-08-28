@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -33,10 +33,11 @@ export class HttpLaravelService {
     });
   }
 
-  // 🔍 GET con autenticación
-  Service_Get(endpoint: string): Observable<any> {
+  // 🔍 GET con autenticación (Versión Mejorada)
+  Service_Get(endpoint: string, options?: { params: HttpParams }): Observable<any> { 
     return this.http.get(`${this.apiUrl}/${endpoint}`, {
-      headers: this.getHeaders()
+      headers: this.getHeaders(),
+      ...options // <--- 2. Se pasan las opciones (como los params) a la petición
     });
   }
 

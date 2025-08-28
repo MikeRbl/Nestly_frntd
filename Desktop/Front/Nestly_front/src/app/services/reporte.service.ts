@@ -15,14 +15,10 @@ export class ReporteService {
   /**
    * (Usuario) Crea un nuevo reporte y luego actualiza el contador.
    */
-  crearReporte(data: any): Observable<any> {
-    return this.http.Service_Post('reportes', data).pipe(
-      tap(() => {
-        // Después de crear un reporte, pide la cuenta actualizada al backend.
-        this.fetchPendingReportsCount();
-      })
-    );
-  }
+ crearReporte(data: any): Observable<any> {
+  // Simplemente enviamos el reporte. No intentamos hacer nada más.
+  return this.http.Service_Post('reportes', data);
+}
 
   /**
    * (Admin) Obtiene la lista de reportes para la página de gestión.
@@ -49,7 +45,7 @@ export class ReporteService {
     return this.http.Service_Put(`reportes/${id}/estado`, { estado }).pipe(
       tap(() => {
         // Después de actualizar un reporte, pide la cuenta actualizada
-        this.fetchPendingReportsCount();
+        this.cargarContadorReportesPendientes();
       })
     );
   }
@@ -57,7 +53,7 @@ export class ReporteService {
   /**
    * (Admin) Obtiene la cuenta inicial y actualizada para la notificación.
    */
-  fetchPendingReportsCount(): void {
+  cargarContadorReportesPendientes(): void {
     this.http.Service_Get('admin/stats').subscribe((response: any) => {
         // Usamos ?? 0 como salvaguarda si la respuesta no es la esperada.
         const count = response.stats?.unresolved_reports ?? 0;

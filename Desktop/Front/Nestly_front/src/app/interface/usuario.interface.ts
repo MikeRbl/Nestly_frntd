@@ -13,4 +13,6 @@ export interface User {
   avatar_url?: string;
   email_verified_at?: string | null;
   suspension_ends_at?: string;
+  completed_rents?: number;
+  profile_complete?: boolean;
 }

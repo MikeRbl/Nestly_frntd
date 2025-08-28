@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RoleRequestService } from '../../../services/roleRequest.service';
 import { NotyfService } from '../../../services/notyf.service'; 
 import { AuthService } from '../../../services/auth.service';
+import { User } from '../../../interface/usuario.interface';
 
 @Component({
   selector: 'app-invitacion-propietario',
@@ -11,7 +12,7 @@ import { AuthService } from '../../../services/auth.service';
 export class InvitacionPropietarioComponent implements OnInit {
   mostrar = false;
   isLoading = false;
-  currentUser: any;
+  currentUser: User | null = null;
 
   constructor(
     private authService: AuthService,
@@ -20,7 +21,6 @@ export class InvitacionPropietarioComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Nos suscribimos a los cambios del usuario (login/logout)
     this.authService.currentUser$.subscribe(user => {
       this.currentUser = user;
       this.evaluarVisibilidad();
@@ -28,23 +28,24 @@ export class InvitacionPropietarioComponent implements OnInit {
   }
 
   evaluarVisibilidad(): void {
-    // Si no hay un usuario logueado, nos aseguramos de que no se muestre nada.
-    if (!this.currentUser || !this.currentUser.id) {
+    if (!this.currentUser || this.currentUser.role !== 'inquilino') {
       this.mostrar = false;
       return;
     }
 
-  
-    const userSpecificKey = `roleRequestSent_${this.currentUser.id}`;
-    const solicitudYaEnviada = localStorage.getItem(userSpecificKey);
     const posponerVisto = sessionStorage.getItem('posponerInvitacion');
-
-    // La lógica para mostrar el componente
-    if (this.currentUser.role === 'inquilino' && !solicitudYaEnviada && !posponerVisto) {
-      this.mostrar = true;
-    } else {
-      this.mostrar = false;
+    if (posponerVisto) {
+        this.mostrar = false;
+        return;
     }
+
+    this.roleService.verificarEstadoSolicitud().subscribe(response => {
+      if (response.status === 'ninguna') {
+        this.mostrar = true;
+      } else {
+        this.mostrar = false;
+      }
+    });
   }
 
   enviarSolicitud(): void {
@@ -52,22 +53,13 @@ export class InvitacionPropietarioComponent implements OnInit {
     this.roleService.enviarSolicitud().subscribe({
       next: () => {
         this.notyf.success('¡Solicitud enviada! Un administrador la revisará pronto.');
-        
-        if (this.currentUser) {
-          localStorage.setItem(`roleRequestSent_${this.currentUser.id}`, 'true');
-        }
         this.mostrar = false;
         this.isLoading = false;
       },
       error: (err) => {
+        this.notyf.error(err.error?.message || 'Error al enviar la solicitud');
         if (err.status === 400 || err.status === 409) {
-          this.notyf.error('Ya tienes una solicitud pendiente.');
-          if (this.currentUser) {
-            localStorage.setItem(`roleRequestSent_${this.currentUser.id}`, 'true');
-          }
-          this.mostrar = false;
-        } else {
-          this.notyf.error(err.error?.message || 'Error al enviar la solicitud');
+            this.mostrar = false;
         }
         this.isLoading = false;
       }

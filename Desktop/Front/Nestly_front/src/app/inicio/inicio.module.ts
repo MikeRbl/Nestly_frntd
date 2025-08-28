@@ -31,6 +31,7 @@ import { ResenasItemComponent } from './resenas/resenas-item/resena-item.compone
 import { ResenaListComponent } from './resenas/resenas-list/resena-list.component';
 import { SitioResenasComponent } from './sitio-resenas/sitio-resenas.component';
 import { TerminosComponent } from '../footer/terminos/terminos.component';
+import { SerPropietarioComponent } from './navbar/ser-propietario/ser-propietario.component';
 
 
 @NgModule({
@@ -61,7 +62,8 @@ import { TerminosComponent } from '../footer/terminos/terminos.component';
     FaqComponent, TerminosComponent, PrivacidadComponent, 
       PropiedadesDestacadasComponent,
        FooterComponent,
-       ComentariosUsuariosComponent
+       ComentariosUsuariosComponent,
+       SerPropietarioComponent
   ],
   imports: [
     CommonModule,

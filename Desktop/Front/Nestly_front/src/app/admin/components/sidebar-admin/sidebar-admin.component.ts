@@ -1,32 +1,34 @@
-import { Component, OnInit } from '@angular/core'; 
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RoleRequestService } from '../../../services/roleRequest.service';
-import { ReporteService } from '../../../services/reporte.service'; 
+import { ReporteService } from '../../../services/reporte.service';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar-admin',
   templateUrl: './sidebar-admin.component.html',
-  styleUrls: ['./sidebar-admin.component.css'] 
+  styleUrls: ['./sidebar-admin.component.css']
 })
-export class SidebarAdminComponent implements OnInit { 
+export class SidebarAdminComponent implements OnInit {
   public pendingCount$!: Observable<number>;
-  public pendingReportsCount$!: Observable<number>; 
+  public pendingReportsCount$!: Observable<number>;
 
   constructor(
     private roleRequestService: RoleRequestService,
-    private reporteService: ReporteService, 
+    private reporteService: ReporteService,
     private router: Router
   ) { }
 
   ngOnInit(): void {
-    // Asigna el observable de solicitudes y pide una actualización
+    // Asigna el observable de solicitudes
     this.pendingCount$ = this.roleRequestService.pendingCount$;
-    this.roleRequestService.fetchPendingCount();
+    // Llama al método correcto para cargar el contador
+    this.roleRequestService.cargarContadorPendientes();
 
-    // Asigna el observable de reportes y pide una actualización
+    // Haz lo mismo para los reportes
     this.pendingReportsCount$ = this.reporteService.pendingReportsCount$;
-    this.reporteService.fetchPendingReportsCount();
+    // Asegúrate de que este método exista en tu ReporteService
+    this.reporteService.cargarContadorReportesPendientes();
   }
 
   isActive(route: string): boolean {

@@ -1,0 +1,229 @@
+/* --- ESTILOS GENERALES DEL CONTENEDOR --- */
+.informacion-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+/* --- ESTILOS DE SECCIONES --- */
+section {
+  padding: 4rem 0;
+  border-bottom: 1px solid #e5e7eb;
+}
+/* La clase .dark en el HTML se encargará del color del borde */
+section:last-of-type {
+  border-bottom: none;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  h2 {
+    font-size: 2.25rem;
+    font-weight: bold;
+  }
+}
+
+.section-divider {
+  width: 80px;
+  height: 4px;
+  margin: 0.5rem auto 0;
+  border-radius: 2px;
+}
+
+/* --- SECCIONES ESPECÍFICAS --- */
+.intro-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  text-align: center;
+
+  .intro-content {
+    max-width: 600px;
+    h1 {
+      font-size: 2.5rem;
+      font-weight: bold;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    .intro-text {
+      font-size: 1.125rem;
+      margin-bottom: 2rem;
+    }
+  }
+  .intro-image img {
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+}
+
+.cta-button {
+  display: inline-block;
+  padding: 0.875rem 2rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  transition: background-color 0.3s, transform 0.3s;
+  
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.proposito-section {
+  .proposito-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .proposito-card {
+    text-align: center;
+    padding: 2rem;
+    border-radius: 0.75rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+    
+    &:hover {
+      transform: translateY(-5px);
+    }
+
+    .proposito-icon {
+      height: 64px;
+      width: 64px;
+      margin: 0 auto 1rem auto; /* Centrado y con margen inferior */
+    }
+    h3 {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+  }
+}
+
+.mision-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+
+  .mision-content {
+    width: 100%;
+    h2 {
+      font-size: 2.25rem;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+  }
+  .values-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .value-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+  .value-number {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  .value-text {
+    h3 {
+      font-size: 1.125rem;
+      font-weight: bold;
+      margin-bottom: 0.25rem;
+    }
+  }
+  .mision-image img {
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+}
+
+.cta-final-section {
+  text-align: center;
+  padding: 4rem 1.5rem;
+  h2 {
+    font-size: 2.25rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  p {
+    font-size: 1.125rem;
+    margin-bottom: 2rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+.cta-button, .cta-button-final, .cta-button-disabled {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem; // Espacio entre ícono y texto
+  font-weight: 600;
+  border-radius: 0.75rem; // Bordes más redondeados
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+// Estilo para el botón principal (activo)
+.cta-button, .cta-button-final {
+  background-image: linear-gradient(to right, #4f46e5, #7c3aed);
+  color: white;
+  padding: 0.875rem 2rem;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
+}
+
+// Estilo específico para el botón más grande del final
+.cta-button-final {
+  padding: 1rem 2.5rem;
+  font-size: 1.125rem;
+}
+
+// Estilo para el botón deshabilitado (pendiente)
+.cta-button-disabled {
+  background-color: #9ca3af; // gris-400
+  color: #e5e7eb; // gris-200
+  padding: 1rem 2.5rem;
+  font-size: 1.125rem;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+/* --- ESTILOS RESPONSIVE --- */
+@media (min-width: 768px) {
+  .intro-section {
+    flex-direction: row;
+    text-align: left;
+  }
+  .proposito-section .proposito-content {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .mision-section {
+    .values-container {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  .mision-section {
+    flex-direction: row;
+    .mision-content { width: 50%; }
+    .mision-image { width: 50%; }
+  }
+}

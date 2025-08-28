@@ -9,9 +9,9 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './autorizacion/login/login.component';
 import { RegistroComponent } from './autorizacion/registro/registro.component';
 
-import { InvitacionPropietarioComponent } from './inicio/dashboard-componentes/invitacion-propietario/invitacion-propietario.component';
 import { AuthInterceptor } from './services/auth.interceptor';
 import { HttpLaravelService } from './services/http.service';
+import { InvitacionPropietarioComponent } from './inicio/dashboard-componentes/invitacion-propietario/invitacion-propietario.component';
 
 @NgModule({
   declarations: [
