@@ -3,10 +3,9 @@
     <img
       [src]="usuarioActual ? getFullImageUrl(usuarioActual.avatar_url) : 'assets/navbar/usuario.png'"
       alt="Avatar del usuario"
-      class="h-11 w-11 rounded-full object-cover border border-gray-200"
+      class="h-11 w-11 rounded-full object-cover border border-gray-200 dark:border-gray-700"
       onerror="this.src='assets/navbar/usuario.png'"
     />
-
 
     <form [formGroup]="resenaForm" (ngSubmit)="onSubmit()" class="w-full">
       <div class="relative">
@@ -14,7 +13,7 @@
           (focus)="isFormActive = true"
           formControlName="comentario"
           rows="2"
-          class="block w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-light-blue focus:border-transparent transition-all"
+          class="block w-full px-4 py-3 border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-light-blue focus:border-transparent transition-all bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500"
           placeholder="Escribe tu reseña..."
         >
         </textarea>
@@ -23,7 +22,7 @@
           *ngIf="!isFormActive"
           class="absolute right-3 bottom-3 flex items-center"
         >
-          <span class="text-sm mr-2">Puntuar</span>
+          <span class="text-sm mr-2 text-gray-600 dark:text-gray-400">Puntuar</span>
           <div class="flex space-x-1">
               <ng-container *ngFor="let star of stars">
                 <svg
@@ -32,7 +31,8 @@
                   (mouseleave)="onStarLeave()"
                   class="w-5 h-5 cursor-pointer transition-colors duration-150"
                   [class.text-yellow-400]="star <= (hoveredRating || f['puntuacion'].value)"
-                  [class.text-white-300]="star > (hoveredRating || f['puntuacion'].value)"
+                  [class.text-gray-300]="star > (hoveredRating || f['puntuacion'].value)"
+                  [class.dark:text-gray-600]="star > (hoveredRating || f['puntuacion'].value)"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                   xmlns="http://www.w3.org/2000/svg"
@@ -43,14 +43,12 @@
                 </svg>
               </ng-container>
             </div>
-
-
         </div>
       </div>
 
       <div *ngIf="isFormActive" class="mt-4 space-y-4 animate-fade-in">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2"
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
             >¿Cómo valorarías tu experiencia?</label
           >
           <div class="flex items-center space-x-1" (mouseleave)="onStarLeave()">
@@ -65,6 +63,9 @@
                 [class.text-gray-300]="
                   star > (hoveredRating || f['puntuacion'].value)
                 "
+                [class.dark:text-gray-600]="
+                  star > (hoveredRating || f['puntuacion'].value)
+                "
                 fill="currentColor"
               >
                 <path
@@ -72,7 +73,7 @@
                 />
               </svg>
             </ng-container>
-            <span class="ml-2 text-sm font-medium text-gray-600">
+            <span class="ml-2 text-sm font-medium text-gray-600 dark:text-gray-400">
               {{
                 hoveredRating || f["puntuacion"].value
                   ? (hoveredRating || f["puntuacion"].value) + " estrella(s)"
@@ -92,18 +93,17 @@
           <button
             type="button"
             (click)="isFormActive = false; resenaForm.reset()"
-            class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+            class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
           >
             Cancelar
           </button>
           <button
-  type="submit"
-  [disabled]="resenaForm.invalid && formEnviado"
-  class="px-6 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
->
-  Publicar ahora
-</button>
-
+            type="submit"
+            [disabled]="resenaForm.invalid && formEnviado"
+            class="px-6 py-2 text-sm font-semibold text-white bg-blue-600 rounded-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Publicar ahora
+          </button>
         </div>
       </div>
     </form>

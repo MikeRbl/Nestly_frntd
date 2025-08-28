@@ -1,109 +1,120 @@
-<div class="favorites-page">
-  <div class="favorites-header">
-    <div class="header-container">
-      <h1 class="page-title">
-        <svg class="title-icon" viewBox="0 0 24 24">
-          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-        </svg>
-        Tus Favoritos
-      </h1>
-      <p class="page-subtitle">Tus propiedades guardadas para una fácil consulta</p>
+<div class="favorites-page bg-gray-50 dark:bg-gray-900 min-h-screen">
+  <div class="favorites-header bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+    <div class="header-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col md:flex-row md:items-center justify-between gap-8">
+        
+        <div class="text-center md:text-left">
+            <h1 class="page-title text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 flex items-center justify-center md:justify-start">
+                <svg class="title-icon w-9 h-9 mr-3 text-pink-500 dark:text-pink-400" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+                Tus Favoritos
+            </h1>
+            <p class="page-subtitle text-base sm:text-lg text-gray-500 dark:text-gray-400 mt-2">
+                Tus propiedades guardadas para una fácil consulta.
+            </p>
+        </div>
+
+        <button class="explore-btn flex-shrink-0 w-full md:w-auto inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 transition-transform duration-200 hover:scale-105" routerLink="/principal/buscarCasa">
+            <svg class="btn-icon w-5 h-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 001.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 00-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 005.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+            Explorar más
+        </button>
+        
     </div>
-    <button class="explore-btn" routerLink="/principal/buscarCasa">
-      <svg class="btn-icon" viewBox="0 0 24 24">
-        <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 001.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 00-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 005.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-      </svg>
-      Explorar más
-    </button>
-  </div>
+</div>
 
-  <!-- Error Message -->
-  <div *ngIf="errorMessage && !isLoading" class="error-alert">
-    <svg class="alert-icon" viewBox="0 0 24 24">
-      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
-    </svg>
-    <span>{{ errorMessage }}</span>
-  </div>
-
-  <!-- Property Grid -->
-  <div *ngIf="!isLoading && !errorMessage">
-    <div *ngIf="featuredProperties && featuredProperties.length > 0; else emptyState">
-      <div class="properties-grid">
-        <!-- Card manteniendo tu estructura original -->
-        <div *ngFor="let property of featuredProperties" class="property-card" (click)="handlePropertyClick(property.id_propiedad)">
-          <div class="property-image-container">
-            <img [src]="getFirstPhoto(property)" [alt]="property.titulo" class="property-image"/>
-            <div class="property-overlay"></div>
-            <button *ngIf="isUserLoggedIn" class="favorite-btn active" (click)="toggleFavorito(property, $event)">
-              <svg viewBox="0 0 24 24">
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-              </svg>
-            </button>
-            <div *ngIf="property.resenas_avg_puntuacion" class="rating-badge">
-              <svg viewBox="0 0 24 24">
-                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-              </svg>
-              <span>{{ property.resenas_avg_puntuacion | number:"1.1-1" }}</span>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div *ngIf="errorMessage && !isLoading" class="error-alert rounded-md bg-red-50 dark:bg-red-900/40 p-4 mb-8">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <svg class="alert-icon h-5 w-5 text-red-400" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                </svg>
             </div>
-          </div>
+            <div class="ml-3">
+                <p class="text-sm font-medium text-red-800 dark:text-red-300">{{ errorMessage }}</p>
+            </div>
+        </div>
+    </div>
 
-          <div class="property-details">
-            <h3 class="property-title">{{ property.titulo }}</h3>
-            <div class="property-type">{{ property.tipo_propiedad?.nombre || "Propiedad" }}</div>
+    <div *ngIf="!isLoading && !errorMessage">
+      <div *ngIf="featuredProperties && featuredProperties.length > 0; else emptyState">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          
+          <div *ngFor="let property of featuredProperties" 
+               class="group relative bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+               (click)="handlePropertyClick(property.id_propiedad)">
             
-            <div class="property-location">
-              <!-- <svg viewBox="0 0 24 24">
-                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-              </svg> -->
-              📍 <span>{{ property.ciudad }}, {{ property.pais }}</span>
-            </div>
+            <div class="relative h-56 w-full overflow-hidden">
+              <img [src]="getFirstPhoto(property)" [alt]="property.titulo" class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"/>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/0"></div>
+              
+              <button *ngIf="isUserLoggedIn" 
+                      class="absolute top-3 right-3 h-10 w-10 flex items-center justify-center rounded-full bg-black/40 backdrop-blur-sm text-white hover:bg-red-500 transition-colors"
+                      (click)="toggleFavorito(property, $event)">
+                <svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+              </button>
 
-            <div class="property-features">
-              <div class="feature">
-                <svg viewBox="0 0 24 24">
-                  <path d="M18 10V5H6v5H4v7h1.33L6 19h1l.67-2h8.67l.66 2h1l.67-2H20v-7h-2zm-8 0H8V7h2v3zm6 0h-2V7h2v3z"/>
+              <div *ngIf="property.resenas_avg_puntuacion" class="absolute top-3 left-3 flex items-center space-x-1 rounded-full bg-black/40 backdrop-blur-sm px-2 py-1 text-xs font-bold text-white">
+                <svg class="w-4 h-4 text-yellow-400" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
                 </svg>
-                <span>{{ property.habitaciones }} hab</span>
-              </div>
-              <div class="feature">
-                <svg viewBox="0 0 24 24">
-                  <path d="M18 9h-1V4c0-1.1-.9-2-2-2H9c-1.1 0-2 .9-2 2v5H6c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-9c0-1.1-.9-2-2-2zM9 4h6v5H9V4zm9 15H6v-3h12v3zm0-5H6v-3h12v3z"/>
-                </svg>
-                <span>{{ property.banos }} baños</span>
+                <span>{{ property.resenas_avg_puntuacion | number:"1.1-1" }}</span>
               </div>
             </div>
 
-            <div class="property-footer">
-              <div class="property-owner">
-                <img [src]="property.propietario?.avatar_url" alt="Propietario" class="owner-avatar"/>
-                <div class="owner-info">
-                  <p class="owner-name">{{ property.propietario?.first_name }} {{ property.propietario?.last_name_maternal }}</p>
-                  <p class="owner-label">Propietario</p>
+            <div class="p-4 flex flex-col flex-grow">
+              <p class="text-sm font-semibold text-indigo-600 dark:text-indigo-400">{{ property.tipo_propiedad?.nombre || "Propiedad" }}</p>
+              <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mt-1 truncate">{{ property.titulo }}</h3>
+              <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">📍 {{ property.ciudad }}, {{ property.pais }}</p>
+
+              <div class="mt-4 flex items-center space-x-4 text-sm text-gray-700 dark:text-gray-300">
+                <div class="flex items-center space-x-1">
+                  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M18 10V5H6v5H4v7h1.33L6 19h1l.67-2h8.67l.66 2h1l.67-2H20v-7h-2zm-8 0H8V7h2v3zm6 0h-2V7h2v3z"/></svg>
+                  <span>{{ property.habitaciones }} hab</span>
+                </div>
+                <div class="flex items-center space-x-1">
+                  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M18 9h-1V4c0-1.1-.9-2-2-2H9c-1.1 0-2 .9-2 2v5H6c-1.1 0-2 .9-2 2v9c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-9c0-1.1-.9-2-2-2zM9 4h6v5H9V4zm9 15H6v-3h12v3zm0-5H6v-3h12v3z"/></svg>
+                  <span>{{ property.banos }} baños</span>
                 </div>
               </div>
-              <div class="property-price">{{ formatPrice(property.precio, property.anualizado) }}</div>
+
+              <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                  <img [src]="property.propietario?.avatar_url" alt="Propietario" class="h-8 w-8 rounded-full object-cover"/>
+                  <div>
+                    <p class="text-sm font-semibold text-gray-800 dark:text-gray-200">{{ property.propietario?.first_name }}</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">Propietario</p>
+                  </div>
+                </div>
+                <div class="text-lg font-extrabold text-gray-900 dark:text-white">{{ formatPrice(property.precio, property.anualizado) }}</div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
 
-    <ng-template #emptyState>
-      <div class="empty-favorites">
-        <div class="empty-icon">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-          </svg>
         </div>
-        <h3>No tienes favoritos aún</h3>
-        <p>Guarda propiedades que te interesen para encontrarlas fácilmente aquí</p>
-        <button class="discover-btn" routerLink="/principal/buscarCasa">
-          <svg viewBox="0 0 24 24">
-            <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 001.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 00-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 005.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-          </svg>
-          Descubrir propiedades
-        </button>
       </div>
-    </ng-template>
+
+      <ng-template #emptyState>
+        <div class="empty-favorites text-center bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-12">
+          <div class="empty-icon mx-auto h-16 w-16 text-gray-300 dark:text-gray-600">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+          </div>
+          <h3 class="mt-4 text-xl font-semibold text-gray-900 dark:text-gray-100">No tienes favoritos aún</h3>
+          <p class="mt-2 text-gray-500 dark:text-gray-400">Guarda propiedades que te interesen para encontrarlas fácilmente aquí</p>
+          <button class="discover-btn mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700" routerLink="/principal/buscarCasa">
+            <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 001.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 00-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 005.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+            Descubrir propiedades
+          </button>
+        </div>
+      </ng-template>
+    </div>
   </div>
 </div>

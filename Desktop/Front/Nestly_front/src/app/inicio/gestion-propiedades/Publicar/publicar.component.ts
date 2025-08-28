@@ -193,36 +193,44 @@ export class PublicarComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  geocodeAddress(address: string): void {
-    if (!address) return;
-    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&limit=1&addressdetails=1`;
-    fetch(url)
-      .then(response => {
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        return response.json();
-      })
-      .then(data => {
-        if (data && data.length > 0) {
-          const lat = parseFloat(data[0].lat);
-          const lon = parseFloat(data[0].lon);
-          if (this.map && this.marker) {
-            let newZoom = 15;
-            this.map.setView([lat, lon], newZoom);
-            this.marker.setLatLng([lat, lon]);
-            this.formulario.patchValue({
-              latitud: lat,
-              longitud: lon
-            }, { emitEvent: false });
-          }
-        } else {
-          this.notyfService.warning('Dirección no encontrada. Intenta ser más específico.');
+geocodeAddress(address: string): void {
+  if (!address) return;
+  
+  // Coordenadas de San Miguel de Allende para dar contexto a la búsqueda
+  const viewBox = "-100.843,21.015,-100.643,20.815"; // (lon_izq, lat_sup, lon_der, lat_inf)
+
+  // El parámetro 'viewbox' le sugiere a Nominatim dónde buscar primero
+  const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&limit=1&addressdetails=1&viewbox=${viewBox}&bounded=1`;
+  
+  fetch(url)
+    .then(response => {
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      return response.json();
+    })
+    .then(data => {
+      if (data && data.length > 0) {
+        const lat = parseFloat(data[0].lat);
+        const lon = parseFloat(data[0].lon);
+        if (this.map && this.marker) {
+          this.map.setView([lat, lon], 16); // Aumentamos un poco el zoom
+          this.marker.setLatLng([lat, lon]);
+          this.formulario.patchValue({
+            latitud: lat,
+            longitud: lon
+          }, { emitEvent: false });
         }
-      })
-      .catch(error => {
-        console.error('Error en geocodificación directa:', error);
-        this.notyfService.error(`Error al buscar en mapa: ${error.message}.`);
-      });
-  }
+      } else {
+        // En lugar de mostrar un error, simplemente no hacemos nada.
+        // El usuario puede seguir escribiendo para ser más específico.
+        console.log('Geocoding: Dirección no encontrada, esperando más detalles.'); 
+      }
+    })
+    .catch(error => {
+      console.error('Error en geocodificación directa:', error);
+      // Opcional: podrías mostrar un error si falla la conexión, pero no si no encuentra la dirección
+      // this.notyfService.error(`Error al buscar en mapa: ${error.message}.`);
+    });
+}
 
   onFileChange(event: any): void {
   if (event.target.files && event.target.files.length > 0) {
