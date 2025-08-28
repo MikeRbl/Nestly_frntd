@@ -151,17 +151,25 @@ export class DashboardComponent implements OnInit {
 
   // Publicar reseña desde el hijo
   publicarResena(event: { comentario: string; puntuacion: number }): void {
-    this.testimonioService.createTestimonio(event).subscribe({
-      next: (nuevoTestimonio) => {
-        this.testimonios.unshift(nuevoTestimonio); // Añade la respuesta del servidor al inicio del array
-        this.notyf.success('¡Gracias! Tu reseña ha sido publicada.');
-      },
-      error: (err) => {
-        console.error('Error al publicar reseña:', err);
-        this.notyf.error('Ocurrió un error al publicar tu reseña.');
+  this.testimonioService.createTestimonio(event).subscribe({
+    next: (nuevoTestimonio) => {
+      this.testimonios.unshift(nuevoTestimonio);
+      this.notyf.success('¡Gracias! Tu reseña ha sido publicada.');
+    },
+    error: (err) => {
+      // --- ✅ LÓGICA DE ERROR MEJORADA ---
+      if (err.status === 409) {
+        // Error específico: El usuario ya ha publicado una reseña.
+        // Muestra el mensaje exacto que envía el backend.
+        this.notyf.warning(err.error.message); 
+      } else {
+        // Para cualquier otro tipo de error (problemas de servidor, etc.).
+        this.notyf.error('Ocurrió un error inesperado al publicar tu reseña.');
       }
-    });
-  }
+      console.error('Error al publicar reseña:', err);
+    }
+  });
+}
 
   /**
    * Llama al servicio para actualizar una reseña existente.

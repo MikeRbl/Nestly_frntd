@@ -5,7 +5,6 @@ import Swal from 'sweetalert2';
 
 // --- Servicios ---
 import { PropiedadesService } from '../../../app/services/propiedad.service';
-
 import { NotyfService } from '../../services/notyf.service';
 import { Propiedad } from '../../interface/propiedades.interface';
 import { AuthService } from '../../services/auth.service';
@@ -74,7 +73,11 @@ export class BuscarComponent implements OnInit {
   toggleFavorito(propiedad: Propiedad, event: MouseEvent): void {
     event.stopPropagation(); 
     if (!this.isUserLoggedIn) {
-      this.handleLoginRedirect();
+      // Usamos la nueva función genérica
+      this.solicitarInicioSesion(
+        '¡Inicia sesión para guardar!',
+        'Necesitas una cuenta para añadir propiedades a tus favoritos.'
+      );
       return;
     }
 
@@ -100,14 +103,17 @@ export class BuscarComponent implements OnInit {
     }
   }
 
-  handleLoginRedirect(): void {
+  
+  solicitarInicioSesion(title: string, text: string): void {
     Swal.fire({
-      title: '¡Inicia sesión para guardar!',
-      text: 'Necesitas una cuenta para añadir propiedades a tus favoritos.',
+      title: title,
+      text: text,
       icon: 'info',
       showDenyButton: true,
       confirmButtonText: 'Iniciar Sesión',
       denyButtonText: 'Crear Cuenta',
+      confirmButtonColor: '#3085d6',
+      denyButtonColor: '#34A853',
     }).then((result) => {
       if (result.isConfirmed) {
         this.router.navigate(['/login']);
@@ -115,6 +121,20 @@ export class BuscarComponent implements OnInit {
         this.router.navigate(['/register']);
       }
     });
+  }
+
+  // --- Ejemplo de uso para otra funcionalidad ---
+  intentarDejarResena(): void {
+    if (!this.isUserLoggedIn) {
+      this.solicitarInicioSesion(
+        '¡Inicia sesión para dejar tu opinión!',
+        'Solo los usuarios con cuenta pueden escribir reseñas.'
+      );
+      return;
+    }
+    // Si el usuario sí ha iniciado sesión, aquí iría la lógica para mostrar
+    // el formulario de reseña.
+    console.log('El usuario ha iniciado sesión, mostrando formulario de reseña...');
   }
   
   cargarPropiedades(): void {
@@ -170,8 +190,6 @@ export class BuscarComponent implements OnInit {
   aplicarFiltros(): void {
     let propiedadesFiltradas = [...this.todasLasPropiedades];
 
-    // --- ¡CAMBIO IMPLEMENTADO AQUÍ! ---
-    // Antes de cualquier otro filtro, nos aseguramos de mostrar solo las propiedades disponibles.
     propiedadesFiltradas = propiedadesFiltradas.filter(p => p.estado_propiedad === 'Disponible');
 
     if (this.filtros.titulo) {
@@ -272,12 +290,30 @@ export class BuscarComponent implements OnInit {
   }
   
   verDetallePropiedad(propiedad: any): void {
-    if (propiedad && propiedad.id_propiedad) {
-      this.router.navigate(['../propiedad', propiedad.id_propiedad], { relativeTo: this.route });
+    if (this.isUserLoggedIn) {
+      // Si el usuario tiene sesión, navega a los detalles
+      if (propiedad && propiedad.id_propiedad) {
+        this.router.navigate(['../propiedad', propiedad.id_propiedad], { relativeTo: this.route });
+      } else {
+        console.error('No se puede navegar: la propiedad no tiene un id_propiedad válido.', propiedad);
+      }
     } else {
-      console.error('No se puede navegar: la propiedad no tiene un id_propiedad válido.', propiedad);
-    }
-  }
+      // Si no tiene sesión, muestra la alerta con la estructura solicitada
+      Swal.fire({
+        title: '¡Inicia sesión o crea una cuenta!',
+        text: 'Necesitas una cuenta para ver los detalles de la propiedad.',
+        icon: 'info',
+        showDenyButton: true,
+        confirmButtonText: 'Iniciar Sesión',
+        denyButtonText: 'Crear Cuenta',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.router.navigate(['/login']);
+        } else if (result.isDenied) {
+          this.router.navigate(['/register']);
+        }
+      });
+    }}
 
   getFullImageUrl(path: string): string {
     if (!path) return '';

@@ -28,10 +28,14 @@ export class ComentariosUsuariosComponent {
   hoverRating = 0;
   carruselIndex = 0;
 
+  usuarioYaComento = false;
   constructor(
     private reporteService: ReporteService
   ) {}
 
+  ngOnChanges(): void {
+    this.verificarSiUsuarioComento();
+  }
   // --- Métodos para gestionar el Modal de Reseñas ---
   abrirModalParaCrear(): void {
     this.modoEdicion = false;
@@ -39,7 +43,14 @@ export class ComentariosUsuariosComponent {
     this.showReviewModal = true;
   }
 
-  editarResena(testimonio: Testimonio): void {
+  verificarSiUsuarioComento(): void {
+    if (this.isUserLoggedIn && this.currentUser && this.testimonios.length > 0) {
+      this.usuarioYaComento = this.testimonios.some(t => t.id_usuario === this.currentUser.id);
+    } else {
+      this.usuarioYaComento = false;
+    }
+  }
+    editarResena(testimonio: Testimonio): void {
     this.modoEdicion = true;
     this.resenaActual = { ...testimonio };
     this.showReviewModal = true;

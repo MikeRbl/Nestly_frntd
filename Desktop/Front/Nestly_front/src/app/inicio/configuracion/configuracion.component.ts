@@ -96,13 +96,11 @@ enviarSolicitud(): void {
   }
 
   saveSettings(): void {
-    localStorage.setItem('darkModeEnabled', String(this.darkModeEnabled));
+
   }
 
   toggleDarkMode(): void {
-    this.darkModeEnabled = !this.darkModeEnabled;
-    this.applyTheme();
-    this.saveSettings();
+    
   }
 
  applyTheme(): void {
