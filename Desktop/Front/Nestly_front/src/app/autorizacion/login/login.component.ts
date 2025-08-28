@@ -17,13 +17,7 @@ export class LoginComponent implements OnInit {
   showPassword: boolean = false;
   passwordFieldType: string = 'password';
   loading: boolean = false;
-  
-  private slideImages = [
-  '/assets/login/casa1.jpg',
-  '/assets/login/casa2.jpg',
-  '/assets/login/casa3.jpg',
-  '/assets/login/casa4.jpg'
-];
+ 
   constructor(
     private fb: FormBuilder,
     private httpService: HttpLaravelService,
@@ -38,18 +32,9 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     // Precargar imágenes para mejor rendimiento del slideshow
-    this.preloadImages();
   }
 
-  /**
-   * Precarga las imágenes del slideshow para transiciones suaves
-   */
-  private preloadImages(): void {
-    this.slideImages.forEach(url => {
-      const img = new Image();
-      img.src = url;
-    });
-  }
+ 
 
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
