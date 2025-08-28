@@ -1,20 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpLavavelService } from '../../http.service';
 import { NotyfService } from '../../services/notyf.service';
+import { HttpLaravelService } from '../../services/http.service';
+import { User } from '../../interface/usuario.interface';
 
-interface User {
-  id: number;
-  first_name: string;
-  last_name_paternal: string;
-  last_name_maternal: string;
-  email: string;
-  phone: string;
-  role: string;
-  profile_picture?: string;
-  avatar_url?: string;
-  created_at: string;
-  updated_at: string;
-}
+
 
 @Component({
   selector: 'app-editar-perfil',
@@ -38,7 +27,7 @@ export class EditarPerfilComponent implements OnInit {
   maxFileSize: number = 5 * 1024 * 1024;
   validExtensions: string[] = ['image/jpeg', 'image/png', 'image/gif'];
 
-  constructor(private Shttp: HttpLavavelService,
+  constructor(private Shttp: HttpLaravelService,
     private notyf: NotyfService
   ) {}
 
@@ -58,9 +47,9 @@ export class EditarPerfilComponent implements OnInit {
           const imageUrl = response.user.avatar_url || response.user.profile_picture;
           
           if (this.userData && imageUrl) {
-            this.userData.profile_picture = `${imageUrl}?${new Date().getTime()}`;
+            this.userData.avatar_url = `${imageUrl}?${new Date().getTime()}`;
           } else if (this.userData) {
-            this.userData.profile_picture = undefined;
+            this.userData.avatar_url = undefined;
           }
         } else {
           this.errorMessage = 'Respuesta inesperada al cargar los datos del usuario.';
@@ -131,7 +120,7 @@ export class EditarPerfilComponent implements OnInit {
       next: (response: any) => {
         console.log('Foto de perfil actualizada con éxito:', response);
         if (this.userData && response.avatar_url) {
-          this.userData.profile_picture = `${response.avatar_url}?${new Date().getTime()}`;
+          this.userData.avatar_url = `${response.avatar_url}?${new Date().getTime()}`;
           window.location.reload(); 
         } else if (this.userData) {
           this.loadUserData();

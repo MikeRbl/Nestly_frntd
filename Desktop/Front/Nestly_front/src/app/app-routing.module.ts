@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './autorizacion/login/login.component';
 import { RegistroComponent } from './autorizacion/registro/registro.component';
-import { QnSomosComponent } from './inicio/qn-somos/qn-somos.component';
+// Ya no necesitamos importar el AuthGuard aquí, se usará en el módulo hijo
 
 const routes: Routes = [
   { 
@@ -23,8 +23,10 @@ const routes: Routes = [
     loadChildren: () => import('./inicio/inicio.module')
       .then(m => m.InicioModule),
   },
-  
-  { path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) },
+  { 
+    path: 'admin', 
+    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) 
+  },
   { 
     path: '**', 
     redirectTo: 'principal/dashboard' 

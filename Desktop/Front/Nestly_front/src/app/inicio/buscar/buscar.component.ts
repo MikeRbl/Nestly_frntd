@@ -5,9 +5,10 @@ import Swal from 'sweetalert2';
 
 // --- Servicios ---
 import { PropiedadesService } from '../../../app/services/propiedad.service';
-import { AuthService } from '../../auth.service';
+
 import { NotyfService } from '../../services/notyf.service';
 import { Propiedad } from '../../interface/propiedades.interface';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-buscar',

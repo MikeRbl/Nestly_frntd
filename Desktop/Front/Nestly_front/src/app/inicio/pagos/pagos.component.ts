@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpLavavelService } from '../../http.service';
+
 import Swal from 'sweetalert2';
 import { NotyfService } from '../../services/notyf.service';
+import { HttpLaravelService } from '../../services/http.service';
 
 interface RentaData {
   propiedad_id: number;
@@ -48,7 +49,7 @@ export class PagosComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private httpService: HttpLavavelService,
+    private httpService: HttpLaravelService,
     private fb: FormBuilder,
      private notyf: NotyfService
   ) {

@@ -1,21 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpLavavelService } from '../../http.service';
-import { Router } from '@angular/router';
 
-// Interfaz para el usuario
-interface User {
-  id: number;
-  first_name: string;
-  last_name_paternal: string;
-  last_name_maternal: string;
-  email: string;
-  phone: string;
-  role: string;
-  profile_picture?: string;
-  avatar_url?: string;
-  created_at: string;
-  updated_at: string;
-}
+import { RoleRequestService } from '../../services/roleRequest.service';
+import { NotyfService } from '../../services/notyf.service';
+import { Router } from '@angular/router';
+import { User } from '../../interface/usuario.interface';
+import { AuthService } from '../../services/auth.service';
+import { HttpLaravelService } from '../../services/http.service';
 
 @Component({
   selector: 'app-perfil',
@@ -36,9 +26,13 @@ export class PerfilComponent implements OnInit {
   propiedades: any[] = [];
   propiedadesMostradas: any[] = [];
   loadingPropiedades: boolean = false;
+  solicitudEnviada = false;
 
   constructor(
-    private Shttp: HttpLavavelService,
+    private Shttp: HttpLaravelService,
+    private roleRequestService: RoleRequestService,
+    private authService: AuthService,
+    private notyf: NotyfService,
     private router: Router
   ) {}
 
@@ -46,8 +40,28 @@ export class PerfilComponent implements OnInit {
   this.loadUserData().then(() => {
     this.loadPropiedadesUsuario(); // Solo se ejecuta después de tener userData
   });
+  if (localStorage.getItem('roleRequestSent') === 'true') {
+      this.solicitudEnviada = true;
+    }
 }
-
+enviarSolicitud(): void {
+    this.roleRequestService.enviarSolicitud().subscribe({
+      next: () => {
+        this.notyf.success('¡Solicitud enviada! Un administrador la revisará pronto.');
+        localStorage.setItem('roleRequestSent', 'true');
+        this.solicitudEnviada = true; // Deshabilita el botón
+      },
+      error: (err) => {
+        if (err.status === 400 || err.status === 409) {
+          this.notyf.error('Ya tienes una solicitud pendiente.');
+          localStorage.setItem('roleRequestSent', 'true'); // Sincroniza el estado
+          this.solicitudEnviada = true;
+        } else {
+          this.notyf.error(err.error?.message || 'Error al enviar la solicitud');
+        }
+      }
+    });
+  }
   removeSelectedImage(): void {
     this.selectedImage = null;
     this.selectedFile = null;
@@ -98,7 +112,7 @@ export class PerfilComponent implements OnInit {
       next: (response: any) => {
         console.log('Foto de perfil actualizada:', response);
         if (this.userData && response.avatar_url) {
-          this.userData.profile_picture = `${response.avatar_url}?${new Date().getTime()}`;
+          this.userData.avatar_url = `${response.avatar_url}?${new Date().getTime()}`;
           window.location.reload();
         } else if (this.userData) {
           this.loadUserData();
@@ -197,6 +211,6 @@ loadPropiedadesUsuario(): void {
 
   logout() {
     localStorage.removeItem('token'); 
-    window.location.href = '/login';
+    this.router.navigate(['/dashboard']);
   }
 }

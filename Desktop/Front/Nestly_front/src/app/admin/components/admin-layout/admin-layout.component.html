@@ -1,115 +1,84 @@
-<div class="bg-gray-100 dark:bg-gray-900 p-4 h-screen">
-  <div class="flex h-full gap-4">
 
-    <!-- Barra Lateral (Sidebar) como un panel flotante -->
-    <aside class="w-64 bg-white dark:bg-gray-800 rounded-2xl shadow-lg flex flex-col">
+<!-- Contenedor principal con un fondo sutil -->
+<div class="bg-slate-100 dark:bg-gray-900 min-h-screen w-full p-4 flex font-sans">
+  
+  
+  <aside class="w-64 flex flex-col shrink-0 bg-white dark:bg-gray-800 rounded-2xl shadow-lg p-4 transition-all duration-300">
+    
+    <!-- Logo y Título -->
+    <div class="flex items-center gap-3 h-16 px-3 mb-4">
+      <img src="assets/navbar/LogoN.png" alt="Nestly Logo" class="h-8 w-auto" />
+      <span class="font-bold text-xl text-gray-800 dark:text-white">Nestly</span>
+    </div>
 
-          <!-- Logo -->
-    <div class="parent-container h-16 w-full flex justify-center items-center py-4">
-      <div class="fresh-logo" routerLink="/principal/dashboard">
-        <img src="assets/navbar/LogoN.png" alt="Nestly" class="max-h-full w-20" />
+    <!-- Navegación Principal  -->
+    <div class="flex-grow">
+      <app-sidebar-admin></app-sidebar-admin>
+    </div>
+
+    <!-- Perfil y Cerrar Sesión -->
+    <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
+      <div class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+        <img [src]="userData?.avatar_url || 'assets/default-avatar.png'" alt="Avatar" class="w-10 h-10 rounded-full object-cover">
+        <div class="flex-1">
+          <p class="font-semibold text-sm text-gray-800 dark:text-gray-100 truncate">{{ userData?.first_name }}</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400">Admin</p>
+        </div>
+        <button (click)="logout()" title="Cerrar Sesión" class="text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          </svg>
+        </button>
       </div>
     </div>
-            <app-sidebar-admin></app-sidebar-admin>
+  </aside>
 
-
-      <!-- Footer de la Sidebar -->
-      <div class="px-4 py-4 border-t border-gray-200 dark:border-gray-700">
-        <a (click)="logout()" class="nav-link logout-link">
-          <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
-          <span>Cerrar Sesión</span>
-        </a>
-      </div>
-    </aside>
-
-  
-<main class="flex-1 h-full">
-  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg h-full flex flex-col overflow-hidden">
-    
-    <!-- Cabecera del Contenido (Rediseñada) -->
-    <header class="flex-shrink-0 bg-white dark:bg-gray-800 flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700 rounded-t-2xl">
-      <div class="flex items-center gap-4">
-        <img
-          src="https://i.gifer.com/origin/f5/f5baef4b6b6677020ab8d091ef78a3bc_w200.gif"
-          alt="admin gif"
-          class="w-12 h-12 object-cover rounded-full border-2 border-blue-200 dark:border-blue-700"
-        />
+  <main class="flex-1 flex flex-col pl-4">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg flex-1 flex flex-col overflow-hidden">
+      
+      <!-- Cabecera del Contenido -->
+      <header class="flex-shrink-0 flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+        <!-- Saludo y Fecha -->
         <div>
           <h2 class="text-xl font-bold text-gray-800 dark:text-gray-100">
-            Hola, Admin {{ userData?.first_name }}
+            Bienvenido, {{ userData?.first_name || 'Admin' }} 
           </h2>
          
         </div>
-        <button
-  (click)="toggleDarkMode()"
-  class="flex items-center justify-center w-12 h-12 rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75 transition"
-  [ngClass]="{
-    'bg-black hover:bg-gray-800': !isDarkMode,
-    'bg-yellow-400 hover:bg-yellow-500': isDarkMode
-  }"
-  aria-label="Toggle Dark Mode"
->
-  <!-- Luna: aparece en modo claro (isDarkMode = false) -->
-  <svg *ngIf="!isDarkMode" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-yellow-400">
-    <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
-  </svg>
 
-  <!-- Sol: aparece en modo oscuro (isDarkMode = true) -->
-  <svg *ngIf="isDarkMode" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-white">
-    <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
-  </svg>
-</button>
+        <!-- Acciones de la Cabecera -->
+        <div class="flex items-center gap-4">
+          <!-- Botón de Modo Oscuro -->
+          <button (click)="toggleDarkMode()" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors" aria-label="Toggle Dark Mode">
+            <svg *ngIf="!isDarkMode" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+            <svg *ngIf="isDarkMode" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+          </button>
+          
+          <!-- Botón de Añadir Usuario -->
+          <button (click)="crearNuevoUsuario()" class="hidden sm:flex items-center gap-2 px-4 py-2 bg-blue-500 text-white text-sm font-semibold rounded-lg shadow-md hover:bg-blue-600 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+            </svg>
+            <span>Añadir Usuario</span>
+          </button>
+        </div>
+      </header>
 
-
-
+      <!-- Área de Contenido con Scroll -->
+      <div class="flex-1 p-6 overflow-y-auto">
+        <!-- Skeleto-->
+        <div *ngIf="isLoading" class="animate-pulse space-y-6">
+          <div class="h-8 bg-gray-200 dark:bg-gray-700 rounded-md w-1/3"></div>
+          <div class="h-24 bg-gray-200 dark:bg-gray-700 rounded-lg w-full"></div>
+          <div class="h-64 bg-gray-200 dark:bg-gray-700 rounded-lg w-full"></div>
+        </div>
+        
+        <router-outlet *ngIf="!isLoading"></router-outlet>
       </div>
-
-      <!-- Botones de Acción Rápida (Opcional) -->
-      <div class="hidden sm:flex items-center gap-3">
-  <!-- Botón secundario -->
-  <button
-  (click)="verReportes()"
-  class="flex items-center justify-center min-w-[140px] px-6 py-2 bg-red-500 text-sm font-medium text-white rounded-lg hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-50 transition gap-2"
->
-  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5">
-    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
-  </svg>
-  Ver Reportes
-</button>
-
-<button
-  (click)="crearNuevoUsuario()"
-  class="flex items-center justify-center min-w-[140px] px-6 py-2 bg-blue-500 text-sm font-medium text-white rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition gap-2"
->
-  <svg
-    class="h-5 w-5"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    stroke-width="2"
-  >
-    <path
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-    />
-  </svg>
-  <span>Añadir Usuario</span>
-</button>
-
-
-</div>
-
-    </header>
-
-    <!-- Área de Contenido con Scroll -->
-    <div class="flex-1 p-6 overflow-y-auto">
-      <!-- Aquí es donde se cargarán tus componentes de admin -->
-      <router-outlet></router-outlet>
     </div>
-  </div>
-</main>
-
-
-  </div>
+  </main>
 </div>

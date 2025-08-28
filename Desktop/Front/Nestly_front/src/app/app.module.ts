@@ -1,24 +1,25 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http'; // <-- Aquí HTTP_INTERCEPTORS
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { AppComponent } from './app.component';
 import { LoginComponent } from './autorizacion/login/login.component';
 import { RegistroComponent } from './autorizacion/registro/registro.component';
-import { HttpLavavelService } from './http.service';
-import { PrimeraMayusculaPipe } from './inicio/pipes/primera-mayuscula.pipe';
-import { AuthInterceptor } from './auth.interceptor';
+
+import { InvitacionPropietarioComponent } from './inicio/dashboard-componentes/invitacion-propietario/invitacion-propietario.component';
+import { AuthInterceptor } from './services/auth.interceptor';
+import { HttpLaravelService } from './services/http.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegistroComponent,
-    
+    InvitacionPropietarioComponent,
+   
   ],
   imports: [
     BrowserModule,
@@ -30,7 +31,7 @@ import { AuthInterceptor } from './auth.interceptor';
     ReactiveFormsModule,
   ],
   providers: [
-    HttpLavavelService,
+    HttpLaravelService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

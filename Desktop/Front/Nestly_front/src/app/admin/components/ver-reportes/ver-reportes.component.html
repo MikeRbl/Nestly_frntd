@@ -1,22 +1,226 @@
 <div class="space-y-8">
   <!-- Encabezado -->
-  <div class="flex items-center justify-between">
-    <h3 class="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white">Centro de Reportes</h3>
-  </div>
+  <header>
+    <h3 class="text-3xl font-bold text-gray-800 dark:text-white">Centro de Reportes</h3>
+    <p class="mt-1 text-gray-500 dark:text-gray-400">Revisa y gestiona los reportes enviados por los usuarios.</p>
+  </header>
 
-  <!-- Panel de Contenido Principal -->
+  <!-- Panel Principal -->
   <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
-    <!-- Pestañas de Navegación con routerLink -->
-    <div class="border-b border-gray-200 dark:border-gray-700">
-      <nav class="-mb-px flex gap-6 px-6">
-        <a routerLink="resenas-reportes" routerLinkActive="active" class="tab">Reseñas Reportadas</a>
-        <a routerLink="usuarios-reportes" routerLinkActive="active" class="tab">Usuarios Reportados</a>
-        <a routerLink="propiedades-reportes" routerLinkActive="active" class="tab">Propiedades Reportadas</a>
-      </nav>
+    
+    <!-- Barra de Filtros y Pestañas -->
+    <div class="p-4 md:p-6 border-b border-gray-200 dark:border-gray-700">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+        
+        <!-- Filtro de Estado -->
+        <div class="w-full md:w-auto">
+          <label for="filtro-estado" class="sr-only">Filtrar por estado</label>
+          <select id="filtro-estado" [(ngModel)]="filtros.estado" (change)="applyFilters()"
+                  class="w-full md:w-48 pl-3 pr-10 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white dark:border-gray-600">
+            <option value="">Todos los estados</option>
+            <option value="pendiente">Pendientes</option>
+            <option value="resuelto">Resueltos</option>
+            <option value="descartado">Descartados</option>
+          </select>
+        </div>
+
+        <!-- Pestañas de Navegación -->
+        <nav class="flex-1 flex justify-center md:justify-end border-b md:border-none border-gray-200 dark:border-gray-600">
+          <div class="flex space-x-1 md:space-x-2 bg-gray-100 dark:bg-gray-900 p-1 rounded-lg">
+            <button (click)="selectTab('todos')" [ngClass]="activeTab === 'todos' ? 'bg-white dark:bg-gray-700 text-blue-600 shadow' : 'text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800'" class="px-3 py-1.5 font-medium text-sm rounded-md transition-all">Todos</button>
+            <button (click)="selectTab('usuarios')" [ngClass]="activeTab === 'usuarios' ? 'bg-white dark:bg-gray-700 text-blue-600 shadow' : 'text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800'" class="px-3 py-1.5 font-medium text-sm rounded-md transition-all">Usuarios</button>
+            <button (click)="selectTab('propiedades')" [ngClass]="activeTab === 'propiedades' ? 'bg-white dark:bg-gray-700 text-blue-600 shadow' : 'text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800'" class="px-3 py-1.5 font-medium text-sm rounded-md transition-all">Propiedades</button>
+            <button (click)="selectTab('resenas')" [ngClass]="activeTab === 'resenas' ? 'bg-white dark:bg-gray-700 text-blue-600 shadow' : 'text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-800'" class="px-3 py-1.5 font-medium text-sm rounded-md transition-all">Reseñas</button>
+          </div>
+        </nav>
+      </div>
     </div>
 
-    <div class="p-6">
-      <router-outlet></router-outlet>
+    <!-- Tabla de Reportes -->
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+            <th scope="col" class="px-6 py-3">Contenido Reportado</th>
+            <th scope="col" class="px-6 py-3">Motivo</th>
+            <th scope="col" class="px-6 py-3 text-center">Estado</th>
+            <th scope="col" class="px-6 py-3 text-right">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="isLoading"><td colspan="4" class="text-center p-8"><span class="animate-pulse">Cargando reportes...</span></td></tr>
+          <tr *ngIf="!isLoading && reportes.length === 0"><td colspan="4" class="text-center p-16"><p>No se encontraron reportes.</p></td></tr>
+
+          <tr *ngFor="let reporte of reportes" class="bg-white dark:bg-gray-800 border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+            <td class="px-6 py-4 font-medium text-gray-900 dark:text-white">
+              <span class="font-bold text-blue-500">{{ getReportableTypeText(reporte.reportable_type) }} #{{ reporte.reportable_id }}</span>
+            </td>
+            <td class="px-6 py-4">
+              <div class="font-semibold">{{ reporte.motivo }}</div>
+              <p class="text-xs text-gray-500 dark:text-gray-400 truncate max-w-xs" [title]="reporte.descripcion">{{ reporte.descripcion || 'Sin descripción.' }}</p>
+            </td>
+            <td class="px-6 py-4 text-center">
+              <span class="px-2 py-1 text-xs font-semibold rounded-full" [ngClass]="{
+                'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300': reporte.estado === 'pendiente',
+                'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300': reporte.estado === 'resuelto',
+                'bg-gray-200 text-gray-800 dark:bg-gray-600 dark:text-gray-200': reporte.estado === 'descartado'
+              }">{{ reporte.estado | titlecase }}</span>
+            </td>
+            <td class="px-6 py-4 text-right">
+              <div class="flex items-center justify-end gap-1">
+                <button (click)="verDetalles(reporte)" title="Ver Detalles" class="action-btn text-blue-500 hover:bg-blue-100 dark:hover:bg-blue-800 p-2 rounded-full">
+                  <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                </button>
+                <ng-container *ngIf="reporte.estado === 'pendiente'" class="flex gap-2">
+
+                  <!-- Suspender Usuario -->
+                  <button *ngIf="reporte.reportable_type.includes('User')" 
+                          (click)="suspenderUsuario(reporte.id)" 
+                          title="Suspender Usuario" 
+                          class="p-2 rounded-full text-orange-500 hover:bg-orange-100 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636" />
+                    </svg>
+                  </button>
+
+                  <!-- Eliminar Propiedad -->
+                  <button *ngIf="reporte.reportable_type.includes('Propiedad')" 
+                          (click)="eliminarPropiedad(reporte.id)" 
+                          title="Eliminar Propiedad" 
+                          class="p-2 rounded-full text-red-500 hover:bg-red-100 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7L5 21M5 7l14 14" />
+                    </svg>
+                  </button>
+
+                  <!-- Eliminar Reseña -->
+                  <button *ngIf="reporte.reportable_type.includes('Resena')" 
+                          (click)="eliminarResena(reporte.id)" 
+                          title="Eliminar Reseña" 
+                          class="p-2 rounded-full text-red-500 hover:bg-red-100 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7L5 21M5 7l14 14" />
+                    </svg>
+                  </button>
+
+                  <!-- Marcar como Resuelto -->
+                  <button (click)="cambiarEstadoReporte(reporte.id, 'resuelto')" 
+                          title="Marcar como Resuelto" 
+                          class="p-2 rounded-full text-green-500 hover:bg-green-100 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </button>
+
+                  <!-- Descartar Reporte -->
+                  <button (click)="cambiarEstadoReporte(reporte.id, 'descartado')" 
+                          title="Descartar Reporte" 
+                          class="p-2 rounded-full text-gray-500 hover:bg-gray-200 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+
+                </ng-container>
+
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Paginador -->
+    <div *ngIf="!isLoading && reportes.length > 0" class="p-4 border-t border-gray-200 dark:border-gray-700">
+      <app-admin-paginador [length]="totalItems" [pageSize]="pageSize" [pageIndex]="pageIndex" (pageChange)="onPageChange($event)"></app-admin-paginador>
+    </div>
+  </div>
+</div>
+<div *ngIf="reporteSeleccionado" (click)="cerrarModal()"
+     class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+
+  <div (click)="$event.stopPropagation()"
+       class="bg-white dark:bg-gray-800 rounded-xl shadow-lg w-full max-w-2xl max-h-[90vh] flex flex-col">
+
+    <!-- Header -->
+    <div class="p-5 border-b border-gray-200 dark:border-gray-700 flex justify-between items-start">
+      <div>
+        <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100">Reporte #{{ reporteSeleccionado.id }}</h3>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+          {{ getReportableTypeText(reporteSeleccionado.reportable_type) }} reportado por 
+          <span class="font-semibold">{{ reporteSeleccionado.reportador.first_name ?? 'Usuario' }}</span>
+        </p>
+      </div>
+      <button (click)="cerrarModal()" 
+              class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
+        ✕
+      </button>
+    </div>
+
+    <!-- Contenido -->
+    <div class="p-5 space-y-6 overflow-y-auto">
+      
+      <!-- Información del Reporte -->
+      <section>
+        <h4 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-3">Información del Reporte</h4>
+        <div class="bg-gray-50 dark:bg-gray-900/50 rounded-lg p-4 text-sm text-gray-800 dark:text-gray-200">
+          <p><strong>Motivo:</strong> {{ reporteSeleccionado.motivo }}</p>
+          <p><strong>Descripción:</strong> 
+            <span class="whitespace-pre-line">{{ reporteSeleccionado.descripcion || 'No proporcionada.' }}</span>
+          </p>
+        </div>
+      </section>
+
+      <!-- Contenido Reportado -->
+      <section *ngIf="reporteSeleccionado.reportable">
+        <h4 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-3">Contenido Reportado</h4>
+        <div class="bg-gray-50 dark:bg-gray-900/50 rounded-lg p-4 text-sm text-gray-800 dark:text-gray-200 space-y-2">
+          <ng-container *ngIf="getReportableTypeText(reporteSeleccionado.reportable_type) === 'Propiedad'">
+            <p><strong>Título:</strong> {{ reporteSeleccionado.reportable.titulo }}</p>
+            <p><strong>Ubicación:</strong> {{ reporteSeleccionado.reportable.ciudad }}, {{ reporteSeleccionado.reportable.pais }}</p>
+          </ng-container>
+
+          <ng-container *ngIf="getReportableTypeText(reporteSeleccionado.reportable_type) === 'Usuario'">
+            <p><strong>Nombre:</strong> {{ reporteSeleccionado.reportable.first_name }} {{ reporteSeleccionado.reportable.last_name_paternal }}</p>
+            <p><strong>Email:</strong> {{ reporteSeleccionado.reportable.email }}</p>
+          </ng-container>
+
+          <ng-container *ngIf="getReportableTypeText(reporteSeleccionado.reportable_type) === 'Reseña'">
+            <p><strong>Comentario:</strong> "{{ reporteSeleccionado.reportable.comentario }}"</p>
+          </ng-container>
+        </div>
+      </section>
+    </div>
+
+    <!-- Acciones -->
+    <div *ngIf="reporteSeleccionado.estado === 'pendiente'" 
+         class="p-5 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
+      <h4 class="text-lg font-semibold text-gray-700 dark:text-gray-300 mb-3">Acciones</h4>
+      <div class="flex flex-wrap gap-3">
+        <button *ngIf="getReportableTypeText(reporteSeleccionado.reportable_type) === 'Usuario'" 
+                (click)="suspenderUsuario(reporteSeleccionado.id)"
+                class="px-4 py-2 rounded-lg bg-orange-100 text-orange-700 hover:bg-orange-200 text-sm font-medium">
+          Suspender Usuario
+        </button>
+        <button *ngIf="getReportableTypeText(reporteSeleccionado.reportable_type) === 'Propiedad'" 
+                (click)="eliminarPropiedad(reporteSeleccionado.id)"
+                class="px-4 py-2 rounded-lg bg-red-100 text-red-700 hover:bg-red-200 text-sm font-medium">
+          Eliminar Propiedad
+        </button>
+        <button *ngIf="getReportableTypeText(reporteSeleccionado.reportable_type) === 'Reseña'" 
+                (click)="eliminarResena(reporteSeleccionado.id)"
+                class="px-4 py-2 rounded-lg bg-red-100 text-red-700 hover:bg-red-200 text-sm font-medium">
+          Eliminar Reseña
+        </button>
+        <button (click)="cambiarEstadoReporte(reporteSeleccionado.id, 'resuelto')"
+                class="ml-auto px-4 py-2 rounded-lg bg-green-100 text-green-700 hover:bg-green-200 text-sm font-medium">
+          Marcar como Resuelto
+        </button>
+        <button (click)="cambiarEstadoReporte(reporteSeleccionado.id, 'descartado')"
+                class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 text-sm font-medium">
+          Descartar
+        </button>
+      </div>
     </div>
   </div>
 </div>

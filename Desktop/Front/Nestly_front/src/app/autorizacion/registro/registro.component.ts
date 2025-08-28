@@ -1,158 +1,167 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HttpLavavelService } from '../../http.service';
 import Swal from 'sweetalert2';
+import { HttpLaravelService } from '../../services/http.service';
 
 @Component({
   selector: 'app-registro',
   templateUrl: './registro.component.html',
   styleUrls: ['./registro.component.scss']
 })
-export class RegistroComponent {
-  registroForm: FormGroup;
-  submitted = false;
-  errorMessage = '';
+export class RegistroComponent implements OnInit {
+  // ... (tu código existente: constructor, ngOnInit, onSubmit, etc., no cambian)
+  registroForm!: FormGroup;
   loading = false;
   showPassword = false;
   showConfirmPassword = false;
 
   constructor(
     private fb: FormBuilder,
-    private httpService: HttpLavavelService,
+    private httpService: HttpLaravelService,
     private router: Router
-  ) {
+  ) { }
+
+  ngOnInit(): void {
     this.registroForm = this.fb.group({
-      name: ['', Validators.required],
-      apellido_paterno: ['', Validators.required],
-      apellido_materno: ['', Validators.required],
+      first_name: ['', Validators.required],
+      last_name_paternal: ['', Validators.required],
+      last_name_maternal: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      telefono: ['', [Validators.required, Validators.pattern('[0-9]{10}')]],
+      phone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       password_confirmation: ['', Validators.required],
-      rol: ['', Validators.required],
-      // --- CAMBIO: Se añade el control para los términos ---
       terminos: [false, Validators.requiredTrue]
     }, {
-      validator: this.passwordMatchValidator
+      validator: this.mustMatch('password', 'password_confirmation')
     });
-  }
-
-  passwordMatchValidator(control: AbstractControl) {
-    const password = control.get('password')?.value;
-    const confirmPassword = control.get('password_confirmation')?.value;
-    return password === confirmPassword ? null : { mismatch: true };
   }
 
   get f() {
     return this.registroForm.controls;
   }
 
-  togglePasswordVisibility() {
-    this.showPassword = !this.showPassword;
-  }
-
-  toggleConfirmPasswordVisibility() {
-    this.showConfirmPassword = !this.showConfirmPassword;
-  }
-
-  // --- CAMBIO: Se añaden los métodos para los popups ---
-  mostrarTerminos(event: MouseEvent) {
-    event.preventDefault();
-    Swal.fire({
-      title: 'Términos y Condiciones',
-      html: `
-        <div style="text-align: left; max-height: 400px; overflow-y: auto; font-size: 14px; padding-right: 15px;">
-          <h4>1. Definición del Servicio</h4>
-          <p>Nestly es una plataforma en línea que permite a los propietarios ("Anfitriones") publicar propiedades ("Anuncios") para alquilar, y a los usuarios ("Huéspedes") buscar y reservar dichas propiedades...</p>
-          </div>
-      `,
-      width: '800px',
-      confirmButtonText: 'Cerrar'
-    });
-  }
-
-  mostrarPrivacidad(event: MouseEvent) {
-    event.preventDefault();
-    Swal.fire({
-      title: 'Política de Privacidad',
-      html: `
-        <div style="text-align: left; max-height: 400px; overflow-y: auto; font-size: 14px; padding-right: 15px;">
-          <h4>1. Información que Recopilamos</h4>
-          <p>Recopilamos tres categorías principales de información: Información que tú nos proporcionas (datos de cuenta, perfil, propiedades, pago), Información recopilada automáticamente (datos de uso, geolocalización, cookies) e Información de Terceros (reseñas, verificaciones)...</p>
-          </div>
-      `,
-      width: '800px',
-      confirmButtonText: 'Cerrar'
-    });
-  }
-
-  onSubmit() {
-    this.submitted = true;
-    this.errorMessage = '';
-
+  onSubmit(): void {
     if (this.registroForm.invalid) {
-      // --- CAMBIO: Mensaje de error más específico ---
-      const terminosAceptados = this.registroForm.get('terminos')?.value;
-      let errorText = "Completa todos los campos requeridos.";
-      if (!terminosAceptados) {
-        errorText = "Por favor, completa todos los campos y acepta los términos y condiciones.";
+      this.registroForm.markAllAsTouched();
+      let errorText = "Por favor, completa todos los campos requeridos correctamente.";
+      if (this.f['terminos'].invalid) {
+        errorText = "Debes aceptar los términos y condiciones para continuar.";
       }
-      
       Swal.fire({
         icon: "error",
-        title: "Upsi",
+        title: "Formulario incompleto",
         text: errorText,
       });
       return;
     }
-    
-    this.loading = true;
-    
-    const formData = {  
-      first_name: this.registroForm.value.name,
-      last_name_paternal: this.registroForm.value.apellido_paterno,
-      last_name_maternal: this.registroForm.value.apellido_materno,
-      phone: this.registroForm.value.telefono,
-      email: this.registroForm.value.email,
-      password: this.registroForm.value.password,
-      password_confirmation: this.registroForm.value.password_confirmation,
-      role: this.registroForm.value.rol
-    };
 
+    this.loading = true;
     Swal.fire({
       title: 'Registrando...',
       allowOutsideClick: false,
-      timer: 2000,
       didOpen: () => {
         Swal.showLoading();
       }
     });
-    this.httpService.Service_Post('register', formData).subscribe({
+
+    this.httpService.Service_Post('register', this.registroForm.value).subscribe({
       next: (response) => {
         Swal.fire({
           icon: "success",
           title: "¡Registro exitoso!",
-          text: "Serás redirigido para iniciar sesión",
+          text: "Serás redirigido para iniciar sesión.",
           showConfirmButton: false,
           timer: 2000
         }).then(() => {
           this.router.navigate(['/login']);
-        }); 
+        });
       },
       error: (error) => {
         console.error('Error en registro:', error);
         Swal.fire({
           icon: "error",
-          title: "Error en registro",
-          text: error.error?.message || 
-                error.error?.errors?.email?.[0] || 
-                'Ocurrio un error al registrar. Intenta de nuevo',
+          title: "Error en el registro",
+          text: error.error?.message ||
+                error.error?.errors?.email?.[0] ||
+                'Ocurrió un error. Inténtalo de nuevo.',
         });
+        this.loading = false; // Detener carga en caso de error
       },
       complete: () => {
         this.loading = false;
       }
+    });
+  }
+
+  mustMatch(controlName: string, matchingControlName: string) {
+    return (formGroup: FormGroup) => {
+      const control = formGroup.controls[controlName];
+      const matchingControl = formGroup.controls[matchingControlName];
+      if (matchingControl.errors && !matchingControl.errors['mismatch']) {
+        return;
+      }
+      if (control.value !== matchingControl.value) {
+        matchingControl.setErrors({ mismatch: true });
+      } else {
+        matchingControl.setErrors(null);
+      }
+    }
+  }
+
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
+
+  toggleConfirmPasswordVisibility(): void {
+    this.showConfirmPassword = !this.showConfirmPassword;
+  }
+  
+  mostrarTerminos(event: MouseEvent): void {
+    event.preventDefault();
+    Swal.fire({
+      title: 'Términos y Condiciones',
+      html: `
+        <div style="text-align: left; max-height: 400px; overflow-y: auto; font-size: 14px; padding: 0 15px;">
+          <h4>1. Información sobre el Proveedor</h4>
+          <p>En cumplimiento con la NMX-COE-001-SCFI-2019, se informa que la plataforma Nestly es operada por:</p>
+          <ul style="list-style-position: inside; padding-left: 10px;">
+              <li><strong>Razón Social:</strong> Nestly S.A. de C.V.</li>
+              <li><strong>Nombre Comercial:</strong> Nestly</li>
+              <li><strong>RFC:</strong> ROMI990531H97</li>
+              <li><strong>Domicilio:</strong> Frac. Nigromante, violetas #5</li>
+          </ul>
+          <h4>2. Definiciones Clave</h4>
+          <p>Plataforma: El sitio web y las aplicaciones móviles de Nestly. Usuario/Consumidor: Cualquier persona que se registra y utiliza la Plataforma...</p>
+          </div>`,
+      width: '800px',
+      confirmButtonText: 'Cerrar',
+      footer: `
+        <div style="display: flex; justify-content: center; gap: 1rem;">
+          <a href="assets/pdf/Terminos.pdf" target="_blank" style="padding: 10px 20px; background-color: #4f46e5; color: white; border-radius: 5px; text-decoration: none; font-weight: 600;">Ver PDF</a>
+          <a href="assets/pdf/Terminos.pdf" download="Terminos_y_Condiciones_Nestly.pdf" style="padding: 10px 20px; background-color: transparent; color: #4f46e5; border: 2px solid #4f46e5; border-radius: 5px; text-decoration: none; font-weight: 600;">Descargar</a>
+        </div>
+      `
+    });
+  }
+
+  mostrarPrivacidad(event: MouseEvent): void {
+    event.preventDefault();
+    Swal.fire({
+      title: 'Política de Privacidad',
+      html: `
+        <div style="text-align: left; max-height: 400px; overflow-y: auto; font-size: 14px; padding: 0 15px;">
+          <p>Nestly, con domicilio en calle Violetas #5 Frac. Nigromante, San Miguel de Allende, Guanajuato, es responsable de recabar sus datos personales, del uso que se le dé a los mismos y de su protección.</p>
+          <p>Su información personal será utilizada para proveer los servicios y productos que ha solicitado, informarle sobre cambios en los mismos y evaluar la calidad del servicio que le brindamos...</p>
+          </div>`,
+      width: '800px',
+      confirmButtonText: 'Cerrar',
+      footer: `
+        <div style="display: flex; justify-content: center; gap: 1rem;">
+          <a href="assets/pdf/AvisoPrivacidad.pdf" target="_blank" style="padding: 10px 20px; background-color: #4f46e5; color: white; border-radius: 5px; text-decoration: none; font-weight: 600;">Ver PDF</a>
+          <a href="assets/pdf/AvisoPrivacidad.pdf" download="Aviso_de_Privacidad_Nestly.pdf" style="padding: 10px 20px; background-color: transparent; color: #4f46e5; border: 2px solid #4f46e5; border-radius: 5px; text-decoration: none; font-weight: 600;">Descargar</a>
+        </div>
+      `
     });
   }
 }

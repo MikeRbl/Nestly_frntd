@@ -1,0 +1,110 @@
+<div class="main-scroll-container dark:bg-gray-900">
+  <!-- Sección Hero (Banner) -->
+  <section id="hero-section" class="min-h-[450px] flex flex-col justify-center items-center text-center relative px-6">
+
+    <div
+      class="relative w-full rounded-3xl overflow-hidden shadow-xl mt-10"
+      style="height: 550px; max-width: 1300px; width: 100%"
+      *ngIf="featuredProperties.length"
+    >
+      <img
+        src="assets/login/casa2.jpg"
+        alt="Casa"
+        class="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+      />
+      <div class="absolute inset-0 bg-black/20"></div>
+      <div class="relative z-10 flex flex-col justify-center items-center h-full px-8 text-center">
+        <p class="text-4xl font-light mb-10 text-slate-100 max-w-2xl mx-auto drop-shadow-lg">
+          Encuentra tu hogar temporal perfecto
+        </p>
+        <p class="text-2xl font-light mb-10 text-slate-100 max-w-2xl mx-auto drop-shadow-lg">
+          Rentas mensuales con todas las comodidades, verificadas y listas para ti.
+        </p>
+        <button
+          routerLink="/principal/buscarCasa"
+          class="inline-block bg-white text-[#7FA6FF] font-semibold px-10 py-4 rounded-full shadow-md hover:bg-slate-100 hover:scale-105 transform transition-all duration-300 ease-in-out"
+        >
+          Explorar propiedades
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Sección de Ventajas -->
+  <section class="min-h-screen flex items-center justify-center bg-white dark:bg-gray-900 py-24 px-6">
+    <div class="max-w-7xl mx-auto w-full">
+      <header class="text-center mb-20">
+        <p class="text-[#7FA6FF] uppercase font-medium tracking-wide mb-3 text-sm">
+          Conoce nuestras ventajas
+        </p>
+        <h2 class="text-4xl md:text-5xl font-extrabold mb-5 text-slate-900 dark:text-white leading-tight">
+          ¿Por qué elegir Nestly?
+        </h2>
+      </header>
+      <div class="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+        <article class="group bg-white/80 dark:bg-gray-800/50 backdrop-blur-md rounded-2xl p-8 border border-slate-200 dark:border-gray-700 hover:shadow-xl hover:border-[#7FA6FF] transition-all duration-300 cursor-default hover:-translate-y-1">
+          <div class="text-[#7FA6FF] bg-[#7FA6FF]/10 rounded-full w-16 h-16 flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.286Z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-3 text-slate-900 dark:text-white text-center">
+            Propiedades Verificadas
+          </h3>
+          <p class="text-slate-600 dark:text-slate-400 text-center leading-relaxed">
+            Solo rentas seguras con dueños y propiedades verificadas para tu confianza.
+          </p>
+        </article>
+        <article class="group bg-white/80 dark:bg-gray-800/50 backdrop-blur-md rounded-2xl p-8 border border-slate-200 dark:border-gray-700 hover:shadow-xl hover:border-[#D98EDF] transition-all duration-300 cursor-default hover:-translate-y-1">
+          <div class="text-[#D98EDF] bg-[#D98EDF]/10 rounded-full w-16 h-16 flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-3 text-slate-900 dark:text-white text-center">
+            Contratos Flexibles
+          </h3>
+          <p class="text-slate-600 dark:text-slate-400 text-center leading-relaxed">
+            Renta desde un mes hasta un año, adaptándonos a tus necesidades.
+          </p>
+        </article>
+        <article class="group bg-white/80 dark:bg-gray-800/50 backdrop-blur-md rounded-2xl p-8 border border-slate-200 dark:border-gray-700 hover:shadow-xl hover:border-[#7FA6FF] transition-all duration-300 cursor-default hover:-translate-y-1">
+          <div class="text-[#7FA6FF] bg-[#7FA6FF]/10 rounded-full w-16 h-16 flex items-center justify-center mb-6 mx-auto group-hover:scale-110 transition-transform">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4-.8L3 20l1.8-4a7.864 7.864 0 01-1.8-5.2c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold mb-3 text-slate-900 dark:text-white text-center">
+            Atención Personalizada
+          </h3>
+          <p class="text-slate-600 dark:text-slate-400 text-center leading-relaxed">
+            Nuestro equipo te acompaña durante todo el proceso de renta.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <app-propiedades-destacadas
+    [properties]="featuredProperties"
+    [isLoading]="isLoading"
+    [isUserLoggedIn]="isUserLoggedIn"
+    [favoritoIds]="favoritoIds"
+    (propertyClick)="handlePropertyClick($event)"
+    (toggleFavoritoEvent)="toggleFavorito($event)">
+  </app-propiedades-destacadas>
+  
+  <app-comentarios-usuarios
+  [testimonios]="testimonios"
+  [isUserLoggedIn]="isUserLoggedIn"
+  [currentUser]="currentUser"
+  (publicarResenaEvent)="publicarResena($event)"
+  (actualizarResenaEvent)="actualizarResena($event)"
+  (eliminarResenaEvent)="eliminarResena($event)">
+</app-comentarios-usuarios>
+
+  
+  <app-footer></app-footer>
+
+</div>
