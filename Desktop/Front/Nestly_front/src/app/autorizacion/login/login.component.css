@@ -8,7 +8,7 @@
 }
 .pato-gif {
   position: absolute;
-  bottom: 520px; /* ajusta según la altura del form */
+  bottom: 500px; /* ajusta según la altura del form */
   left: 80%;
   transform: translateX(-50%);
   width: 120px;
