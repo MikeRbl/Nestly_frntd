@@ -1,25 +1,27 @@
-# 🏡 Nestly Frontend
+# NestlyFront
 
-**Nestly** es una plataforma de alquiler de propiedades. Este es el frontend desarrollado con **Angular**, conectado a un backend hecho en Laravel.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.2.
 
-## 🚀 Características principales
+## Development server
 
-- Formulario de registro de usuarios (inquilino / propietario)
-- Validación de campos con formularios reactivos
-- Comunicación con backend por HTTP
-- Navegación entre componentes
-- Estilos responsive y modernos
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-## 🛠 Tecnologías
+## Code scaffolding
 
-- **Angular** - Framework frontend
-- **TypeScript** - Lenguaje principal
-- **Docker**
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## 📥 Instalación
+## Build
 
-```bash
-git clone https://github.com/MikeRbl/Nestly_frontend.git
-cd nestly/frontend
-npm install
-ng serve -o
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+
+## Running unit tests
+
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+## Running end-to-end tests
+
+Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+
+## Further help
+
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
